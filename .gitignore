@@ -1,8 +1,6 @@
 
 *.lock
 *.properties
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/qnOPxTmV2fnPFzA38CsiyUOHojY=
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/Y7OAq_KdRpMojHR+Trz9PIg4Fjs=
 *.jar
 *.xcworkspacedata
 *.xml
@@ -12,22 +10,15 @@ android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/Y7OAq_K
 *.ttf
 *.json
 *.flat
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/z3Err72x7q6h2ZxiZ1p_bJoYFSs=
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/ZWXxjDvuZaRNY55TGtRSkirEzSc=
 *.class
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/AzN8+Aekt57AG5PiBwy53H3ryoY=
 *.bin
 *.tsx
 android/.DS_Store
 android/.gradle/.DS_Store
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/1GB7wqXeUg8XS0GNyi0lRE1toYE=
 *.java
 *.uniqueId1
 *.dex
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/XIWiSd0cvQld06rC1mHGtpIY9FM=
 *.uniqueId2
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/ytuC05vDu2bth96gn3W8NvQ586Q=
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/reDX6mCF9wlSaCBmsU0e5tEV8E4=
 android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/*
 *.iml
 *.uniqueId0
@@ -51,3 +42,4 @@ android/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/jav
 *.m
 *.keystore
 *.apk
+node_modules
