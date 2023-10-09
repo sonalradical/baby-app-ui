@@ -38,10 +38,6 @@ export default function Login({ navigation }) {
         navigation.navigate('Otp');
     }
 
-    const onNavigate = () => {
-        navigation.navigate('SignUp');
-    }
-
     const renderView = () => {
         return (
             <View style={MMStyles.containerPadding}>
@@ -102,7 +98,7 @@ export default function Login({ navigation }) {
                     <Text style={[MMStyles.subTitle, MMStyles.h5]}>of Services and Privacy Policy</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt15]}>Need an account ?</Text>
-                        <Button variant="none" transparent style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => onNavigate()}>
+                        <Button variant="none" transparent style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('SignUp')}>
                             SIGN UP
                         </Button>
                     </View>
