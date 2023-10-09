@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Keyboard, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Dimensions, StyleSheet } from 'react-native';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { validateAll } from 'indicative/validator';
 
 import MMStyles from '../../helpers/Styles';
-import MMColors from '../../helpers/Colors';
-import MMConstants from '../../helpers/Constants';
 import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';

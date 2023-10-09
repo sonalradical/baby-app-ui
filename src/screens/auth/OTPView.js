@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import OTPTextView from 'react-native-otp-textinput';
 
 import MMColors from '../../helpers/Colors';
-import MMConstants from '../../helpers/Constants';
 import MMStyles from '../../helpers/Styles';
 import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
 import MMFormErrorText from '../../components/common/FormErrorText';

@@ -4,6 +4,7 @@ import { Button, Checkbox } from 'native-base';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
+import { validateAll } from 'indicative/validator';
 
 import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
@@ -16,12 +17,9 @@ import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
 import MMProfileAvatar from '../../components/common/ImagePicker';
 import MMPicker from '../../components/common/Picker';
-import { validateAll } from 'indicative/validator';
 
 export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-    const onClose = () => setIsOpen(false);
 
     const initState = {
         mobileNumber: '+91 8160421801',
