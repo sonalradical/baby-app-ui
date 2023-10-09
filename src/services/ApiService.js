@@ -10,8 +10,6 @@ async function userSignup(data) {
         method: 'post',
         data: data
     };
-    console.log(config.url, config.data, 'data')
-    console.log('API Request URL:,', config.url);
     const result = await axios(config);
     return result;
 }

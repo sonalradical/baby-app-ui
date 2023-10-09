@@ -30,8 +30,7 @@ android/app/build/intermediates/dex_archive_input_jar_hashes/debug/out
 android/app/build/intermediates/incremental/debug-mergeJavaRes/merge-state
 android/app/build/intermediates/dex_number_of_buckets_file/debug/out
 *.ap_
-android/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/androidResources
-android/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/javaResources0
+android/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/*
 *.xcscheme
 *.xcuserstate
 *.env
