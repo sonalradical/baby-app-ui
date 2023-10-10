@@ -46,10 +46,10 @@ export default function OTPView({ navigation, route }) {
                         <Text style={[MMStyles.subTitle, MMStyles.h5, MMStyles.mt20]}>{`We have sent a verification code to`}</Text>
                         <Text style={[MMStyles.subTitle, MMStyles.h5]}>{`+91 0000000000`}</Text>
                     </View>
-                    <View style={{ paddingLeft: 30, paddingRight: 30 }}>
+                    <View >
                         <OTPTextView
                             //handleTextChange={(text) => onApply(text)}
-                            inputCount={4}
+                            inputCount={6}
                             tintColor={MMColors.orange}
                             keyboardType="number-pad"
                             containerStyle={MMStyles.mt20}

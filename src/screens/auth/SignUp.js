@@ -88,13 +88,15 @@ export default function SignUp({ navigation, route }) {
                 if (userSignup) {
                     setIsOverlayLoading(false);
                     MMUtils.showToastSuccess('OTP Sent successfully.');
+                    navigation.navigate('Otp');
                 }
                 else {
                     setIsOverlayLoading(false);
                 }
             })
             .catch((errorMessage) => {
-                console.log('...', errorMessage)
+                console.log('...', errorMessage);
+                MMUtils.showToastError(errorMessage);
                 setIsOverlayLoading(false);
             });
     };

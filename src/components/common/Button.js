@@ -62,7 +62,6 @@ function MMTransparentButton(props) {
     const color = textColor || MMColors.disabled;
     const getStyle = () => {
         return {
-            // ...MMStyles.transparentButtonText,
             ...MMStyles.titleText,
             ...MMStyles.alignSelfCenter,
             ...MMStyles.h5,
