@@ -1,102 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import DropDown from 'react-native-paper-dropdown';
 
 import * as _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import MMStyles from '../../helpers/Styles';
 import MMColors from '../../helpers/Colors';
-import MMIcon from './Icon';
-import MMUtils from '../../helpers/Utils';
 import MMFormErrorText from './FormErrorText';
-import MMConstants from '../../helpers/Constants';
-import { Text } from 'react-native-paper';
+import DropDown from 'react-native-paper-dropdown';
+import { IconButton } from 'react-native-paper';
 
-const defaultEnabled = true;
-const defaultLabelValuePair = true;
 
-const getIconStyle = (isError, enabled) => {
-    if (isError) {
-        return [styles.pickerIcon, MMStyles.h4];
-    } if (enabled) {
-        return [styles.pickerIcon, MMStyles.h4];
-    }
-    return [styles.pickerIcon, MMStyles.h4, styles.pickerIconDisabled];
-};
-
-function DropDownAndroidIcon(props) {
-    const { isError, enabled } = props;
-    if (MMUtils.isPlatformAndroid()) {
-        return <MMIcon name="keyboard-arrow-down" style={getIconStyle(isError, enabled)} />;
-    }
-    return null;
-}
-
-DropDownAndroidIcon.propTypes = {
-    isError: PropTypes.bool,
-    enabled: PropTypes.bool,
-};
-
-function DropDownIosIcon(props) {
-    const { isError, enabled } = props;
-    return <MMIcon name="keyboard-arrow-down" type="MaterialIcons" style={getIconStyle(isError, enabled)} />;
-}
-
-DropDownIosIcon.propTypes = {
-    isError: PropTypes.bool,
-    enabled: PropTypes.bool,
-};
-
-export default function MMPicker(props) {
+function MMPicker(props) {
+    const [visible, setVisible] = useState(false);
     const {
-        label, placeholder, value, items, optionalStyle,
-        labelValuePair, optionalStyleText, labelParameter,
-        valueParameter, onValueChange, errorMessage, enabled, selectedItem
+        label, value, items, optionalStyle, onValueChange, errorMessage
     } = props;
-    const isError = !!errorMessage;
-    const isEnabled = _.isNil(enabled) ? defaultEnabled : enabled;
-    const isLabelValuePair = _.isNil(labelValuePair) ? defaultLabelValuePair : labelValuePair;
 
     return (
         <View style={[MMStyles.mb5, MMStyles.mt5, optionalStyle]}>
-            {
-                label ? <Text style={[MMStyles.formItemLabel, MMStyles.h6, optionalStyleText]}>{label}</Text> : null
-            }
-            {/* <Select
-                note
-                mode="dropdown"
-                fontFamily={MMConstants.fonts.regular}
-                iosIcon={<DropDownIosIcon isError={isError} enabled={isEnabled} />}
-                style={styles.picker}
-                size='md'
-                variant='rounded'
-                _selectedItem={selectedItem}
-                placeholder={placeholder}
-                selectedValue={value}
-                onValueChange={onValueChange}
-                isDisabled={!isEnabled}
-            >
-                <Select.Item isDisabled={true} label={placeholder} value={null} />
-                {
-                    _.map(items, (item, index) => {
-                        if (isLabelValuePair) {
-                            return <Select.Item key={index} label={item[labelParameter]} value={item[valueParameter]} />;
-                        }
-                        return <Select.Item key={index} label={item} value={item} />;
-                    })
-                }
-            </Select>
             <DropDown
-                label={'Gender'}
-                mode={'outlined'}
-                visible={showDropDown}
-                showDropDown={() => setShowDropDown(true)}
-                onDismiss={() => setShowDropDown(false)}
-                value={gender}
-                setValue={setGender}
-                list={genderList}
-            /> */}
+                label={label}
+                visible={visible}
+                onDismiss={() => setVisible(false)}
+                showDropDown={() => setVisible(true)}
+                mode="outlined"
+                value={value}
+                setValue={onValueChange}
+                list={items}
+            />
             <MMFormErrorText errorText={errorMessage} />
         </View>
     );
@@ -137,7 +69,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export {
-    DropDownAndroidIcon,
-    DropDownIosIcon,
-};
+export default MMPicker;

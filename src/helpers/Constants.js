@@ -46,8 +46,8 @@ const MMConstants = {
         notification: 'notification'
     },
     gender: [
-        { id: 'male', value: 'Male' },
-        { id: 'female', value: 'Female' }
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' }
     ],
 };
 

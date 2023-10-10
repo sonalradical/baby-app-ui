@@ -15,8 +15,8 @@ import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
 import MMProfileAvatar from '../../components/common/ImagePicker';
-import MMPicker from '../../components/common/Picker';
 import { Button, Checkbox } from 'react-native-paper';
+import MMPicker from '../../components/common/Picker';
 
 export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -158,13 +158,10 @@ export default function SignUp({ navigation, route }) {
                     />
                     <MMPicker
                         optionalStyle={MMStyles.mt20}
-                        placeholder="Gender"
+                        label="Gender"
                         value={state.gender}
                         items={MMConstants.gender}
                         onValueChange={(value) => onInputChange('gender', value)}
-                        labelParameter="value"
-                        valueParameter="id"
-                        selectedItem={{ bg: MMColors.orange }}
                         errorMessage={state.errors.gender}
                     />
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
