@@ -59,7 +59,7 @@ export default function Login({ navigation }) {
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Enter Mobile Number"
                         name="mobileNumber"
-                        iconName="mobile"
+                        iconName="cellphone"
                         keyboardType="phone-pad"
                     />
                     <MMInput

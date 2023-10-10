@@ -119,7 +119,7 @@ export default function SignUp({ navigation, route }) {
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Mobile Number"
                         name="mobileNumber"
-                        iconName="mobile"
+                        iconName="cellphone"
                         errorMessage={state.errors.mobileNumber}
                         keyboardType="phone-pad"
                     />
@@ -129,7 +129,7 @@ export default function SignUp({ navigation, route }) {
                         value={state.name}
                         onChangeText={(value) => onInputChange('name', value)}
                         placeholder="Name"
-                        iconName="user"
+                        iconName="account"
                         errorMessage={state.errors.name}
                         optionalIconSize={20}
                     />
@@ -140,7 +140,7 @@ export default function SignUp({ navigation, route }) {
                         placeholder="Email"
                         keyboardType="email-address"
                         autoCorrect={false}
-                        iconName="envelope"
+                        iconName="email"
                         maxLength={150}
                         errorMessage={state.errors.email}
                         optionalIconSize={20}

@@ -178,7 +178,8 @@ const MMStyles = StyleSheet.create({
     },
     roundButton: {
         borderRadius: 25,
-        height: 45
+        height: 45,
+        fontFamily: MMConstants.fonts.bold
     },
     transparentButtonText: {
         fontSize: 15,

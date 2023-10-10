@@ -33,7 +33,7 @@ function MMInput(props) {
                 <TextInput
                     mode='outlined'
                     label=''
-                    left={leftIcon(iconName, iconColor, optionalIconSize)}
+                    left={<TextInput.Icon icon={iconName} />}
                     keyboardType="default"
                     style={[MMStyles.formInput, inputOptionalStyle]}
                     autoCapitalize='none'

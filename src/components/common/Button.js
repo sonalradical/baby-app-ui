@@ -38,7 +38,7 @@ function MMRoundButton(props) {
         };
     };
     return (
-        <Button style={optionalStyle ? [getStyle(), optionalStyle] : getStyle()} size="xs" {...props}>
+        <Button style={optionalStyle ? [getStyle(), optionalStyle] : getStyle()} size="xs" textColor={MMColors.white} {...props}>
             {label}
         </Button>
     );
