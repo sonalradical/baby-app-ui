@@ -13,6 +13,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 
 export default function OTPView({ navigation, route }) {
+    const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
@@ -23,8 +24,34 @@ export default function OTPView({ navigation, route }) {
 
     const [state, setState] = useState(initState);
 
-    const onSubmit = () => {
-        navigation.navigate('SignUp');
+    useEffect(() => {
+        async function Init() {
+            setTimeout(() => {
+                setIsResendVisible(true);
+            }, 60000);
+        }
+        Init();
+    }, []);
+
+    const onApply = (value) => {
+        const otpValue = _.join(value, '');
+        setState({
+            ...state,
+            otp: otpValue,
+            errors: {
+                ...state.errors,
+                otp: '',
+            },
+        });
+
+        if (otpValue.length === 6) {
+            onSignInPress(otpValue);
+        }
+    };
+
+
+    const onSignInPress = () => {
+
     }
 
     const renderView = () => {
@@ -44,11 +71,11 @@ export default function OTPView({ navigation, route }) {
                         <Text style={[MMStyles.titleText, MMStyles.h2]}>OTP Verification</Text>
                         <Text style={[MMStyles.subTitle, MMStyles.h4, MMStyles.mt30]}>Enter OTP</Text>
                         <Text style={[MMStyles.subTitle, MMStyles.h5, MMStyles.mt20]}>{`We have sent a verification code to`}</Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h5]}>{`+91 0000000000`}</Text>
+                        <Text style={[MMStyles.subTitle, MMStyles.h5]}>{mobileNumber}</Text>
                     </View>
                     <View >
                         <OTPTextView
-                            //handleTextChange={(text) => onApply(text)}
+                            handleTextChange={(text) => onApply(text)}
                             inputCount={6}
                             tintColor={MMColors.orange}
                             keyboardType="number-pad"
@@ -72,7 +99,7 @@ export default function OTPView({ navigation, route }) {
                     <MMRoundButton
                         optionalTextStyle={[MMStyles.h5]}
                         label="Verify"
-                        onPress={() => onSubmit()}
+                        onPress={() => onSignInPress()}
                         optionalStyle={[MMStyles.mt20]}
                     />
                 </View>

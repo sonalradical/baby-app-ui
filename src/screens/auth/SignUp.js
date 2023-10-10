@@ -47,10 +47,6 @@ export default function SignUp({ navigation, route }) {
         });
     };
 
-    const onNavigate = () => {
-        navigation.navigate('Login');
-    }
-
     const onSubmit = () => {
         if (isOverlayLoading) {
             return;
@@ -88,7 +84,7 @@ export default function SignUp({ navigation, route }) {
                 if (userSignup) {
                     setIsOverlayLoading(false);
                     MMUtils.showToastSuccess('OTP Sent successfully.');
-                    navigation.navigate('Otp');
+                    navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                 }
                 else {
                     setIsOverlayLoading(false);
