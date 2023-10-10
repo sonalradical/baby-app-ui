@@ -53,12 +53,13 @@ export default function SignUp({ navigation, route }) {
         }
 
         const messages = {
-            'mobileNumber.required': 'Please enter Mobile no.',
+            'mobileNumber.required': 'Please enter mobile no.',
             'mobileNumber.min': 'Mobile number must be 14 digits.',
             'name.required': 'Please enter name.',
             'email.required': 'Please enter email.',
-            'email.email': 'Please enter valid email.',
+            'email.email': 'Email address is not in a valid format.',
             'password.required': 'Please enter password.',
+            'password.min': 'Password should have a minimum of 8 characters.',
             'gender.required': 'Please select gender',
         };
 
@@ -90,9 +91,16 @@ export default function SignUp({ navigation, route }) {
                     setIsOverlayLoading(false);
                 }
             })
-            .catch((errorMessage) => {
-                console.log('...', errorMessage);
-                MMUtils.showToastError(errorMessage);
+            .catch((errors) => {
+                // Handle validation errors
+                const formattedErrors = {};
+                errors.forEach((error) => {
+                    formattedErrors[error.field] = [error.message];
+                });
+                setState({
+                    ...state,
+                    errors: formattedErrors,
+                });
                 setIsOverlayLoading(false);
             });
     };
@@ -114,6 +122,7 @@ export default function SignUp({ navigation, route }) {
                         placeholder="Mobile Number"
                         name="mobileNumber"
                         iconName="mobile"
+                        errorMessage={state.errors.mobileNumber}
                         keyboardType="phone-pad"
                     />
                     <MMInput
@@ -144,6 +153,7 @@ export default function SignUp({ navigation, route }) {
                         onChangeText={(value) => onInputChange('password', value)}
                         placeholder="Password"
                         iconName="lock"
+                        maxLength={8}
                         errorMessage={state.errors.password}
                         optionalIconSize={20}
                         type={'password'}

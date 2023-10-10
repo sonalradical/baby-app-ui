@@ -32,12 +32,18 @@ axios.interceptors.response.use(async (response) => {
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
             return _.isNil(response.data.data) ? true : response.data.data;
+        default:
+            MMUtils.showToastError(friendlyMassage);
+            return null;
     }
 
-    MMUtils.showToastError(friendlyMassage);
-
-    return null;
 }, async (error) => {
-    console.log('API Response Error: ', error);
+    console.log('API Response Errors: ', error);
+    if (error.message === 'Network Error') {
+        // Handle network errors separately
+        MMUtils.showToastError('Network Error: Please check your internet connection.');
+    } else {
+        MMUtils.showToastError(error.message);
+    }
     return null;
 });

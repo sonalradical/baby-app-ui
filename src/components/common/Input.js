@@ -24,7 +24,6 @@ function MMInput(props) {
     const {
         label, errorMessage, isDisabled, iconName, optionalStyle, inputOptionalStyle, iconColor, optionalIconSize,
     } = props;
-    const isError = _.size(errorMessage) > 0;
     return (
         <View>
             {
@@ -42,12 +41,7 @@ function MMInput(props) {
                     {...props}
                 />
             </View>
-            {
-                isError ? _.map(errorMessage, (message, index) => (
-                    <MMFormErrorText optionalStyle={{ marginTop: '-2%' }} key={index} errorText={message} />
-                ))
-                    : null
-            }
+            <MMFormErrorText errorText={errorMessage} />
         </View>
     );
 }

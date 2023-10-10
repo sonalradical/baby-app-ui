@@ -114,6 +114,7 @@ const MMStyles = StyleSheet.create({
         color: MMColors.error,
         // fontSize: 12,
         fontFamily: MMConstants.fonts.regular,
+        marginLeft: 2
     },
     contentText: {
         // fontSize: 14,
