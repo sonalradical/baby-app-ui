@@ -321,17 +321,6 @@ const MMStyles = StyleSheet.create({
     paddingBottom: {
         paddingBottom: 20
     },
-    mapView: {
-        width: '100%',
-        height: '50%',
-    },
-    mapStyle: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
     rowCenter: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -426,31 +415,6 @@ const MMStyles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
-    electedBG: {
-        backgroundColor: '#C1E2F1',
-    },
-    applicantAppliedBG: {
-        backgroundColor: '#FAF17D',
-    },
-    applicantAppearedBG: {
-        backgroundColor: '#D3F8D3',
-    },
-    applicantNotAppearedBG: {
-        backgroundColor: '#ffcccb',
-    },
-    jobExpiredColor: {
-        backgroundColor: '#E8FBE7',
-    },
-    jobClosedColor: {
-        backgroundColor: '#FFE8E7',
-    },
-    applicantRejectColor: {
-        backgroundColor: '#FA9797',
-    },
-    applicantNotInterested: {
-        backgroundColor: '#C8C9C8',
-    },
-
     btnSecondary: {
         borderColor: MMColors.blue,
         borderWidth: 1,
