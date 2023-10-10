@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 import * as _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -25,6 +26,7 @@ function MMPicker(props) {
                 value={value}
                 setValue={onValueChange}
                 list={items}
+                inputProps={{ right: <TextInput.Icon icon={visible ? "menu-up" : "menu-down"} /> }}
             />
             <MMFormErrorText errorText={errorMessage} />
         </View>
