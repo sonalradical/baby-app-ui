@@ -28,10 +28,13 @@ axios.interceptors.request.use(async (config) => {
 axios.interceptors.response.use(async (response) => {
     console.log(response.data, 'response')
 
-    const { status, friendlyMassage } = response.data;
+    const { status, friendlyMassage, error } = response.data;
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
             return _.isNil(response.data.data) ? true : response.data.data;
+        case MMEnums.responseStatusCodes.NotFound:
+            MMUtils.showToastError(error.message);
+            break;
         default:
             MMUtils.showToastError(friendlyMassage);
             return null;
@@ -42,7 +45,8 @@ axios.interceptors.response.use(async (response) => {
     if (error.message === 'Network Error') {
         // Handle network errors separately
         MMUtils.showToastError('Network Error: Please check your internet connection.');
-    } else {
+    }
+    else {
         MMUtils.showToastError(error.message);
     }
     return null;

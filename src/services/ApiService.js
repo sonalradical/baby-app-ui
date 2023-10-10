@@ -14,11 +14,22 @@ async function userSignup(data) {
     return result;
 }
 
+async function verifyOTP(data) {
+    const config = {
+        url: `auth/verifyOTP`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#endregion
 
 //------------------------------------------------------------------- Export All APIs
 //#region
 export default {
-    userSignup
+    userSignup,
+    verifyOTP,
 };
 //#endregion

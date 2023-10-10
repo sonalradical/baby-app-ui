@@ -22,7 +22,7 @@ export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
     const initState = {
-        mobileNumber: '+91 8160421801',
+        mobileNumber: '+91 9913243591',
         name: 'Nupur',
         email: 'nupur@radicalrack.com',
         password: 'Rack@123',
@@ -87,12 +87,10 @@ export default function SignUp({ navigation, route }) {
                     MMUtils.showToastSuccess('OTP Sent successfully.');
                     navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                 }
-                else {
-                    setIsOverlayLoading(false);
-                }
+                setIsOverlayLoading(false);
             })
             .catch((errors) => {
-                // Handle validation errors
+                //Handle validation errors
                 const formattedErrors = {};
                 errors.forEach((error) => {
                     formattedErrors[error.field] = [error.message];
@@ -126,7 +124,7 @@ export default function SignUp({ navigation, route }) {
                         keyboardType="phone-pad"
                     />
                     <MMInput
-                        maxLength={100}
+                        maxLength={50}
                         optionalStyle={MMStyles.mt20}
                         value={state.name}
                         onChangeText={(value) => onInputChange('name', value)}
