@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { Button } from 'native-base';
+import { Button } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 
@@ -14,8 +13,8 @@ export default function MMSubmitButton(props) {
         label, optionalStyle, textColor, optionalTextStyle,
     } = props;
     return (
-        <Button block style={optionalStyle ? [MMStyles.buttonPrimary, optionalStyle] : MMStyles.buttonPrimary} {...props}>
-            <Text uppercase style={[MMStyles.buttonPrimaryText, MMStyles.h6, textColor || null, optionalTextStyle]}>{label}</Text>
+        <Button style={optionalStyle ? [MMStyles.buttonPrimary, optionalStyle] : MMStyles.buttonPrimary} {...props}>
+            {label}
         </Button>
     );
 }
@@ -40,10 +39,7 @@ function MMRoundButton(props) {
     };
     return (
         <Button style={optionalStyle ? [getStyle(), optionalStyle] : getStyle()} size="xs" {...props}>
-            <View style={{ alignItems: 'center' }}>
-                {/* <MMIcon style={{ paddingHorizontal: 5 }} iconName={iconName} iconSize={16} iconColor={iconColor || MMColors.white} /> */}
-                <Text style={[MMStyles.buttonText, MMStyles.mr20, MMStyles.h6, optionalTextStyle]}>{label}</Text>
-            </View>
+            {label}
         </Button>
     );
 }
@@ -70,7 +66,7 @@ function MMTransparentButton(props) {
     };
     return (
         <Button variant="none" transparent {...props}>
-            <Text uppercase={false} style={getStyle()}>{label}</Text>
+            {label}
         </Button>
     );
 }

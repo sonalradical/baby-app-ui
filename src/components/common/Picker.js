@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Select, Text } from 'native-base';
+import DropDown from 'react-native-paper-dropdown';
 
 import * as _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import MMIcon from './Icon';
 import MMUtils from '../../helpers/Utils';
 import MMFormErrorText from './FormErrorText';
 import MMConstants from '../../helpers/Constants';
+import { Text } from 'react-native-paper';
 
 const defaultEnabled = true;
 const defaultLabelValuePair = true;
@@ -62,7 +63,7 @@ export default function MMPicker(props) {
             {
                 label ? <Text style={[MMStyles.formItemLabel, MMStyles.h6, optionalStyleText]}>{label}</Text> : null
             }
-            <Select
+            {/* <Select
                 note
                 mode="dropdown"
                 fontFamily={MMConstants.fonts.regular}
@@ -86,6 +87,16 @@ export default function MMPicker(props) {
                     })
                 }
             </Select>
+            <DropDown
+                label={'Gender'}
+                mode={'outlined'}
+                visible={showDropDown}
+                showDropDown={() => setShowDropDown(true)}
+                onDismiss={() => setShowDropDown(false)}
+                value={gender}
+                setValue={setGender}
+                list={genderList}
+            /> */}
             <MMFormErrorText errorText={errorMessage} />
         </View>
     );

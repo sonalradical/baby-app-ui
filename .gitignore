@@ -8,7 +8,6 @@
 *.txt
 *.so
 *.ttf
-*.json
 *.flat
 *.class
 *.bin
@@ -42,3 +41,8 @@ android/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/*
 *.keystore
 *.apk
 node_modules
+android/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/*
+android/app/build/intermediates/*
+android/app/build/outputs/apk/debug/output-metadata.json
+ios/baby_demo/Images.xcassets/*
+ios/build/generated/ios/React-Codegen.podspec.json

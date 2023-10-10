@@ -9,7 +9,7 @@ import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import { Button } from 'native-base';
+import { Button } from 'react-native-paper';
 
 export default function Login({ navigation }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function Login({ navigation }) {
         });
     };
     const onSubmit = () => {
-        navigation.navigate('Otp');
+        navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
     }
 
     const renderView = () => {
@@ -84,11 +84,11 @@ export default function Login({ navigation }) {
                         <View style={styles.separator} />
                     </View>
                     <MMRoundButton
-                        optionalTextStyle={[MMStyles.h5]}
                         label="Login With OTP"
-                        onPress={() => onSubmit()}
+                        mode='text'
+                        onPress={() => { onSubmit() }}
                         optionalStyle={[MMStyles.mt15]}
-                    />
+                    ></MMRoundButton>
                 </View>
                 <View style={[MMStyles.mt30, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.subTitle, MMStyles.h5]}>By continuing you agree to our Terms</Text>

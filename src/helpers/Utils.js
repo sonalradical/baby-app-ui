@@ -1,10 +1,12 @@
 import { BackHandler, Platform } from 'react-native';
-import { Toast } from 'native-base';
+
+import Toast from 'react-native-root-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as _ from 'lodash';
 import moment from 'moment';
 
 import MMConstants from './Constants';
+import MMEnums from './Enums';
 
 // ------------------------------------------------------------------- Device Functions
 // #region
@@ -75,33 +77,37 @@ function handleBackButton() {
 // #endregion
 
 // ------------------------------------------------------------------- For showToast Functions
-function showToastSuccess(msg) {
-    Toast.show({
-        status: 'success',
-        title: msg,
-        duration: MMConstants.toastDuration,
-        isClosable: true
-    });
-}
-function showToastError(error) {
-    Toast.show({
-        title: error,
-        status: 'error',
-        duration: MMConstants.toastDuration,
-        isClosable: true
-    });
-}
-function showToastInfo(title, body) {
-    Toast.show({
-        status: 'info',
-        title: title,
-        isClosable: true,
-        variant: "subtle",
-        description: body,
-        placement: "top"
+function showToastMessage(message, delay = 0, type = MMEnums.toastType.default) {
+    // todo: need to pull it from theme.palette
+    let bgColor = '';
+    switch (type) {
+        case MMEnums.toastType.error:
+            bgColor = '#c62828';
+            break;
+        case MMEnums.toastType.info:
+            bgColor = '#01579b';
+            break;
+        case MMEnums.toastType.success:
+            bgColor = '#1b5e20';
+            break;
+        case MMEnums.toastType.warning:
+            bgColor = '#e65100';
+            break;
+        case MMEnums.toastType.default:
+        default:
+            bgColor = '#0d0d0d';
+            break;
+    }
 
-    });
-}
+    Toast.show(message,
+        {
+            duration: MMConstants.toastDuration,
+            delay: delay,
+            containerStyle: { width: '90%', backgroundColor: bgColor },
+            textStyle: { padding: 4, textAlign: 'left' }
+        });
+    return true;
+};
 
 // #endregion
 
@@ -162,9 +168,7 @@ export default {
     getNewDate,
     extractTimeSpan,
     displayConsoleLog,
-    showToastSuccess,
-    showToastError,
-    showToastInfo,
+    showToastMessage,
     validateEmail,
     formatString,
     getItemFromStorage,

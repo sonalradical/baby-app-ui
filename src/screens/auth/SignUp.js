@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Button, Checkbox } from 'native-base';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -17,6 +16,7 @@ import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
 import MMProfileAvatar from '../../components/common/ImagePicker';
 import MMPicker from '../../components/common/Picker';
+import { Button, Checkbox } from 'react-native-paper';
 
 export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -84,7 +84,7 @@ export default function SignUp({ navigation, route }) {
                 const userSignup = await MMApiService.userSignup(apiData);
                 if (userSignup) {
                     setIsOverlayLoading(false);
-                    MMUtils.showToastSuccess('OTP Sent successfully.');
+                    MMUtils.showToastMessage('OTP Sent successfully.');
                     navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                 }
                 setIsOverlayLoading(false);
@@ -171,13 +171,10 @@ export default function SignUp({ navigation, route }) {
                         <Checkbox
                             colorScheme="orange"
                             size="sm"
-                            my={2}
-                            mx={4}
                             isChecked={checked}
-                            style={{ borderColor: MMColors.orange }}
-                        >
-                            <Text style={[MMStyles.h6, MMStyles.ml10]}>I accept <Text style={{ color: MMColors.orange }}>Terms of Use </Text>and <Text style={{ color: MMColors.orange }}>Privacy Policy</Text>.</Text>
-                        </Checkbox>
+                            style={{ borderColor: MMColors.orange }} />
+                        <Text style={[MMStyles.h6, MMStyles.ml10]}>I accept <Text style={{ color: MMColors.orange }}>Terms of Use </Text>and <Text style={{ color: MMColors.orange }}>Privacy Policy</Text>.</Text>
+
                     </View>
                     <MMRoundButton
                         optionalTextStyle={[MMStyles.h5]}

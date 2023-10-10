@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Input } from 'native-base';
+import { TextInput } from 'react-native-paper';
 
 import * as _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -30,14 +30,14 @@ function MMInput(props) {
                 label ? <Text style={[MMStyles.formItemLabel]}>{label}</Text> : null
             }
             <View style={[MMStyles.formItemInput, optionalStyle]}>
-                <Input
-                    isDisabled={isDisabled}
-                    variant={'rounded'}
-                    style={[MMStyles.formInput, inputOptionalStyle]}
-                    InputLeftElement={leftIcon(iconName, iconColor, optionalIconSize)}
-                    autoCapitalize="none"
+                <TextInput
+                    mode='outlined'
+                    label=''
+                    left={leftIcon(iconName, iconColor, optionalIconSize)}
                     keyboardType="default"
-                    fontFamily={MMConstants.fonts.regular}
+                    style={[MMStyles.formInput, inputOptionalStyle]}
+                    autoCapitalize='none'
+                    textBreakStrategy='simple'
                     {...props}
                 />
             </View>

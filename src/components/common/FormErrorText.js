@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text } from 'native-base';
+import { Text } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 
 import MMStyles from '../../helpers/Styles';
+
 
 export default function MMFormErrorText(props) {
     const { errorText } = props;

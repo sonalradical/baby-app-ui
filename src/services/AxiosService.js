@@ -33,10 +33,10 @@ axios.interceptors.response.use(async (response) => {
         case MMEnums.responseStatusCodes.Success:
             return _.isNil(response.data.data) ? true : response.data.data;
         case MMEnums.responseStatusCodes.NotFound:
-            MMUtils.showToastError(error.message);
+            MMUtils.showToastMessage(error.message);
             break;
         default:
-            MMUtils.showToastError(friendlyMassage);
+            MMUtils.showToastMessage(friendlyMassage);
             return null;
     }
 
@@ -44,10 +44,10 @@ axios.interceptors.response.use(async (response) => {
     console.log('API Response Errors: ', error);
     if (error.message === 'Network Error') {
         // Handle network errors separately
-        MMUtils.showToastError('Network Error: Please check your internet connection.');
+        MMUtils.showToastMessage('Network Error: Please check your internet connection.');
     }
     else {
-        MMUtils.showToastError(error.message);
+        MMUtils.showToastMessage(error.message);
     }
     return null;
 });

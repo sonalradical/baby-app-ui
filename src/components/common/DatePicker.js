@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
-import { Label, Icon, Text } from 'native-base';
+import { Text } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -10,17 +10,18 @@ import MMUtils from '../../helpers/Utils';
 import MMColors from '../../helpers/Colors';
 import MMFormErrorText from './FormErrorText';
 
+
 export default function MMDatePicker(props) {
     const { label, errorMessage, setShowDate, placeholder, visible, testID, value, minimumDate, maximumDate, onChange } = props;
     return (
         <View style={MMStyles.formItemView}>
             {
-                label ? <Label style={MMStyles.formItemLabel}>{label}</Label> : null
+                label ? <Text style={MMStyles.formItemLabel}>{label}</Text> : null
             }
             <View style={MMStyles.formItemView}>
                 <Pressable style={errorMessage ? [styles.dateView, styles.dateViewError] : styles.dateView} onPress={() => setShowDate(true)}>
                     <Text style={errorMessage ? styles.dateTextError : styles.dateText}>{placeholder}</Text>
-                    <Icon name='calendar' style={errorMessage ? [styles.calendarIcon, styles.calendarIconError] : styles.calendarIcon} />
+                    {/* <Icon name='calendar' style={errorMessage ? [styles.calendarIcon, styles.calendarIconError] : styles.calendarIcon} /> */}
                 </Pressable>
                 <MMFormErrorText errorText={errorMessage} />
                 {

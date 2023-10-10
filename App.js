@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { NativeBaseProvider } from 'native-base';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import SplashScreen from 'react-native-splash-screen';
 import MMColors from './src/helpers/Colors';
 import AppNavigator from './src/navigation/AppNavigator';
 import AxiosService from './src/services/AxiosService';
+
 
 export default function App() {
 
@@ -17,12 +18,12 @@ export default function App() {
 
   return (
     <>
-      <NativeBaseProvider>
+      <RootSiblingParent>
         <SafeAreaView style={[styles.safeArea, { backgroundColor: MMColors.orange }]}>
           <StatusBar backgroundColor={MMColors.orange} />
           <AppNavigator />
         </SafeAreaView>
-      </NativeBaseProvider>
+      </RootSiblingParent>
     </>
   );
 }
