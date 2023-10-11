@@ -31,7 +31,7 @@ axios.interceptors.response.use(async (response) => {
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
-            return _.isNil(response.data.data) ? true : response.data.data;
+            return _.isNil(response.data) ? true : response.data;
         case MMEnums.responseStatusCodes.NotFound:
             MMUtils.showToastMessage(error.message);
             break;

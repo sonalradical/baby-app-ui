@@ -4,9 +4,13 @@ import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import OTPTextView from 'react-native-otp-textinput';
+import { extend, validateAll } from 'indicative/validator';
 
 import MMColors from '../../helpers/Colors';
 import MMStyles from '../../helpers/Styles';
+import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
+import MMApiService from '../../services/ApiService';
 import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -45,13 +49,94 @@ export default function OTPView({ navigation, route }) {
         });
 
         if (otpValue.length === 6) {
-            onSignInPress(otpValue);
+            onVerify(otpValue);
         }
     };
 
+    extend('validOTP', {
+        validate() {
+            if (_.size(state.otp) !== 6) {
+                return false;
+            }
+            return true;
+        },
+    });
 
-    const onSignInPress = () => {
 
+    const onResendOTP = async () => {
+        setIsOverlayLoading(true);
+        setIsResendVisible(false);
+        const apiData = {
+            mobileNumber: mobileNumber
+        };
+        const resendOTP = await MMApiService.resendOTP(apiData);
+        if (resendOTP) {
+            setIsOverlayLoading(false);
+            setTimeout(() => {
+                setIsResendVisible(true);
+            }, 10000);
+            MMUtils.showToastMessage("OTP send successfully.")
+        }
+    }
+
+
+    const onVerify = (otpValue = null) => {
+        if (isOverlayLoading) {
+            return;
+        }
+
+        const messages = {
+            'otp.required': 'Please enter OTP.',
+            'otp.validOTP': 'Please enter 6 digit OTP.',
+        };
+
+        const rules = {
+            otp: 'validOTP|required',
+        };
+
+        if (!_.isNull(otpValue)) {
+            state.otp = otpValue;
+        }
+
+        validateAll(state, rules, messages)
+            .then(async () => {
+                setIsOverlayLoading(true);
+                const apiData = {
+                    mobileNumber: mobileNumber,
+                    otp: state.otp
+                };
+                const { data } = await MMApiService.verifyOTP(apiData);
+                if (data) {
+                    setIsOverlayLoading(false);
+                    const userDetail = {
+                        accessToken: data.accessToken,
+                        userDetail: {
+                            mobileNumber: data.mobileNumber,
+                            name: data.name,
+                            email: data.email,
+                            password: data.password,
+                            gender: data.gender
+                        },
+                    };
+                    await MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetail.accessToken);
+                    await MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetail.userDetail));
+                }
+                else {
+                    setIsOverlayLoading(false);
+                }
+            })
+            .catch((errors) => {
+                // Handle validation errors
+                const formattedErrors = {};
+                errors.forEach((error) => {
+                    formattedErrors[error.field] = [error.message];
+                });
+                setState({
+                    ...state,
+                    errors: formattedErrors,
+                });
+                setIsOverlayLoading(false);
+            });
     }
 
     const renderView = () => {
@@ -90,7 +175,7 @@ export default function OTPView({ navigation, route }) {
                             ? (
                                 <View style={[MMStyles.mt20, MMStyles.mb10]}>
                                     <Text style={[MMStyles.titleText, MMStyles.h5, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
-                                    <MMTransparentButton label="Resend OTP" textColor={MMColors.orange} />
+                                    <MMTransparentButton label="Resend OTP" textColor={MMColors.orange} onPress={() => onResendOTP()} />
                                 </View>
                             )
                             : null
@@ -99,7 +184,7 @@ export default function OTPView({ navigation, route }) {
                     <MMRoundButton
                         optionalTextStyle={[MMStyles.h5]}
                         label="Verify"
-                        onPress={() => onSignInPress()}
+                        onPress={() => onVerify()}
                         optionalStyle={[MMStyles.mt20]}
                     />
                 </View>

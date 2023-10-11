@@ -22,7 +22,7 @@ export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
     const initState = {
-        mobileNumber: '+91 9913243591',
+        mobileNumber: '+91 8160421801',
         name: 'Nupur',
         email: 'nupur@radicalrack.com',
         password: 'Rack@123',
@@ -83,7 +83,6 @@ export default function SignUp({ navigation, route }) {
                 };
                 const userSignup = await MMApiService.userSignup(apiData);
                 if (userSignup) {
-                    setIsOverlayLoading(false);
                     MMUtils.showToastMessage('OTP Sent successfully.');
                     navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                 }

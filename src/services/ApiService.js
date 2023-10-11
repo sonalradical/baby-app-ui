@@ -24,6 +24,16 @@ async function verifyOTP(data) {
     return result;
 }
 
+async function resendOTP(data) {
+    const config = {
+        url: `auth/resendOTP`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#endregion
 
 //------------------------------------------------------------------- Export All APIs
@@ -31,5 +41,6 @@ async function verifyOTP(data) {
 export default {
     userSignup,
     verifyOTP,
+    resendOTP,
 };
 //#endregion
