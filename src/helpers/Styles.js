@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MMColors from './Colors';
 import MMConstants from './Constants';
 

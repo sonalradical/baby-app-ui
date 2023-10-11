@@ -1,12 +1,11 @@
 import axios from 'axios';
 import * as _ from 'lodash';
 
-import MMConfig from '../helpers/Config';
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
 
 // Defaults
-axios.defaults.baseURL = MMConfig().baseApiUrl;
+axios.defaults.baseURL = 'http://192.168.1.117:4000/';
 
 
 // Request interceptor
@@ -31,6 +30,7 @@ axios.interceptors.response.use(async (response) => {
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
+            MMUtils.showToastMessage(friendlyMassage);
             return _.isNil(response.data) ? true : response.data;
         case MMEnums.responseStatusCodes.NotFound:
             MMUtils.showToastMessage(error.message);

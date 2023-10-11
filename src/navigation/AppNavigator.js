@@ -7,8 +7,8 @@ import { navigationRef } from '../services/NavigationServices';
 
 // auth screens
 import Login from '../screens/auth/Login';
-import OTPView from '../screens/auth/OTPView';
-import SignUp from '../screens/auth/SignUp';
+//import OTPView from '../screens/auth/OTPView';
+//import SignUp from '../screens/auth/SignUp';
 
 
 // Auth Stack Screens
@@ -23,8 +23,8 @@ function AuthStackNavigator() {
                 }}
             >
                 <AuthStack.Screen name="Login" component={Login} />
-                <AuthStack.Screen name="SignUp" component={SignUp} />
-                <AuthStack.Screen name="Otp" component={OTPView} />
+                {/* <AuthStack.Screen name="SignUp" component={SignUp} />
+                <AuthStack.Screen name="Otp" component={OTPView} /> */}
             </AuthStack.Navigator>
         </NavigationContainer>
     );

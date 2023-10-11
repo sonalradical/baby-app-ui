@@ -4,6 +4,7 @@ import Toast from 'react-native-root-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as _ from 'lodash';
 import moment from 'moment';
+//import base64 from 'react-native-base64';
 
 import MMConstants from './Constants';
 import MMEnums from './Enums';
@@ -109,6 +110,20 @@ function showToastMessage(message, delay = 0, type = MMEnums.toastType.default) 
     return true;
 };
 
+// function encode(value = null) {
+//     if (_.isNil(value)) {
+//         return base64.encode('null');
+//     }
+//     value = _.toString(value);
+//     return base64.encode(value);
+// }
+
+// function decode(value = null) {
+//     if (_.isNil(value)) {
+//         return base64.decode('null');
+//     }
+//     return base64.decode(value);
+// }
 // #endregion
 
 // ------------------------------------------------------------------- For validateEmail Functions
@@ -169,6 +184,8 @@ export default {
     extractTimeSpan,
     displayConsoleLog,
     showToastMessage,
+    //encode,
+    //decode,
     validateEmail,
     formatString,
     getItemFromStorage,

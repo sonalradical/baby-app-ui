@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { Image, View, Text, Dimensions, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 
+import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import MMStyles from '../../helpers/Styles';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import { Button } from 'react-native-paper';
 
 export default function Login({ navigation }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -31,7 +34,42 @@ export default function Login({ navigation }) {
             },
         });
     };
-    const onSubmit = () => {
+
+    const onLoginWithPassword = () => {
+        const messages = {
+            'mobileNumber.required': 'Please enter mobile no.',
+            'mobileNumber.min': 'Mobile number must be 14 digits.',
+            'password.required': 'Please enter Password'
+        };
+
+        const rules = {
+            mobileNumber: 'required|string|min:14',
+            password: 'required|string'
+        };
+
+        validateAll(state, rules, messages)
+            .then(async () => {
+                setIsOverlayLoading(true);
+                let authTokan = `${state.mobileNumber}:${state.password}`;
+                authTokan = MMUtils.encode(authTokan);
+                console.log(authTokan, 'authTokan')
+                const loginResponse = await MMApiService.userLoginWithPassword(authTokan);
+                console.log(loginResponse, 'loginResponse')
+                if (loginResponse) {
+                    MMUtils.showToastMessage('login ...')
+                }
+                setIsOverlayLoading(false);
+            })
+            .catch(errors => {
+                const formattedErrors = {};
+                errors.forEach(error => formattedErrors[error.field] = error.message);
+                setState({
+                    ...state,
+                    errors: formattedErrors
+                });
+            });
+    };
+    const onLoginWithOTP = () => {
         navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
     }
 
@@ -39,12 +77,12 @@ export default function Login({ navigation }) {
         return (
             <View style={MMStyles.containerPadding}>
                 <View>
-                    <Image
+                    {/* <Image
                         textAlign="center"
                         resizeMode="contain"
                         style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 4 }]}
                         source={require('../../assets/images/loginImage.png')}
-                    />
+                    /> */}
                 </View>
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>
@@ -75,7 +113,7 @@ export default function Login({ navigation }) {
                     <MMRoundButton
                         optionalTextStyle={[MMStyles.h5]}
                         label="Login"
-                        //onPress={() => onSubmit()}
+                        onPress={() => onLoginWithPassword()}
                         optionalStyle={[MMStyles.mt20]}
                     />
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -86,7 +124,7 @@ export default function Login({ navigation }) {
                     <MMRoundButton
                         label="Login With OTP"
                         mode='text'
-                        onPress={() => { onSubmit() }}
+                        onPress={() => { onLoginWithOTP() }}
                         optionalStyle={[MMStyles.mt15]}
                     ></MMRoundButton>
                 </View>
