@@ -1,23 +1,28 @@
+# OS-generated files
+.DS_Store
+Thumbs.db
 
-*.lock
-*.properties
-*.jar
-*.xcworkspacedata
-*.xml
-*.png
-*.txt
-*.so
-*.flat
-*.class
-*.bin
-*.tsx
-android/.DS_Store
-android/.gradle/.DS_Store
-*.java
-*.uniqueId1
-*.dex
-*.uniqueId2
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/*
+# Node.js and npm
+node_modules/
+npm-debug.log
+
+# Logs
+logs/
+*.log
+
+# Build files
+build/
+
+# Dependency directories
+ios/Pods/
+android/.gradle/
+android/app/build/
+
+# Environment variables
+.env
+
+# Misc
+.idea/
 *.iml
 *.uniqueId0
 android/app/build/intermediates/dex_archive_input_jar_hashes/debug/out
@@ -46,3 +51,9 @@ android/app/build/outputs/apk/debug/output-metadata.json
 ios/baby_demo/Images.xcassets/*
 ios/build/generated/ios/React-Codegen.podspec.json
 ios/Pods/*
+
+
+
+
+
+
