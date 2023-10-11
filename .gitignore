@@ -1,47 +1,33 @@
+# OS-generated files
+.DS_Store
+Thumbs.db
 
-*.lock
-*.properties
-*.jar
-*.xcworkspacedata
-*.xml
-*.png
-*.txt
-*.so
-*.flat
-*.class
-*.bin
-*.tsx
-android/.DS_Store
-android/.gradle/.DS_Store
-*.java
-*.uniqueId1
-*.dex
-*.uniqueId2
-android/app/build/intermediates/incremental/debug-mergeJavaRes/zip-cache/*
+# Node.js and npm
+node_modules/
+npm-debug.log
+
+# Logs
+logs/
+*.log
+
+# Build files
+build/
+
+# Dependency directories
+ios/Pods/
+android/.gradle/
+android/app/build/
+
+# Environment variables
+.env
+
+# Misc
+.idea/
 *.iml
-*.uniqueId0
-android/app/build/intermediates/dex_archive_input_jar_hashes/debug/out
-*.bundle
-*.probe
-*.idea
-*.DS_Store
-android/app/build/intermediates/incremental/debug-mergeJavaRes/merge-state
-android/app/build/intermediates/dex_number_of_buckets_file/debug/out
-*.ap_
-android/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/*
-*.xcscheme
-*.xcuserstate
-*.env
-*.pro
-*.h
-*.mm
-*.cpp
-*.m
-*.keystore
-*.apk
-node_modules
-android/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/*
-android/app/build/intermediates/*
-android/app/build/outputs/apk/debug/output-metadata.json
-ios/baby_demo/Images.xcassets/*
-ios/build/generated/ios/React-Codegen.podspec.json
+This example is more concise and still ensures that important files like JavaScript code, configuration files, and essential platform-specific code (under "android" and "ios" directories) are included in version control.
+
+
+
+
+
+
