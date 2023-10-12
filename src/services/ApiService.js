@@ -43,6 +43,16 @@ async function userLoginWithPassword(authTokan) {
     return result;
 }
 
+async function userLoginWithOTP(data) {
+    const config = {
+        url: `/auth/generateOTP`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#endregion
 
 //------------------------------------------------------------------- Export All APIs
@@ -51,6 +61,7 @@ export default {
     userSignup,
     verifyOTP,
     resendOTP,
-    userLoginWithPassword
+    userLoginWithPassword,
+    userLoginWithOTP
 };
 //#endregion

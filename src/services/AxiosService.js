@@ -46,6 +46,10 @@ axios.interceptors.response.use(async (response) => {
         // Handle network errors separately
         MMUtils.showToastMessage('Network Error: Please check your internet connection.');
     }
+    else if (error.response.status === MMEnums.responseStatusCodes.NotFound) {
+        const errorMessage = error.response.data.message;
+        MMUtils.showToastMessage(errorMessage);
+    }
     else {
         MMUtils.showToastMessage(error.message);
     }

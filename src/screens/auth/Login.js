@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Dimensions, StyleSheet } from 'react-native';
+import { Image, View, Text, Dimensions, StyleSheet, Keyboard } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { validateAll } from 'indicative/validator';
@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
@@ -18,7 +19,7 @@ export default function Login({ navigation }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
     const initState = {
-        mobileNumber: '',
+        mobileNumber: '+91',
         password: '',
         errors: {},
     };
@@ -35,54 +36,114 @@ export default function Login({ navigation }) {
         });
     };
 
-    const onLoginWithPassword = () => {
+    const onLogin = (loginType) => {
+        Keyboard.dismiss();
+
         const messages = {
             'mobileNumber.required': 'Please enter mobile no.',
-            'mobileNumber.min': 'Mobile number must be 14 digits.',
-            'password.required': 'Please enter Password'
+            'mobileNumber.min': 'Mobile number must be 13 digits.',
+            'password.required': 'Please enter password.',
+            'password.min': 'Password should have a minimum of 8 characters.',
         };
 
-        const rules = {
-            mobileNumber: 'required|string|min:14',
-            password: 'required|string'
+        const rules = loginType === 'password' ? {
+            mobileNumber: 'required|string|min:13',
+            password: 'required|string|min:8|max:8',
+        } : {
+            mobileNumber: 'required|string|min:13'
         };
 
         validateAll(state, rules, messages)
-            .then(async () => {
+            .then(() => {
                 setIsOverlayLoading(true);
-                let authTokan = `${state.mobileNumber}:${state.password}`;
-                authTokan = MMUtils.encode(authTokan);
-                console.log(authTokan, 'authTokan')
-                const loginResponse = await MMApiService.userLoginWithPassword(authTokan);
-                console.log(loginResponse, 'loginResponse')
-                if (loginResponse) {
-                    MMUtils.showToastMessage('login ...')
+                if (loginType === 'password') {
+                    onLoginWithPassword();
+                } else {
+                    onLoginWithOTP();
                 }
-                setIsOverlayLoading(false);
             })
             .catch(errors => {
-                const formattedErrors = {};
-                errors.forEach(error => formattedErrors[error.field] = error.message);
+                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
-                    errors: formattedErrors
+                    errors: MMUtils.clientErrorMessages(errors)
                 });
             });
     };
-    const onLoginWithOTP = () => {
-        navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
+
+    async function onLoginWithPassword() {
+        try {
+            const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
+
+            await MMApiService.userLoginWithPassword(authTokan)
+                .then(function (response) {
+
+                    const responseData = response.data;
+                    if (responseData) {
+                        const { accessToken, mobileNumber, name, email, password, gender } = responseData;
+                        const userDetail = {
+                            accessToken,
+                            userDetail: {
+                                mobileNumber,
+                                name,
+                                email,
+                                password,
+                                gender
+                            },
+                        };
+
+                        MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetail.accessToken);
+                        MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetail.userDetail));
+                    }
+                    setIsOverlayLoading(false);
+                })
+                .catch(function (error) {
+                    setIsOverlayLoading(false);
+                    setState({
+                        ...state,
+                        errors: MMUtils.apiErrorParamMessages(error)
+                    });
+                });
+        } catch (err) {
+            MMUtils.consoleError(err);
+        }
+    }
+
+    async function onLoginWithOTP() {
+        try {
+            const apiData = {
+                mobileNumber: state.mobileNumber
+            };
+
+            await MMApiService.userLoginWithOTP(apiData)
+                .then(function (response) {
+                    if (response) {
+                        navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
+                    }
+                    setIsOverlayLoading(false);
+                })
+                .catch(function (error) {
+                    setIsOverlayLoading(false);
+                    setState({
+                        ...state,
+                        errors: MMUtils.apiErrorParamMessages(error)
+                    });
+                });
+        } catch (err) {
+            MMUtils.consoleError(err);
+        }
     }
 
     const renderView = () => {
         return (
             <View style={MMStyles.containerPadding}>
                 <View>
-                    {/* <Image
+                    <Image
                         textAlign="center"
                         resizeMode="contain"
                         style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 4 }]}
                         source={require('../../assets/images/loginImage.png')}
-                    /> */}
+                    />
                 </View>
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>
@@ -96,6 +157,7 @@ export default function Login({ navigation }) {
                         value={state.mobileNumber}
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Enter Mobile Number"
+                        errorMessage={state.errors.mobileNumber}
                         name="mobileNumber"
                         iconName="cellphone"
                         keyboardType="phone-pad"
@@ -106,6 +168,7 @@ export default function Login({ navigation }) {
                         value={state.password}
                         onChangeText={(value) => { onInputChange('password', value); }}
                         placeholder="Enter Password"
+                        errorMessage={state.errors.password}
                         iconName="lock"
                         name="password"
                     />
@@ -113,7 +176,7 @@ export default function Login({ navigation }) {
                     <MMRoundButton
                         optionalTextStyle={[MMStyles.h5]}
                         label="Login"
-                        onPress={() => onLoginWithPassword()}
+                        onPress={() => onLogin('password')}
                         optionalStyle={[MMStyles.mt20]}
                     />
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -124,7 +187,7 @@ export default function Login({ navigation }) {
                     <MMRoundButton
                         label="Login With OTP"
                         mode='text'
-                        onPress={() => { onLoginWithOTP() }}
+                        onPress={() => { onLogin('otp') }}
                         optionalStyle={[MMStyles.mt15]}
                     ></MMRoundButton>
                 </View>
@@ -138,19 +201,17 @@ export default function Login({ navigation }) {
                         </Button>
                     </View>
                 </View>
-            </View >
+            </View>
         );
     };
 
     return (
-        <>
-            <View style={MMStyles.container}>
-                <MMScrollView>
-                    {renderView()}
-                    <MMOverlaySpinner visible={isOverlayLoading} />
-                </MMScrollView>
-            </View>
-        </>
+        <View style={MMStyles.container}>
+            <MMScrollView>
+                {renderView()}
+            </MMScrollView>
+            <MMOverlaySpinner visible={isOverlayLoading} />
+        </View>
     );
 }
 

@@ -4,7 +4,7 @@ import Toast from 'react-native-root-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as _ from 'lodash';
 import moment from 'moment';
-//import base64 from 'react-native-base64';
+import base64 from 'react-native-base64';
 
 import MMConstants from './Constants';
 import MMEnums from './Enums';
@@ -110,23 +110,23 @@ function showToastMessage(message, delay = 0, type = MMEnums.toastType.default) 
     return true;
 };
 
-// function encode(value = null) {
-//     if (_.isNil(value)) {
-//         return base64.encode('null');
-//     }
-//     value = _.toString(value);
-//     return base64.encode(value);
-// }
+function encode(value = null) {
+    if (_.isNil(value)) {
+        return base64.encode('null');
+    }
+    value = _.toString(value);
+    return base64.encode(value);
+}
 
-// function decode(value = null) {
-//     if (_.isNil(value)) {
-//         return base64.decode('null');
-//     }
-//     return base64.decode(value);
-// }
+function decode(value = null) {
+    if (_.isNil(value)) {
+        return base64.decode('null');
+    }
+    return base64.decode(value);
+}
 // #endregion
 
-// ------------------------------------------------------------------- For validateEmail Functions
+// ------------------------------------------------------------------- For error handling Functions
 
 function validateEmail(emailAddress) {
     const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -135,6 +135,26 @@ function validateEmail(emailAddress) {
     }
     return false;
 }
+
+function apiErrorParamMessages(error) {
+    const errors = error?.response?.data?.errors;
+    if (errors) {
+        const formattedErrors = {};
+        errors.forEach(error => formattedErrors[error.param] = error.msg);
+        return formattedErrors;
+    }
+    return {};
+};
+
+function clientErrorMessages(errors) {
+    const formattedErrors = {};
+    errors.forEach(error => formattedErrors[error.field] = error.message);
+    return formattedErrors;
+};
+
+function consoleError(error) {
+    console.error(error);
+};
 
 // #endregion
 
@@ -184,8 +204,11 @@ export default {
     extractTimeSpan,
     displayConsoleLog,
     showToastMessage,
-    //encode,
-    //decode,
+    encode,
+    decode,
+    apiErrorParamMessages,
+    clientErrorMessages,
+    consoleError,
     validateEmail,
     formatString,
     getItemFromStorage,
