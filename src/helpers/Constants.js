@@ -25,6 +25,9 @@ const MMConstants = {
         userDetail: 'userDetail',
 
     },
+    format: {
+        dateTimePickerTime: 'hh:mm A',
+    },
     fonts: {
         // new fonts
         black: 'Lexend-Black',

@@ -14,9 +14,12 @@ import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
+import { setLogin } from '../../redux/Slice/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 export default function Login({ navigation }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const initState = {
         mobileNumber: '+91',
@@ -94,6 +97,7 @@ export default function Login({ navigation }) {
 
                         MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetail.accessToken);
                         MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetail.userDetail));
+                        dispatch(setLogin({ userDetail: userDetail.userDetail, accessToken: userDetail.accessToken }));
                     }
                     setIsOverlayLoading(false);
                 })

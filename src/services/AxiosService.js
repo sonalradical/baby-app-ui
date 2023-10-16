@@ -33,6 +33,7 @@ axios.interceptors.response.use(async (response) => {
             MMUtils.showToastMessage(friendlyMassage);
             return _.isNil(response.data) ? true : response.data;
         case MMEnums.responseStatusCodes.NotFound:
+            MMUtils.showToastMessage(friendlyMassage);
             MMUtils.showToastMessage(error.message);
             break;
         default:

@@ -197,7 +197,7 @@ export default function SignUp({ navigation, route }) {
                 </View>
                 <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
                     <Text style={[MMStyles.subTitle, MMStyles.h5]}>Already have an account?</Text>
-                    <Button variant="none" transparent style={[MMStyles.subTitle, MMStyles.h6, { bottom: 10 }]}
+                    <Button variant="none" transparent style={[MMStyles.subTitle, MMStyles.h6, { bottom: 7 }]}
                         onPress={() => navigation.navigate('Login')}> SIGN IN </Button>
                 </View>
             </>

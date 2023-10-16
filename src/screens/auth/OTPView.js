@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import OTPTextView from 'react-native-otp-textinput';
 import { extend, validateAll } from 'indicative/validator';
+import { useDispatch } from 'react-redux';
+
+import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMColors from '../../helpers/Colors';
 import MMStyles from '../../helpers/Styles';
@@ -16,7 +19,9 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 
+
 export default function OTPView({ navigation, route }) {
+    const dispatch = useDispatch();
     const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -139,6 +144,8 @@ export default function OTPView({ navigation, route }) {
 
                         MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetail.accessToken);
                         MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetail.userDetail));
+
+                        dispatch(setLogin({ userDetail: userDetail.userDetail, accessToken: userDetail.accessToken }));
                     }
                     setIsOverlayLoading(false);
                 })

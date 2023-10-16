@@ -124,6 +124,10 @@ function decode(value = null) {
     }
     return base64.decode(value);
 }
+
+async function logout() {
+    navigate('Logout');
+}
 // #endregion
 
 // ------------------------------------------------------------------- For error handling Functions
@@ -150,6 +154,20 @@ function clientErrorMessages(errors) {
     const formattedErrors = {};
     errors.forEach(error => formattedErrors[error.field] = error.message);
     return formattedErrors;
+};
+
+function apiErrorMessage(error) {
+    const errors = error?.response?.data?.errors;
+    if (errors) {
+        if (_.some(errors)) {
+            const error = _.head(errors);
+            if (error.param === null || error.param === 'Error') {
+                Sentry.Native.captureException(error);
+            }
+            return error.msg;
+        }
+    }
+    return '';
 };
 
 function consoleError(error) {
@@ -208,6 +226,7 @@ export default {
     decode,
     apiErrorParamMessages,
     clientErrorMessages,
+    apiErrorMessage,
     consoleError,
     validateEmail,
     formatString,
@@ -220,5 +239,6 @@ export default {
     parseDateTimeToMoment,
     handleBackButton,
     displayUtcTime,
-    displayUtcDate
+    displayUtcDate,
+    logout
 };
