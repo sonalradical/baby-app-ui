@@ -5,12 +5,11 @@ import { StyleSheet, View } from 'react-native';
 import MMStyles from '../../helpers/Styles';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
-import MMBabyProfileModal from '../../components/common/BabyProfileModal';
+import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
 
 export default function Home({ navigation, route }) {
     const { babyDetail } = route.params || '';
-    console.log(babyDetail, 'babyDetail')
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,9 +17,6 @@ export default function Home({ navigation, route }) {
         setIsModalOpen(true);
 
     };
-    const onCloseModal = () => {
-        setIsModalOpen(false);
-    }
 
     const renderView = () => {
         return (
@@ -32,7 +28,7 @@ export default function Home({ navigation, route }) {
     return (
         <>
             <MMAppbarHeader onAvatarPress={() => onAvatarPress()} babyDetail={babyDetail} />
-            <MMBabyProfileModal isModalOpen={isModalOpen} isModalClose={onCloseModal} setIsModalOpen={setIsModalOpen} selectedBaby={babyDetail} />
+            <MMBabyProfileModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} selectedBaby={babyDetail} />
             <View style={MMStyles.container}>
                 {renderView()}
                 <MMOverlaySpinner visible={isOverlayLoading} />

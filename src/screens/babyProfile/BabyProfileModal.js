@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, Modal, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import _ from 'lodash';
-import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
-import MMButton, { MMTransparentButton } from './Button';
-import { MMOverlaySpinner } from './Spinner';
-import MMIcon from './Icon';
-import { useNavigation } from '@react-navigation/native';
-import MMProfileCard from './ProfileCard';
-import { Text } from 'react-native-paper';
+import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
+import { Avatar, Card, Text } from 'react-native-paper';
 
-const MMBabyProfileModal = ({ isModalOpen, isModalClose, setIsModalOpen, selectedBaby }) => {
+import _ from 'lodash';
+
+import { useNavigation } from '@react-navigation/native';
+
+import MMUtils from '../../helpers/Utils';
+import MMStyles from '../../helpers/Styles';
+import MMColors from '../../helpers/Colors';
+import MMApiService from '../../services/ApiService';
+import { MMTransparentButton } from '../../components/common/Button';
+import { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMIcon from '../../components/common/Icon';
+
+const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 	const [babyList, setBabyList] = useState();
 	const navigation = useNavigation();
@@ -24,14 +28,14 @@ const MMBabyProfileModal = ({ isModalOpen, isModalClose, setIsModalOpen, selecte
 				const response = await MMApiService.babyList();
 				if (response.data) {
 					setBabyList(response.data);
-					setIsOverlayLoading(false);
 				}
+				setIsOverlayLoading(false);
 			} catch (error) {
+				setIsOverlayLoading(false);
 				const serverError = MMUtils.apiErrorMessage(error);
 				if (serverError) {
 					MMUtils.showToastMessage(serverError);
 				}
-				setIsOverlayLoading(false);
 			}
 		}
 		if (isModalOpen) {
@@ -76,6 +80,35 @@ const MMBabyProfileModal = ({ isModalOpen, isModalClose, setIsModalOpen, selecte
 		navigation.navigate('Home', babyDetail = { babyDetail })
 	}
 
+	const ProfileCard = ({ profileData, index }) => {
+		return (
+			<TouchableOpacity onPress={() => onSelectProfile(profileData)} key={index}>
+				<Card style={MMStyles.mb10}>
+					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<Avatar.Image
+							size={56}
+							source={require('../../assets/images/girl.jpeg')}
+						/>
+						<Card.Title title={profileData.name} subtitle={profileData.gender} style={{ width: 100 }} />
+						<MMIcon
+							iconName="edit"
+							iconColor={MMColors.orange}
+							iconSize={24}
+							onPress={() => onBabyEdit(profileData._id)}
+						/>
+						<MMIcon
+							iconName="trash-o"
+							style={MMStyles.ml5}
+							iconColor={MMColors.orange}
+							iconSize={24}
+							onPress={() => onBabyDelete(profileData._id)}
+						/>
+					</Card.Content>
+				</Card>
+			</TouchableOpacity>
+		);
+	}
+
 	return (
 		<>
 			<View style={styles.centeredView}>
@@ -87,20 +120,15 @@ const MMBabyProfileModal = ({ isModalOpen, isModalClose, setIsModalOpen, selecte
 						<View style={styles.modalView}>
 							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 								<Text style={{ alignSelf: 'center' }}>Minimemoirs</Text>
-								<TouchableOpacity onPress={isModalClose}>
+								<TouchableOpacity onPress={() => setIsModalOpen(false)}>
 									<MMIcon iconName={'close'} iconSize={25} />
 								</TouchableOpacity>
 							</View>
 							{babyList ? (
-								_.map(babyList, (item, index) => (
-									<MMProfileCard
-										key={index.toString()}
-										profileData={item}
-										onEdit={() => onBabyEdit(item._id)}
-										onDelete={() => onBabyDelete(item._id)}
-										onPress={() => onSelectProfile(item)}
-									/>
-								))
+								_.map(babyList, (item, index) => {
+									return <ProfileCard key={index.toString()} profileData={item} index={index} />
+								}
+								)
 							) : null}
 							<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 						</View>

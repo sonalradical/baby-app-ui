@@ -15,7 +15,7 @@ import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
 //import MMProfileAvatar from '../../components/common/ImagePicker';
-import { TextInput } from 'react-native-paper';
+import { SegmentedButtons, TextInput } from 'react-native-paper';
 import MMPicker from '../../components/common/Picker';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
@@ -32,7 +32,7 @@ export default function AddBaby({ route }) {
         birthDate: undefined,
         birthTime: undefined,
         birthPlace: '',
-        gender: 'female',
+        gender: '',
         showBirthDate: false,
         showBirthTime: false,
         errors: {},
@@ -41,12 +41,11 @@ export default function AddBaby({ route }) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
+
         const loadBabyProfileDetail = async () => {
             if (babyId) {
                 try {
                     setIsOverlayLoading(true);
-                    console.log('Loading baby profile Detail...');
-
                     const response = await MMApiService.getBabyById(babyId);
                     if (response.data) {
                         setState({
@@ -76,7 +75,6 @@ export default function AddBaby({ route }) {
     };
 
     const onInputChange = (field, value) => {
-        console.log(field, 'kkakak', value)
         setState({
             ...state,
             [field]: value,
@@ -167,7 +165,6 @@ export default function AddBaby({ route }) {
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
                     if (response) {
-                        console.log(response, 'response');
                         navigation.navigate('Home');
                     }
                     setIsOverlayLoading(false);
@@ -219,7 +216,7 @@ export default function AddBaby({ route }) {
                         errorMessage={state.errors.name}
                         optionalIconSize={20}
                     />
-                    <View>
+                    <View style={MMStyles.mt20}>
                         <MMInput
                             name='birthDate'
                             placeholder='Birth Date'
@@ -230,7 +227,6 @@ export default function AddBaby({ route }) {
                             left={<TextInput.Icon
                                 icon='calendar-range'
                                 forceTextInputFocus={false}
-                                style={{ paddingTop: 8 }}
                                 onPress={onPressBirthDate}
                             />}
                         />
@@ -262,7 +258,7 @@ export default function AddBaby({ route }) {
                             />
                         }
                     </View>
-                    <View>
+                    <View style={MMStyles.mt20}>
                         <MMInput
                             name='birthTime'
                             placeholder='Birth Time'
@@ -273,7 +269,6 @@ export default function AddBaby({ route }) {
                             left={<TextInput.Icon
                                 icon='clock-time-four-outline'
                                 forceTextInputFocus={false}
-                                style={{ paddingTop: 8 }}
                                 onPress={onPressBirthTime}
                             />}
                         />
@@ -311,20 +306,18 @@ export default function AddBaby({ route }) {
                         errorMessage={state.errors.birthPlace}
                         optionalIconSize={20}
                     />
-                    <MMPicker
-                        optionalStyle={MMStyles.mt20}
-                        label="Gender"
+                    <SegmentedButtons
                         value={state.gender}
-                        items={MMConstants.gender}
                         onValueChange={(value) => onInputChange('gender', value)}
-                        errorMessage={state.errors.gender}
+                        buttons={MMConstants.gender}
+                        style={MMStyles.mt20}
                     />
                     {
                         <MMRoundButton
                             optionalTextStyle={[MMStyles.h5]}
                             label="Save"
                             onPress={() => onSubmit()}
-                            optionalStyle={[MMStyles.mt10]}
+                            optionalStyle={[MMStyles.mt20]}
                         />
                     }
                 </View>

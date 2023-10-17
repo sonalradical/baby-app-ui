@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
+import { navigate } from './NavigationServices';
 
 // Defaults
 axios.defaults.baseURL = 'http://192.168.1.117:4000/';
@@ -25,16 +26,20 @@ axios.interceptors.request.use(async (config) => {
 
 // Response interceptor
 axios.interceptors.response.use(async (response) => {
-    console.log(response.data, 'response')
+    console.log(response.data, 'response axioss')
 
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
-            MMUtils.showToastMessage(friendlyMassage);
+            friendlyMassage ? MMUtils.showToastMessage(friendlyMassage) : null;
             return _.isNil(response.data) ? true : response.data;
         case MMEnums.responseStatusCodes.NotFound:
             MMUtils.showToastMessage(friendlyMassage);
             MMUtils.showToastMessage(error.message);
+            break;
+        case MMEnums.responseStatusCodes.authentication:
+            MMUtils.showToastMessage(error.message);
+            navigate('Logout');
             break;
         default:
             MMUtils.showToastMessage(friendlyMassage);
