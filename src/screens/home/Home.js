@@ -15,7 +15,6 @@ export default function Home({ navigation, route }) {
 
     const onAvatarPress = () => {
         setIsModalOpen(true);
-
     };
 
     const renderView = () => {

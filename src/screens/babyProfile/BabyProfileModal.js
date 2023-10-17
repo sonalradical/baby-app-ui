@@ -16,6 +16,7 @@ import MMIcon from '../../components/common/Icon';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
 	const navigation = useNavigation();
 
@@ -24,13 +25,22 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 			try {
 				setIsOverlayLoading(true);
 				console.log('Loading baby profile list...');
-
 				const response = await MMApiService.babyList();
 				if (response.data) {
-					setBabyList(response.data);
+					// Find the index of the selectedBaby in the profiles array
+					const babyProfiles = response.data;
+					if (selectedBaby) {
+						const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
+						if (selectedIndex !== -1) {
+							babyProfiles.splice(selectedIndex, 1);
+							babyProfiles.unshift(selectedBaby);
+						}
+					}
+					setBabyList(babyProfiles);
 				}
 				setIsOverlayLoading(false);
 			} catch (error) {
+				setBabyList();
 				setIsOverlayLoading(false);
 				const serverError = MMUtils.apiErrorMessage(error);
 				if (serverError) {
@@ -77,32 +87,43 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
+		setSelectedBabyDetail(babyDetail);
 		navigation.navigate('Home', babyDetail = { babyDetail })
 	}
 
 	const ProfileCard = ({ profileData, index }) => {
+		const isSelected = selectedBabyDetail && selectedBabyDetail._id === profileData._id;
+		console.log(isSelected, 'isSelected')
 		return (
-			<TouchableOpacity onPress={() => onSelectProfile(profileData)} key={index}>
-				<Card style={MMStyles.mb10}>
+			<TouchableOpacity
+				onPress={() => onSelectProfile(profileData)}
+				key={index}
+			>
+				<Card style={[MMStyles.mb10, {
+					shadowColor: isSelected ? 'blue' : 'transparent',
+					shadowOpacity: isSelected ? 1 : 0,
+					shadowRadius: isSelected ? 2 : 0,
+					opacity: isSelected ? 1 : 0.5
+				}]}>
 					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Avatar.Image
 							size={56}
 							source={require('../../assets/images/girl.jpeg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender} style={{ width: 100 }} />
-						<MMIcon
+						{isSelected ? <MMIcon
 							iconName="edit"
 							iconColor={MMColors.orange}
 							iconSize={24}
 							onPress={() => onBabyEdit(profileData._id)}
-						/>
-						<MMIcon
+						/> : null}
+						{isSelected ? <MMIcon
 							iconName="trash-o"
 							style={MMStyles.ml5}
 							iconColor={MMColors.orange}
 							iconSize={24}
 							onPress={() => onBabyDelete(profileData._id)}
-						/>
+						/> : null}
 					</Card.Content>
 				</Card>
 			</TouchableOpacity>
@@ -118,7 +139,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					visible={isModalOpen}>
 					<View style={styles.centeredView}>
 						<View style={styles.modalView}>
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+							<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'space-between' }]}>
 								<Text style={{ alignSelf: 'center' }}>Minimemoirs</Text>
 								<TouchableOpacity onPress={() => setIsModalOpen(false)}>
 									<MMIcon iconName={'close'} iconSize={25} />

@@ -21,6 +21,7 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
+import MMFormErrorText from '../../components/common/FormErrorText';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
@@ -312,6 +313,8 @@ export default function AddBaby({ route }) {
                         buttons={MMConstants.gender}
                         style={MMStyles.mt20}
                     />
+                    {state.errors.gender && _.size(state.errors.gender) > 0 ?
+                        <MMFormErrorText errorText={state.errors.gender} /> : null}
                     {
                         <MMRoundButton
                             optionalTextStyle={[MMStyles.h5]}
