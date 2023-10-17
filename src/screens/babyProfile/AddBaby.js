@@ -138,7 +138,7 @@ export default function AddBaby({ route }) {
             await MMApiService.addBaby(apiData)
                 .then(function (response) {
                     if (response) {
-                        navigation.navigate('Home');
+                        navigation.navigate('Home', { babyId: response.data._id });
                     }
                     setIsOverlayLoading(false);
                 })
@@ -166,7 +166,7 @@ export default function AddBaby({ route }) {
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
                     if (response) {
-                        navigation.navigate('Home');
+                        navigation.navigate('Home', { babyId: babyId });
                     }
                     setIsOverlayLoading(false);
                 })

@@ -32,11 +32,11 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					const babyProfiles = response.data;
 					if (selectedBaby) {
 						const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
-						console.log(selectedIndex, 'selectedIndex')
 						if (selectedIndex !== -1) {
 							babyProfiles.splice(selectedIndex, 1);
 							babyProfiles.unshift(selectedBaby);
 						}
+						setSelectedBabyDetail(selectedBaby);
 					}
 					setBabyList(babyProfiles);
 				}
@@ -90,7 +90,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
-		navigation.navigate('Home', babyDetail = { babyDetail })
+		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 
 	const ProfileCard = ({ profileData, index }) => {
