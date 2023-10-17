@@ -20,7 +20,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 						!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={MMColors.orange} /> : null
 					}
 				</TouchableOpacity>
-				<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} />
+				<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
 				<Appbar.Action icon="bell" onPress={() => console.log('Menu pressed')} />
 				<Appbar.Action icon="cart" onPress={() => console.log('Bell pressed')} />
 			</Appbar.Header>
