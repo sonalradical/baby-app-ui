@@ -11,11 +11,12 @@ import MMStyles from '../../helpers/Styles';
 import MMColors from '../../helpers/Colors';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
-import { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
 	const navigation = useNavigation();
@@ -23,7 +24,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	useEffect(() => {
 		async function Init() {
 			try {
-				setIsOverlayLoading(true);
+				setIsLoding(true);
 				console.log('Loading baby profile list...');
 				const response = await MMApiService.babyList();
 				if (response.data) {
@@ -31,6 +32,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					const babyProfiles = response.data;
 					if (selectedBaby) {
 						const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
+						console.log(selectedIndex, 'selectedIndex')
 						if (selectedIndex !== -1) {
 							babyProfiles.splice(selectedIndex, 1);
 							babyProfiles.unshift(selectedBaby);
@@ -38,10 +40,10 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					}
 					setBabyList(babyProfiles);
 				}
-				setIsOverlayLoading(false);
+				setIsLoding(false);
 			} catch (error) {
 				setBabyList();
-				setIsOverlayLoading(false);
+				setIsLoding(false);
 				const serverError = MMUtils.apiErrorMessage(error);
 				if (serverError) {
 					MMUtils.showToastMessage(serverError);
@@ -93,7 +95,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const ProfileCard = ({ profileData, index }) => {
 		const isSelected = selectedBabyDetail && selectedBabyDetail._id === profileData._id;
-		console.log(isSelected, 'isSelected')
 		return (
 			<TouchableOpacity
 				onPress={() => onSelectProfile(profileData)}
@@ -145,12 +146,14 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 									<MMIcon iconName={'close'} iconSize={25} />
 								</TouchableOpacity>
 							</View>
-							{babyList ? (
-								_.map(babyList, (item, index) => {
-									return <ProfileCard key={index.toString()} profileData={item} index={index} />
-								}
-								)
-							) : null}
+							{isLoading ? (
+								<View style={{ height: 40 }}>
+									<MMSpinner /></View>
+							) : (
+								babyList && babyList.map((item, index) => (
+									<ProfileCard key={index.toString()} profileData={item} index={index} />
+								))
+							)}
 							<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 						</View>
 					</View>
