@@ -21,8 +21,8 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 					}
 				</TouchableOpacity>
 				<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
-				<Appbar.Action icon="bell" onPress={() => console.log('Menu pressed')} />
-				<Appbar.Action icon="cart" onPress={() => console.log('Bell pressed')} />
+				<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
+				<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
 			</Appbar.Header>
 		</View>
 	);

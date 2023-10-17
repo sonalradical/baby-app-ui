@@ -7,6 +7,7 @@ import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
 import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
+import MMIcon from '../../components/common/Icon';
 
 
 export default function Home({ navigation, route }) {
@@ -50,6 +51,7 @@ export default function Home({ navigation, route }) {
     const renderView = () => {
         return (
             <View style={MMStyles.containerPadding}>
+                <MMIcon onPress={() => navigation.navigate('ChapterList', { babyId: babyDetail._id })} iconName='book' />
             </View>
         );
     };

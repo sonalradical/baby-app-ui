@@ -112,19 +112,22 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							source={require('../../assets/images/girl.jpeg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender} style={{ width: 100 }} />
-						{isSelected ? <MMIcon
-							iconName="edit"
-							iconColor={MMColors.orange}
-							iconSize={24}
-							onPress={() => onBabyEdit(profileData._id)}
-						/> : null}
-						{isSelected ? <MMIcon
-							iconName="trash-o"
-							style={MMStyles.ml5}
-							iconColor={MMColors.orange}
-							iconSize={24}
-							onPress={() => onBabyDelete(profileData._id)}
-						/> : null}
+						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
+							{isSelected ? <MMIcon
+								iconName="edit"
+								iconColor={MMColors.orange}
+								style={MMStyles.mr10}
+								iconSize={24}
+								onPress={() => onBabyEdit(profileData._id)}
+							/> : null}
+							{isSelected ? <MMIcon
+								iconName="trash-o"
+								style={MMStyles.ml5}
+								iconColor={MMColors.orange}
+								iconSize={24}
+								onPress={() => onBabyDelete(profileData._id)}
+							/> : null}
+						</View>
 					</Card.Content>
 				</Card>
 			</TouchableOpacity>
@@ -133,32 +136,30 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	return (
 		<>
-			<View style={styles.centeredView}>
-				<Modal
-					animationType="slide"
-					transparent={true}
-					visible={isModalOpen}>
-					<View style={styles.centeredView}>
-						<View style={styles.modalView}>
-							<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-								<Text style={{ alignSelf: 'center' }}>Minimemoirs</Text>
-								<TouchableOpacity onPress={() => setIsModalOpen(false)}>
-									<MMIcon iconName={'close'} iconSize={25} />
-								</TouchableOpacity>
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={isModalOpen}>
+				<View style={styles.centeredView}>
+					<View style={styles.modalView}>
+						<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'center' }]}>
+							<Text style={[MMStyles.cardHeaderText, { flex: 1 }]}>Minimemoirs</Text>
+							<View style={{ alignSelf: 'flex-end' }}>
+								<MMIcon iconName={'close'} iconSize={25} onPress={() => setIsModalOpen(false)} />
 							</View>
-							{isLoading ? (
-								<View style={{ height: 40 }}>
-									<MMSpinner /></View>
-							) : (
-								babyList && babyList.map((item, index) => (
-									<ProfileCard key={index.toString()} profileData={item} index={index} />
-								))
-							)}
-							<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 						</View>
+						{isLoading ? (
+							<View style={{ height: 40 }}>
+								<MMSpinner /></View>
+						) : (
+							babyList && babyList.map((item, index) => (
+								<ProfileCard key={index.toString()} profileData={item} index={index} />
+							))
+						)}
+						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
-				</Modal>
-			</View>
+				</View>
+			</Modal>
 			<MMOverlaySpinner visible={isOverlayLoading} />
 		</>
 	);
@@ -168,8 +169,7 @@ const styles = StyleSheet.create({
 	centeredView: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 22,
+		backgroundColor: 'rgba(0, 0, 0, 0.5)'
 	},
 	modalView: {
 		margin: 20,
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
 			width: 0,
 			height: 2,
 		},
-		shadowOpacity: 0.25,
+		shadowOpacity: 3,
 		shadowRadius: 4,
 		elevation: 5,
 	},
