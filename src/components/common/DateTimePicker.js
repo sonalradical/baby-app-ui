@@ -11,7 +11,6 @@ const MMDateTimePicker = ({ name, mode, onConfirm, onCancel, minimumDate, maximu
 			onCancel={onCancel}
 			minimumDate={minimumDate}
 			maximumDate={maximumDate}
-			minuteInterval={10}
 			timeZoneOffsetInMinutes={undefined}
 			{...props}
 		/>
