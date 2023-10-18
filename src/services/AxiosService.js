@@ -6,7 +6,7 @@ import MMEnums from '../helpers/Enums';
 import { navigate } from './NavigationServices';
 
 // Defaults
-axios.defaults.baseURL = 'http://192.168.1.117:4000/';
+axios.defaults.baseURL = 'http://192.168.1.108:4000/';
 
 
 // Request interceptor
@@ -55,6 +55,9 @@ axios.interceptors.response.use(async (response) => {
     else if (error.response.status === MMEnums.responseStatusCodes.NotFound) {
         const errorMessage = error.response.data.message;
         MMUtils.showToastMessage(errorMessage);
+    }
+    else if (error.response.status === MMEnums.responseStatusCodes.authentication) {
+        navigate('Logout');
     }
     else {
         MMUtils.showToastMessage(error.message);
