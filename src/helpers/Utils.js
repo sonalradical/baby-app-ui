@@ -169,9 +169,6 @@ function apiErrorMessage(error) {
     if (errors) {
         if (_.some(errors)) {
             const error = _.head(errors);
-            if (error.param === null || error.param === 'Error') {
-                Sentry.Native.captureException(error);
-            }
             return error.msg;
         }
     }
