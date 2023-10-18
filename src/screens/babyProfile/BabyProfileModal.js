@@ -13,6 +13,7 @@ import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
 import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
+import MMConstants from '../../helpers/Constants';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -73,7 +74,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 			const response = await MMApiService.deleteBaby(babyId);
 			if (response) {
 				MMUtils.showToastMessage('Baby deleted successfully.')
-
+				MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
 				navigation.navigate('Home');
 				setIsOverlayLoading(false);
 				setIsModalOpen(false);
@@ -90,6 +91,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
+		MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, babyDetail._id);
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 
@@ -106,7 +108,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					shadowRadius: isSelected ? 2 : 0,
 					opacity: isSelected ? 1 : 0.5
 				}]}>
-					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<Card.Content style={MMStyles.rowCenter}>
 						<Avatar.Image
 							size={56}
 							source={require('../../assets/images/girl.jpeg')}
@@ -141,7 +143,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				transparent={true}
 				visible={isModalOpen}>
 				<View style={styles.centeredView}>
-					<View style={styles.modalView}>
+					<View style={MMStyles.card}>
 						<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'center' }]}>
 							<Text style={[MMStyles.cardHeaderText, { flex: 1 }]}>Minimemoirs</Text>
 							<View style={{ alignSelf: 'flex-end' }}>
@@ -170,20 +172,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		backgroundColor: 'rgba(0, 0, 0, 0.5)'
-	},
-	modalView: {
-		margin: 20,
-		backgroundColor: 'white',
-		borderRadius: 20,
-		padding: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 3,
-		shadowRadius: 4,
-		elevation: 5,
 	},
 });
 

@@ -128,6 +128,14 @@ function decode(value = null) {
 async function logout() {
     navigate('Logout');
 }
+// -------------------------------------------------------------- functions
+function filterDataByQuery(data, query) {
+    return _.filter(data, function (obj) {
+        return _.some(query, function (val, key) {
+            return _.get(obj, key)?.match(new RegExp(val, 'gi'));
+        });
+    });
+}
 // #endregion
 
 // ------------------------------------------------------------------- For error handling Functions
@@ -240,5 +248,6 @@ export default {
     handleBackButton,
     displayUtcTime,
     displayUtcDate,
-    logout
+    logout,
+    filterDataByQuery
 };
