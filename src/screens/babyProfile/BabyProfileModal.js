@@ -147,7 +147,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'center' }]}>
 							<Text style={[MMStyles.cardHeaderText, { flex: 1 }]}>Minimemoirs</Text>
 							<View style={{ alignSelf: 'flex-end' }}>
-								<MMIcon iconName={'close'} iconSize={25} onPress={() => setIsModalOpen(false)} />
+								<MMIcon iconName={'close'} iconSize={24} onPress={() => setIsModalOpen(false)} />
 							</View>
 						</View>
 						{isLoading ? (

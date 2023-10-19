@@ -2,6 +2,8 @@ import { BackHandler, Platform } from 'react-native';
 
 import Toast from 'react-native-root-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 import * as _ from 'lodash';
 import moment from 'moment';
 import base64 from 'react-native-base64';
@@ -126,7 +128,8 @@ function decode(value = null) {
 }
 
 async function logout() {
-    navigate('Logout');
+    const navigation = useNavigation();
+    navigation.navigate('Logout');
 }
 // -------------------------------------------------------------- functions
 function filterDataByQuery(data, query) {

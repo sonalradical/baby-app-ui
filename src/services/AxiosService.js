@@ -1,9 +1,10 @@
 import axios from 'axios';
 import * as _ from 'lodash';
 
+import { useNavigation } from '@react-navigation/native';
+
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
-import { navigate } from './NavigationServices';
 
 // Defaults
 axios.defaults.baseURL = 'http://192.168.1.108:4000/';
@@ -38,8 +39,9 @@ axios.interceptors.response.use(async (response) => {
             MMUtils.showToastMessage(error.message);
             break;
         case MMEnums.responseStatusCodes.authentication:
+            const navigation = useNavigation();
+            navigation.navigate('Logout');
             MMUtils.showToastMessage(error.message);
-            navigate('Logout');
             break;
         default:
             MMUtils.showToastMessage(friendlyMassage);
