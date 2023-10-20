@@ -10,7 +10,7 @@ import MMColors from '../../helpers/Colors';
 
 export default function MMButton(props) {
     const {
-        label, optionalStyle, textColor, optionalTextStyle,
+        label, optionalStyle
     } = props;
     return (
         <Button style={optionalStyle ? [MMStyles.buttonPrimary, optionalStyle] : MMStyles.buttonPrimary} {...props}>
@@ -21,13 +21,11 @@ export default function MMButton(props) {
 MMButton.propTypes = {
     label: PropTypes.string.isRequired,
     optionalStyle: PropTypes.any,
-    optionalTextStyle: PropTypes.any,
-    textColor: PropTypes.any
 };
 
 function MMRoundButton(props) {
     const {
-        label, bgColor, optionalStyle, iconName, iconColor, optionalTextStyle,
+        label, bgColor, optionalStyle
     } = props;
     const backgroundColor = bgColor || MMColors.orange;
 
@@ -48,9 +46,6 @@ MMRoundButton.propTypes = {
     label: PropTypes.string.isRequired,
     bgColor: PropTypes.string,
     optionalStyle: PropTypes.any,
-    optionalTextStyle: PropTypes.any,
-    //iconName: PropTypes.string.isRequired,
-    iconColor: PropTypes.string,
 };
 
 function MMTransparentButton(props) {
@@ -76,8 +71,28 @@ MMTransparentButton.propTypes = {
     textColor: PropTypes.string,
 };
 
+function MMOutlineButton(props) {
+    const { label, onPress, color, disabled = false } = props;
+    return (
+        <Button
+            mode="outlined"
+            textColor={color}
+            onPress={onPress}
+            disabled={disabled}
+        >
+            {label}
+        </Button>
+    );
+};
+
+MMOutlineButton.propTypes = {
+    label: PropTypes.string.isRequired,
+    textColor: PropTypes.string,
+};
+
 export {
     MMButton,
     MMRoundButton,
     MMTransparentButton,
+    MMOutlineButton
 };

@@ -2,9 +2,8 @@ import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar } from 'react-native-paper';
 import MMStyles from '../../helpers/Styles';
-import MMUtils from '../../helpers/Utils';
-import MMIcon from './Icon';
 import MMColors from '../../helpers/Colors';
+import MMIcon from './Icon';
 
 const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 

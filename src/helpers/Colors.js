@@ -9,6 +9,7 @@ const MMColors = {
     white: '#FFFFFF',
     black: '#000000',
     orange: '#F68E43',
+    purple: '#CEBBFF',
 
     disabled: '#808080',
     textContent: '#707070',

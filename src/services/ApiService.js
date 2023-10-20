@@ -103,6 +103,40 @@ async function deleteBaby(babyId) {
     const result = await axios(config);
     return result;
 }
+//#end
+
+//------------------------------------------------------------------- Manage Chapter APIs
+
+async function getChapterList(babyId) {
+    const config = {
+        url: `chapter/list/${babyId}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//------------------------------------------------------------------ Quiz API
+
+async function getQuiz(babyId, chapterId) {
+    const config = {
+        url: `quiz/getQuiz/${chapterId}/${babyId}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function saveQuiz(data) {
+    const config = {
+        url: `quiz/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 
 //------------------------------------------------------------------- Export All APIs
 //#region
@@ -117,5 +151,8 @@ export default {
     updateBaby,
     addBaby,
     deleteBaby,
+    getChapterList,
+    getQuiz,
+    saveQuiz,
 };
 //#endregion

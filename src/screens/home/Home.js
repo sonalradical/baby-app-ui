@@ -48,20 +48,20 @@ export default function Home({ navigation, route }) {
         setIsModalOpen(true);
     };
 
-    // const renderView = () => {
-    //     return (
-    //         <View style={MMStyles.containerPadding}>
-    //             <MMIcon onPress={() => navigation.navigate('ChapterList', { babyId: babyDetail._id })} iconName='book' />
-    //         </View>
-    //     );
-    // };
+    const renderView = () => {
+        return (
+            <View style={MMStyles.containerPadding}>
+                <MMIcon onPress={() => navigation.navigate('Quiz', { babyId: babyDetail._id, chapterId: '6524f0716499face7b559227' })} iconName='book' />
+            </View>
+        );
+    };
 
     return (
         <>
             <MMAppbarHeader onAvatarPress={() => onAvatarPress()} babyDetail={babyDetail} />
             <MMBabyProfileModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} selectedBaby={babyDetail} />
             <View style={MMStyles.container}>
-                {/* {renderView()} */}
+                {renderView()}
             </View>
             <MMOverlaySpinner visible={isOverlayLoading} />
         </>

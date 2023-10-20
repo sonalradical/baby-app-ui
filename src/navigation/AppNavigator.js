@@ -24,6 +24,8 @@ import SignUp from '../screens/auth/SignUp';
 import Home from '../screens/home/Home';
 import AddBaby from '../screens/babyProfile/AddBaby';
 import Logout from '../screens/auth/Logout';
+import ChapterList from '../screens/chapter/ChapterList';
+import Quiz from '../screens/quiz/Quiz';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -67,6 +69,14 @@ function AppStackNavigator() {
                 <AppStack.Screen
                     name="AddBaby"
                     component={AddBaby}
+                />
+                <AppStack.Screen
+                    name="ChapterList"
+                    component={ChapterList}
+                />
+                <AppStack.Screen
+                    name="Quiz"
+                    component={Quiz}
                 />
 
             </AppStack.Navigator>
