@@ -8,6 +8,7 @@ import _ from 'lodash';
 import MMApiService from '../../services/ApiService';
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMColors from '../../helpers/Colors';
@@ -58,13 +59,10 @@ export default function Quiz({ navigation, route }) {
         const matchingAnswer = answerList.find(answer => answer.questionId === currentQuestionId);
 
         if (matchingAnswer && matchingAnswer.questionId === currentQuestionId) {
-            if (currentQuestionType === "radio") {
-                setSelectedAnswer({ option: matchingAnswer.answer });
-            } else if (currentQuestionType === "checkbox") {
-                setSelectedAnswer({ checkboxes: matchingAnswer.answer });
-            } else if (currentQuestionType === "text") {
-                setSelectedAnswer({ text: matchingAnswer.answer });
-            }
+            setSelectedAnswer(setSelectedAnswerByType(currentQuestionType, matchingAnswer.answer));
+        }
+        else {
+            setSelectedAnswer({ option: "", checkboxes: [], text: "" });
         }
     }, [currentQuestion, questionList, answerList]);
 
@@ -94,28 +92,21 @@ export default function Quiz({ navigation, route }) {
                 setAnswerList([...answerList, newAnswer]);
                 setSelectedAnswer({ option: "", checkboxes: [], text: "" });
             }
-
-            // Restore the selected answer when returning to the next question
-            const nextQuestionId = questionList[currentQuestion + 1]._id;
-            const nextQuestionAnswer = answerList.find((answer) => answer.questionId === nextQuestionId);
-            const nextQuestionType = questionList[currentQuestion + 1].questionType;
-
-            if (nextQuestionAnswer) {
-                if (nextQuestionType === "radio") {
-                    setSelectedAnswer({ option: nextQuestionAnswer.answer } || "");
-                } else if (nextQuestionType === "checkbox") {
-                    setSelectedAnswer({ checkboxes: nextQuestionAnswer.answer } || []);
-                } else if (nextQuestionType === "text") {
-                    setSelectedAnswer({ text: nextQuestionAnswer.answer } || "");
-                }
-            }
-            else {
-                // If there's no answer for the next question, set it to an empty answer
-                setSelectedAnswer({ option: "", checkboxes: [], text: "" });
-            }
-
             // Move to the next question
             setCurrentQuestion(currentQuestion + 1);
+        }
+    };
+
+    const setSelectedAnswerByType = (questionType, answer) => {
+        switch (questionType) {
+            case MMConstants.questionType.radio:
+                return { option: answer };
+            case MMConstants.questionType.checkbox:
+                return { checkboxes: answer };
+            case MMConstants.questionType.text:
+                return { text: answer };
+            default:
+                return { option: "", checkboxes: [], text: "" };
         }
     };
 
@@ -160,20 +151,6 @@ export default function Quiz({ navigation, route }) {
     const onPreviousClick = () => {
         if (currentQuestion > 0) {
             setCurrentQuestion(currentQuestion - 1);
-
-            const questionId = questionList[currentQuestion - 1]._id;
-            const previousAnswer = answerList.find((answer) => answer.questionId === questionId);
-            const previousQuestionType = questionList[currentQuestion - 1].questionType;
-
-            if (previousAnswer) {
-                if (previousQuestionType === "radio") {
-                    setSelectedAnswer({ option: previousAnswer.answer });
-                } else if (previousQuestionType === "checkbox") {
-                    setSelectedAnswer({ checkboxes: previousAnswer.answer });
-                } else if (previousQuestionType === "text") {
-                    setSelectedAnswer({ text: previousAnswer.answer });
-                }
-            }
         };
     }
 
