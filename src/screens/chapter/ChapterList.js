@@ -16,6 +16,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMSearchbar from '../../components/common/Searchbar';
 import MMIcon from '../../components/common/Icon';
+import MMNoRecordsFound from '../../components/common/NoRecordsFound';
 
 export default function ChapterList({ navigation, route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
@@ -62,6 +63,10 @@ export default function ChapterList({ navigation, route }) {
                     }
                     setIsOverlayLoading(false);
                 }
+            }
+            else {
+                console.log(state.filteredChapter, 'state.filteredChapter')
+                MMUtils.showToastMessage('No Data found')
             }
         }
         loadChapterList();
@@ -176,12 +181,12 @@ export default function ChapterList({ navigation, route }) {
 
     return (
         <>
-            {renderScreenHeader()}
+            {/* {renderScreenHeader()} */}
             <View style={MMStyles.container}>
                 <MMScrollView>
                     {renderChipScrollView()}
                     {renderSearchbar()}
-                    {renderView()}
+                    {!_.isEmpty(state.filteredChapter) ? renderView() : <MMNoRecordsFound title={'No Chapter Found'} />}
                 </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
             </View>

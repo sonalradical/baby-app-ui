@@ -27,6 +27,7 @@ import Logout from '../screens/auth/Logout';
 import ChapterList from '../screens/chapter/ChapterList';
 import Quiz from '../screens/quiz/Quiz';
 import Footer from '../screens/footer/Footer';
+import Header from '../screens/header/Header';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -56,13 +57,9 @@ function AppStackNavigator() {
             <AppStack.Navigator
                 initialRouteName="Footer"
                 screenOptions={{
-                    headerShown: false,
+                    header: (props) => <Header {...props} />
                 }}
             >
-                <AppStack.Screen
-                    name="Home"
-                    component={Home}
-                />
                 <AppStack.Screen
                     name="Logout"
                     component={Logout}
@@ -70,14 +67,17 @@ function AppStackNavigator() {
                 <AppStack.Screen
                     name="AddBaby"
                     component={AddBaby}
+                    options={{ headerShown: false }}
                 />
                 <AppStack.Screen
                     name="ChapterList"
                     component={ChapterList}
+                    options={{ headerShown: false }}
                 />
                 <AppStack.Screen
                     name="Quiz"
                     component={Quiz}
+                    options={{ headerShown: false }}
                 />
                 <AppStack.Screen
                     name="Footer"

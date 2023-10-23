@@ -48,6 +48,28 @@ export default function FooterTab({ navigation }) {
 
                         </TouchableOpacity>
                     </View>
+                    <View>
+                        <TouchableOpacity
+                            style={MMStyles.tabBarView}
+                        >
+                            <Text style={[MMStyles.buttonText, MMStyles.h8, { color: MMColors.white }]}>
+                                Order
+                            </Text>
+                            <MMIcon iconName="shopping-bag" iconSize={30} iconColor={MMColors.white} />
+
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity
+                            style={MMStyles.tabBarView}
+                        >
+                            <Text style={[MMStyles.buttonText, MMStyles.h8, { color: MMColors.white }]}>
+                                Setting
+                            </Text>
+                            <MMIcon iconName="tasks" iconSize={30} iconColor={MMColors.white} />
+
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>

@@ -140,6 +140,7 @@ export default function AddBaby({ route }) {
             await MMApiService.addBaby(apiData)
                 .then(function (response) {
                     if (response) {
+                        dispatch(setSelectedBabyId(response.data._id));
                         navigation.navigate('Home', { babyId: response.data._id });
                     }
                     setIsOverlayLoading(false);
@@ -168,6 +169,7 @@ export default function AddBaby({ route }) {
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
                     if (response) {
+                        dispatch(setSelectedBabyId(babyId));
                         navigation.navigate('Home', { babyId: babyId });
                     }
                     setIsOverlayLoading(false);
