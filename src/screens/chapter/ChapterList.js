@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, Image, ScrollView, Keyboard } from 'react-native';
+import { Appbar, Badge, Card, Chip, Text } from 'react-native-paper';
+
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
+import MMColors from '../../helpers/Colors';
+import MMConstants from '../../helpers/Constants';
+
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import { Appbar, Badge, Button, Card, Chip, Divider, IconButton, Paragraph, Text, Title } from 'react-native-paper';
-import MMColors from '../../helpers/Colors';
 import MMSearchbar from '../../components/common/Searchbar';
-import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
-import MMButton from '../../components/common/Button';
 
 export default function ChapterList({ navigation, route }) {
-    const { babyId } = route.params;
-
+    const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [babyId, setBabyId] = useState();
     const [state, setState] = useState({
         query: '',
         filteredChapter: [],
@@ -37,9 +39,11 @@ export default function ChapterList({ navigation, route }) {
 
     useEffect(() => {
         const loadChapterList = async () => {
+            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
             if (babyId) {
                 try {
                     setIsOverlayLoading(true);
+                    setBabyId(babyId);
                     const response = await MMApiService.getChapterList(babyId);
                     if (response.data) {
                         const chapters = response.data.chapterDetail;
@@ -61,7 +65,7 @@ export default function ChapterList({ navigation, route }) {
             }
         }
         loadChapterList();
-    }, [babyId]);
+    }, [selectedBabyId, MMConstants.storage.selectedBaby]);
 
 
     const onChangeSearch = (query) => {
@@ -106,23 +110,26 @@ export default function ChapterList({ navigation, route }) {
                 {_.map(state.filteredChapter, (chapter) => {
                     const localImage = imageMapping[chapter.icon];
                     return (
-                        <Card key={chapter._id} style={styles.card}>
-                            <Image
-                                textAlign="center"
-                                resizeMode="contain"
-                                style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 6, }]}
-                                source={localImage}
-                            />
-                            {
-                                chapter.totalPages > 0 ?
-                                    <Badge style={styles.addButton}>{chapter.totalPages}</Badge> :
-                                    <MMIcon iconName='plus' iconSize={20} style={styles.addButton} />
-                            }
-                            <Divider />
-                            <Card.Content>
-                                <Title>{chapter.title}</Title>
-                                <Paragraph>{chapter.description}</Paragraph>
-                                <Button mode='outlined' style={{ width: '40%' }} onPress={() => navigation.navigate('Quiz')}>Quiz</Button>
+                        <Card style={styles.whiteBg} key={chapter._id}>
+                            <Card.Content >
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image
+                                        textAlign="center"
+                                        resizeMode="contain"
+                                        source={localImage}
+                                        style={{ width: Dimensions.get('window').width / 5, height: Dimensions.get('window').height / 8 }}
+                                    />
+                                    <View style={{ flex: 1, marginLeft: 10 }}>
+                                        <Text style={[MMStyles.cardSubHeaderText, MMStyles.h5]}>{chapter.title}</Text>
+                                        <Text>{chapter.description}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-around', height: Dimensions.get('window').height / 8 }}>
+                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }}>1</Badge>
+                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }}>2</Badge>
+                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }} onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id })}>
+                                            <MMIcon iconName='question' size={24} /></Badge>
+                                    </View>
+                                </View>
                             </Card.Content>
                         </Card>
                     )
@@ -143,8 +150,7 @@ export default function ChapterList({ navigation, route }) {
     const renderScreenHeader = () => {
         return (
             <Appbar.Header>
-                <Appbar.BackAction onPress={() => { navigation.goBack() }} />
-                <Appbar.Content title='Milestones' />
+                <Appbar.Content title='Milestones' style={{ alignItems: 'center' }} />
             </Appbar.Header>
         );
     };
@@ -201,5 +207,17 @@ const styles = StyleSheet.create({
     chip: {
         borderRadius: 20,
         padding: 5,
+    },
+    whiteBg: {
+        flex: 0,
+        borderWidth: 0,
+        shadowColor: MMColors.black,
+        shadowOpacity: 0.15,
+        shadowRadius: 50,
+        marginBottom: 20,
+        elevation: 10,
+        borderRadius: 20,
+        position: 'relative',
+        backgroundColor: MMColors.white
     },
 });

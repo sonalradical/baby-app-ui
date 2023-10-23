@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Keyboard, Alert } from 'react-native';
+import { SegmentedButtons, TextInput } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
+import { useDispatch } from 'react-redux';
+import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
+
+import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
-import MMColors from '../../helpers/Colors';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -15,16 +20,13 @@ import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
 //import MMProfileAvatar from '../../components/common/ImagePicker';
-import { SegmentedButtons, TextInput } from 'react-native-paper';
-import MMPicker from '../../components/common/Picker';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
-import moment from 'moment';
-import { useNavigation } from '@react-navigation/native';
 import MMFormErrorText from '../../components/common/FormErrorText';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
+    const dispatch = useDispatch();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const navigation = useNavigation();
 
@@ -191,6 +193,7 @@ export default function AddBaby({ route }) {
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
+                dispatch(setSelectedBabyId());
                 navigation.navigate('Home');
                 setIsOverlayLoading(false);
                 setIsModalOpen(false);
