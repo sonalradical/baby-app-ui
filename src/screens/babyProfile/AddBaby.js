@@ -182,6 +182,28 @@ export default function AddBaby({ route }) {
         }
     }
 
+    async function onBabyDelete() {
+        try {
+            setIsOverlayLoading(true);
+            console.log('Loading baby profile list...');
+
+            const response = await MMApiService.deleteBaby(babyId);
+            if (response) {
+                MMUtils.showToastMessage('Baby deleted successfully.')
+                MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
+                navigation.navigate('Home');
+                setIsOverlayLoading(false);
+                setIsModalOpen(false);
+            }
+        } catch (error) {
+            const serverError = MMUtils.apiErrorMessage(error);
+            if (serverError) {
+                MMUtils.showToastMessage(serverError);
+            }
+            setIsOverlayLoading(false);
+        }
+    }
+
     const onPressBirthDate = () => {
         Keyboard.dismiss();
         setState({
@@ -316,12 +338,28 @@ export default function AddBaby({ route }) {
                     {state.errors.gender && _.size(state.errors.gender) > 0 ?
                         <MMFormErrorText errorText={state.errors.gender} /> : null}
                     {
-                        <MMRoundButton
-                            optionalTextStyle={[MMStyles.h5]}
-                            label="Save"
-                            onPress={() => onSubmit()}
-                            optionalStyle={[MMStyles.mt20]}
-                        />
+                        babyId ?
+                            <MMFlexView>
+                                <MMRoundButton
+                                    optionalTextStyle={[MMStyles.h5]}
+                                    label="Delete"
+                                    onPress={() => onBabyDelete()}
+                                    optionalStyle={[MMStyles.mt20]}
+                                />
+                                <MMRoundButton
+                                    optionalTextStyle={[MMStyles.h5]}
+                                    label="Save"
+                                    onPress={() => onSubmit()}
+                                    optionalStyle={[MMStyles.mt20]}
+                                />
+                            </MMFlexView> :
+                            <MMRoundButton
+                                optionalTextStyle={[MMStyles.h5]}
+                                label="Save"
+                                onPress={() => onSubmit()}
+                                optionalStyle={[MMStyles.mt20]}
+                            />
+
                     }
                 </View>
             </>
