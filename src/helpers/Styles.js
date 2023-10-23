@@ -203,9 +203,9 @@ const MMStyles = StyleSheet.create({
     card: {
         backgroundColor: MMColors.white,
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 20,
         elevation: 10,
-        margin: 10,
+        margin: 20,
         shadowColor: '#000000',
         shadowOpacity: 0.4,
         shadowRadius: 2,

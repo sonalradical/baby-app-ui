@@ -23,7 +23,11 @@ const MMConstants = {
         accessToken: 'accessToken',
         refreshToken: 'refreshToken',
         userDetail: 'userDetail',
+        selectedBaby: 'selectedBaby',
 
+    },
+    format: {
+        dateTimePickerTime: 'hh:mm A',
     },
     fonts: {
         // new fonts
@@ -49,6 +53,13 @@ const MMConstants = {
         { value: 'male', label: 'Male' },
         { value: 'female', label: 'Female' }
     ],
+    chapterChip: [
+        { label: 'All', value: 'all' },
+        { label: 'Pregnancy', value: 'pregnancy' },
+        { label: 'Surrogacy', value: 'surrogacy' },
+        { label: 'Adoption', value: 'adoption' },
+        { label: '0-1 Year', value: 'zeroToOneYearChapter' }
+    ]
 };
 
 export default MMConstants;

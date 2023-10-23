@@ -1,15 +1,29 @@
 // navigation library
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PaperProvider } from 'react-native-paper';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { navigationRef } from '../services/NavigationServices';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
+
+import { setLogin } from '../redux/Slice/AuthSlice';
+
+import MMConstants from '../helpers/Constants';
+import MMUtils from '../helpers/Utils';
+
+import MMSpinner from '../components/common/Spinner';
 
 // auth screens
 import Login from '../screens/auth/Login';
-//import OTPView from '../screens/auth/OTPView';
-//import SignUp from '../screens/auth/SignUp';
+import OTPView from '../screens/auth/OTPView';
+import SignUp from '../screens/auth/SignUp';
 
+// app screens
+import Home from '../screens/home/Home';
+import AddBaby from '../screens/babyProfile/AddBaby';
+import Logout from '../screens/auth/Logout';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -23,19 +37,75 @@ function AuthStackNavigator() {
                 }}
             >
                 <AuthStack.Screen name="Login" component={Login} />
-                {/* <AuthStack.Screen name="SignUp" component={SignUp} />
-                <AuthStack.Screen name="Otp" component={OTPView} /> */}
+                <AuthStack.Screen name="SignUp" component={SignUp} />
+                <AuthStack.Screen name="Otp" component={OTPView} />
             </AuthStack.Navigator>
         </NavigationContainer>
     );
 }
 
+
+// App Stack 
+const AppStack = createStackNavigator();
+function AppStackNavigator() {
+    return (
+        <NavigationContainer independent>
+            <AppStack.Navigator
+                initialRouteName="Home"
+                screenOptions={{
+                    headerShown: false,
+                }}
+            >
+                <AppStack.Screen
+                    name="Home"
+                    component={Home}
+                />
+                <AppStack.Screen
+                    name="Logout"
+                    component={Logout}
+                />
+                <AppStack.Screen
+                    name="AddBaby"
+                    component={AddBaby}
+                />
+
+            </AppStack.Navigator>
+        </NavigationContainer>
+    );
+}
+
 export default function AppNavigator() {
+    const { isLoading, isLoggedOut, accessToken } = useSelector((state) => state.AuthReducer.auth);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        initApp();
+    }, []);
+
+    const initApp = async () => {
+        const accessToken = await MMUtils.getItemFromStorage(MMConstants.storage.accessToken);
+        const existingUserDetail = await MMUtils.getItemFromStorage(MMConstants.storage.userDetail);
+
+        if (accessToken && existingUserDetail) {
+            dispatch(setLogin({
+                accessToken,
+                userDetail: JSON.parse(existingUserDetail),
+                isLoading: false,
+                isLoggedOut: false
+            }));
+        } else {
+            dispatch(setLogin({ isLoading: false }));
+        }
+    }
+
+    if (isLoading) {
+        return <MMSpinner />;
+    }
 
     return (
         <PaperProvider>
             <NavigationContainer ref={navigationRef}>
-                {<AuthStackNavigator />}
+                {(_.isNil(accessToken)) ? <AuthStackNavigator /> : <AppStackNavigator />}
             </NavigationContainer>
         </PaperProvider>
     );

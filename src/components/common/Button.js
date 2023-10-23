@@ -8,7 +8,7 @@ import MMColors from '../../helpers/Colors';
 
 //import MMIcon from './icon';
 
-export default function MMSubmitButton(props) {
+export default function MMButton(props) {
     const {
         label, optionalStyle, textColor, optionalTextStyle,
     } = props;
@@ -18,7 +18,7 @@ export default function MMSubmitButton(props) {
         </Button>
     );
 }
-MMSubmitButton.propTypes = {
+MMButton.propTypes = {
     label: PropTypes.string.isRequired,
     optionalStyle: PropTypes.any,
     optionalTextStyle: PropTypes.any,
@@ -77,7 +77,7 @@ MMTransparentButton.propTypes = {
 };
 
 export {
-    MMSubmitButton,
+    MMButton,
     MMRoundButton,
     MMTransparentButton,
 };

@@ -1,11 +1,13 @@
 import axios from 'axios';
 import * as _ from 'lodash';
 
+import { useNavigation } from '@react-navigation/native';
+
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
 
 // Defaults
-axios.defaults.baseURL = 'http://192.168.1.117:4000/';
+axios.defaults.baseURL = 'http://192.168.1.108:4000/';
 
 
 // Request interceptor
@@ -25,14 +27,20 @@ axios.interceptors.request.use(async (config) => {
 
 // Response interceptor
 axios.interceptors.response.use(async (response) => {
-    console.log(response.data, 'response')
+    console.log(response.data, 'response axioss')
 
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
-            MMUtils.showToastMessage(friendlyMassage);
+            friendlyMassage ? MMUtils.showToastMessage(friendlyMassage) : null;
             return _.isNil(response.data) ? true : response.data;
         case MMEnums.responseStatusCodes.NotFound:
+            MMUtils.showToastMessage(friendlyMassage);
+            MMUtils.showToastMessage(error.message);
+            break;
+        case MMEnums.responseStatusCodes.authentication:
+            const navigation = useNavigation();
+            navigation.navigate('Logout');
             MMUtils.showToastMessage(error.message);
             break;
         default:
@@ -45,6 +53,13 @@ axios.interceptors.response.use(async (response) => {
     if (error.message === 'Network Error') {
         // Handle network errors separately
         MMUtils.showToastMessage('Network Error: Please check your internet connection.');
+    }
+    else if (error.response.status === MMEnums.responseStatusCodes.NotFound) {
+        const errorMessage = error.response.data.message;
+        MMUtils.showToastMessage(errorMessage);
+    }
+    else if (error.response.status === MMEnums.responseStatusCodes.authentication) {
+        navigate('Logout');
     }
     else {
         MMUtils.showToastMessage(error.message);
