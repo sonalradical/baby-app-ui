@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	searchbar: {
 		marginBottom: 8,
 		backgroundColor: MMColors.white,
-		borderRadius: 25,
+		borderRadius: 10,
 	},
 	searchbarInput: {
 		paddingLeft: 8,

@@ -67,32 +67,30 @@ export default function Quiz({ navigation, route }) {
     }, [currentQuestion, questionList, answerList]);
 
     const onNextClick = () => {
-        if (currentQuestion < questionList.length - 1) {
-            // Get the current answer
-            const currentAnswer = getAnswer();
+        const currentAnswer = getAnswer();
+        const questionId = questionList[currentQuestion]._id;
 
-            // Store the current answer
-            const questionId = questionList[currentQuestion]._id;
+        if (!_.isEmpty(currentAnswer)) {
+            onSaveQuiz(questionId, currentAnswer);
+        }
 
-            if (!_.isEmpty(currentAnswer)) {
-                onSaveQuiz(questionId, currentAnswer);
-            }
-            const existingAnswerIndex = answerList.findIndex((answer) => answer.questionId === questionId);
-            if (existingAnswerIndex !== -1) {
-                // Update the existing answer in the answers array
-                const updatedAnswers = [...answerList];
-                updatedAnswers[existingAnswerIndex].answer = currentAnswer;
-                setAnswerList(updatedAnswers);
-            } else {
-                // Push a new answer into the answers array
-                const newAnswer = {
-                    questionId: questionId,
-                    answer: currentAnswer,
-                };
-                setAnswerList([...answerList, newAnswer]);
-                setSelectedAnswer({ option: "", checkboxes: [], text: "" });
-            }
-            // Move to the next question
+        const existingAnswerIndex = answerList.findIndex((answer) => answer.questionId === questionId);
+
+        const updatedAnswers = [...answerList];
+
+        if (existingAnswerIndex !== -1) {
+            updatedAnswers[existingAnswerIndex].answer = currentAnswer;
+        } else {
+            updatedAnswers.push({ questionId, answer: currentAnswer });
+            setSelectedAnswer({ option: "", checkboxes: [], text: "" });
+        }
+
+        setAnswerList(updatedAnswers);
+
+        if (currentQuestion === questionList.length - 1) {
+            setCurrentQuestion(0);
+            navigation.navigate('ChapterList', { babyId });
+        } else {
             setCurrentQuestion(currentQuestion + 1);
         }
     };
@@ -219,23 +217,24 @@ export default function Quiz({ navigation, route }) {
     };
 
     const renderActionButtons = () => {
+        console.log(currentQuestion, questionList.length - 1, 'currentQuestion === questionList.length - 1')
         return (
             <MMActionButtons>
                 <MMIcon
                     iconName='chevron-left'
                     iconSize={24}
-                    iconColor={MMColors.purple}
+                    iconColor={MMColors.gray}
                     onPress={onPreviousClick}
                     disabled={currentQuestion === 0}
                 />
                 <Chip>{`${currentQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
-                <MMIcon
+                {<MMIcon
                     iconName='chevron-right'
                     iconSize={24}
-                    iconColor={MMColors.purple}
+                    iconColor={MMColors.gray}
                     onPress={onNextClick}
-                    disabled={questionList ? currentQuestion === questionList.length - 1 : false}
-                />
+                //disabled={questionList ? currentQuestion === questionList.length - 1 : false}
+                />}
             </MMActionButtons>
         );
     };

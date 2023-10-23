@@ -10,6 +10,7 @@ const MMColors = {
     black: '#000000',
     orange: '#F68E43',
     purple: '#CEBBFF',
+    lightPurple: '#FDFCFF',
 
     disabled: '#808080',
     textContent: '#707070',
@@ -26,7 +27,24 @@ const MMColors = {
     gray: '#515151',
     green: '#21880E',
     green_1: '#097969',
-    darkButton: '#384F63'
+    darkButton: '#384F63',
+
+    // primary
+    purplePrimary: '#B59DFF',
+    bluePrimary: '#B3D9FF',
+    pinkPrimary: '#EA94c5',
+
+    // secondary
+    purpleSecondary: '#B59DFF',
+    blueSecondary: '#B3D9ff',
+    pinkSecondary: '#EA94C5',
+    greenSecondary: '#E7F6E6',
+    creamSecondary: '#FCF4E6',
+
+    // grays
+    gray1: '#595959',
+    gray2: '#E2E2E2'
+
 };
 
 export default MMColors;
