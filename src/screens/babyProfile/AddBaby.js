@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Keyboard } from 'react-native';
+import { View, Text, Keyboard, Alert } from 'react-native';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -13,7 +13,7 @@ import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
-import { MMRoundButton } from '../../components/common/Button';
+import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
 //import MMProfileAvatar from '../../components/common/ImagePicker';
 import { SegmentedButtons, TextInput } from 'react-native-paper';
 import MMPicker from '../../components/common/Picker';
@@ -204,6 +204,26 @@ export default function AddBaby({ route }) {
         }
     }
 
+    const onDelete = () => {
+        return (
+            Alert.alert(
+                "Alert",
+                `Are you sure you want to delete this baby?`,
+                [
+                    {
+                        text: 'No',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Yes',
+                        onPress: () => onBabyDelete()
+                    }
+                ],
+                { cancelable: true }
+            )
+        );
+    };
+
     const onPressBirthDate = () => {
         Keyboard.dismiss();
         setState({
@@ -340,10 +360,10 @@ export default function AddBaby({ route }) {
                     {
                         babyId ?
                             <MMFlexView>
-                                <MMRoundButton
+                                <MMOutlineButton
                                     optionalTextStyle={[MMStyles.h5]}
                                     label="Delete"
-                                    onPress={() => onBabyDelete()}
+                                    onPress={() => onDelete()}
                                     optionalStyle={[MMStyles.mt20]}
                                 />
                                 <MMRoundButton

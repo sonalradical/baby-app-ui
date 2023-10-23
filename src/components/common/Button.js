@@ -25,18 +25,12 @@ MMButton.propTypes = {
 
 function MMRoundButton(props) {
     const {
-        label, bgColor, optionalStyle
+        label, bgColor, optionalStyle, onPress
     } = props;
     const backgroundColor = bgColor || MMColors.orange;
 
-    const getStyle = () => {
-        return {
-            ...MMStyles.roundButton,
-            backgroundColor: backgroundColor,
-        };
-    };
     return (
-        <Button style={optionalStyle ? [getStyle(), optionalStyle] : getStyle()} size="xs" textColor={MMColors.white} {...props}>
+        <Button mode="contained" onPress={onPress} style={optionalStyle} backgroundColor={backgroundColor}>
             {label}
         </Button>
     );
@@ -72,13 +66,14 @@ MMTransparentButton.propTypes = {
 };
 
 function MMOutlineButton(props) {
-    const { label, onPress, color, disabled = false } = props;
+    const { label, onPress, color, disabled = false, optionalStyle } = props;
     return (
         <Button
             mode="outlined"
             textColor={color}
             onPress={onPress}
             disabled={disabled}
+            style={optionalStyle}
         >
             {label}
         </Button>

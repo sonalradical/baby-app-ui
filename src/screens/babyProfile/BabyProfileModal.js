@@ -44,6 +44,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				setIsLoding(false);
 			} catch (error) {
 				setBabyList();
+				setSelectedBabyDetail();
 				setIsLoding(false);
 				const serverError = MMUtils.apiErrorMessage(error);
 				if (serverError) {
