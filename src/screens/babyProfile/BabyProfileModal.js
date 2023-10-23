@@ -66,28 +66,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		navigation.navigate('AddBaby', { babyId: babyId })
 	}
 
-	const onBabyDelete = async (babyId) => {
-		try {
-			setIsOverlayLoading(true);
-			console.log('Loading baby profile list...');
-
-			const response = await MMApiService.deleteBaby(babyId);
-			if (response) {
-				MMUtils.showToastMessage('Baby deleted successfully.')
-				MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
-				navigation.navigate('Home');
-				setIsOverlayLoading(false);
-				setIsModalOpen(false);
-			}
-		} catch (error) {
-			const serverError = MMUtils.apiErrorMessage(error);
-			if (serverError) {
-				MMUtils.showToastMessage(serverError);
-			}
-			setIsOverlayLoading(false);
-		}
-	}
-
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
@@ -121,13 +99,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 								style={MMStyles.mr10}
 								iconSize={24}
 								onPress={() => onBabyEdit(profileData._id)}
-							/> : null}
-							{isSelected ? <MMIcon
-								iconName="trash-o"
-								style={MMStyles.ml5}
-								iconColor={MMColors.orange}
-								iconSize={24}
-								onPress={() => onBabyDelete(profileData._id)}
 							/> : null}
 						</View>
 					</Card.Content>
