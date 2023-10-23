@@ -137,11 +137,11 @@ export default function Quiz({ navigation, route }) {
     const getAnswer = () => {
         const currentQuestionType = questionList[currentQuestion].questionType;
 
-        if (currentQuestionType === "radio") {
+        if (currentQuestionType === MMConstants.questionType.radio) {
             return selectedAnswer.option;
-        } else if (currentQuestionType === "checkbox") {
+        } else if (currentQuestionType === MMConstants.questionType.checkbox) {
             return selectedAnswer.checkboxes;
-        } else if (currentQuestionType === "text") {
+        } else if (currentQuestionType === MMConstants.questionType.text) {
             return selectedAnswer.text;
         }
         return null;
