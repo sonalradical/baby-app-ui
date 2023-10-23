@@ -72,7 +72,6 @@ function AppStackNavigator() {
                 <AppStack.Screen
                     name="ChapterList"
                     component={ChapterList}
-                    options={{ headerShown: false }}
                 />
                 <AppStack.Screen
                     name="Quiz"

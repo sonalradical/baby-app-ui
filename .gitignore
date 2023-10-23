@@ -50,4 +50,3 @@ android/app/build/intermediates/*
 android/app/build/outputs/apk/debug/output-metadata.json
 ios/build/generated/ios/React-Codegen.podspec.json
 ios/Pods/*
-android/app/src/*
