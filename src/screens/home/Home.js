@@ -51,7 +51,6 @@ export default function Home({ navigation, route }) {
     const renderView = () => {
         return (
             <View style={MMStyles.containerPadding}>
-                <MMIcon onPress={() => navigation.navigate('Quiz', { babyId: babyDetail._id, chapterId: '6524f0716499face7b559227' })} iconName='book' />
             </View>
         );
     };
