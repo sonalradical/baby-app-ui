@@ -14,6 +14,7 @@ import MMIcon from '../../components/common/Icon';
 import MMColors from '../../helpers/Colors';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
+import { MMRoundButton } from '../../components/common/Button';
 
 export default function Quiz({ navigation, route }) {
     const { babyId, chapterId } = route.params;
@@ -217,7 +218,6 @@ export default function Quiz({ navigation, route }) {
     };
 
     const renderActionButtons = () => {
-        console.log(currentQuestion, questionList.length - 1, 'currentQuestion === questionList.length - 1')
         return (
             <MMActionButtons>
                 <MMIcon
@@ -228,13 +228,18 @@ export default function Quiz({ navigation, route }) {
                     disabled={currentQuestion === 0}
                 />
                 <Chip>{`${currentQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
-                {<MMIcon
-                    iconName='chevron-right'
-                    iconSize={24}
-                    iconColor={MMColors.gray}
-                    onPress={onNextClick}
-                //disabled={questionList ? currentQuestion === questionList.length - 1 : false}
-                />}
+                {currentQuestion === questionList.length - 1 ?
+                    <MMRoundButton
+                        optionalTextStyle={[MMStyles.h5]}
+                        label="Submit"
+                        onPress={onNextClick} /> :
+                    <MMIcon
+                        iconName='chevron-right'
+                        iconSize={24}
+                        iconColor={MMColors.gray}
+                        onPress={onNextClick}
+                        disabled={questionList ? currentQuestion === questionList.length - 1 : false}
+                    />}
             </MMActionButtons>
         );
     };
