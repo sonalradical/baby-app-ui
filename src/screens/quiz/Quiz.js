@@ -177,7 +177,10 @@ export default function Quiz({ navigation, route }) {
 
         return (
             <View style={MMStyles.containerPadding}>
-                <Text style={[MMStyles.mb10, { alignSelf: 'center' }]}>{questionList[currentQuestion].question}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
+                    <Text style={[MMStyles.mb10, { alignSelf: 'center' }]}>{questionList[currentQuestion].question}</Text>
+                </View>
                 {currentQuestionType === "radio" && (
                     <View style={{ alignItems: 'flex-start' }}>
                         {questionList[currentQuestion].options.map((option, index) => (
