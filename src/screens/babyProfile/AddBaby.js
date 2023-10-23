@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Keyboard } from 'react-native';
+import { View, Text, Keyboard, Alert } from 'react-native';
+import { SegmentedButtons, TextInput } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
+import { useDispatch } from 'react-redux';
+import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
+
+import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
-import MMColors from '../../helpers/Colors';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
-import { MMRoundButton } from '../../components/common/Button';
+import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
 //import MMProfileAvatar from '../../components/common/ImagePicker';
-import { SegmentedButtons, TextInput } from 'react-native-paper';
-import MMPicker from '../../components/common/Picker';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
-import moment from 'moment';
-import { useNavigation } from '@react-navigation/native';
 import MMFormErrorText from '../../components/common/FormErrorText';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
+    const dispatch = useDispatch();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const navigation = useNavigation();
 
@@ -138,6 +140,7 @@ export default function AddBaby({ route }) {
             await MMApiService.addBaby(apiData)
                 .then(function (response) {
                     if (response) {
+                        dispatch(setSelectedBabyId(response.data._id));
                         navigation.navigate('Home', { babyId: response.data._id });
                     }
                     setIsOverlayLoading(false);
@@ -166,6 +169,7 @@ export default function AddBaby({ route }) {
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
                     if (response) {
+                        dispatch(setSelectedBabyId(babyId));
                         navigation.navigate('Home', { babyId: babyId });
                     }
                     setIsOverlayLoading(false);
@@ -191,6 +195,7 @@ export default function AddBaby({ route }) {
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
+                dispatch(setSelectedBabyId());
                 navigation.navigate('Home');
                 setIsOverlayLoading(false);
                 setIsModalOpen(false);
@@ -203,6 +208,26 @@ export default function AddBaby({ route }) {
             setIsOverlayLoading(false);
         }
     }
+
+    const onDelete = () => {
+        return (
+            Alert.alert(
+                "Alert",
+                `Are you sure you want to delete this baby?`,
+                [
+                    {
+                        text: 'No',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Yes',
+                        onPress: () => onBabyDelete()
+                    }
+                ],
+                { cancelable: true }
+            )
+        );
+    };
 
     const onPressBirthDate = () => {
         Keyboard.dismiss();
@@ -340,10 +365,10 @@ export default function AddBaby({ route }) {
                     {
                         babyId ?
                             <MMFlexView>
-                                <MMRoundButton
+                                <MMOutlineButton
                                     optionalTextStyle={[MMStyles.h5]}
                                     label="Delete"
-                                    onPress={() => onBabyDelete()}
+                                    onPress={() => onDelete()}
                                     optionalStyle={[MMStyles.mt20]}
                                 />
                                 <MMRoundButton

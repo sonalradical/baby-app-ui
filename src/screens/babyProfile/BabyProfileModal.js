@@ -5,17 +5,21 @@ import { Avatar, Card, Text } from 'react-native-paper';
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+
+import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMStyles from '../../helpers/Styles';
 import MMColors from '../../helpers/Colors';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
 import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
-import MMConstants from '../../helpers/Constants';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
+	const dispatch = useDispatch();
 	const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
@@ -44,6 +48,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				setIsLoding(false);
 			} catch (error) {
 				setBabyList();
+				setSelectedBabyDetail();
 				setIsLoding(false);
 				const serverError = MMUtils.apiErrorMessage(error);
 				if (serverError) {
@@ -68,7 +73,9 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
+		console.log(babyDetail, 'babyDetail')
 		setSelectedBabyDetail(babyDetail);
+		dispatch(setSelectedBabyId(babyDetail._id));
 		MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, babyDetail._id);
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}

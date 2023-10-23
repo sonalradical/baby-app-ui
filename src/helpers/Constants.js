@@ -59,7 +59,12 @@ const MMConstants = {
         { label: 'Surrogacy', value: 'surrogacy' },
         { label: 'Adoption', value: 'adoption' },
         { label: '0-1 Year', value: 'zeroToOneYearChapter' }
-    ]
+    ],
+    questionType: {
+        radio: 'radio',
+        checkbox: 'checkbox',
+        text: 'text'
+    }
 };
 
 export default MMConstants;

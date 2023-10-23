@@ -59,7 +59,8 @@ axios.interceptors.response.use(async (response) => {
         MMUtils.showToastMessage(errorMessage);
     }
     else if (error.response.status === MMEnums.responseStatusCodes.authentication) {
-        navigate('Logout');
+        const navigation = useNavigation();
+        navigation.navigate('Logout');
     }
     else {
         MMUtils.showToastMessage(error.message);

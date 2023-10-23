@@ -20,6 +20,7 @@ const MMStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: MMColors.white,
         padding: 5,
+        marginBottom: 50
     },
     flex1: {
         flex: 1,
@@ -178,7 +179,6 @@ const MMStyles = StyleSheet.create({
     },
     roundButton: {
         borderRadius: 25,
-        height: 45,
         fontFamily: MMConstants.fonts.bold
     },
     transparentButtonText: {
@@ -415,6 +415,12 @@ const MMStyles = StyleSheet.create({
         fontSize: 10,
         paddingLeft: 10,
         paddingRight: 10,
+    },
+    tabBarView: {
+        padding: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        alignItems: 'center',
     },
     btnSecondary: {
         borderColor: MMColors.blue,
