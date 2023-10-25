@@ -7,7 +7,7 @@ import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
 
 // Defaults
-axios.defaults.baseURL = 'http://localhost:4000/';
+axios.defaults.baseURL = 'http://192.168.1.108:4000/';
 
 
 // Request interceptor
@@ -62,8 +62,12 @@ axios.interceptors.response.use(async (response) => {
         const navigation = useNavigation();
         navigation.navigate('Logout');
     }
+    else if (error.response.status === MMEnums.responseStatusCodes.BadRequest) {
+        const errorMessage = error.response.data.message;
+        MMUtils.showToastMessage(errorMessage);
+    }
     else {
-        MMUtils.showToastMessage(error.message);
+        MMUtils.showToastMessage(error.response.data.message);
     }
     return null;
 });

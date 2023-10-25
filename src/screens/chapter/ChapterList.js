@@ -5,7 +5,6 @@ import { Appbar, Badge, Card, Chip, Text } from 'react-native-paper';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
@@ -19,8 +18,7 @@ import MMSearchbar from '../../components/common/Searchbar';
 import MMIcon from '../../components/common/Icon';
 import MMNoRecordsFound from '../../components/common/NoRecordsFound';
 
-export default function ChapterList({ route }) {
-    const navigation = useNavigation();
+export default function ChapterList({ navigation, route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();

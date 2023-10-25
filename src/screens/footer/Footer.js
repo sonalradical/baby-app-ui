@@ -1,42 +1,44 @@
 import React from 'react';
-import { BackHandler } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import PropTypes from 'prop-types';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import MMUtils from '../../helpers/Utils';
-import FooterTab from './FooterTab';
 import Home from '../home/Home';
 import ChapterList from '../chapter/ChapterList';
+import MMIcon from '../../components/common/Icon';
+import FooterTab from './FooterTab';
 
-export default function Footer({ navigation }) {
-    const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
+
+export default function Footer() {
     return (
-        <SafeAreaProvider>
-            <Tab.Navigator
-                initialRouteName='Home'
-                screenOptions={{
-                    headerShown: false,
+        <Tab.Navigator
+            screenOptions={{
+                headerShown: false,
+            }}
+            tabBar={({ navigation, state, descriptors, insets }) => {
+                return <FooterTab navigation={navigation} state={state} descriptors={descriptors} insets={insets} />
+            }}
+        >
+            <Tab.Screen
+                name="Home"
+                component={Home}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color, size }) => {
+                        return <MMIcon iconName="home" iconSize={size} iconColor={color} />;
+                    },
                 }}
-                tabBar={(props) => <FooterTab {...props} />}
-            >
-                <Tab.Screen name="Home" component={Home}
-                    listeners={{
-                        focus: () => BackHandler.addEventListener('hardwareBackPress', MMUtils.handleBackButton)
-                        , blur: () => BackHandler.removeEventListener('hardwareBackPress', MMUtils.handleBackButton)
-                    }} />
-                <Tab.Screen name="ChapterList" component={ChapterList}
-                    listeners={{
-                        focus: () => BackHandler.addEventListener('hardwareBackPress', MMUtils.handleBackButton)
-                        , blur: () => BackHandler.removeEventListener('hardwareBackPress', MMUtils.handleBackButton)
-                    }} />
-
-            </Tab.Navigator>
-        </SafeAreaProvider>
+            />
+            <Tab.Screen
+                name="ChapterList"
+                component={ChapterList}
+                options={{
+                    tabBarLabel: 'Chapter',
+                    tabBarIcon: ({ color, size }) => {
+                        return <MMIcon iconName="book" iconSize={size} iconColor={color} />;
+                    },
+                }}
+            />
+        </Tab.Navigator>
     );
 }
-
-Footer.propTypes = {
-    navigation: PropTypes.object,
-};

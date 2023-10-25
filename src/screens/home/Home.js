@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
 import MMStyles from '../../helpers/Styles';
+import { Button } from 'react-native-paper';
 
 
 export default function Home({ navigation, route }) {
@@ -12,6 +13,7 @@ export default function Home({ navigation, route }) {
     const renderView = () => {
         return (
             <View style={MMStyles.containerPadding}>
+                <Button onPress={() => navigation.navigate('Logout')}>click</Button>
             </View>
         );
     };

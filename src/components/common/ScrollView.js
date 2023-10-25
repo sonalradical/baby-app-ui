@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { View } from 'react-native';
-
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import MMUtils from '../../helpers/Utils';
 
-const MMScrollView = ({ align = 'top', scrollEnabled = true, children }) => {
+const SvScrollView = ({ align = 'top', scrollEnabled = true, children }) => {
 	// do not change this :)
 	let justifyContent = 'center';
 	if (align === 'top') {
@@ -54,9 +53,9 @@ const viewStyle = function (justifyContent) {
 	}
 };
 
-MMScrollView.propTypes = {
+SvScrollView.propTypes = {
 	align: PropTypes.string,
 	scrollEnabled: PropTypes.bool,
 };
 
-export default MMScrollView;
+export default SvScrollView;

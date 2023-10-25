@@ -18,6 +18,7 @@ import { MMRoundButton, MMTransparentButton } from '../../components/common/Butt
 import MMFormErrorText from '../../components/common/FormErrorText';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
+import MMContentContainer from '../../components/common/ContentContainer';
 
 
 export default function OTPView({ navigation, route }) {
@@ -53,6 +54,10 @@ export default function OTPView({ navigation, route }) {
                 otp: '',
             },
         });
+
+        if (otpValue.length === 6) {
+            onVerify(otpValue);
+        }
     };
 
     extend('validOTP', {
@@ -215,12 +220,12 @@ export default function OTPView({ navigation, route }) {
     };
 
     return (
-        <View style={MMStyles.container}>
+        <MMContentContainer>
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </View>
+        </MMContentContainer>
     );
 }
 
