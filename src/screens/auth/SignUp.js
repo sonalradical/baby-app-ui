@@ -22,11 +22,11 @@ export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
     const initState = {
-        mobileNumber: '+918160421801',
-        name: 'Nupur',
-        email: 'nupur@radicalrack.com',
-        password: 'Rack@123',
-        gender: 'female',
+        mobileNumber: '',
+        name: '',
+        email: '',
+        password: '',
+        gender: '',
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -54,7 +54,7 @@ export default function SignUp({ navigation, route }) {
 
         const messages = {
             'mobileNumber.required': 'Please enter mobile no.',
-            'mobileNumber.min': 'Mobile number must be 13 digits.',
+            'mobileNumber.min': 'Mobile number must be 10 digits.',
             'name.required': 'Please enter name.',
             'email.required': 'Please enter email.',
             'email.email': 'Email address is not in a valid format.',
@@ -64,7 +64,7 @@ export default function SignUp({ navigation, route }) {
         };
 
         const rules = {
-            mobileNumber: 'required|string|min:13',
+            mobileNumber: 'required|string|min:10',
             name: 'required|string',
             email: 'required|string|email',
             password: 'required|min:8|max:8',
@@ -126,7 +126,7 @@ export default function SignUp({ navigation, route }) {
                     {/* <MMProfileAvatar onImageSelect={handleImageSelect} /> */}
                     <MMInput
                         optionalStyle={MMStyles.mt20}
-                        maxLength={13}
+                        maxLength={10}
                         value={state.mobileNumber}
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Mobile Number"

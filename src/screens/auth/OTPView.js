@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -22,6 +22,7 @@ import MMScrollView from '../../components/common/ScrollView';
 
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
+    const otpRef = useRef(null);
     const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -52,10 +53,6 @@ export default function OTPView({ navigation, route }) {
                 otp: '',
             },
         });
-
-        if (otpValue.length === 6) {
-            onVerify(otpValue);
-        }
     };
 
     extend('validOTP', {
@@ -77,6 +74,7 @@ export default function OTPView({ navigation, route }) {
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
             setIsOverlayLoading(false);
+            otpRef.current.clear();
             setTimeout(() => {
                 setIsResendVisible(true);
             }, 60000);
@@ -182,6 +180,7 @@ export default function OTPView({ navigation, route }) {
                     </View>
                     <View >
                         <OTPTextView
+                            ref={otpRef}
                             handleTextChange={(text) => onApply(text)}
                             inputCount={6}
                             tintColor={MMColors.orange}
@@ -219,8 +218,8 @@ export default function OTPView({ navigation, route }) {
         <View style={MMStyles.container}>
             <MMScrollView>
                 {renderView()}
-                <MMOverlaySpinner visible={isOverlayLoading} />
             </MMScrollView>
+            <MMOverlaySpinner visible={isOverlayLoading} />
         </View>
     );
 }

@@ -47,7 +47,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				}
 				setIsLoding(false);
 			} catch (error) {
-				setBabyList();
+				setBabyList([]);
 				setSelectedBabyDetail();
 				setIsLoding(false);
 				const serverError = MMUtils.apiErrorMessage(error);
@@ -73,7 +73,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
-		console.log(babyDetail, 'babyDetail')
 		setSelectedBabyDetail(babyDetail);
 		dispatch(setSelectedBabyId(babyDetail._id));
 		MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, babyDetail._id);
@@ -136,6 +135,8 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 								<ProfileCard key={index.toString()} profileData={item} index={index} />
 							))
 						)}
+						{_.isEmpty(babyList) ?
+							<Text style={[MMStyles.cardSubHeaderText, { textAlign: 'center' }]}>No Babies Found</Text> : null}
 						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
 				</View>
