@@ -38,7 +38,8 @@ export default function Quiz({ navigation, route }) {
                     setIsLoading(true);
                     const response = await MMApiService.getQuiz(babyId, chapterId);
                     if (response.data) {
-                        setQuestionList(response.data.questionList);
+                        const sortedQuestions = _.sortBy(response.data.questionList, 'position');
+                        setQuestionList(sortedQuestions);
                         setAnswerList(response.data.answerList);
                         setIsLoading(false);
                     }

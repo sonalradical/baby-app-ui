@@ -14,7 +14,6 @@ import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
-import MMFormErrorText from '../../components/common/FormErrorText';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
