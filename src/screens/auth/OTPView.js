@@ -3,7 +3,6 @@ import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
-import OTPTextView from 'react-native-otp-textinput';
 import { extend, validateAll } from 'indicative/validator';
 import { useDispatch } from 'react-redux';
 
@@ -19,6 +18,7 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMPinTextInput from '../../components/common/OTPTextView';
 
 
 export default function OTPView({ navigation, route }) {
@@ -45,18 +45,17 @@ export default function OTPView({ navigation, route }) {
     }, []);
 
     const onApply = (value) => {
-        const otpValue = _.join(value, '');
         setState({
             ...state,
-            otp: otpValue,
+            otp: value,
             errors: {
                 ...state.errors,
                 otp: '',
             },
         });
 
-        if (otpValue.length === 6) {
-            onVerify(otpValue);
+        if (value.length === 6) {
+            onVerify(value);
         }
     };
 
@@ -79,7 +78,13 @@ export default function OTPView({ navigation, route }) {
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
             setIsOverlayLoading(false);
-            otpRef.current.clear();
+            setState({
+                ...state,
+                otp: '',
+                errors: {
+                    ...state.errors
+                },
+            });
             setTimeout(() => {
                 setIsResendVisible(true);
             }, 60000);
@@ -184,18 +189,13 @@ export default function OTPView({ navigation, route }) {
                         <Text style={[MMStyles.subTitle, MMStyles.h5]}>{mobileNumber}</Text>
                     </View>
                     <View >
-                        <OTPTextView
-                            ref={otpRef}
-                            handleTextChange={(text) => onApply(text)}
-                            inputCount={6}
-                            tintColor={MMColors.orange}
-                            keyboardType="number-pad"
-                            containerStyle={MMStyles.mt20}
-                            textInputStyle={styles.roundedTextInput}
+                        <MMPinTextInput
+                            value={state.otp}
+                            setValue={(text) => onApply(text)}
+                            errorText={state.errors.otp}
+                            cellCount={6}
                         />
                     </View>
-                    <MMFormErrorText errorText={state.errors.otp} />
-
                     {
                         isResendVisible
                             ? (

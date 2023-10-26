@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Appbar, Checkbox, Chip, RadioButton, Text } from 'react-native-paper';
 
@@ -15,6 +15,8 @@ import MMColors from '../../helpers/Colors';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMSurface from '../../components/common/Surface';
 
 export default function Quiz({ navigation, route }) {
     const { babyId, chapterId } = route.params;
@@ -176,47 +178,50 @@ export default function Quiz({ navigation, route }) {
         const currentQuestionType = questionList[currentQuestion].questionType;
 
         return (
-            <View style={MMStyles.containerPadding}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
-                    <Text style={[MMStyles.mb10, { alignSelf: 'center' }]}>{questionList[currentQuestion].question}</Text>
-                </View>
-                {currentQuestionType === "radio" && (
-                    <View style={{ alignItems: 'flex-start' }}>
-                        {questionList[currentQuestion].options.map((option, index) => (
-                            <RadioButton.Item
-                                key={index}
-                                label={option}
-                                value={option}
-                                status={selectedAnswer.option === option ? 'checked' : 'unchecked'}
-                                onPress={() => onOptionChange(option)}
-                                position='leading'
-                            />
-                        ))}
+            <MMSurface padding={[18, 18, 18, 18]} >
+                <View style={{ height: Dimensions.get('window').height / 2 }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
+                        <Text style={[MMStyles.mb10, { alignSelf: 'center' }]} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
-                )}
-                {currentQuestionType === "checkbox" && (
-                    <View style={{ alignItems: 'flex-start' }}>
-                        {questionList[currentQuestion].options.map((option, index) => (
-                            <View key={index}>
-                                <Checkbox.Item
+                    {currentQuestionType === "radio" && (
+                        <View style={{ alignItems: 'flex-start' }}>
+                            {questionList[currentQuestion].options.map((option, index) => (
+                                <RadioButton.Item
+                                    key={index}
                                     label={option}
-                                    status={selectedAnswer.checkboxes.includes(option) ? 'checked' : 'unchecked'}
-                                    onPress={() => onCheckboxChange(option)}
+                                    value={option}
+                                    status={selectedAnswer.option === option ? 'checked' : 'unchecked'}
+                                    onPress={() => onOptionChange(option)}
                                     position='leading'
                                 />
-                            </View>
-                        ))}
-                    </View>
-                )}
-                {currentQuestionType === "text" && (
-                    <MMInput
-                        placeholder="Your answer..."
-                        value={selectedAnswer.text}
-                        onChangeText={(text) => onTextChange(text)}
-                    />
-                )}
-            </View>
+                            ))}
+                        </View>
+                    )}
+                    {currentQuestionType === "checkbox" && (
+                        <View style={{ alignItems: 'flex-start' }}>
+                            {questionList[currentQuestion].options.map((option, index) => (
+                                <View key={index}>
+                                    <Checkbox.Item
+                                        label={option}
+                                        status={selectedAnswer.checkboxes.includes(option) ? 'checked' : 'unchecked'}
+                                        onPress={() => onCheckboxChange(option)}
+                                        position='leading'
+                                    />
+                                </View>
+                            ))}
+                        </View>
+                    )}
+                    {currentQuestionType === "text" && (
+                        <MMInput
+                            placeholder="Your answer..."
+                            value={selectedAnswer.text}
+                            onChangeText={(text) => onTextChange(text)}
+                        />
+                    )}
+                </View>
+                {renderActionButtons()}
+            </MMSurface>
         );
     };
 
@@ -259,10 +264,9 @@ export default function Quiz({ navigation, route }) {
     return (
         <>
             {renderScreenHeader()}
-            <View style={MMStyles.container}>
+            <MMContentContainer>
                 {isLoading ? <MMSpinner /> : renderView()}
-                {renderActionButtons()}
-            </View>
+            </MMContentContainer >
         </>
     );
 }
