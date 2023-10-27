@@ -100,13 +100,14 @@ export default function Quiz({ navigation, route }) {
     };
 
     const setSelectedAnswerByType = (questionType, answer) => {
+        console.log(questionType, '.....')
         switch (questionType) {
             case MMConstants.questionType.radio:
-                return { option: answer };
+                return { option: answer, checkboxes: [], text: "" };
             case MMConstants.questionType.checkbox:
-                return { checkboxes: answer };
+                return { checkboxes: answer, text: "", option: "" };
             case MMConstants.questionType.text:
-                return { text: answer };
+                return { text: answer, checkboxes: [], option: "" };
             default:
                 return { option: "", checkboxes: [], text: "" };
         }

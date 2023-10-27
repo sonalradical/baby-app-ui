@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { View, StyleSheet, Dimensions, Image, ScrollView, Keyboard } from 'react-native';
 import { Appbar, Badge, Card, Chip, Text } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setHeaderTitle } from '../../redux/Slice/AppSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
@@ -20,6 +23,7 @@ import MMNoRecordsFound from '../../components/common/NoRecordsFound';
 
 export default function ChapterList({ navigation, route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const dispatch = useDispatch();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
     const [state, setState] = useState({
@@ -47,7 +51,7 @@ export default function ChapterList({ navigation, route }) {
                     setBabyId(babyId);
                     const response = await MMApiService.getChapterList(babyId);
                     if (response.data) {
-                        const chapters = response.data.chapterDetail;
+                        const chapters = _.sortBy(response.data.chapterDetail, 'position');
                         setState({
                             ...state,
                             query: '',
@@ -71,6 +75,12 @@ export default function ChapterList({ navigation, route }) {
         }
         loadChapterList();
     }, [selectedBabyId, MMConstants.storage.selectedBaby]);
+
+    useFocusEffect(
+        useCallback(() => {
+            dispatch(setHeaderTitle('Chapters'));
+        }, [dispatch])
+    );
 
 
     const onChangeSearch = (query) => {
@@ -130,7 +140,7 @@ export default function ChapterList({ navigation, route }) {
                                     </View>
                                     <View style={{ flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-around', height: Dimensions.get('window').height / 8 }}>
                                         <Badge size={30} style={{ backgroundColor: MMColors.orange }}>1</Badge>
-                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }}>2</Badge>
+                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }}><MMIcon iconName='trello' size={20} /></Badge>
                                         <Badge size={30} style={{ backgroundColor: MMColors.orange }} onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id })}>
                                             <MMIcon iconName='question' size={24} /></Badge>
                                     </View>

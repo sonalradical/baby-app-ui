@@ -5,6 +5,9 @@ import { Button, TextInput } from 'react-native-paper';
 import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
+import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
@@ -14,8 +17,6 @@ import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import { setLogin } from '../../redux/Slice/AuthSlice';
-import { useDispatch } from 'react-redux';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 
@@ -24,7 +25,7 @@ export default function Login({ navigation }) {
     const dispatch = useDispatch();
 
     const initState = {
-        mobileNumber: '+91',
+        mobileNumber: '',
         password: '',
         errors: {},
     };
@@ -46,16 +47,16 @@ export default function Login({ navigation }) {
 
         const messages = {
             'mobileNumber.required': 'Please enter mobile no.',
-            'mobileNumber.min': 'Mobile number must be 13 digits.',
+            'mobileNumber.min': 'Mobile number must be 10 digits.',
             'password.required': 'Please enter password.',
             'password.min': 'Password should have a minimum of 8 characters.',
         };
 
         const rules = loginType === 'password' ? {
-            mobileNumber: 'required|string|min:13',
+            mobileNumber: 'required|string|min:10',
             password: 'required|string|min:8|max:8',
         } : {
-            mobileNumber: 'required|string|min:13'
+            mobileNumber: 'required|string|min:10'
         };
 
         validateAll(state, rules, messages)
@@ -159,7 +160,7 @@ export default function Login({ navigation }) {
 
                     <MMInput
                         optionalStyle={MMStyles.mt20}
-                        maxLength={15}
+                        maxLength={10}
                         value={state.mobileNumber}
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Enter Mobile Number"

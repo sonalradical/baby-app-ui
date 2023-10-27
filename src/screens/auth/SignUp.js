@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Button, Checkbox, TextInput } from 'react-native-paper';
+import { Button, Checkbox, RadioButton, TextInput } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -15,9 +15,9 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
-import MMPicker from '../../components/common/Picker';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
+import MMProfileAvatar from '../../components/common/ImagePicker';
 
 export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -28,12 +28,14 @@ export default function SignUp({ navigation, route }) {
         email: '',
         password: '',
         gender: '',
+        profilePicture: '',
         errors: {},
     };
     const [state, setState] = useState(initState);
     const [checked, setChecked] = useState(false);
 
     const onInputChange = (field, value) => {
+        console.log(state, field, value)
         setState({
             ...state,
             [field]: value,
@@ -83,6 +85,23 @@ export default function SignUp({ navigation, route }) {
             });
     };
 
+    const onGenderChange = (value) => {
+        setState({ ...state, gender: value });
+    };
+
+    const setImageUri = async (imageUri) => {
+        setIsOverlayLoading(true);
+        const formData = new FormData();
+
+        const photo = imageUri.assets[0];
+        formData.append('profilePicture', { uri: photo.uri, name: photo.fileName, type: photo.type });
+        setState({
+            ...state,
+            profilePicture: photo.uri
+        });
+        setIsOverlayLoading(false);
+    };
+
     async function onSignUp() {
         try {
             const apiData = {
@@ -120,6 +139,10 @@ export default function SignUp({ navigation, route }) {
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[MMStyles.titleText, MMStyles.h2]}>Your Profile</Text>
                     </View>
+                    <MMProfileAvatar image={state.profilePicture}
+                        source={{ uri: state.profilePicture ? state.profilePicture : null }}
+                        label='Upload Baby photo'
+                        onImageChange={(imageUri) => setImageUri(imageUri)} />
                     <MMInput
                         optionalStyle={MMStyles.mt20}
                         maxLength={10}
@@ -168,14 +191,21 @@ export default function SignUp({ navigation, route }) {
                         left={<TextInput.Icon
                             icon='lock' />}
                     />
-                    <MMPicker
-                        optionalStyle={MMStyles.mt20}
-                        label="Gender"
-                        value={state.gender}
-                        items={MMConstants.gender}
-                        errorText={(value) => onInputChange('gender', value)}
-                        errorMessage={state.errors.gender}
-                    />
+                    <View style={MMStyles.mt10}>
+                        <Text style={MMStyles.cardSubHeaderText}>Gender</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            {MMConstants.gender.map((option) => (
+                                <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RadioButton
+                                        value={option.value}
+                                        status={state.gender === option.value ? 'checked' : 'unchecked'}
+                                        onPress={() => onGenderChange(option.value)}
+                                    />
+                                    <Text>{option.label}</Text>
+                                </View>
+                            ))}
+                        </View>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Checkbox
                             color={MMColors.orange}
