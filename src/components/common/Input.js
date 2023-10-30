@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { useTheme, Text, TextInput } from 'react-native-paper';
 import MMColors from '../../helpers/Colors';
+import MMConstants from '../../helpers/Constants';
 
 const MMInput = ({ label, description, errorText, mode = 'outlined', ...props }) => {
     const theme = useTheme();
@@ -13,6 +14,7 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
             <TextInput
                 style={styles(theme).input}
                 mode={mode}
+                outlineColor={MMColors.inputBorder}
                 autoCapitalize='none'
                 textBreakStrategy='simple'
                 label=''
@@ -26,15 +28,20 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
 const styles = (theme) => StyleSheet.create({
     container: {
         width: '100%',
-        marginBottom: 5,
+        marginBottom: 10,
     },
     label: {
-        marginBottom: 3,
+        marginBottom: 10,
+        color: MMColors.black,
+        fontFamily: MMConstants.fonts.bold
     },
     input: {
         height: 43,
         lineHeight: 20,
         backgroundColor: MMColors.white,
+        borderRadius: 10,
+        fontFamily: MMConstants.fonts.regular,
+        marginBottom: 10
     },
     error: {
         fontSize: 13,

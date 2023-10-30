@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, View, Text, Dimensions, StyleSheet, Keyboard } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, useTheme } from 'react-native-paper';
 
 import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
@@ -14,13 +14,14 @@ import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
-import { MMRoundButton } from '../../components/common/Button';
+import { MMOutlineButton, MMRoundButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 
 export default function Login({ navigation }) {
+    const theme = useTheme();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const dispatch = useDispatch();
 
@@ -153,61 +154,55 @@ export default function Login({ navigation }) {
                     />
                 </View>
                 <View style={MMStyles.m5}>
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={[MMStyles.titleText, MMStyles.h2]}>Get Started</Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h4, MMStyles.mt10]}>Login</Text>
+                    <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
+                        <Text style={[MMStyles.title]}>Get Started</Text>
                     </View>
 
                     <MMInput
-                        optionalStyle={MMStyles.mt20}
+                        label='Phone Number *'
                         maxLength={10}
                         value={state.mobileNumber}
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
-                        placeholder="Enter Mobile Number"
+                        placeholder="Enter Phone Number"
                         errorText={state.errors.mobileNumber}
                         name="mobileNumber"
                         keyboardType="phone-pad"
-                        left={<TextInput.Icon
-                            icon='cellphone' />}
                     />
                     <MMInput
-                        optionalStyle={MMStyles.mt15}
+                        label='Password *'
                         maxLength={8}
                         value={state.password}
                         onChangeText={(value) => { onInputChange('password', value); }}
                         placeholder="Enter Password"
                         errorText={state.errors.password}
                         name="password"
-                        left={<TextInput.Icon
-                            icon='lock' />}
+                        right={<TextInput.Icon color={theme.colors.primary}
+                            icon='eye' />}
                     />
 
                     <MMRoundButton
                         optionalTextStyle={[MMStyles.h5]}
                         label="Login"
                         onPress={() => onLogin('password')}
-                        optionalStyle={[MMStyles.mt20]}
                     />
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={styles.separator} />
-                        <Text style={[MMStyles.mt20, MMStyles.p10, MMStyles.cardHeaderText]}>OR</Text>
-                        <View style={styles.separator} />
+                    <View style={{ alignItems: 'center' }}>
+                        <Text >Or</Text>
                     </View>
-                    <MMRoundButton
+                    <MMOutlineButton
                         label="Login With OTP"
                         mode='text'
                         onPress={() => { onLogin('otp') }}
-                        optionalStyle={[MMStyles.mt15]}
-                    ></MMRoundButton>
+                        width={'70%'}
+                    ></MMOutlineButton>
                 </View>
-                <View style={[MMStyles.mt30, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.subTitle, MMStyles.h5]}>By continuing you agree to our Terms</Text>
-                    <Text style={[MMStyles.subTitle, MMStyles.h5]}>of Services and Privacy Policy</Text>
+                <View style={[MMStyles.mt15, { alignItems: 'center' }]}>
+                    <Text style={[MMStyles.subTitle, MMStyles.h5]}>By continuing you agree to our </Text>
+                    <Text style={[MMStyles.subTitle, MMStyles.h5]}><Text style={{ color: theme.colors.primary }}>Terms of Services</Text> and
+                        <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text></Text>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt15]}>Need an account ?</Text>
-                        <Button variant="none" transparent style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('SignUp')}>
-                            SIGN UP
-                        </Button>
+                        <MMTransparentButton variant="none" transparent label='SIGN UP'
+                            style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface>
