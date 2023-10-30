@@ -31,14 +31,11 @@ const MMConstants = {
     },
     fonts: {
         // new fonts
-        black: 'Lexend-Black',
-        bold: 'Lexend-Bold',
-        extraBold: 'Lexend-ExtraBold',
-        extraLight: 'Lexend-ExtraLight',
-        light: 'Lexend-Light',
-        medium: 'Lexend-Medium',
-        regular: 'Lexend-Regular',
-        semiBlod: 'Lexend-SemiBold',
+        bold: 'MaisonNeue-Bold',
+        book: 'semiBlod',
+        medium: 'Wulkan Display Medium',
+        wulkanDisplayRegular: 'Wulkan Display Medium',
+        regular: 'TangerineRegular',
     },
     reducerAction: {
         accessToken: 'accessToken',

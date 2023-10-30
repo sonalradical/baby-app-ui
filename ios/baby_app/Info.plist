@@ -55,13 +55,11 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>Lexend-Bold.ttf</string>
-		<string>Lexend-ExtraBold.ttf</string>
-		<string>Lexend-ExtraLight.ttf</string>
-		<string>Lexend-Light.ttf</string>
-		<string>Lexend-Medium.ttf</string>
-		<string>Lexend-Regular.ttf</string>
-		<string>Lexend-SemiBold.ttf</string>
+		<string>Wulkan Display Medium.otf</string>
+		<string>Wulkan Display Regular.otf</string>
+		<string>MaisonNeue-Bold.ttf</string>
+		<string>MaisonNeue-Book.ttf</string>
+		<string>TangerineRegular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -5,7 +5,7 @@ import MMConstants from './Constants';
 const MMStyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: MMColors.white,
+        backgroundColor: MMColors.containerBackground,
         paddingHorizontal: 12,
         paddingVertical: 8,
     },
@@ -72,6 +72,12 @@ const MMStyles = StyleSheet.create({
     paddingHorizontal: {
         paddingHorizontal: 10
     },
+    title: {
+        fontFamily: MMConstants.fonts.medium,
+        fontSize: 40,
+        color: MMColors.black
+    },
+
     titleText: {
         // fontSize: 20,
         color: MMColors.gray,
@@ -81,9 +87,9 @@ const MMStyles = StyleSheet.create({
         alignItems: 'center',
     },
     subTitle: {
-        color: MMColors.gray,
+        color: MMColors.black,
         // fontSize: 16,
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         //opacity: 0.5,
     },
     labelTitle: {
@@ -98,7 +104,7 @@ const MMStyles = StyleSheet.create({
     },
     whiteText: {
         color: MMColors.white,
-        fontFamily: MMConstants.fonts.semiBlod,
+        fontFamily: MMConstants.fonts.bold,
     },
     cardHeaderText: {
         fontFamily: MMConstants.fonts.bold,
@@ -356,7 +362,7 @@ const MMStyles = StyleSheet.create({
     mainLabelFont: {
         // fontSize: 16,
         color: MMColors.heading,
-        fontFamily: MMConstants.fonts.semiBlod,
+        fontFamily: MMConstants.fonts.bold,
         margin: 5,
     },
     forDisplayView: {

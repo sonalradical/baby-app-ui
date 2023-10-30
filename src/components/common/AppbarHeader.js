@@ -11,26 +11,24 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
 
 	return (
-		<View>
-			<Appbar.Header>
-				<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
-					<Avatar.Image
-						size={50}
-						source={babyDetail?.profilePicture ? { uri: MMUtils.getImagePath(babyDetail.profilePicture) } : require('../../assets/images/girl.jpeg')}
-					/>
-					{
-						!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={MMColors.orange} /> : null
-					}
-				</TouchableOpacity>
+		<Appbar.Header style={{ backgroundColor: MMColors.statusBar }}>
+			<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
+				<Avatar.Image
+					size={50}
+					source={babyDetail?.profilePicture ? { uri: MMUtils.getImagePath(babyDetail.profilePicture) } : require('../../assets/images/girl.jpeg')}
+				/>
 				{
-					headerTitle ? <Appbar.Content title={headerTitle} style={{ alignItems: 'center' }} /> :
-						<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
+					!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={MMColors.orange} /> : null
 				}
+			</TouchableOpacity>
+			{
+				headerTitle ? <Appbar.Content title={headerTitle} style={{ alignItems: 'center' }} /> :
+					<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
+			}
 
-				<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
-				<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
-			</Appbar.Header>
-		</View>
+			<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
+			<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
+		</Appbar.Header>
 	);
 };
 

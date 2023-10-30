@@ -2,7 +2,6 @@ const MMColors = {
     label: '#384F63',
     pressedColor: '#2a343d',
 
-    inputBorder: '#B7C8D5',
     inputIcon: '#B7C8D5',
     error: '#DD0000',
 
@@ -11,6 +10,9 @@ const MMColors = {
     orange: '#F68E43',
     purple: '#CEBBFF',
     lightPurple: '#FDFCFF',
+    containerBackground: '#F8F4E9',
+    statusBar: '#F5F5F5',
+    inputBorder: '#E3E3E3',
 
     disabled: '#808080',
     textContent: '#707070',

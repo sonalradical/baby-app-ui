@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import MMStyles from '../../helpers/Styles';
 import MMColors from '../../helpers/Colors';
+import MMConstants from '../../helpers/Constants';
 
 //import MMIcon from './icon';
 
@@ -23,18 +25,34 @@ MMButton.propTypes = {
     optionalStyle: PropTypes.any,
 };
 
+const defaultSetting = {
+    width: '100%',
+}
+
 function MMRoundButton(props) {
     const {
-        label, bgColor, optionalStyle, onPress
+        label, bgColor, width, onPress
     } = props;
     const backgroundColor = bgColor || MMColors.orange;
 
     return (
-        <Button mode="contained" onPress={onPress} style={optionalStyle} backgroundColor={backgroundColor}>
-            {label}
+        <Button mode="contained" onPress={onPress} style={buttonStyle(width)} backgroundColor={backgroundColor}>
+            <Text style={{ fontFamily: MMConstants.fonts.book, color: MMColors.white }}>{label}</Text>
         </Button>
     );
 }
+
+const buttonStyle = function (width) {
+    const widthValue = (_.isNil(width) ? defaultSetting.width : width);
+
+    return {
+        width: widthValue,
+        borderRadius: 10,
+        marginVertical: 10,
+        paddingVertical: 2,
+        alignSelf: 'center'
+    }
+};
 
 MMRoundButton.propTypes = {
     label: PropTypes.string.isRequired,
@@ -66,14 +84,14 @@ MMTransparentButton.propTypes = {
 };
 
 function MMOutlineButton(props) {
-    const { label, onPress, color, disabled = false, optionalStyle } = props;
+    const { label, onPress, color, disabled = false, width } = props;
     return (
         <Button
             mode="outlined"
             textColor={color}
             onPress={onPress}
             disabled={disabled}
-            style={optionalStyle}
+            style={buttonStyle(width)}
         >
             {label}
         </Button>
