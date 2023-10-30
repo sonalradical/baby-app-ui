@@ -11,7 +11,7 @@ const MMColors = {
     purple: '#CEBBFF',
     lightPurple: '#FDFCFF',
     containerBackground: '#F8F4E9',
-    statusBar: '#F5F5F5',
+    secondary: '#F5F5F5',
     inputBorder: '#E3E3E3',
 
     disabled: '#808080',
