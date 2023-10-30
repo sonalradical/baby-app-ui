@@ -31,12 +31,12 @@ const defaultSetting = {
 
 function MMRoundButton(props) {
     const {
-        label, bgColor, width, onPress
+        label, bgColor, width, onPress, style
     } = props;
     const backgroundColor = bgColor || MMColors.orange;
 
     return (
-        <Button mode="contained" onPress={onPress} style={buttonStyle(width)} backgroundColor={backgroundColor}>
+        <Button mode="contained" onPress={onPress} style={[buttonStyle(width), { ...style }]} backgroundColor={backgroundColor}>
             <Text style={{ fontFamily: MMConstants.fonts.book, color: MMColors.white }}>{label}</Text>
         </Button>
     );

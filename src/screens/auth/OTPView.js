@@ -18,10 +18,14 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMPinTextInput from '../../components/common/OTPTextView';
+import MMImageBackground from '../../components/common/ImageBackground';
+import MMSurface from '../../components/common/Surface';
+import { useTheme } from 'react-native-paper';
 
 
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
+    const theme = useTheme();
     const otpRef = useRef(null);
     const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
@@ -170,61 +174,57 @@ export default function OTPView({ navigation, route }) {
 
     const renderView = () => {
         return (
-
-            <View style={MMStyles.containerPadding}>
-                <View >
-                    <Image
-                        textAlign="center"
-                        resizeMode="contain"
-                        style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 3 }]}
-                        source={require('../../assets/images/otp.png')}
-                    />
-                </View>
+            <MMSurface padding={[18, 18, 18, 18]} margin={[350, 0, 0, 0]} style={{
+                borderTopLeftRadius: 40,
+                borderTopRightRadius: 40,
+                height: 450
+            }}>
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[MMStyles.titleText, MMStyles.h2]}>OTP Verification</Text>
+                        <Text style={[MMStyles.title]}>OTP Verification</Text>
                         <Text style={[MMStyles.subTitle, MMStyles.h4, MMStyles.mt30]}>Enter OTP</Text>
                         <Text style={[MMStyles.subTitle, MMStyles.h5, MMStyles.mt20]}>{`We have sent a verification code to`}</Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h5]}>{mobileNumber}</Text>
+                        <Text style={[MMStyles.boldText, MMStyles.h5]}>{mobileNumber}</Text>
                     </View>
-                    <View >
+                    <View>
                         <MMPinTextInput
                             value={state.otp}
                             setValue={(text) => onApply(text)}
                             errorText={state.errors.otp}
-                            cellCount={6}
+                            cellCount={4}
                         />
                     </View>
                     {
                         isResendVisible
                             ? (
-                                <View style={[MMStyles.mt20, MMStyles.mb10]}>
+                                <View style={[MMStyles.mt20, MMStyles.mb5]}>
                                     <Text style={[MMStyles.titleText, MMStyles.h5, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
-                                    <MMTransparentButton label="Resend OTP" textColor={MMColors.orange} onPress={() => onResendOTP()} />
+                                    <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>
                             )
                             : null
                     }
 
-                    <MMRoundButton
-                        optionalTextStyle={[MMStyles.h5]}
-                        label="Verify"
-                        onPress={() => onVerify()}
-                        optionalStyle={[MMStyles.mt20]}
-                    />
+
                 </View>
-            </View>
+                <MMRoundButton
+                    optionalTextStyle={[MMStyles.h5]}
+                    label="Verify"
+                    onPress={() => onVerify()}
+                    Style={[MMStyles.mt20]}
+                />
+            </MMSurface>
 
         );
     };
 
     return (
-        <MMContentContainer>
+        <MMImageBackground>
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        </MMImageBackground>
     );
 }
 
