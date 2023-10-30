@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme, Surface } from 'react-native-paper';
 import _ from 'lodash';
+import MMColors from '../../helpers/Colors';
 
 const defaultSetting = {
 	padding: [18, 18, 18, 18],
@@ -9,7 +10,7 @@ const defaultSetting = {
 	width: '100%',
 }
 
-const MMSurface = ({ padding, margin, width, children, ...props }) => {
+const MMSurface = ({ padding, margin, width, children, style, ...props }) => {
 	const theme = useTheme();
 
 	const paddingValue = (_.isNil(padding) ? defaultSetting.padding : padding);
@@ -18,7 +19,7 @@ const MMSurface = ({ padding, margin, width, children, ...props }) => {
 
 	return (
 		<Surface
-			style={surfaceStyle(theme, paddingValue, marginValue, widthValue)}
+			style={[surfaceStyle(theme, paddingValue, marginValue, widthValue), { ...style }]}
 			elevation={1}
 			{...props}
 		>
@@ -29,7 +30,7 @@ const MMSurface = ({ padding, margin, width, children, ...props }) => {
 
 const surfaceStyle = function (theme, paddingValue, marginValue, widthValue) {
 	return {
-		backgroundColor: theme.colors.surface,
+		backgroundColor: MMColors.backgroundColor,
 		paddingTop: paddingValue[0],
 		paddingRight: paddingValue[1],
 		paddingBottom: paddingValue[2],
