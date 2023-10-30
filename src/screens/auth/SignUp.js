@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
+import { Button, Checkbox, RadioButton, TextInput } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -14,9 +15,8 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
-//import MMProfileAvatar from '../../components/common/ImagePicker';
-import { Button, Checkbox } from 'react-native-paper';
-import MMPicker from '../../components/common/Picker';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMSurface from '../../components/common/Surface';
 
 export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -32,11 +32,8 @@ export default function SignUp({ navigation, route }) {
     const [state, setState] = useState(initState);
     const [checked, setChecked] = useState(false);
 
-    const handleImageSelect = (selectedImage) => {
-        console.log('Selected Image:', selectedImage);
-    };
-
     const onInputChange = (field, value) => {
+        console.log(state, field, value)
         setState({
             ...state,
             [field]: value,
@@ -86,6 +83,10 @@ export default function SignUp({ navigation, route }) {
             });
     };
 
+    const onGenderChange = (value) => {
+        setState({ ...state, gender: value });
+    };
+
     async function onSignUp() {
         try {
             const apiData = {
@@ -119,11 +120,11 @@ export default function SignUp({ navigation, route }) {
     const renderView = () => {
         return (
             <>
-                <View style={MMStyles.containerPadding}>
+                <MMSurface padding={[18, 18, 18, 18]}>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[MMStyles.titleText, MMStyles.h2]}>Your Profile</Text>
                     </View>
-                    {/* <MMProfileAvatar onImageSelect={handleImageSelect} /> */}
+
                     <MMInput
                         optionalStyle={MMStyles.mt20}
                         maxLength={10}
@@ -131,9 +132,10 @@ export default function SignUp({ navigation, route }) {
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Mobile Number"
                         name="mobileNumber"
-                        iconName="cellphone"
-                        errorMessage={state.errors.mobileNumber}
+                        errorText={state.errors.mobileNumber}
                         keyboardType="phone-pad"
+                        left={<TextInput.Icon
+                            icon='cellphone' />}
                     />
                     <MMInput
                         maxLength={50}
@@ -141,9 +143,10 @@ export default function SignUp({ navigation, route }) {
                         value={state.name}
                         onChangeText={(value) => onInputChange('name', value)}
                         placeholder="Name"
-                        iconName="account"
-                        errorMessage={state.errors.name}
+                        errorText={state.errors.name}
                         optionalIconSize={20}
+                        left={<TextInput.Icon
+                            icon='account' />}
                     />
                     <MMInput
                         optionalStyle={MMStyles.mt20}
@@ -152,30 +155,39 @@ export default function SignUp({ navigation, route }) {
                         placeholder="Email"
                         keyboardType="email-address"
                         autoCorrect={false}
-                        iconName="email"
                         maxLength={150}
-                        errorMessage={state.errors.email}
+                        errorText={state.errors.email}
                         optionalIconSize={20}
+                        left={<TextInput.Icon
+                            icon='email' />}
                     />
                     <MMInput
                         optionalStyle={MMStyles.mt20}
                         value={state.password}
                         onChangeText={(value) => onInputChange('password', value)}
                         placeholder="Password"
-                        iconName="lock"
                         maxLength={8}
-                        errorMessage={state.errors.password}
+                        errorText={state.errors.password}
                         optionalIconSize={20}
                         type={'password'}
+                        left={<TextInput.Icon
+                            icon='lock' />}
                     />
-                    <MMPicker
-                        optionalStyle={MMStyles.mt20}
-                        label="Gender"
-                        value={state.gender}
-                        items={MMConstants.gender}
-                        onValueChange={(value) => onInputChange('gender', value)}
-                        errorMessage={state.errors.gender}
-                    />
+                    <View style={MMStyles.mt10}>
+                        <Text style={MMStyles.cardSubHeaderText}>Gender</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            {MMConstants.gender.map((option) => (
+                                <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RadioButton
+                                        value={option.value}
+                                        status={state.gender === option.value ? 'checked' : 'unchecked'}
+                                        onPress={() => onGenderChange(option.value)}
+                                    />
+                                    <Text>{option.label}</Text>
+                                </View>
+                            ))}
+                        </View>
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Checkbox
                             color={MMColors.orange}
@@ -194,8 +206,8 @@ export default function SignUp({ navigation, route }) {
                         onPress={() => onSubmit()}
                         optionalStyle={[MMStyles.mt10]}
                     />
-                </View>
-                <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
+                </MMSurface>
+                <View style={[MMStyles.mt30, { alignSelf: 'center', flexDirection: 'row' }]}>
                     <Text style={[MMStyles.subTitle, MMStyles.h5]}>Already have an account?</Text>
                     <Button variant="none" transparent style={[MMStyles.subTitle, MMStyles.h6, { bottom: 7 }]}
                         onPress={() => navigation.navigate('Login')}> SIGN IN </Button>
@@ -205,13 +217,12 @@ export default function SignUp({ navigation, route }) {
     };
 
     return (
-        <View style={MMStyles.container}>
+        <MMContentContainer>
             <MMScrollView>
                 {renderView()}
-
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </View>
+        </MMContentContainer>
     );
 }
 

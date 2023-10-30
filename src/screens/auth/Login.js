@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Image, View, Text, Dimensions, StyleSheet, Keyboard } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 
 import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
+import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
@@ -14,15 +17,15 @@ import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import { setLogin } from '../../redux/Slice/AuthSlice';
-import { useDispatch } from 'react-redux';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMSurface from '../../components/common/Surface';
 
 export default function Login({ navigation }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const dispatch = useDispatch();
 
     const initState = {
-        mobileNumber: '+91',
+        mobileNumber: '',
         password: '',
         errors: {},
     };
@@ -44,16 +47,16 @@ export default function Login({ navigation }) {
 
         const messages = {
             'mobileNumber.required': 'Please enter mobile no.',
-            'mobileNumber.min': 'Mobile number must be 13 digits.',
+            'mobileNumber.min': 'Mobile number must be 10 digits.',
             'password.required': 'Please enter password.',
             'password.min': 'Password should have a minimum of 8 characters.',
         };
 
         const rules = loginType === 'password' ? {
-            mobileNumber: 'required|string|min:13',
+            mobileNumber: 'required|string|min:10',
             password: 'required|string|min:8|max:8',
         } : {
-            mobileNumber: 'required|string|min:13'
+            mobileNumber: 'required|string|min:10'
         };
 
         validateAll(state, rules, messages)
@@ -140,7 +143,7 @@ export default function Login({ navigation }) {
 
     const renderView = () => {
         return (
-            <View style={MMStyles.containerPadding}>
+            <MMSurface padding={[18, 18, 8, 18]}>
                 <View>
                     <Image
                         textAlign="center"
@@ -157,14 +160,15 @@ export default function Login({ navigation }) {
 
                     <MMInput
                         optionalStyle={MMStyles.mt20}
-                        maxLength={15}
+                        maxLength={10}
                         value={state.mobileNumber}
                         onChangeText={(value) => { onInputChange('mobileNumber', value); }}
                         placeholder="Enter Mobile Number"
-                        errorMessage={state.errors.mobileNumber}
+                        errorText={state.errors.mobileNumber}
                         name="mobileNumber"
-                        iconName="cellphone"
                         keyboardType="phone-pad"
+                        left={<TextInput.Icon
+                            icon='cellphone' />}
                     />
                     <MMInput
                         optionalStyle={MMStyles.mt15}
@@ -172,9 +176,10 @@ export default function Login({ navigation }) {
                         value={state.password}
                         onChangeText={(value) => { onInputChange('password', value); }}
                         placeholder="Enter Password"
-                        errorMessage={state.errors.password}
-                        iconName="lock"
+                        errorText={state.errors.password}
                         name="password"
+                        left={<TextInput.Icon
+                            icon='lock' />}
                     />
 
                     <MMRoundButton
@@ -205,17 +210,17 @@ export default function Login({ navigation }) {
                         </Button>
                     </View>
                 </View>
-            </View>
+            </MMSurface>
         );
     };
 
     return (
-        <View style={MMStyles.container}>
+        <MMContentContainer>
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </View>
+        </MMContentContainer >
     );
 }
 

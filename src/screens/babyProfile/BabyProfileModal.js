@@ -15,16 +15,15 @@ import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
-import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const dispatch = useDispatch();
-	const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+	const navigation = useNavigation();
 	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
-	const navigation = useNavigation();
 
 	useEffect(() => {
 		async function Init() {
@@ -42,6 +41,8 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							babyProfiles.unshift(selectedBaby);
 						}
 						setSelectedBabyDetail(selectedBaby);
+					} else {
+						setSelectedBabyDetail();
 					}
 					setBabyList(babyProfiles);
 				}
@@ -95,7 +96,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					<Card.Content style={MMStyles.rowCenter}>
 						<Avatar.Image
 							size={56}
-							source={require('../../assets/images/girl.jpeg')}
+							source={profileData?.profilePicture ? { uri: MMUtils.getImagePath(profileData.profilePicture) } : require('../../assets/images/girl.jpeg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender} style={{ width: 100 }} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
@@ -127,6 +128,10 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 								<MMIcon iconName={'close'} iconSize={24} onPress={() => setIsModalOpen(false)} />
 							</View>
 						</View>
+						{
+							_.isEmpty(selectedBabyDetail) ?
+								<Text style={[MMStyles.cardSubHeaderText, MMStyles.mb10, { textAlign: 'center' }]}>Please Select Baby</Text> : null
+						}
 						{isLoading ? (
 							<View style={{ height: 40 }}>
 								<MMSpinner /></View>
@@ -136,12 +141,11 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							))
 						)}
 						{_.isEmpty(babyList) ?
-							<Text style={[MMStyles.cardSubHeaderText, { textAlign: 'center' }]}>No Babies Found</Text> : null}
+							<Text style={[MMStyles.cardSubHeaderText, { textAlign: 'center' }]}>No Babies Found Please Add New Baby</Text> : null}
 						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
 				</View>
 			</Modal>
-			<MMOverlaySpinner visible={isOverlayLoading} />
 		</>
 	);
 };

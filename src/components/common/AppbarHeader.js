@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 import MMStyles from '../../helpers/Styles';
 import MMColors from '../../helpers/Colors';
+import MMUtils from '../../helpers/Utils';
 import MMIcon from './Icon';
 
 const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
+	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
 
 	return (
 		<View>
@@ -13,13 +16,17 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 				<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
 					<Avatar.Image
 						size={50}
-						source={babyDetail ? require('../../assets/images/girl.jpeg') : require('../../assets/images/girl.jpeg')}
+						source={babyDetail?.profilePicture ? { uri: MMUtils.getImagePath(babyDetail.profilePicture) } : require('../../assets/images/girl.jpeg')}
 					/>
 					{
 						!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={MMColors.orange} /> : null
 					}
 				</TouchableOpacity>
-				<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
+				{
+					headerTitle ? <Appbar.Content title={headerTitle} style={{ alignItems: 'center' }} /> :
+						<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
+				}
+
 				<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
 				<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
 			</Appbar.Header>

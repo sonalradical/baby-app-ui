@@ -23,6 +23,9 @@ import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMSurface from '../../components/common/Surface';
+import MMProfileAvatar from '../../components/common/ImagePicker';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
@@ -32,6 +35,7 @@ export default function AddBaby({ route }) {
 
     const initState = {
         name: '',
+        profilePicture: '',
         birthDate: undefined,
         birthTime: undefined,
         birthPlace: '',
@@ -39,6 +43,7 @@ export default function AddBaby({ route }) {
         showBirthDate: false,
         showBirthTime: false,
         errors: {},
+        imageSource: '',
     };
     const [state, setState] = useState(initState);
     const [checked, setChecked] = useState(false);
@@ -58,7 +63,15 @@ export default function AddBaby({ route }) {
                             birthTime: response.data.birthTime,
                             birthPlace: response.data.birthPlace,
                             gender: response.data.gender,
+                            profilePicture: response.data.profilePicture,
                         });
+                        if (response.data.profilePicture) {
+                            imageSourceUri = MMUtils.getImagePath(response.data.profilePicture);
+                            setState({
+                                ...state,
+                                imageSource: imageSourceUri
+                            })
+                        }
                         setIsOverlayLoading(false);
                     }
                 } catch (error) {
@@ -73,8 +86,60 @@ export default function AddBaby({ route }) {
         loadBabyProfileDetail();
     }, [babyId]);
 
-    const handleImageSelect = (selectedImage) => {
-        console.log('Selected Image:', selectedImage);
+    const setImageUri = async (imageData) => {
+        const photo = imageData.assets[0];
+        let storageFileKeys = [];
+        try {
+            setIsOverlayLoading(true);
+            let picIndex = 0;
+
+            for (const pic of imageData.assets) {
+                picIndex++;
+
+                await MMApiService.getPreSignedUrl(photo.fileName)
+                    .then(function (response) {
+                        (async () => {
+                            const responseData = response.data;
+                            if (responseData) {
+                                const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
+                                if (_.isNil(result)) {
+                                    setIsOverlayLoading(false);
+                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
+                                } else {
+                                    setIsOverlayLoading(false);
+                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
+                                    setState({
+                                        ...state,
+                                        profilePicture: responseData.storageFileKey,
+                                        imageSource: photo.uri
+                                    })
+                                    storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
+                                }
+                            } else {
+                                setIsOverlayLoading(false);
+                                MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
+                            }
+                        })();
+                    })
+                    .catch(function (error) {
+                        setIsOverlayLoading(false);
+                        setState({
+                            ...state,
+                            errors: MMUtils.apiErrorParamMessages(error)
+                        });
+
+                        const serverError = MMUtils.apiErrorMessage(error);
+                        if (serverError) {
+                            MMUtils.showToastMessage(serverError);
+                        }
+                    });
+            }
+        } catch (err) {
+            setIsOverlayLoading(false);
+            MMUtils.consoleError(err);
+        }
+
+        return storageFileKeys;
     };
 
     const onInputChange = (field, value) => {
@@ -135,6 +200,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
+                profilePicture: state.profilePicture
             };
 
             await MMApiService.addBaby(apiData)
@@ -165,6 +231,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
+                profilePicture: state.profilePicture
             };
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
@@ -249,156 +316,157 @@ export default function AddBaby({ route }) {
 
     const renderView = () => {
         return (
-            <>
-                <View style={MMStyles.containerPadding}>
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={[MMStyles.titleText, MMStyles.h2]}>Your Profile</Text>
-                    </View>
+            <MMSurface padding={[18, 18, 18, 18]}>
+                <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
+                    <Text style={[MMStyles.titleText, MMStyles.h2]}>Baby Profile</Text>
+                </View>
+                <MMProfileAvatar image={state.imageSource}
+                    source={{ uri: state.imageSource ? state.imageSource : null }}
+                    label='Upload Baby photo'
+                    onImageChange={(imageUri) => setImageUri(imageUri)} />
+                <MMInput
+                    name='name'
+                    placeholder='Name'
+                    value={state.name}
+                    errorText={state.errors.name}
+                    onChangeText={(value) => onInputChange('name', value)}
+                    maxLength={50}
+                    left={<TextInput.Icon
+                        icon='account' />}
+                />
+                <View>
                     <MMInput
-                        maxLength={50}
-                        optionalStyle={MMStyles.mt20}
-                        value={state.name}
-                        onChangeText={(value) => onInputChange('name', value)}
-                        placeholder="Name"
-                        iconName="account"
-                        errorMessage={state.errors.name}
-                        optionalIconSize={20}
+                        name='birthDate'
+                        placeholder='Birth Date'
+                        value={_.isNil(state.birthDate) ? '' : MMUtils.displayDate(state.birthDate)}
+                        errorText={state.errors.birthDate}
+                        onPressIn={onPressBirthDate}
+                        onKeyPress={onPressBirthDate}
+                        left={<TextInput.Icon
+                            icon='calendar-range'
+                            forceTextInputFocus={false}
+                            onPress={onPressBirthDate}
+                        />}
                     />
-                    <View style={MMStyles.mt20}>
-                        <MMInput
-                            name='birthDate'
-                            placeholder='Birth Date'
-                            value={_.isNil(state.birthDate) ? '' : MMUtils.displayDate(state.birthDate)}
-                            errorMessage={state.errors.birthDate}
-                            onPressIn={onPressBirthDate}
-                            onKeyPress={onPressBirthDate}
-                            left={<TextInput.Icon
-                                icon='calendar-range'
-                                forceTextInputFocus={false}
-                                onPress={onPressBirthDate}
-                            />}
-                        />
-                        {
-                            state.showBirthDate &&
-                            <MMDateTimePicker
-                                name='birthDate'
-                                mode='date'
-                                display={MMUtils.isPlatformIos() ? 'inline' : 'default'}
-                                date={_.isNil(state.birthDate) ? new Date() : new Date(state.birthDate)}
-                                maximumDate={new Date()}
-                                onConfirm={(date) => {
-                                    setState({
-                                        ...state,
-                                        birthDate: new Date(date),
-                                        showBirthDate: false,
-                                        errors: {
-                                            ...state.errors,
-                                            birthDate: ''
-                                        }
-                                    })
-                                }}
-                                onCancel={() => {
-                                    setState({
-                                        ...state,
-                                        showBirthDate: false
-                                    })
-                                }}
-                            />
-                        }
-                    </View>
-                    <View style={MMStyles.mt20}>
-                        <MMInput
-                            name='birthTime'
-                            placeholder='Birth Time'
-                            value={_.isNil(state.birthTime) ? '' : moment(state.birthTime).format(MMConstants.format.dateTimePickerTime)}
-                            errorText={state.errors.birthTime}
-                            onPressIn={onPressBirthTime}
-                            onKeyPress={onPressBirthTime}
-                            left={<TextInput.Icon
-                                icon='clock-time-four-outline'
-                                forceTextInputFocus={false}
-                                onPress={onPressBirthTime}
-                            />}
-                        />
-                        {
-                            state.showBirthTime &&
-                            <MMDateTimePicker
-                                name='birthTime'
-                                mode='time'
-                                date={_.isNil(state.birthTime) ? new Date() : new Date(state.birthTime)}
-                                minimumDate={new Date()}
-                                maximumDate={null}
-                                onConfirm={(date) => {
-                                    setState({
-                                        ...state,
-                                        birthTime: new Date(date),
-                                        showBirthTime: false
-                                    })
-                                }}
-                                onCancel={() => {
-                                    setState({
-                                        ...state,
-                                        showBirthTime: false
-                                    })
-                                }}
-                            />
-                        }
-                    </View>
-                    <MMInput
-                        maxLength={50}
-                        optionalStyle={MMStyles.mt20}
-                        value={state.birthPlace}
-                        onChangeText={(value) => onInputChange('birthPlace', value)}
-                        placeholder="Birth Place"
-                        iconName="account"
-                        errorMessage={state.errors.birthPlace}
-                        optionalIconSize={20}
-                    />
-                    <SegmentedButtons
-                        value={state.gender}
-                        onValueChange={(value) => onInputChange('gender', value)}
-                        buttons={MMConstants.gender}
-                        style={MMStyles.mt20}
-                    />
-                    {state.errors.gender && _.size(state.errors.gender) > 0 ?
-                        <MMFormErrorText errorText={state.errors.gender} /> : null}
                     {
-                        babyId ?
-                            <MMFlexView>
-                                <MMOutlineButton
-                                    optionalTextStyle={[MMStyles.h5]}
-                                    label="Delete"
-                                    onPress={() => onDelete()}
-                                    optionalStyle={[MMStyles.mt20]}
-                                />
-                                <MMRoundButton
-                                    optionalTextStyle={[MMStyles.h5]}
-                                    label="Save"
-                                    onPress={() => onSubmit()}
-                                    optionalStyle={[MMStyles.mt20]}
-                                />
-                            </MMFlexView> :
+                        state.showBirthDate &&
+                        <MMDateTimePicker
+                            name='birthDate'
+                            mode='date'
+                            display={MMUtils.isPlatformIos() ? 'inline' : 'default'}
+                            date={_.isNil(state.birthDate) ? new Date() : new Date(state.birthDate)}
+                            maximumDate={new Date()}
+                            onConfirm={(date) => {
+                                setState({
+                                    ...state,
+                                    birthDate: new Date(date),
+                                    showBirthDate: false,
+                                    errors: {
+                                        ...state.errors,
+                                        birthDate: ''
+                                    }
+                                })
+                            }}
+                            onCancel={() => {
+                                setState({
+                                    ...state,
+                                    showBirthDate: false
+                                })
+                            }}
+                        />
+                    }
+                </View>
+                <View >
+                    <MMInput
+                        name='birthTime'
+                        placeholder='Birth Time'
+                        value={_.isNil(state.birthTime) ? '' : moment(state.birthTime).format(MMConstants.format.dateTimePickerTime)}
+                        errorText={state.errors.birthTime}
+                        onPressIn={onPressBirthTime}
+                        onKeyPress={onPressBirthTime}
+                        left={<TextInput.Icon
+                            icon='clock-time-four-outline'
+                            forceTextInputFocus={false}
+                            onPress={onPressBirthTime}
+                        />}
+                    />
+                    {
+                        state.showBirthTime &&
+                        <MMDateTimePicker
+                            name='birthTime'
+                            mode='time'
+                            date={_.isNil(state.birthTime) ? new Date() : new Date(state.birthTime)}
+                            minimumDate={new Date()}
+                            maximumDate={null}
+                            onConfirm={(date) => {
+                                setState({
+                                    ...state,
+                                    birthTime: new Date(date),
+                                    showBirthTime: false
+                                })
+                            }}
+                            onCancel={() => {
+                                setState({
+                                    ...state,
+                                    showBirthTime: false
+                                })
+                            }}
+                        />
+                    }
+                </View>
+                <MMInput
+                    name='birthPlace'
+                    placeholder='Birth Place'
+                    value={state.birthPlace}
+                    errorText={state.errors.name}
+                    onChangeText={(value) => onInputChange('birthPlace', value)}
+                    maxLength={50}
+                    left={<TextInput.Icon
+                        icon='account' />}
+                />
+                <SegmentedButtons
+                    value={state.gender}
+                    onValueChange={(value) => onInputChange('gender', value)}
+                    buttons={MMConstants.gender}
+                    style={MMStyles.mt20}
+                />
+                {state.errors.gender && _.size(state.errors.gender) > 0 ?
+                    <MMFormErrorText errorText={state.errors.gender} /> : null}
+                {
+                    babyId ?
+                        <MMFlexView>
+                            <MMOutlineButton
+                                optionalTextStyle={[MMStyles.h5]}
+                                label="Delete"
+                                onPress={() => onDelete()}
+                                optionalStyle={[MMStyles.mt20]}
+                            />
                             <MMRoundButton
                                 optionalTextStyle={[MMStyles.h5]}
                                 label="Save"
                                 onPress={() => onSubmit()}
                                 optionalStyle={[MMStyles.mt20]}
                             />
+                        </MMFlexView> :
+                        <MMRoundButton
+                            optionalTextStyle={[MMStyles.h5]}
+                            label="Save"
+                            onPress={() => onSubmit()}
+                            optionalStyle={[MMStyles.mt20]}
+                        />
 
-                    }
-                </View>
-            </>
+                }
+            </MMSurface>
         );
     };
 
     return (
-        <View style={MMStyles.container}>
+        <MMContentContainer>
             <MMScrollView>
                 {renderView()}
-
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </View>
+        </MMContentContainer>
     );
 }
 

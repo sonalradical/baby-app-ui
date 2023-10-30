@@ -21,10 +21,8 @@ import OTPView from '../screens/auth/OTPView';
 import SignUp from '../screens/auth/SignUp';
 
 // app screens
-import Home from '../screens/home/Home';
 import AddBaby from '../screens/babyProfile/AddBaby';
 import Logout from '../screens/auth/Logout';
-import ChapterList from '../screens/chapter/ChapterList';
 import Quiz from '../screens/quiz/Quiz';
 import Footer from '../screens/footer/Footer';
 import Header from '../screens/header/Header';
@@ -68,10 +66,6 @@ function AppStackNavigator() {
                     name="AddBaby"
                     component={AddBaby}
                     options={{ headerShown: false }}
-                />
-                <AppStack.Screen
-                    name="ChapterList"
-                    component={ChapterList}
                 />
                 <AppStack.Screen
                     name="Quiz"

@@ -62,8 +62,14 @@ axios.interceptors.response.use(async (response) => {
         const navigation = useNavigation();
         navigation.navigate('Logout');
     }
+    else if (error.response.status === MMEnums.responseStatusCodes.BadRequest) {
+        const errorMessage = error.response.data.message;
+        MMUtils.showToastMessage(errorMessage);
+    }
     else {
-        MMUtils.showToastMessage(error.message);
+        error.response.data.message ?
+            MMUtils.showToastMessage(error.response.data.message) :
+            MMUtils.showToastMessage(error.message);
     }
     return null;
 });

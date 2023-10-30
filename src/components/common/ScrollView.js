@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { View } from 'react-native';
-
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import MMUtils from '../../helpers/Utils';
