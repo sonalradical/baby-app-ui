@@ -17,7 +17,6 @@ import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton } from '../../components/common/Button';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
-import MMProfileAvatar from '../../components/common/ImagePicker';
 
 export default function SignUp({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -28,7 +27,6 @@ export default function SignUp({ navigation, route }) {
         email: '',
         password: '',
         gender: '',
-        profilePicture: '',
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -89,19 +87,6 @@ export default function SignUp({ navigation, route }) {
         setState({ ...state, gender: value });
     };
 
-    const setImageUri = async (imageUri) => {
-        setIsOverlayLoading(true);
-        const formData = new FormData();
-
-        const photo = imageUri.assets[0];
-        formData.append('profilePicture', { uri: photo.uri, name: photo.fileName, type: photo.type });
-        setState({
-            ...state,
-            profilePicture: photo.uri
-        });
-        setIsOverlayLoading(false);
-    };
-
     async function onSignUp() {
         try {
             const apiData = {
@@ -139,10 +124,7 @@ export default function SignUp({ navigation, route }) {
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[MMStyles.titleText, MMStyles.h2]}>Your Profile</Text>
                     </View>
-                    <MMProfileAvatar image={state.profilePicture}
-                        source={{ uri: state.profilePicture ? state.profilePicture : null }}
-                        label='Upload Baby photo'
-                        onImageChange={(imageUri) => setImageUri(imageUri)} />
+
                     <MMInput
                         optionalStyle={MMStyles.mt20}
                         maxLength={10}

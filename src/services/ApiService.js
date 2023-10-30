@@ -137,6 +137,38 @@ async function saveQuiz(data) {
     return result;
 }
 
+//------------------------------------------------------------------ Image upload API
+
+async function getPreSignedUrl(fileName) {
+    console.log(fileName, 'fileName')
+    const config = {
+        url: `baby/getPreSignedUrl/${fileName}`,
+        method: 'get'
+    };
+    console.log(config.url, 'url')
+    const result = await axios(config);
+    return result;
+}
+
+async function getFile(data) {
+    const config = {
+        url: `baby/getFile`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function deleteFile(data) {
+    const config = {
+        url: `baby/deleteFile`,
+        method: 'delete',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
 
 //------------------------------------------------------------------- Export All APIs
 //#region
@@ -154,5 +186,8 @@ export default {
     getChapterList,
     getQuiz,
     saveQuiz,
+    getPreSignedUrl,
+    getFile,
+    deleteFile,
 };
 //#endregion

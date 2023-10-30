@@ -10,6 +10,7 @@ import base64 from 'react-native-base64';
 
 import MMConstants from './Constants';
 import MMEnums from './Enums';
+import { HttpStatusCode } from 'axios';
 
 // ------------------------------------------------------------------- Device Functions
 // #region
@@ -139,6 +140,47 @@ function filterDataByQuery(data, query) {
         });
     });
 }
+
+
+function uploadPicture(picture, preSignedUrl) {
+    const fileUri = isPlatformAndroid() ? picture.uri : picture.uri.replace('file:', '');
+    const fileName = picture.fileName
+    return uploadPictureToS3(preSignedUrl, fileUri, fileName);
+};
+
+function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
+    console.log(preSignedUrl, 'preSignedUrl')
+    let result = {};
+
+    // only xhr style works; axios and S3 doesn't seem to like each other.
+    // todo: migrate this to use axios and/or use promises.
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', preSignedUrl);
+    xhr.onreadystatechange = function () {
+        console.log(xhr.status, 'xhr.status')
+        if (xhr.readyState === 4) {
+            if (xhr.status === HttpStatusCode.Ok) {
+                result = {
+                    success: true
+                };
+            } else {
+                result = {
+                    success: false
+                };
+            }
+        }
+    }
+    xhr.setRequestHeader('Content-Type', 'image/jpeg');
+    xhr.send({
+        uri: fileUri,
+        type: 'image/jpeg',
+        name: fileName
+    });
+    console.log(result, 'resultresultresultresult')
+    return result;
+};
+
+
 // #endregion
 
 // ------------------------------------------------------------------- For error handling Functions
@@ -249,5 +291,7 @@ export default {
     displayUtcTime,
     displayUtcDate,
     logout,
-    filterDataByQuery
+    filterDataByQuery,
+    uploadPicture,
+    uploadPictureToS3
 };

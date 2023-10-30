@@ -25,6 +25,7 @@ import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
+import MMProfileAvatar from '../../components/common/ImagePicker';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
@@ -34,6 +35,7 @@ export default function AddBaby({ route }) {
 
     const initState = {
         name: '',
+        profilePicture: '',
         birthDate: undefined,
         birthTime: undefined,
         birthPlace: '',
@@ -75,8 +77,56 @@ export default function AddBaby({ route }) {
         loadBabyProfileDetail();
     }, [babyId]);
 
-    const handleImageSelect = (selectedImage) => {
-        console.log('Selected Image:', selectedImage);
+    const setImageUri = async (imageData) => {
+        const photo = imageData.assets[0];
+        let storageFileKeys = [];
+        try {
+            setIsOverlayLoading(true);
+            let picIndex = 0;
+
+            for (const pic of imageData.assets) {
+                picIndex++;
+
+                await MMApiService.getPreSignedUrl(photo.fileName)
+                    .then(function (response) {
+                        (async () => {
+                            const responseData = response.data;
+                            if (responseData) {
+                                const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
+                                console.log(result, 'result')
+                                if (_.isNil(result)) {
+                                    setIsOverlayLoading(false);
+                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`, 5000);
+                                } else {
+                                    setIsOverlayLoading(false);
+                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`, 5000);
+                                    storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
+                                }
+                            } else {
+                                setIsOverlayLoading(false);
+                                MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
+                            }
+                        })();
+                    })
+                    .catch(function (error) {
+                        setIsOverlayLoading(false);
+                        setState({
+                            ...state,
+                            errors: MMUtils.apiErrorParamMessages(error)
+                        });
+
+                        const serverError = MMUtils.apiErrorMessage(error);
+                        if (serverError) {
+                            MMUtils.showToastMessage(serverError);
+                        }
+                    });
+            }
+        } catch (err) {
+            setIsOverlayLoading(false);
+            MMUtils.consoleError(err);
+        }
+
+        return storageFileKeys;
     };
 
     const onInputChange = (field, value) => {
@@ -255,7 +305,10 @@ export default function AddBaby({ route }) {
                 <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.titleText, MMStyles.h2]}>Baby Profile</Text>
                 </View>
-
+                <MMProfileAvatar image={state.profilePicture}
+                    source={{ uri: state.profilePicture ? state.profilePicture : null }}
+                    label='Upload Baby photo'
+                    onImageChange={(imageUri) => setImageUri(imageUri)} />
                 <MMInput
                     name='name'
                     placeholder='Name'
