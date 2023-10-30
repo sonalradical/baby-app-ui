@@ -64,7 +64,9 @@ const MMConstants = {
         radio: 'radio',
         checkbox: 'checkbox',
         text: 'text'
-    }
+    },
+    //AWS Base url
+    AWS_S3_BASE_URL: 'https://skuvent-staging-field-inventory.s3.us-east-2.amazonaws.com',
 };
 
 export default MMConstants;

@@ -157,7 +157,6 @@ function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', preSignedUrl);
     xhr.onreadystatechange = function () {
-        console.log(xhr.status, 'xhr.status')
         if (xhr.readyState === 4) {
             if (xhr.status === HttpStatusCode.Ok) {
                 result = {
@@ -176,9 +175,13 @@ function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
         type: 'image/jpeg',
         name: fileName
     });
-    console.log(result, 'resultresultresultresult')
+
     return result;
 };
+
+function getImagePath(profilePicture) {
+    return `${MMConstants.AWS_S3_BASE_URL}/${profilePicture}`
+}
 
 
 // #endregion
@@ -293,5 +296,6 @@ export default {
     logout,
     filterDataByQuery,
     uploadPicture,
-    uploadPictureToS3
+    uploadPictureToS3,
+    getImagePath
 };

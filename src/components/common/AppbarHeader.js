@@ -4,6 +4,7 @@ import { Appbar, Avatar } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import MMStyles from '../../helpers/Styles';
 import MMColors from '../../helpers/Colors';
+import MMUtils from '../../helpers/Utils';
 import MMIcon from './Icon';
 
 const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
@@ -15,7 +16,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 				<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
 					<Avatar.Image
 						size={50}
-						source={babyDetail ? require('../../assets/images/girl.jpeg') : require('../../assets/images/girl.jpeg')}
+						source={babyDetail?.profilePicture ? { uri: MMUtils.getImagePath(babyDetail.profilePicture) } : require('../../assets/images/girl.jpeg')}
 					/>
 					{
 						!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={MMColors.orange} /> : null

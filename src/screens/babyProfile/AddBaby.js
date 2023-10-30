@@ -43,6 +43,7 @@ export default function AddBaby({ route }) {
         showBirthDate: false,
         showBirthTime: false,
         errors: {},
+        imageSource: '',
     };
     const [state, setState] = useState(initState);
     const [checked, setChecked] = useState(false);
@@ -62,7 +63,15 @@ export default function AddBaby({ route }) {
                             birthTime: response.data.birthTime,
                             birthPlace: response.data.birthPlace,
                             gender: response.data.gender,
+                            profilePicture: response.data.profilePicture,
                         });
+                        if (response.data.profilePicture) {
+                            imageSourceUri = MMUtils.getImagePath(response.data.profilePicture);
+                            setState({
+                                ...state,
+                                imageSource: imageSourceUri
+                            })
+                        }
                         setIsOverlayLoading(false);
                     }
                 } catch (error) {
@@ -93,13 +102,17 @@ export default function AddBaby({ route }) {
                             const responseData = response.data;
                             if (responseData) {
                                 const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
-                                console.log(result, 'result')
                                 if (_.isNil(result)) {
                                     setIsOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`, 5000);
+                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
                                 } else {
                                     setIsOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`, 5000);
+                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
+                                    setState({
+                                        ...state,
+                                        profilePicture: responseData.storageFileKey,
+                                        imageSource: photo.uri
+                                    })
                                     storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
                                 }
                             } else {
@@ -187,6 +200,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
+                profilePicture: state.profilePicture
             };
 
             await MMApiService.addBaby(apiData)
@@ -217,6 +231,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
+                profilePicture: state.profilePicture
             };
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
@@ -305,8 +320,8 @@ export default function AddBaby({ route }) {
                 <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.titleText, MMStyles.h2]}>Baby Profile</Text>
                 </View>
-                <MMProfileAvatar image={state.profilePicture}
-                    source={{ uri: state.profilePicture ? state.profilePicture : null }}
+                <MMProfileAvatar image={state.imageSource}
+                    source={{ uri: state.imageSource ? state.imageSource : null }}
                     label='Upload Baby photo'
                     onImageChange={(imageUri) => setImageUri(imageUri)} />
                 <MMInput
