@@ -145,9 +145,11 @@ export default function Login({ navigation }) {
 
     const renderView = () => {
         return (
-            <MMSurface padding={[18, 18, 18, 18]} margin={[210, 0, 0, 0]} style={{
+            <MMSurface margin={[0, 0, 0, 0]} style={{
                 borderTopLeftRadius: 40,
-                borderTopRightRadius: 40
+                borderTopRightRadius: 40,
+                bottom: 0,
+                position: 'absolute'
             }}>
                 <View style={MMStyles.m10}>
                     <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
@@ -221,7 +223,7 @@ export default function Login({ navigation }) {
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMImageBackground >
+        </MMImageBackground>
     );
 }
 

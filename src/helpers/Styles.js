@@ -80,8 +80,8 @@ const MMStyles = StyleSheet.create({
 
     titleText: {
         // fontSize: 20,
-        color: MMColors.gray,
-        fontFamily: MMConstants.fonts.regular,
+        color: MMColors.black,
+        fontFamily: MMConstants.fonts.book,
     },
     alignItems: {
         alignItems: 'center',
@@ -102,8 +102,8 @@ const MMStyles = StyleSheet.create({
         color: MMColors.orange,
         fontFamily: MMConstants.fonts.medium,
     },
-    whiteText: {
-        color: MMColors.white,
+    boldText: {
+        color: MMColors.black,
         fontFamily: MMConstants.fonts.bold,
     },
     cardHeaderText: {

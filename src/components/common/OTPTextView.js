@@ -70,7 +70,7 @@ const styles = (theme) => StyleSheet.create({
         borderWidth: 2,
         borderColor: MMColors.disabled,
         borderRadius: 10,
-        marginHorizontal: 3,
+        marginHorizontal: 10,
         marginTop: 20,
         textAlign: 'center',
         color: MMColors.black
@@ -86,7 +86,8 @@ const styles = (theme) => StyleSheet.create({
         color: theme.colors.error,
     },
     fieldRow: {
-        justifyContent: 'center',
+        marginVertical: 15,
+        alignSelf: 'center',
     },
 });
 
