@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Keyboard, Alert } from 'react-native';
-import { SegmentedButtons, TextInput } from 'react-native-paper';
+import { RadioButton, SegmentedButtons, TextInput } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -14,18 +14,18 @@ import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
+import MMColors from '../../helpers/Colors';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
-//import MMProfileAvatar from '../../components/common/ImagePicker';
+import MMProfileAvatar from '../../components/common/ImagePicker';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
-import MMProfileAvatar from '../../components/common/ImagePicker';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
@@ -148,6 +148,10 @@ export default function AddBaby({ route }) {
                 [field]: '',
             },
         });
+    };
+
+    const onGenderChange = (value) => {
+        setState({ ...state, gender: value });
     };
 
     const onSubmit = () => {
@@ -313,7 +317,7 @@ export default function AddBaby({ route }) {
 
     const renderView = () => {
         return (
-            <MMSurface padding={[18, 18, 18, 18]}>
+            <MMSurface padding={[18, 18, 18, 18]} style={{ backgroundColor: MMColors.white }}>
                 <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.title, MMStyles.h2]}>Baby Profile</Text>
                 </View>
@@ -322,19 +326,19 @@ export default function AddBaby({ route }) {
                     label='Upload Baby photo'
                     onImageChange={(imageUri) => setImageUri(imageUri)} />
                 <MMInput
+                    label='Name *'
                     name='name'
-                    placeholder='Name'
+                    placeholder='Enter Name'
                     value={state.name}
                     errorText={state.errors.name}
                     onChangeText={(value) => onInputChange('name', value)}
                     maxLength={50}
-                    left={<TextInput.Icon
-                        icon='account' />}
                 />
                 <View>
                     <MMInput
+                        label='Birth Date *'
                         name='birthDate'
-                        placeholder='Birth Date'
+                        placeholder='Enter Birth Date'
                         value={_.isNil(state.birthDate) ? '' : MMUtils.displayDate(state.birthDate)}
                         errorText={state.errors.birthDate}
                         onPressIn={onPressBirthDate}
@@ -375,8 +379,9 @@ export default function AddBaby({ route }) {
                 </View>
                 <View >
                     <MMInput
+                        label='Birth Time'
                         name='birthTime'
-                        placeholder='Birth Time'
+                        placeholder='Enter Birth Time'
                         value={_.isNil(state.birthTime) ? '' : moment(state.birthTime).format(MMConstants.format.dateTimePickerTime)}
                         errorText={state.errors.birthTime}
                         onPressIn={onPressBirthTime}
@@ -412,37 +417,42 @@ export default function AddBaby({ route }) {
                     }
                 </View>
                 <MMInput
+                    label='Birth Place *'
                     name='birthPlace'
-                    placeholder='Birth Place'
+                    placeholder='Enter Birth Place'
                     value={state.birthPlace}
                     errorText={state.errors.name}
                     onChangeText={(value) => onInputChange('birthPlace', value)}
                     maxLength={50}
-                    left={<TextInput.Icon
-                        icon='account' />}
                 />
-                <SegmentedButtons
-                    value={state.gender}
-                    onValueChange={(value) => onInputChange('gender', value)}
-                    buttons={MMConstants.gender}
-                    style={MMStyles.mt20}
-                />
-                {state.errors.gender && _.size(state.errors.gender) > 0 ?
-                    <MMFormErrorText errorText={state.errors.gender} /> : null}
+                <View>
+                    <Text style={MMStyles.boldText}>Gender *</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        {MMConstants.gender.map((option) => (
+                            <View key={option.value} style={MMStyles.rowCenter}>
+                                <RadioButton
+                                    value={option.value}
+                                    status={state.gender === option.value ? 'checked' : 'unchecked'}
+                                    onPress={() => onGenderChange(option.value)}
+                                />
+                                <Text style={MMStyles.subTitle}>{option.label}</Text>
+                            </View>
+                        ))}
+                    </View>
+                    <MMFormErrorText errorText={state.errors.gender} />
+                </View>
                 {
                     babyId ?
                         <MMFlexView>
                             <MMOutlineButton
-                                optionalTextStyle={[MMStyles.h5]}
                                 label="Delete"
                                 onPress={() => onDelete()}
-                                optionalStyle={[MMStyles.mt20]}
+                                width='45%'
                             />
                             <MMRoundButton
-                                optionalTextStyle={[MMStyles.h5]}
                                 label="Save"
                                 onPress={() => onSubmit()}
-                                optionalStyle={[MMStyles.mt20]}
+                                width='45%'
                             />
                         </MMFlexView> :
                         <MMRoundButton

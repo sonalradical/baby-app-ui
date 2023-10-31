@@ -4,7 +4,7 @@ import ImagePicker, { launchCamera, launchImageLibrary } from 'react-native-imag
 import MMUtils from '../../helpers/Utils';
 import MMColors from '../../helpers/Colors';
 import MMStyles from '../../helpers/Styles';
-import { Divider } from 'react-native-paper';
+import { Divider, IconButton } from 'react-native-paper';
 
 const MMProfileAvatar = (props) => {
     const { image, source, onImageChange } = props;
@@ -54,8 +54,7 @@ const MMProfileAvatar = (props) => {
             <TouchableOpacity onPress={showBottomSheet} style={{ alignItems: 'center' }}>
                 <View
                     style={[
-                        styles.avatarContainer,
-                        { backgroundColor: MMColors.lightGray },
+                        styles.avatarContainer
                     ]}
                 >
                     {image ? (
@@ -63,6 +62,14 @@ const MMProfileAvatar = (props) => {
                     ) : (
                         <Text style={MMStyles.subTitle}>{`Upload \n Photo`}</Text>
                     )}
+
+                    <IconButton
+                        icon="camera"
+                        color={MMColors.black}
+                        size={24}
+                        style={styles.iconButton}
+                        onPress={showBottomSheet}
+                    />
                 </View>
             </TouchableOpacity>
             <Modal
@@ -71,17 +78,23 @@ const MMProfileAvatar = (props) => {
                 visible={bottomSheetVisible}
                 onRequestClose={hideBottomSheet}
             >
-                <View style={styles.bottomSheet}>
-                    <TouchableOpacity onPress={() => handleImageSelect('photo')}>
-                        <Text style={styles.bottomSheetOption}>Choose from Photos</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleImageSelect('camera')}>
-                        <Text style={styles.bottomSheetOption}>Take Photo</Text>
-                    </TouchableOpacity>
-                    <Divider />
-                    <TouchableOpacity onPress={hideBottomSheet}>
-                        <Text style={[styles.bottomSheetOption, { color: MMColors.textContent }]}>Cancel</Text>
-                    </TouchableOpacity>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                }}>
+                    <View style={styles.bottomSheet}>
+                        <TouchableOpacity onPress={() => handleImageSelect('photo')}>
+                            <Text style={styles.bottomSheetOption}>Choose from Photos</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleImageSelect('camera')}>
+                            <Text style={styles.bottomSheetOption}>Take Photo</Text>
+                        </TouchableOpacity>
+                        <Divider />
+                        <TouchableOpacity onPress={hideBottomSheet}>
+                            <Text style={[styles.bottomSheetOption, { color: MMColors.textContent }]}>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Modal>
         </View>
@@ -95,7 +108,11 @@ const styles = StyleSheet.create({
         borderRadius: 75,
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden',
+        overflow: 'visible',
+        backgroundColor: MMColors.white,
+        borderColor: MMColors.black,
+        borderWidth: 1,
+        marginBottom: 30
     },
     avatar: {
         width: '100%',
@@ -106,14 +123,31 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: MMColors.white,
         padding: 16,
+        shadowColor: '#000000',
+        borderTopRightRadius: 40,
+        borderTopLeftRadius: 40,
+        shadowOpacity: 30,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 1,
+        },
     },
     bottomSheetOption: {
         fontSize: 18,
         padding: 10,
         textAlign: 'center',
-        color: MMColors.black
+        color: MMColors.black,
+    },
+    iconButton: {
+        position: 'absolute',
+        bottom: -12,
+        right: -12,
+        backgroundColor: MMColors.white,
+        zIndex: 1,
+        borderWidth: 1,
     },
 });
 
