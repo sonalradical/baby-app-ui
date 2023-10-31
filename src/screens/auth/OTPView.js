@@ -183,7 +183,7 @@ export default function OTPView({ navigation, route }) {
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[MMStyles.title]}>OTP Verification</Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h4, MMStyles.mt30]}>Enter OTP</Text>
+                        <Text style={[MMStyles.boldText, MMStyles.h4, MMStyles.mt30]}>Enter OTP</Text>
                         <Text style={[MMStyles.subTitle, MMStyles.h5, MMStyles.mt20]}>{`We have sent a verification code to`}</Text>
                         <Text style={[MMStyles.boldText, MMStyles.h5]}>{mobileNumber}</Text>
                     </View>
