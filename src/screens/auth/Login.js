@@ -194,7 +194,7 @@ export default function Login({ navigation }) {
                         onPress={() => onLogin('password')}
                     />
                     <View style={{ alignItems: 'center' }}>
-                        <Text >Or</Text>
+                        <Text style={[MMStyles.subTitle, MMStyles.h5]}>Or</Text>
                     </View>
                     <MMOutlineButton
                         label="Login With OTP"
@@ -208,7 +208,7 @@ export default function Login({ navigation }) {
                     <Text style={[MMStyles.subTitle, MMStyles.h5]}><Text style={{ color: theme.colors.primary }}>Terms of Services</Text> and
                         <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text></Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt15]}>Need an account ?</Text>
+                        <Text style={[MMStyles.boldText, MMStyles.h6, MMStyles.mt15]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
                             style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('SignUp')} />
                     </View>
