@@ -129,7 +129,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							</View>
 						</View>
 						{
-							_.isEmpty(selectedBabyDetail) ?
+							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
 								<Text style={[MMStyles.cardSubHeaderText, MMStyles.mb10, { textAlign: 'center' }]}>Please Select Baby</Text> : null
 						}
 						{isLoading ? (

@@ -77,12 +77,6 @@ const MMStyles = StyleSheet.create({
         fontSize: 40,
         color: MMColors.black
     },
-
-    titleText: {
-        // fontSize: 20,
-        color: MMColors.black,
-        fontFamily: MMConstants.fonts.book,
-    },
     alignItems: {
         alignItems: 'center',
     },
@@ -119,9 +113,11 @@ const MMStyles = StyleSheet.create({
     },
     errorText: {
         color: MMColors.error,
-        // fontSize: 12,
         fontFamily: MMConstants.fonts.book,
-        marginLeft: 2
+        marginLeft: 2,
+        fontSize: 13,
+        paddingTop: 2,
+        paddingLeft: 2,
     },
     contentText: {
         // fontSize: 14,

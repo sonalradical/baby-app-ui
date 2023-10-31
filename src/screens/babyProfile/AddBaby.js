@@ -31,6 +31,7 @@ export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
     const dispatch = useDispatch();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [imageSource, setImageSource] = useState();
     const navigation = useNavigation();
 
     const initState = {
@@ -43,7 +44,6 @@ export default function AddBaby({ route }) {
         showBirthDate: false,
         showBirthTime: false,
         errors: {},
-        imageSource: '',
     };
     const [state, setState] = useState(initState);
     const [checked, setChecked] = useState(false);
@@ -67,10 +67,7 @@ export default function AddBaby({ route }) {
                         });
                         if (response.data.profilePicture) {
                             imageSourceUri = MMUtils.getImagePath(response.data.profilePicture);
-                            setState({
-                                ...state,
-                                imageSource: imageSourceUri
-                            })
+                            setImageSource(imageSourceUri);
                         }
                         setIsOverlayLoading(false);
                     }
@@ -110,9 +107,9 @@ export default function AddBaby({ route }) {
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
                                     setState({
                                         ...state,
-                                        profilePicture: responseData.storageFileKey,
-                                        imageSource: photo.uri
+                                        profilePicture: responseData.storageFileKey
                                     })
+                                    setImageSource(photo.uri);
                                     storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
                                 }
                             } else {
@@ -207,7 +204,7 @@ export default function AddBaby({ route }) {
                 .then(function (response) {
                     if (response) {
                         dispatch(setSelectedBabyId(response.data._id));
-                        navigation.navigate('Home', { babyId: response.data._id });
+                        navigation.navigate('Home');
                     }
                     setIsOverlayLoading(false);
                 })
@@ -318,10 +315,10 @@ export default function AddBaby({ route }) {
         return (
             <MMSurface padding={[18, 18, 18, 18]}>
                 <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.titleText, MMStyles.h2]}>Baby Profile</Text>
+                    <Text style={[MMStyles.title, MMStyles.h2]}>Baby Profile</Text>
                 </View>
-                <MMProfileAvatar image={state.imageSource}
-                    source={{ uri: state.imageSource ? state.imageSource : null }}
+                <MMProfileAvatar image={imageSource}
+                    source={{ uri: imageSource ? imageSource : null }}
                     label='Upload Baby photo'
                     onImageChange={(imageUri) => setImageUri(imageUri)} />
                 <MMInput

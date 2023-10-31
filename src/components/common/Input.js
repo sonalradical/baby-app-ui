@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme, Text, TextInput } from 'react-native-paper';
 import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
+import MMFormErrorText from './FormErrorText';
 
 const MMInput = ({ label, description, errorText, mode = 'outlined', ...props }) => {
     const theme = useTheme();
@@ -20,7 +21,7 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
                 label=''
                 {...props}
             />
-            {errorText ? <Text style={styles(theme).error}>{errorText}</Text> : null}
+            {errorText ? <MMFormErrorText errorText={errorText} /> : null}
         </View>
     )
 };
@@ -42,12 +43,6 @@ const styles = (theme) => StyleSheet.create({
         borderRadius: 10,
         fontFamily: MMConstants.fonts.book,
         marginBottom: 10
-    },
-    error: {
-        fontSize: 13,
-        paddingTop: 2,
-        paddingLeft: 2,
-        color: theme.colors.error,
     },
 });
 

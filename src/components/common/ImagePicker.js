@@ -61,7 +61,7 @@ const MMProfileAvatar = (props) => {
                     {image ? (
                         <Image source={source} style={styles.avatar} />
                     ) : (
-                        <Text style={MMStyles.titleText}>{`Upload \n Photo`}</Text>
+                        <Text style={MMStyles.subTitle}>{`Upload \n Photo`}</Text>
                     )}
                 </View>
             </TouchableOpacity>
