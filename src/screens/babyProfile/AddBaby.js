@@ -317,7 +317,7 @@ export default function AddBaby({ route }) {
 
     const renderView = () => {
         return (
-            <MMSurface padding={[18, 18, 18, 18]} style={{ backgroundColor: MMColors.white }}>
+            <View style={MMStyles.m10}>
                 <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.title, MMStyles.h2]}>Baby Profile</Text>
                 </View>
@@ -463,7 +463,7 @@ export default function AddBaby({ route }) {
                         />
 
                 }
-            </MMSurface>
+            </View>
         );
     };
 
