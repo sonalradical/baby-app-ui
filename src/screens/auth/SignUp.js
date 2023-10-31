@@ -207,7 +207,8 @@ export default function SignUp({ navigation, route }) {
                             setChecked(!checked);
                         }}
                         style={{ borderColor: theme.colors.primary }} />
-                    <Text style={MMStyles.subTitle}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text>and <Text style={{ color: theme.colors.primary }}>Privacy Policy</Text>.</Text>
+                    <Text style={MMStyles.subTitle}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use</Text> and
+                        <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text>.</Text>
 
                 </View>
                 <MMRoundButton
