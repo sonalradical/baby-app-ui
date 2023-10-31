@@ -40,7 +40,7 @@ const styles = (theme) => StyleSheet.create({
         lineHeight: 20,
         backgroundColor: MMColors.white,
         borderRadius: 10,
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         marginBottom: 10
     },
     error: {

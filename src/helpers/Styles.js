@@ -73,7 +73,7 @@ const MMStyles = StyleSheet.create({
         paddingHorizontal: 10
     },
     title: {
-        fontFamily: MMConstants.fonts.medium,
+        fontFamily: MMConstants.fonts.wulkanDisplaymedium,
         fontSize: 40,
         color: MMColors.black
     },
@@ -95,12 +95,12 @@ const MMStyles = StyleSheet.create({
     labelTitle: {
         color: MMColors.label,
         // fontSize: 14,
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         opacity: 0.6,
     },
     orangeText: {
         color: MMColors.orange,
-        fontFamily: MMConstants.fonts.medium,
+        fontFamily: MMConstants.fonts.wulkanDisplaymedium,
     },
     boldText: {
         color: MMColors.black,
@@ -120,12 +120,12 @@ const MMStyles = StyleSheet.create({
     errorText: {
         color: MMColors.error,
         // fontSize: 12,
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         marginLeft: 2
     },
     contentText: {
         // fontSize: 14,
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         color: MMColors.label,
         textAlign: 'justify',
     },
@@ -152,12 +152,12 @@ const MMStyles = StyleSheet.create({
         height: 50,
     },
     formInput: {
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         color: MMColors.label,
         fontSize: 14,
     },
     formInputArea: {
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         color: MMColors.label,
         fontSize: 14,
     },
@@ -168,7 +168,6 @@ const MMStyles = StyleSheet.create({
     },
     buttonPrimary: {
         // width: '100%',
-        backgroundColor: MMColors.orange,
         borderRadius: 4,
         marginTop: 5,
         marginBottom: 5,
@@ -378,17 +377,17 @@ const MMStyles = StyleSheet.create({
         // fontSize: 12,
         color: MMColors.lightBlack,
         textAlign: 'justify',
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
     },
     smallInfoText: {
         // fontSize: 10,
         color: MMColors.lightBlack,
         textAlign: 'justify',
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
     },
     orangeFont: {
         color: MMColors.orange,
-        fontFamily: MMConstants.fonts.regular,
+        fontFamily: MMConstants.fonts.book,
         // fontSize: 11
     },
     isApiCallLoaderView: {

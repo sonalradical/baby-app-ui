@@ -32,10 +32,10 @@ const MMConstants = {
     fonts: {
         // new fonts
         bold: 'MaisonNeue-Bold',
-        book: 'semiBlod',
-        medium: 'Wulkan Display Medium',
-        wulkanDisplayRegular: 'Wulkan Display Medium',
-        regular: 'TangerineRegular',
+        book: 'MaisonNeue-Book',
+        wulkanDisplaymedium: 'Wulkan Display Medium',
+        wulkanDisplayRegular: 'Wulkan Display Regular',
+        tangerineregular: 'TangerineRegular',
     },
     reducerAction: {
         accessToken: 'accessToken',
