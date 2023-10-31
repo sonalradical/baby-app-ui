@@ -121,7 +121,7 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <MMSurface padding={[18, 18, 18, 18]}>
+            <View style={MMStyles.m10}>
                 <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.title]}>Your Profile</Text>
                 </View>
@@ -220,7 +220,7 @@ export default function SignUp({ navigation, route }) {
                             style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('Login')} />
                     </View>
                 </View>
-            </MMSurface>
+            </View>
         );
     };
 
