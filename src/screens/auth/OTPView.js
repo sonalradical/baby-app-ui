@@ -174,10 +174,11 @@ export default function OTPView({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <MMSurface padding={[18, 18, 18, 18]} margin={[350, 0, 0, 0]} style={{
+            <MMSurface margin={[0, 0, 0, 0]} style={{
                 borderTopLeftRadius: 40,
                 borderTopRightRadius: 40,
-                height: 450
+                bottom: 0,
+                position: 'absolute'
             }}>
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>
