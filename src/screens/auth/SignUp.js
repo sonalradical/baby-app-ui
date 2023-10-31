@@ -14,9 +14,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
-import MMSurface from '../../components/common/Surface';
 import MMFormErrorText from '../../components/common/FormErrorText';
-import MMImageBackground from '../../components/common/ImageBackground';
 import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function SignUp({ navigation, route }) {
@@ -30,6 +28,7 @@ export default function SignUp({ navigation, route }) {
         email: '',
         password: '',
         gender: '',
+        terms: false,
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -59,7 +58,8 @@ export default function SignUp({ navigation, route }) {
             'email.email': 'Email address is not in a valid format.',
             'password.required': 'Please enter password.',
             'password.min': 'Password should have a minimum of 8 characters.',
-            'gender.required': 'Please select gender',
+            'gender.required': 'Please select gender.',
+            'terms.required': 'please Accept Terms.'
         };
 
         const rules = {
@@ -68,12 +68,16 @@ export default function SignUp({ navigation, route }) {
             email: 'required|string|email',
             password: 'required|min:8|max:8',
             gender: 'required',
+            terms: 'required'
         };
 
         validateAll(state, rules, messages)
             .then(async () => {
                 setIsOverlayLoading(true);
-                onSignUp();
+                if (checked) {
+                    onSignUp();
+                }
+
             })
             .catch((errors) => {
                 console.log("Validation Errors:", errors);
@@ -88,6 +92,14 @@ export default function SignUp({ navigation, route }) {
     const onGenderChange = (value) => {
         setState({ ...state, gender: value });
     };
+    const onTermsCheck = () => {
+        // Update the checkbox state in the form data
+        setChecked(!checked)
+        setState({
+            ...state,
+            terms: !checked,
+        });
+    };
 
     async function onSignUp() {
         try {
@@ -98,7 +110,6 @@ export default function SignUp({ navigation, route }) {
                 password: state.password,
                 gender: state.gender,
             };
-
             await MMApiService.userSignup(apiData)
                 .then(function (response) {
                     if (response) {
@@ -199,14 +210,14 @@ export default function SignUp({ navigation, route }) {
                         color={theme.colors.primary}
                         size="sm"
                         status={checked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setChecked(!checked);
-                        }}
+                        onPress={onTermsCheck}
+                        value={state.terms}
                         style={{ borderColor: theme.colors.primary }} />
                     <Text style={MMStyles.subTitle}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use</Text> and
                         <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text>.</Text>
 
                 </View>
+                {!checked && state.errors.terms ? <MMFormErrorText errorText={state.errors.terms} /> : null}
                 <MMRoundButton
                     optionalTextStyle={[MMStyles.h5]}
                     label="Sign Up"
