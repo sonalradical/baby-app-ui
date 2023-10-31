@@ -178,7 +178,8 @@ export default function OTPView({ navigation, route }) {
                 borderTopLeftRadius: 40,
                 borderTopRightRadius: 40,
                 bottom: 0,
-                position: 'absolute'
+                position: 'absolute',
+                backgroundColor: MMColors.backgroundColor
             }}>
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>
@@ -199,7 +200,7 @@ export default function OTPView({ navigation, route }) {
                         isResendVisible
                             ? (
                                 <View style={[MMStyles.mt20, MMStyles.mb5]}>
-                                    <Text style={[MMStyles.titleText, MMStyles.h5, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
+                                    <Text style={[MMStyles.subTitle, MMStyles.h5, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
                                     <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>
                             )

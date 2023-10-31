@@ -61,16 +61,8 @@ MMRoundButton.propTypes = {
 };
 
 function MMTransparentButton(props) {
-    const { label, textColor } = props;
-    const color = textColor || MMColors.disabled;
-    const getStyle = () => {
-        return {
-            ...MMStyles.titleText,
-            ...MMStyles.alignSelfCenter,
-            ...MMStyles.h5,
-            color: color
-        };
-    };
+    const { label } = props;
+
     return (
         <Button variant="none" transparent {...props}>
             {label}
