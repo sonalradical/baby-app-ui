@@ -57,14 +57,14 @@ export default function OTPView({ navigation, route }) {
             },
         });
 
-        if (value.length === 6) {
+        if (value.length === 4) {
             onVerify(value);
         }
     };
 
     extend('validOTP', {
         validate() {
-            if (_.size(state.otp) !== 6) {
+            if (_.size(state.otp) !== 4) {
                 return false;
             }
             return true;
@@ -103,7 +103,7 @@ export default function OTPView({ navigation, route }) {
 
         const messages = {
             'otp.required': 'Please enter OTP.',
-            'otp.validOTP': 'Please enter 6 digit OTP.',
+            'otp.validOTP': 'Please enter 4 digit OTP.',
         };
 
         const rules = {
