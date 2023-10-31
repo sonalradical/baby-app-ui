@@ -17,12 +17,13 @@ import MMInput from '../../components/common/Input';
 import { MMOutlineButton, MMRoundButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
+import MMImageBackground from '../../components/common/ImageBackground';
 
 export default function Login({ navigation }) {
     const theme = useTheme();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [passwordHide, setPasswordHide] = useState(true);
     const dispatch = useDispatch();
 
     const initState = {
@@ -144,16 +145,11 @@ export default function Login({ navigation }) {
 
     const renderView = () => {
         return (
-            <MMSurface padding={[18, 18, 8, 18]}>
-                <View>
-                    <Image
-                        textAlign="center"
-                        resizeMode="contain"
-                        style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 4 }]}
-                        source={require('../../assets/images/loginImage.png')}
-                    />
-                </View>
-                <View style={MMStyles.m5}>
+            <MMSurface padding={[18, 18, 18, 18]} margin={[210, 0, 0, 0]} style={{
+                borderTopLeftRadius: 40,
+                borderTopRightRadius: 40
+            }}>
+                <View style={MMStyles.m10}>
                     <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
                         <Text style={[MMStyles.title]}>Get Started</Text>
                     </View>
@@ -175,9 +171,19 @@ export default function Login({ navigation }) {
                         onChangeText={(value) => { onInputChange('password', value); }}
                         placeholder="Enter Password"
                         errorText={state.errors.password}
+                        secureTextEntry={passwordHide}
                         name="password"
-                        right={<TextInput.Icon color={theme.colors.primary}
-                            icon='eye' />}
+                        right={passwordHide ? (
+                            <TextInput.Icon
+                                color={theme.colors.primary}
+                                icon='eye-off'
+                                onPress={() => setPasswordHide(false)}
+                            />
+                        ) : <TextInput.Icon
+                            color={theme.colors.primary}
+                            icon='eye'
+                            onPress={() => setPasswordHide(true)}
+                        />}
                     />
 
                     <MMRoundButton
@@ -210,12 +216,12 @@ export default function Login({ navigation }) {
     };
 
     return (
-        <MMContentContainer>
+        <MMImageBackground>
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer >
+        </MMImageBackground >
     );
 }
 

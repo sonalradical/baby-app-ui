@@ -11,7 +11,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
 
 	return (
-		<Appbar.Header style={{ backgroundColor: MMColors.statusBar }}>
+		<Appbar.Header style={{ backgroundColor: MMColors.secondary }}>
 			<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
 				<Avatar.Image
 					size={50}
