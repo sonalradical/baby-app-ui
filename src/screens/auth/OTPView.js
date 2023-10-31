@@ -178,7 +178,8 @@ export default function OTPView({ navigation, route }) {
                 borderTopLeftRadius: 40,
                 borderTopRightRadius: 40,
                 bottom: 0,
-                position: 'absolute'
+                position: 'absolute',
+                backgroundColor: MMColors.backgroundColor
             }}>
                 <View style={MMStyles.m5}>
                     <View style={{ alignItems: 'center' }}>

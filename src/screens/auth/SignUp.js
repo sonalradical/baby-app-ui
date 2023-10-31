@@ -17,6 +17,7 @@ import { MMRoundButton, MMTransparentButton } from '../../components/common/Butt
 import MMSurface from '../../components/common/Surface';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMImageBackground from '../../components/common/ImageBackground';
+import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
@@ -120,12 +121,7 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <MMSurface margin={[0, 0, 0, 0]} style={{
-                borderTopLeftRadius: 40,
-                borderTopRightRadius: 40,
-                bottom: 0,
-                position: 'absolute'
-            }}>
+            <MMSurface padding={[18, 18, 18, 18]}>
                 <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
                     <Text style={[MMStyles.title]}>Your Profile</Text>
                 </View>
@@ -229,12 +225,12 @@ export default function SignUp({ navigation, route }) {
     };
 
     return (
-        <MMImageBackground>
+        <MMContentContainer>
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMImageBackground>
+        </MMContentContainer>
     );
 }
 

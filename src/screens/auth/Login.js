@@ -11,6 +11,7 @@ import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
+import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
@@ -149,7 +150,8 @@ export default function Login({ navigation }) {
                 borderTopLeftRadius: 40,
                 borderTopRightRadius: 40,
                 bottom: 0,
-                position: 'absolute'
+                position: 'absolute',
+                backgroundColor: MMColors.backgroundColor
             }}>
                 <View style={MMStyles.m10}>
                     <View style={[MMStyles.mb30, { alignItems: 'center' }]}>

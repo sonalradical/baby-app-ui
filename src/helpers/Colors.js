@@ -12,7 +12,7 @@ const MMColors = {
     lightPurple: '#FDFCFF',
     backgroundColor: '#F8F4E9',
     secondary: '#F5F5F5',
-    inputBorder: '#E3E3E3',
+    inputBorder: '#B7C8D5',
 
     disabled: '#808080',
     textContent: '#707070',

@@ -5,7 +5,7 @@ import MMConstants from './Constants';
 const MMStyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: MMColors.containerBackground,
+        backgroundColor: MMColors.backgroundColor,
         paddingHorizontal: 12,
         paddingVertical: 8,
     },
