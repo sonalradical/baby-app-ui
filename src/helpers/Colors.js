@@ -1,5 +1,5 @@
 const MMColors = {
-    label: '#384F63',
+    label: '#153634',
     pressedColor: '#2a343d',
 
     inputIcon: '#B7C8D5',
