@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import Home from '../home/Home';
-import ChapterList from '../chapter/ChapterList';
-import MMIcon from '../../components/common/Icon';
 import Icon from 'react-native-vector-icons/Feather'
+
 import FooterTab from './FooterTab';
+import MMIcon from '../../components/common/Icon';
+import Home from '../home/Home';
+import Milestone from '../milestone/Milestone';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,8 +31,8 @@ export default function Footer() {
                 }}
             />
             <Tab.Screen
-                name="ChapterList"
-                component={ChapterList}
+                name="Milestone"
+                component={Milestone}
                 options={{
                     tabBarLabel: 'Milestone',
                     tabBarIcon: ({ color, size }) => {

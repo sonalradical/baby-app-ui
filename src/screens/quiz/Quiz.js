@@ -93,7 +93,7 @@ export default function Quiz({ navigation, route }) {
 
         if (currentQuestion === questionList.length - 1) {
             setCurrentQuestion(0);
-            navigation.navigate('ChapterList', { babyId });
+            navigation.navigate('Home', { babyId });
         } else {
             setCurrentQuestion(currentQuestion + 1);
         }

@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, Dimensions, Image, ScrollView, Keyboard } from 'react-native';
 import { Appbar, Badge, Card, Chip, Text } from 'react-native-paper';
+import CircularProgress, {
+    CircularProgressWithChild,
+} from 'react-native-circular-progress-indicator';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { setHeaderTitle } from '../../redux/Slice/AppSlice';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
@@ -17,13 +19,12 @@ import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMSearchbar from '../../components/common/Searchbar';
-import MMIcon from '../../components/common/Icon';
 import MMNoRecordsFound from '../../components/common/NoRecordsFound';
+import MMContentContainer from '../../components/common/ContentContainer';
 
-export default function ChapterList({ navigation, route }) {
+export default function ChapterList({ route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
-    const dispatch = useDispatch();
+    const navigation = useNavigation();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
     const [state, setState] = useState({
@@ -33,29 +34,20 @@ export default function ChapterList({ navigation, route }) {
         selectedChapterType: 'all'
     });
 
-    const imageMapping = {
-        pregnancy: require('../../assets/images/pregnancy.png'),
-        adoption: require('../../assets/images/adoption.png'),
-        surrogacy: require('../../assets/images/surrogacy.png'),
-        WelcomeToTheWorld: require('../../assets/images/WelcomeToTheWorld.png'),
-        oneMonth: require('../../assets/images/oneMonth.png'),
-        twoMonth: require('../../assets/images/twoMonth.png'),
-    };
-
     useEffect(() => {
         const loadChapterList = async () => {
             const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
+            setBabyId(babyId);
             if (babyId) {
                 try {
+                    console.log(babyId, 'babyId')
                     setIsOverlayLoading(true);
-                    setBabyId(babyId);
-                    const response = await MMApiService.getChapterList(babyId);
+                    const response = await MMApiService.getChapterList(babyId, 'chapter');
                     if (response.data) {
-                        const chapters = _.sortBy(response.data.chapterDetail, 'position');
+                        const chapters = response.data.chapterDetail
                         setState({
                             ...state,
                             query: '',
-                            filteredChapter: chapters,
                             chapterList: chapters,
                         });
                         setIsOverlayLoading(false);
@@ -69,137 +61,65 @@ export default function ChapterList({ navigation, route }) {
                 }
             }
             else {
-                console.log(state.filteredChapter, 'state.filteredChapter')
                 MMUtils.showToastMessage('No Data found')
             }
         }
         loadChapterList();
     }, [selectedBabyId, MMConstants.storage.selectedBaby]);
 
-    useFocusEffect(
-        useCallback(() => {
-            dispatch(setHeaderTitle('Chapters'));
-        }, [dispatch])
-    );
-
-
-    const onChangeSearch = (query) => {
-        if (_.isEmpty(query)) {
-            setState({
-                ...state,
-                query: '',
-                filteredChapter: state.chapterList,
-                selectedChapterType: ''
-            });
-        } else {
-            const filterQuery = {
-                'title': query,
-            }
-            const filteredValues = MMUtils.filterDataByQuery(state.chapterList, filterQuery);
-
-            setState({
-                ...state,
-                query: query,
-                filteredChapter: filteredValues,
-                selectedChapterType: ''
-            });
-        }
-        return true;
-    };
-
-    const onChipPress = (chapterType) => {
-        Keyboard.dismiss();
-        let filteredChapter;
-
-        if (chapterType === 'all') {
-            filteredChapter = state.chapterList;
-        } else {
-            filteredChapter = state.chapterList.filter((chapter) => chapter.chapterType === chapterType);
-        }
-        setState({ ...state, query: '', filteredChapter, selectedChapterType: chapterType });
-    };
 
     const renderView = () => {
         return (
-            <View style={MMStyles.containerPadding}>
-                {_.map(state.filteredChapter, (chapter) => {
-                    const localImage = imageMapping[chapter.icon];
+            <>
+                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10, { flex: 1 }]}>Chapters</Text>
+                {_.map(state.chapterList, (chapter) => {
+                    const iconData = MMConstants.chapters.find((ch) => ch.value === chapter.icon);
                     return (
-                        <Card style={styles.whiteBg} key={chapter._id}>
-                            <Card.Content >
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Card style={styles.whiteBg} key={chapter._id}
+                            onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id })}>
+                            <View style={[MMStyles.m10, { flexDirection: 'row' }]}>
+                                <View style={styles.imageView}>
                                     <Image
                                         textAlign="center"
                                         resizeMode="contain"
-                                        source={localImage}
-                                        style={{ width: Dimensions.get('window').width / 5, height: Dimensions.get('window').height / 8 }}
+                                        source={iconData.url}
+                                        style={styles.image}
                                     />
-                                    <View style={{ flex: 1, marginLeft: 10 }}>
-                                        <Text style={[MMStyles.cardSubHeaderText, MMStyles.h5]}>{chapter.title}</Text>
-                                        <Text>{chapter.description}</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-around', height: Dimensions.get('window').height / 8 }}>
-                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }}>1</Badge>
-                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }}><MMIcon iconName='trello' size={20} /></Badge>
-                                        <Badge size={30} style={{ backgroundColor: MMColors.orange }} onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id })}>
-                                            <MMIcon iconName='question' size={24} /></Badge>
-                                    </View>
                                 </View>
-                            </Card.Content>
+                                <View style={[MMStyles.m15, MMStyles.flex1]}>
+                                    <Text style={[MMStyles.labelTitle, MMStyles.h3]} numberOfLines={1} ellipsizeMode='tail'>
+                                        {chapter.title}</Text>
+                                    <Text style={[MMStyles.labelTitle, MMStyles.h7]} numberOfLines={1} ellipsizeMode='tail'>
+                                        {'You’ve grown and learnt'}</Text>
+                                </View>
+                                <View style={MMStyles.mt10}>
+                                    <CircularProgress value={chapter.totalAnswers}
+                                        title={`${chapter.totalAnswers} / ${chapter.totalQuestions}`}
+                                        radius={30}
+                                        titleStyle={[MMStyles.labelTitle, MMStyles.h6]}
+                                        activeStrokeWidth={5}
+                                        inActiveStrokeWidth={5}
+                                        activeStrokeColor={iconData.color}
+                                        showProgressValue={false}
+                                        maxValue={chapter.totalQuestions}
+                                    />
+                                </View>
+                            </View>
                         </Card>
                     )
                 })}
-            </View>
+            </>
         );
     };
-
-    const renderSearchbar = () => {
-        return (
-            <View>
-                <MMSearchbar value={state.query} onChangeText={onChangeSearch} />
-            </View>
-        );
-    };
-
-
-    const renderScreenHeader = () => {
-        return (
-            <Appbar.Header>
-                <Appbar.Content title='Milestones' style={{ alignItems: 'center' }} />
-            </Appbar.Header>
-        );
-    };
-
-    const renderChipScrollView = () => {
-        return (
-            <View style={MMStyles.mb10}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {MMConstants.chapterChip.map((chapter, index) => (
-                        <Chip
-                            key={chapter.value}
-                            style={[styles.chip, { marginLeft: 10 }]}
-                            onPress={() => onChipPress(chapter.value)}
-                            selected={chapter.value === state.selectedChapterType}
-                        >
-                            {chapter.label}
-                        </Chip>
-                    ))}
-                </ScrollView>
-            </View>
-        )
-    }
 
     return (
         <>
-            {/* {renderScreenHeader()} */}
-            <View style={MMStyles.container}>
+            <MMContentContainer>
                 <MMScrollView>
-                    {renderChipScrollView()}
-                    {renderSearchbar()}
-                    {!_.isEmpty(state.filteredChapter) ? renderView() : <MMNoRecordsFound title={'No Chapter Found'} />}
+                    {!_.isEmpty(state.chapterList) ? renderView() : <MMNoRecordsFound title={'No Chapter Found'} />}
                 </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
-            </View>
+            </MMContentContainer>
         </>
     );
 }
@@ -216,7 +136,6 @@ const styles = StyleSheet.create({
         right: 10,
     },
     card: {
-        margin: 10,
         backgroundColor: MMColors.white
     },
     chip: {
@@ -231,8 +150,22 @@ const styles = StyleSheet.create({
         shadowRadius: 50,
         marginBottom: 20,
         elevation: 10,
-        borderRadius: 20,
+        borderRadius: 30,
         position: 'relative',
         backgroundColor: MMColors.white
     },
+    image: {
+        width: Dimensions.get('window').width / 8,
+        height: Dimensions.get('window').height / 15,
+        borderRadius: 50,
+    },
+    imageView: {
+        borderRadius: 50,
+        backgroundColor: MMColors.backgroundColor,
+        width: Dimensions.get('window').width / 8 + 10,
+        height: Dimensions.get('window').height / 15 + 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 5
+    }
 });

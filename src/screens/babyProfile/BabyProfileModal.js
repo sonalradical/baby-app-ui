@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Text } from 'react-native-paper';
+import { Avatar, Card, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 
@@ -20,6 +20,7 @@ import MMIcon from '../../components/common/Icon';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const dispatch = useDispatch();
+	const theme = useTheme();
 	const navigation = useNavigation();
 	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
@@ -98,11 +99,12 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							size={56}
 							source={profileData?.profilePicture ? { uri: MMUtils.getImagePath(profileData.profilePicture) } : require('../../assets/images/girl.jpeg')}
 						/>
-						<Card.Title title={profileData.name} subtitle={profileData.gender} style={{ width: 100 }} />
+						<Card.Title title={profileData.name} subtitle={profileData.gender}
+							style={{ width: 100 }} titleStyle={MMStyles.boldText} subtitleStyle={MMStyles.subTitle} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
 							{isSelected ? <MMIcon
 								iconName="edit"
-								iconColor={MMColors.orange}
+								iconColor={theme.colors.primary}
 								style={MMStyles.mr10}
 								iconSize={24}
 								onPress={() => onBabyEdit(profileData._id)}

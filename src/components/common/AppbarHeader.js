@@ -11,7 +11,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
 
 	return (
-		<Appbar.Header style={{ backgroundColor: MMColors.secondary }}>
+		<Appbar.Header style={styles.appBarHeader}>
 			<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
 				<Avatar.Image
 					size={50}
@@ -22,8 +22,9 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 				}
 			</TouchableOpacity>
 			{
-				headerTitle ? <Appbar.Content title={headerTitle} style={{ alignItems: 'center' }} /> :
-					<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
+				headerTitle ? <Appbar.Content title={headerTitle} titleStyle={[MMStyles.mediumText, { alignSelf: 'center' }]} /> :
+					<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'}
+						titleStyle={[MMStyles.mediumText, { alignSelf: 'center' }]} />
 			}
 
 			<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
@@ -33,8 +34,11 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 };
 
 const styles = StyleSheet.create({
-	defaultAvatar: {
-		backgroundColor: 'lightgray',
+	appBarHeader: {
+		backgroundColor: MMColors.white,
+		borderBottomRightRadius: 20,
+		borderBottomLeftRadius: 20,
+		marginBottom: 10
 	},
 	addButton: {
 		position: 'absolute',

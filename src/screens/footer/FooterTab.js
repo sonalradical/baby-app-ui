@@ -1,9 +1,10 @@
 import React from 'react';
-import { BottomNavigation } from 'react-native-paper';
+import { BottomNavigation, Text } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import MMColors from '../../helpers/Colors';
+import MMStyles from '../../helpers/Styles';
 
 export default function FooterTab({ navigation, state, descriptors, insets }) {
 
@@ -47,7 +48,7 @@ export default function FooterTab({ navigation, state, descriptors, insets }) {
                                 ? options.title
                                 : route.title;
 
-                    return label;
+                    return <Text style={[MMStyles.subTitle, MMStyles.h8]}>{label}</Text>;
                 }}
             />
         </View>

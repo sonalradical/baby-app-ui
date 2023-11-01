@@ -29,7 +29,7 @@ export default function App() {
     <Provider store={store}>
       <RootSiblingParent>
         <SafeAreaView style={[styles.safeArea, { backgroundColor: MMColors.secondary }]}>
-          <StatusBar backgroundColor={MMColors.secondary} color={MMColors.black} barStyle="dark-content" />
+          <StatusBar backgroundColor={MMColors.white} barStyle="dark-content" />
           <AppNavigator />
         </SafeAreaView>
       </RootSiblingParent>

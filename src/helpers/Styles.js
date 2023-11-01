@@ -82,18 +82,14 @@ const MMStyles = StyleSheet.create({
     },
     subTitle: {
         color: MMColors.black,
-        // fontSize: 16,
         fontFamily: MMConstants.fonts.book,
-        //opacity: 0.5,
     },
     labelTitle: {
         color: MMColors.label,
-        // fontSize: 14,
         fontFamily: MMConstants.fonts.book,
-        opacity: 0.6,
     },
-    orangeText: {
-        color: MMColors.orange,
+    mediumText: {
+        color: MMColors.black,
         fontFamily: MMConstants.fonts.wulkanDisplaymedium,
     },
     boldText: {
@@ -108,7 +104,6 @@ const MMStyles = StyleSheet.create({
     },
     cardSubHeaderText: {
         fontFamily: MMConstants.fonts.bold,
-        // fontSize: 15,
         color: MMColors.label,
     },
     errorText: {
@@ -310,6 +305,9 @@ const MMStyles = StyleSheet.create({
     },
     m10: {
         margin: 10,
+    },
+    m15: {
+        margin: 15,
     },
     m20: {
         margin: 20,

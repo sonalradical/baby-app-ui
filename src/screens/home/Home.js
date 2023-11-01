@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { Button } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -7,7 +8,8 @@ import { useDispatch } from 'react-redux';
 
 import { setHeaderTitle } from '../../redux/Slice/AppSlice';
 
-import MMStyles from '../../helpers/Styles';
+import MMContentContainer from '../../components/common/ContentContainer';
+import ChapterList from '../chapter/ChapterList';
 
 export default function Home({ navigation, route }) {
     const dispatch = useDispatch();
@@ -20,16 +22,18 @@ export default function Home({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <View style={MMStyles.containerPadding}>
-            </View>
+            <>
+                <ChapterList />
+                {/* <Button onPress={() => navigation.navigate('Logout')}>click</Button> */}
+            </>
         );
     };
 
     return (
         <>
-            <View style={MMStyles.container}>
+            <MMContentContainer>
                 {renderView()}
-            </View>
+            </MMContentContainer>
         </>
     );
 }
