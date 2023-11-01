@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../home/Home';
 import ChapterList from '../chapter/ChapterList';
 import MMIcon from '../../components/common/Icon';
+import Icon from 'react-native-vector-icons/Feather'
 import FooterTab from './FooterTab';
 
 const Tab = createBottomTabNavigator();
@@ -25,7 +26,7 @@ export default function Footer() {
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => {
-                        return <MMIcon iconName="home" iconSize={size} iconColor={color} />;
+                        return <Icon name="home" size={size} color={color} />;
                     },
                 }}
             />
@@ -33,12 +34,32 @@ export default function Footer() {
                 name="ChapterList"
                 component={ChapterList}
                 options={{
-                    tabBarLabel: 'Chapter',
+                    tabBarLabel: 'Milestone',
                     tabBarIcon: ({ color, size }) => {
-                        return <MMIcon iconName="book" iconSize={size} iconColor={color} />;
+                        return <Icon name="flag" size={size} color={color} />;
                     },
                 }}
             />
+            {/* <Tab.Screen
+                //name="ChapterList"
+                //component={ChapterList}
+                options={{
+                    tabBarLabel: 'Book Preview',
+                    tabBarIcon: ({ color, size }) => {
+                        return <Icon name="book-open" size={size} color={color} />;
+                    },
+                }}
+            />
+            <Tab.Screen
+                // name="ChapterList"
+                //component={ChapterList}
+                options={{
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color, size }) => {
+                        return <MMIcon iconName="user-o" iconSize={size} iconColor={color} />;
+                    },
+                }}
+            /> */}
         </Tab.Navigator>
     );
 }
