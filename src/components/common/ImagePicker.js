@@ -58,7 +58,7 @@ const MMProfileAvatar = (props) => {
                     ]}
                 >
                     {image ? (
-                        <Image source={source} style={styles.avatar} />
+                        <Image source={source ? source : require('../../assets/images/parenthood.jpg')} style={styles.avatar} />
                     ) : (
                         <Text style={MMStyles.subTitle}>{`Upload \n Photo`}</Text>
                     )}
