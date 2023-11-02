@@ -116,6 +116,14 @@ async function getChapterList(babyId) {
     return result;
 }
 
+async function getMilestoneList() {
+    const config = {
+        url: `chapter/list`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
 //------------------------------------------------------------------ Quiz API
 
 async function getQuiz(babyId, chapterId) {
@@ -189,5 +197,6 @@ export default {
     getPreSignedUrl,
     getFile,
     deleteFile,
+    getMilestoneList,
 };
 //#endregion
