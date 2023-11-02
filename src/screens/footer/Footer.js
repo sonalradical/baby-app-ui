@@ -3,10 +3,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather'
 
-import FooterTab from './FooterTab';
 import MMIcon from '../../components/common/Icon';
+import FooterTab from './FooterTab';
 import Home from '../home/Home';
 import MilestoneList from '../milestone/MilestoneList';
+import BookPreview from '../book/BookPreview';
+import Profile from '../Profile/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,9 +42,9 @@ export default function Footer() {
                     },
                 }}
             />
-            {/* <Tab.Screen
-                //name="ChapterList"
-                //component={ChapterList}
+            <Tab.Screen
+                name="BookPreview"
+                component={BookPreview}
                 options={{
                     tabBarLabel: 'Book Preview',
                     tabBarIcon: ({ color, size }) => {
@@ -51,15 +53,15 @@ export default function Footer() {
                 }}
             />
             <Tab.Screen
-                // name="ChapterList"
-                //component={ChapterList}
+                name="Profile"
+                component={Profile}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color, size }) => {
                         return <MMIcon iconName="user-o" iconSize={size} iconColor={color} />;
                     },
                 }}
-            /> */}
+            />
         </Tab.Navigator>
     );
 }

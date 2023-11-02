@@ -23,7 +23,6 @@ export default function MilestoneList({ navigation, route }) {
                 const response = await MMApiService.getMilestoneList();
                 if (response.data) {
                     const milestone = response.data;
-                    console.log(milestone, 'milestone')
                     setMilestones(milestone);
                     setIsOverlayLoading(false);
                 }
