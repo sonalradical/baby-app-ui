@@ -68,15 +68,13 @@ export default function ChapterList({ route }) {
                         <Card style={styles.whiteBg} key={chapter._id}
                             onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id })}>
                             <View style={[MMStyles.m10, { flexDirection: 'row' }]}>
-                                <View style={styles.imageView}>
-                                    <Image
-                                        textAlign="center"
-                                        resizeMode="contain"
-                                        source={iconData.url}
-                                        style={styles.image}
-                                    />
-                                </View>
-                                <View style={[MMStyles.m15, MMStyles.flex1]}>
+                                <Image
+                                    textAlign="center"
+                                    resizeMode="contain"
+                                    source={iconData.url}
+                                    style={styles.image}
+                                />
+                                <View style={[MMStyles.flex1, { marginVertical: 15 }]}>
                                     <Text style={[MMStyles.labelTitle, MMStyles.h3]} numberOfLines={1} ellipsizeMode='tail'>
                                         {chapter.title}</Text>
                                     <Text style={[MMStyles.labelTitle, MMStyles.h7]} numberOfLines={1} ellipsizeMode='tail'>
@@ -145,17 +143,9 @@ const styles = StyleSheet.create({
         backgroundColor: MMColors.white
     },
     image: {
-        width: Dimensions.get('window').width / 8,
-        height: Dimensions.get('window').height / 15,
+        width: Dimensions.get('window').width / 7,
+        height: Dimensions.get('window').height / 10,
         borderRadius: 50,
+        marginHorizontal: 10
     },
-    imageView: {
-        borderRadius: 50,
-        backgroundColor: MMColors.backgroundColor,
-        width: Dimensions.get('window').width / 8 + 10,
-        height: Dimensions.get('window').height / 15 + 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: 5
-    }
 });
