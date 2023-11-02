@@ -22,7 +22,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 
 export default function Quiz({ navigation, route }) {
-    const { babyId, chapterId, chapterTitle } = route.params;
+    const { babyId, chapterId, title } = route.params;
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -184,7 +184,7 @@ export default function Quiz({ navigation, route }) {
 
         return (
             <>
-                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10]}>{chapterTitle}</Text>
+                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10]}>{title}</Text>
                 <View>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
