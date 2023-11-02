@@ -22,7 +22,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 
 export default function Quiz({ navigation, route }) {
-    const { babyId, chapterId } = route.params;
+    const { babyId, chapterId, chapterTitle } = route.params;
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -183,8 +183,9 @@ export default function Quiz({ navigation, route }) {
         const currentQuestionType = questionList[currentQuestion].questionType;
 
         return (
-            <MMSurface padding={[18, 18, 18, 18]} >
-                <View style={{ height: Dimensions.get('window').height / 2 }}>
+            <>
+                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10]}>{chapterTitle}</Text>
+                <View>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
                         <Text style={[MMStyles.mb10, { alignSelf: 'center' }]} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
@@ -225,21 +226,21 @@ export default function Quiz({ navigation, route }) {
                         />
                     )}
                 </View>
-                {renderActionButtons()}
-            </MMSurface>
+            </>
         );
     };
 
     const renderActionButtons = () => {
         return (
             <MMActionButtons>
-                <MMIcon
-                    iconName='chevron-left'
-                    iconSize={24}
-                    iconColor={MMColors.gray}
-                    onPress={onPreviousClick}
-                    disabled={currentQuestion === 0}
-                />
+                {currentQuestion === 0 ? null :
+                    <MMIcon
+                        iconName='chevron-left'
+                        iconSize={24}
+                        iconColor={MMColors.gray}
+                        onPress={onPreviousClick}
+                        disabled={currentQuestion === 0}
+                    />}
                 <Chip>{`${currentQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
                 {currentQuestion === questionList.length - 1 ?
                     <MMRoundButton
@@ -259,9 +260,9 @@ export default function Quiz({ navigation, route }) {
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header>
+            <Appbar.Header style={{ backgroundColor: MMColors.white }}>
                 <Appbar.BackAction onPress={() => { navigation.goBack() }} />
-                <Appbar.Content title='Quiz' />
+                <Appbar.Content title={'Quiz'} titleStyle={[MMStyles.mediumText]} />
             </Appbar.Header>
         );
     };
@@ -272,6 +273,9 @@ export default function Quiz({ navigation, route }) {
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> : renderView()}
             </MMContentContainer >
+            <View style={[MMStyles.p10, { backgroundColor: MMColors.white }]}>
+                {renderActionButtons()}
+            </View>
         </>
     );
 }

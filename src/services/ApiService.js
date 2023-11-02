@@ -107,9 +107,9 @@ async function deleteBaby(babyId) {
 
 //------------------------------------------------------------------- Manage Chapter APIs
 
-async function getChapterList(babyId, chapter) {
+async function getChapterList(babyId) {
     const config = {
-        url: `chapter/list/${babyId}/${chapter}`,
+        url: `chapter/list/${babyId}`,
         method: 'get'
     };
     const result = await axios(config);

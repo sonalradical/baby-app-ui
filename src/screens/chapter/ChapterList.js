@@ -35,7 +35,7 @@ export default function ChapterList({ route }) {
                 try {
                     setIsOverlayLoading(true);
                     setBabyId(babyId);
-                    const response = await MMApiService.getChapterList(babyId, 'chapter');
+                    const response = await MMApiService.getChapterList(babyId);
                     if (response.data) {
                         const chapters = response.data.chapterDetail
                         setChapterList(chapters);
@@ -63,15 +63,15 @@ export default function ChapterList({ route }) {
             <>
                 <Text style={[MMStyles.cardHeaderText, MMStyles.mb10, { flex: 1 }]}>Chapters</Text>
                 {_.map(chapterList, (chapter) => {
-                    const iconData = MMConstants.chapters.find((ch) => ch.value === chapter.icon);
+                    const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
                         <Card style={styles.whiteBg} key={chapter._id}
-                            onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id })}>
+                            onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id, chapterTitle: chapter.title })}>
                             <View style={[MMStyles.m10, { flexDirection: 'row' }]}>
                                 <Image
                                     textAlign="center"
                                     resizeMode="contain"
-                                    source={iconData.url}
+                                    source={chapterImage}
                                     style={styles.image}
                                 />
                                 <View style={[MMStyles.flex1, { marginVertical: 15 }]}>
@@ -87,7 +87,7 @@ export default function ChapterList({ route }) {
                                         titleStyle={[MMStyles.labelTitle, MMStyles.h6]}
                                         activeStrokeWidth={5}
                                         inActiveStrokeWidth={5}
-                                        activeStrokeColor={iconData.color}
+                                        activeStrokeColor={chapter.color}
                                         showProgressValue={false}
                                         maxValue={chapter.totalQuestions}
                                     />

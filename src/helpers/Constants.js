@@ -59,27 +59,27 @@ const MMConstants = {
     },
     //AWS Base url
     AWS_S3_BASE_URL: 'https://skuvent-staging-field-inventory.s3.us-east-2.amazonaws.com',
-    chapters: [
-        { value: 'pregnancy', color: MMColors.orange, url: require('../assets/images/chapter/pregnancy.png') },
-        { value: 'adoption', color: MMColors.purple, url: require('../assets/images/chapter/adoption.png') },
-        { value: 'surrogacy', color: MMColors.lightPurple, url: require('../assets/images/chapter/surrogacy.png') },
-        { value: 'parents', color: MMColors.orange, url: require('../assets/images/chapter/parents.png') },
-        { value: 'family', color: MMColors.lightBlue, url: require('../assets/images/chapter/family.png') },
-        { value: 'welcomeToTheWorld', color: MMColors.purple, url: require('../assets/images/chapter/welcomeToTheWorld.png') },
-        { value: 'newborn', color: MMColors.orange, url: require('../assets/images/chapter/newborn.png') },
-        { value: 'oneMonth', color: MMColors.lightBlue, url: require('../assets/images/chapter/oneMonth.png') },
-        { value: 'twoMonths', color: MMColors.lightPurple, url: require('../assets/images/chapter/twoMonths.png') },
-        { value: 'threeMonths', color: MMColors.orange, url: require('../assets/images/chapter/threeMonths.png') },
-        { value: 'fourMonths', color: MMColors.lightPurple, url: require('../assets/images/chapter/fourMonths.png') },
-        { value: 'fiveMonths', color: MMColors.orange, url: require('../assets/images/chapter/fiveMonths.png') },
-        { value: 'sixMonths', color: MMColors.lightBlue, url: require('../assets/images/chapter/sixMonths.png') },
-        { value: 'sevenMonths', color: MMColors.purple, url: require('../assets/images/chapter/sevenMonths.png') },
-        { value: 'eightMonths', color: MMColors.orange, url: require('../assets/images/chapter/eightMonths.png') },
-        { value: 'nineMonths', color: MMColors.lightBlue, url: require('../assets/images/chapter/nineMonths.png') },
-        { value: 'tenMonths', color: MMColors.purple, url: require('../assets/images/chapter/tenMonths.png') },
-        { value: 'elevenMonths', color: MMColors.lightPurple, url: require('../assets/images/chapter/elevenMonths.png') },
-        { value: 'oneYear', color: MMColors.purple, url: require('../assets/images/chapter/oneYear.png') },
-    ]
+    chapters: {
+        pregnancy: require('../assets/images/chapter/pregnancy.png'),
+        adoption: require('../assets/images/chapter/adoption.png'),
+        surrogacy: require('../assets/images/chapter/surrogacy.png'),
+        parents: require('../assets/images/chapter/parents.png'),
+        family: require('../assets/images/chapter/family.png'),
+        welcomeToTheWorld: require('../assets/images/chapter/welcomeToTheWorld.png'),
+        newborn: require('../assets/images/chapter/newborn.png'),
+        oneMonth: require('../assets/images/chapter/oneMonth.png'),
+        twoMonths: require('../assets/images/chapter/twoMonths.png'),
+        threeMonths: require('../assets/images/chapter/threeMonths.png'),
+        fourMonths: require('../assets/images/chapter/fourMonths.png'),
+        fiveMonths: require('../assets/images/chapter/fiveMonths.png'),
+        sixMonths: require('../assets/images/chapter/sixMonths.png'),
+        sevenMonths: require('../assets/images/chapter/sevenMonths.png'),
+        eightMonths: require('../assets/images/chapter/eightMonths.png'),
+        nineMonths: require('../assets/images/chapter/nineMonths.png'),
+        tenMonths: require('../assets/images/chapter/tenMonths.png'),
+        elevenMonths: require('../assets/images/chapter/elevenMonths.png'),
+        oneYear: require('../assets/images/chapter/oneYear.png'),
+    }
 };
 
 export default MMConstants;
