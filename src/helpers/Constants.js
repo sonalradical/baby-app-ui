@@ -52,6 +52,11 @@ const MMConstants = {
         { value: 'male', label: 'Male' },
         { value: 'female', label: 'Female' }
     ],
+    babyCategory: [
+        { value: 'adoption', label: 'Adoption' },
+        { value: 'surrogacy', label: 'Surrogacy' },
+        { value: 'twins', label: 'Twins' }
+    ],
     questionType: {
         radio: 'radio',
         checkbox: 'checkbox',

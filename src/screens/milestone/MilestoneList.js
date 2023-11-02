@@ -60,8 +60,8 @@ export default function MilestoneList({ navigation, route }) {
         return (
             <FlatList
                 data={milestones}
-                columnWrapperStyle={{ justifyContent: 'space-between', margin: 20 }}
-                ListHeaderComponent={<Text style={[MMStyles.cardHeaderText, { marginTop: 10 }]}>My first</Text>}
+                columnWrapperStyle={[MMStyles.m20, { justifyContent: 'space-between' }]}
+                ListHeaderComponent={<Text style={[MMStyles.cardHeaderText, MMStyles.mt10]}>My first</Text>}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
                 numColumns={3} // This sets the number of columns

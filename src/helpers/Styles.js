@@ -74,7 +74,7 @@ const MMStyles = StyleSheet.create({
     },
     title: {
         fontFamily: MMConstants.fonts.wulkanDisplaymedium,
-        fontSize: 40,
+        fontSize: 22,
         color: MMColors.black
     },
     alignItems: {

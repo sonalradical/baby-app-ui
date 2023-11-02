@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Keyboard, Alert } from 'react-native';
-import { RadioButton, SegmentedButtons, TextInput } from 'react-native-paper';
+import { Checkbox, RadioButton, SegmentedButtons, TextInput } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -14,7 +14,6 @@ import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
-import MMColors from '../../helpers/Colors';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
@@ -25,7 +24,6 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMSurface from '../../components/common/Surface';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
@@ -43,6 +41,7 @@ export default function AddBaby({ route }) {
         gender: '',
         showBirthDate: false,
         showBirthTime: false,
+        babyCategory: [],
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -63,6 +62,7 @@ export default function AddBaby({ route }) {
                             birthPlace: response.data.birthPlace,
                             gender: response.data.gender,
                             profilePicture: response.data.profilePicture,
+                            babyCategory: response.data.specialCircumstances,
                         });
                         if (response.data.profilePicture) {
                             imageSourceUri = MMUtils.getImagePath(response.data.profilePicture);
@@ -149,8 +149,20 @@ export default function AddBaby({ route }) {
         });
     };
 
-    const onGenderChange = (value) => {
+    const onGenderSelect = (value) => {
         setState({ ...state, gender: value });
+    };
+
+    const onBabyCategorySelect = (selectedCategory) => {
+        const newState = { ...state };
+        if (newState.babyCategory.includes(selectedCategory)) {
+            newState.babyCategory = newState.babyCategory.filter(
+                (category) => category !== selectedCategory
+            );
+        } else {
+            newState.babyCategory = [...newState.babyCategory, selectedCategory];
+        }
+        setState(newState);
     };
 
     const onSubmit = () => {
@@ -200,7 +212,8 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
-                profilePicture: state.profilePicture
+                profilePicture: state.profilePicture,
+                specialCircumstances: state.babyCategory
             };
 
             await MMApiService.addBaby(apiData)
@@ -231,7 +244,8 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
-                profilePicture: state.profilePicture
+                profilePicture: state.profilePicture,
+                specialCircumstances: state.babyCategory
             };
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
@@ -318,7 +332,7 @@ export default function AddBaby({ route }) {
         return (
             <View style={MMStyles.m10}>
                 <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.title, MMStyles.h2]}>Baby Profile</Text>
+                    <Text style={[MMStyles.title]}>Baby Profile</Text>
                 </View>
                 <MMProfileAvatar image={imageSource}
                     source={{ uri: imageSource ? imageSource : null }}
@@ -432,13 +446,29 @@ export default function AddBaby({ route }) {
                                 <RadioButton
                                     value={option.value}
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
-                                    onPress={() => onGenderChange(option.value)}
+                                    onPress={() => onGenderSelect(option.value)}
                                 />
                                 <Text style={MMStyles.subTitle}>{option.label}</Text>
                             </View>
                         ))}
                     </View>
                     <MMFormErrorText errorText={state.errors.gender} />
+                </View>
+                <View style={MMStyles.mt5}>
+                    <Text style={MMStyles.boldText}>Do any of this apply to you?</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        {MMConstants.babyCategory.map((option) => (
+                            <View key={option.value} style={MMStyles.rowCenter}>
+                                <Checkbox
+                                    value={option.value}
+                                    status={state.babyCategory.includes(option.value) ? 'checked' : 'unchecked'}
+                                    onPress={() => onBabyCategorySelect(option.value)}
+                                />
+                                <Text style={MMStyles.subTitle}>{option.label}</Text>
+                            </View>
+                        ))}
+                    </View>
+                    <MMFormErrorText errorText={state.errors.babyCategory} />
                 </View>
                 {
                     babyId ?
