@@ -80,7 +80,7 @@ export default function ChapterList({ route }) {
                                     <Text style={[MMStyles.labelTitle, MMStyles.h7]} numberOfLines={1} ellipsizeMode='tail'>
                                         {'You’ve grown and learnt'}</Text>
                                 </View>
-                                <View style={MMStyles.mt10}>
+                                <View style={MMStyles.m10}>
                                     <CircularProgress value={chapter.totalAnswers}
                                         title={`${chapter.totalAnswers} / ${chapter.totalQuestions}`}
                                         radius={30}
