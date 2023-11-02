@@ -46,7 +46,6 @@ export default function AddBaby({ route }) {
         errors: {},
     };
     const [state, setState] = useState(initState);
-    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
 
@@ -263,7 +262,7 @@ export default function AddBaby({ route }) {
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
-                dispatch(setSelectedBabyId());
+                dispatch(setSelectedBabyId(''));
                 navigation.navigate('Home');
                 setIsOverlayLoading(false);
                 setIsModalOpen(false);

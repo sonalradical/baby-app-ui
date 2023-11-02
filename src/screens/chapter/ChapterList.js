@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Dimensions, Image, ScrollView, Keyboard } from 'react-native';
-import { Appbar, Badge, Card, Chip, Text } from 'react-native-paper';
-import CircularProgress, {
-    CircularProgressWithChild,
-} from 'react-native-circular-progress-indicator';
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import { Card, Text } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
+import CircularProgress, {
+    CircularProgressWithChild,
+} from 'react-native-circular-progress-indicator';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
@@ -27,32 +26,23 @@ export default function ChapterList({ route }) {
     const navigation = useNavigation();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
-    const [state, setState] = useState({
-        query: '',
-        filteredChapter: [],
-        chapterList: [],
-        selectedChapterType: 'all'
-    });
+    const [chapterList, setChapterList] = useState();
 
     useEffect(() => {
         const loadChapterList = async () => {
             const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
-            setBabyId(babyId);
             if (babyId) {
                 try {
-                    console.log(babyId, 'babyId')
                     setIsOverlayLoading(true);
+                    setBabyId(babyId);
                     const response = await MMApiService.getChapterList(babyId, 'chapter');
                     if (response.data) {
                         const chapters = response.data.chapterDetail
-                        setState({
-                            ...state,
-                            query: '',
-                            chapterList: chapters,
-                        });
+                        setChapterList(chapters);
                         setIsOverlayLoading(false);
                     }
                 } catch (error) {
+                    setChapterList();
                     const serverError = MMUtils.apiErrorMessage(error);
                     if (serverError) {
                         MMUtils.showToastMessage(serverError);
@@ -72,7 +62,7 @@ export default function ChapterList({ route }) {
         return (
             <>
                 <Text style={[MMStyles.cardHeaderText, MMStyles.mb10, { flex: 1 }]}>Chapters</Text>
-                {_.map(state.chapterList, (chapter) => {
+                {_.map(chapterList, (chapter) => {
                     const iconData = MMConstants.chapters.find((ch) => ch.value === chapter.icon);
                     return (
                         <Card style={styles.whiteBg} key={chapter._id}
@@ -116,7 +106,7 @@ export default function ChapterList({ route }) {
         <>
             <MMContentContainer>
                 <MMScrollView>
-                    {!_.isEmpty(state.chapterList) ? renderView() : <MMNoRecordsFound title={'No Chapter Found'} />}
+                    {!_.isEmpty(chapterList) ? renderView() : <MMNoRecordsFound title={'No Chapter Found'} />}
                 </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
             </MMContentContainer>

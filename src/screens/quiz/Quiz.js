@@ -4,14 +4,17 @@ import PropTypes from 'prop-types';
 import { Appbar, Checkbox, Chip, RadioButton, Text } from 'react-native-paper';
 
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
+
+import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMApiService from '../../services/ApiService';
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
+import MMColors from '../../helpers/Colors';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
-import MMColors from '../../helpers/Colors';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
 import { MMRoundButton } from '../../components/common/Button';
@@ -20,7 +23,7 @@ import MMSurface from '../../components/common/Surface';
 
 export default function Quiz({ navigation, route }) {
     const { babyId, chapterId } = route.params;
-
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState({
@@ -93,14 +96,14 @@ export default function Quiz({ navigation, route }) {
 
         if (currentQuestion === questionList.length - 1) {
             setCurrentQuestion(0);
-            navigation.navigate('Home', { babyId });
+            dispatch(setSelectedBabyId(babyId))
+            navigation.navigate('Home');
         } else {
             setCurrentQuestion(currentQuestion + 1);
         }
     };
 
     const setSelectedAnswerByType = (questionType, answer) => {
-        console.log(questionType, '.....')
         switch (questionType) {
             case MMConstants.questionType.radio:
                 return { option: answer, checkboxes: [], text: "" };
