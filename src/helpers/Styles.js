@@ -318,6 +318,12 @@ const MMStyles = StyleSheet.create({
     p10: {
         padding: 10,
     },
+    p15: {
+        padding: 15,
+    },
+    p20: {
+        padding: 20,
+    },
     paddingBottom: {
         paddingBottom: 20
     },

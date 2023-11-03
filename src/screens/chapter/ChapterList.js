@@ -23,6 +23,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function ChapterList({ route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
     const navigation = useNavigation();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
@@ -31,7 +32,7 @@ export default function ChapterList({ route }) {
     useEffect(() => {
         const loadChapterList = async () => {
             const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
-            if (babyId) {
+            if (babyId || reloadChapterList) {
                 try {
                     setIsOverlayLoading(true);
                     setBabyId(babyId);
@@ -55,7 +56,7 @@ export default function ChapterList({ route }) {
             }
         }
         loadChapterList();
-    }, [selectedBabyId, MMConstants.storage.selectedBaby]);
+    }, [selectedBabyId, MMConstants.storage.selectedBaby, reloadChapterList]);
 
 
     const renderView = () => {

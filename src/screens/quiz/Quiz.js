@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Appbar, Checkbox, Chip, RadioButton, Text } from 'react-native-paper';
+import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
+import { setReloadChapterList, setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMApiService from '../../services/ApiService';
 import MMStyles from '../../helpers/Styles';
@@ -17,12 +17,11 @@ import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
-import { MMRoundButton } from '../../components/common/Button';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMSurface from '../../components/common/Surface';
 
 export default function Quiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
+    const theme = useTheme();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -96,7 +95,7 @@ export default function Quiz({ navigation, route }) {
 
         if (currentQuestion === questionList.length - 1) {
             setCurrentQuestion(0);
-            dispatch(setSelectedBabyId(babyId))
+            dispatch(setReloadChapterList({ reloadChapterList: true }))
             navigation.navigate('Home');
         } else {
             setCurrentQuestion(currentQuestion + 1);
@@ -185,10 +184,10 @@ export default function Quiz({ navigation, route }) {
         return (
             <>
                 <Text style={[MMStyles.cardHeaderText, MMStyles.mb10]}>{title}</Text>
-                <View>
+                <View style={MMStyles.p10}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
-                        <Text style={[MMStyles.mb10, { alignSelf: 'center' }]} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
+                        <Text style={[MMStyles.subTitle, MMStyles.h5]} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
                     {currentQuestionType === "radio" && (
                         <View style={{ alignItems: 'flex-start' }}>
@@ -233,35 +232,40 @@ export default function Quiz({ navigation, route }) {
     const renderActionButtons = () => {
         return (
             <MMActionButtons>
-                {currentQuestion === 0 ? null :
-                    <MMIcon
-                        iconName='chevron-left'
-                        iconSize={24}
-                        iconColor={MMColors.gray}
-                        onPress={onPreviousClick}
-                        disabled={currentQuestion === 0}
-                    />}
+                <MMIcon
+                    iconName='arrow-circle-o-left'
+                    iconSize={30}
+                    iconColor={currentQuestion === 0 ? MMColors.disabled : theme.colors.primary}
+                    onPress={onPreviousClick}
+                    disabled={currentQuestion === 0}
+                />
                 <Chip>{`${currentQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
                 {currentQuestion === questionList.length - 1 ?
-                    <MMRoundButton
-                        optionalTextStyle={[MMStyles.h5]}
-                        label="Submit"
-                        onPress={onNextClick} /> :
                     <MMIcon
-                        iconName='chevron-right'
-                        iconSize={24}
-                        iconColor={MMColors.gray}
+                        iconName='check-circle-o'
+                        iconSize={30}
+                        iconColor={theme.colors.primary}
+                        onPress={onNextClick}
+                    /> :
+                    <MMIcon
+                        iconName='arrow-circle-o-right'
+                        iconSize={30}
+                        iconColor={theme.colors.primary}
                         onPress={onNextClick}
                         disabled={questionList ? currentQuestion === questionList.length - 1 : false}
                     />}
             </MMActionButtons>
         );
     };
+    const onPressBack = () => {
+        dispatch(setReloadChapterList({ reloadChapterList: true }));
+        navigation.goBack();
+    }
 
     const renderScreenHeader = () => {
         return (
             <Appbar.Header style={{ backgroundColor: MMColors.white }}>
-                <Appbar.BackAction onPress={() => { navigation.goBack() }} />
+                <Appbar.BackAction onPress={() => { onPressBack(); }} />
                 <Appbar.Content title={'Quiz'} titleStyle={[MMStyles.mediumText]} />
             </Appbar.Header>
         );

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	selectedBaby: '',
 	headerTitle: '',
+	reloadChapterList: true,
 };
 
 // slice
@@ -15,7 +16,10 @@ const AppReducer = createSlice({
 		},
 		setHeaderTitle: (state, action) => {
 			state.headerTitle = action.payload;
-		}
+		},
+		setReloadChapterList: (state, action) => {
+			state.reloadChapterList = action.payload;
+		},
 
 	},
 });
@@ -25,4 +29,5 @@ export default AppReducer;
 export const {
 	setSelectedBabyId,
 	setHeaderTitle,
+	setReloadChapterList,
 } = AppReducer.actions;
