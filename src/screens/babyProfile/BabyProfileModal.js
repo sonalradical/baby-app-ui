@@ -97,7 +97,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					<Card.Content style={MMStyles.rowCenter}>
 						<Avatar.Image
 							size={56}
-							source={profileData?.profilePicture ? { uri: MMUtils.getImagePath(profileData.profilePicture) } : require('../../assets/images/parenthood.jpg')}
+							source={profileData ? { uri: MMUtils.getImagePath(profileData.profilePicture) } : require('../../assets/images/parenthood.jpg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender}
 							style={{ width: 100 }} titleStyle={MMStyles.boldText} subtitleStyle={MMStyles.subTitle} />

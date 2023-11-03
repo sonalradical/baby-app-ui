@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Dimensions, FlatList, Image, StyleSheet, View } from 'react-native';
 import { Card, Text, Title } from 'react-native-paper';
 
 import _ from 'lodash';
@@ -6,11 +7,12 @@ import PropTypes from 'prop-types';
 
 import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
-import MMContentContainer from '../../components/common/ContentContainer';
-import { Dimensions, FlatList, Image, StyleSheet, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import MMColors from '../../helpers/Colors';
+import MMApiService from '../../services/ApiService';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMNoRecordsFound from '../../components/common/NoRecordsFound';
+import { MMOverlaySpinner } from '../../components/common/Spinner';
 
 export default function MilestoneList({ navigation, route }) {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -72,8 +74,9 @@ export default function MilestoneList({ navigation, route }) {
     return (
         <>
             <MMContentContainer>
-                {renderView()}
+                {!_.isEmpty(milestones) ? renderView() : <MMNoRecordsFound title={'No Milestone Found'} />}
             </MMContentContainer>
+            <MMOverlaySpinner visible={isOverlayLoading} />
         </>
     );
 }
