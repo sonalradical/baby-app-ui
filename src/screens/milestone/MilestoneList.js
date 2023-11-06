@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, Text, Title, useTheme } from 'react-native-paper';
+import { Card, Text, Title } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
