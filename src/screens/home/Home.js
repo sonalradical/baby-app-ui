@@ -12,7 +12,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import ChapterList from '../chapter/ChapterList';
 
 export default function Home() {
-    const navigation = useNavigation();
+    const navigation = useNavigation()
     const dispatch = useDispatch();
 
     useFocusEffect(
@@ -25,7 +25,7 @@ export default function Home() {
         return (
             <>
                 <ChapterList />
-                {/* <Button onPress={() => navigation.navigate('Logout')}>click</Button> */}
+                <Button onPress={() => navigation.navigate('Logout')}>click</Button>
             </>
         );
     };
