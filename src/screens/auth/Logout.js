@@ -17,6 +17,7 @@ export default function Logout() {
 			try {
 				MMUtils.removeItemFromStorage(MMConstants.storage.accessToken);
 				MMUtils.removeItemFromStorage(MMConstants.storage.userDetail);
+				MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
 				dispatch(setReloadChapterList(false))
 				dispatch(setLogout());
 			} catch (err) {
