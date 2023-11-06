@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import MMColors from '../../helpers/Colors';
 import MMStyles from '../../helpers/Styles';
+import MMUtils from '../../helpers/Utils';
 
 export default function FooterTab({ navigation, state, descriptors, insets }) {
 
@@ -48,7 +49,7 @@ export default function FooterTab({ navigation, state, descriptors, insets }) {
                                 ? options.title
                                 : route.title;
 
-                    return <Text style={[MMStyles.subTitle, MMStyles.h8]}>{label}</Text>;
+                    return MMUtils.isPlatformAndroid() ? <Text style={[MMStyles.subTitle, MMStyles.h8]}>{label}</Text> : label;
                 }}
             />
         </View>

@@ -76,7 +76,7 @@ export default function ChapterList({ route }) {
                                     source={chapterImage}
                                     style={styles.image}
                                 />
-                                <View style={[MMStyles.flex1, { marginVertical: 15 }]}>
+                                <View style={[MMStyles.flex1, MMUtils.isPlatformAndroid() ? { marginVertical: 15 } : { marginVertical:25 }]}>
                                     <Text style={[MMStyles.labelTitle, MMStyles.h3]} numberOfLines={1} ellipsizeMode='tail'>
                                         {chapter.title}</Text>
                                     <Text style={[MMStyles.labelTitle, MMStyles.h7]} numberOfLines={1} ellipsizeMode='tail'>
@@ -135,9 +135,9 @@ const styles = StyleSheet.create({
     whiteBg: {
         flex: 0,
         borderWidth: 0,
-        shadowColor: MMColors.black,
-        shadowOpacity: 0.15,
-        shadowRadius: 50,
+        shadowColor: MMUtils.isPlatformAndroid() ? MMColors.black : null,
+        shadowOpacity:  MMUtils.isPlatformAndroid() ?  0.15 : 0,
+        shadowRadius:  MMUtils.isPlatformAndroid() ? 50 : 0,
         marginBottom: 20,
         elevation: 10,
         borderRadius: 30,

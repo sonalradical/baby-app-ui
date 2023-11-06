@@ -190,16 +190,18 @@ export default function Quiz({ navigation, route }) {
                         <Text style={[MMStyles.subTitle, MMStyles.h5]} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
                     {currentQuestionType === "radio" && (
-                        <View style={{ alignItems: 'flex-start' }}>
+                        <View>
                             {questionList[currentQuestion].options.map((option, index) => (
-                                <RadioButton.Item
+                                 <View style={{ flexDirection: 'row' }}>
+                                <RadioButton.Android
                                     key={index}
-                                    label={option}
                                     value={option}
                                     status={selectedAnswer.option === option ? 'checked' : 'unchecked'}
                                     onPress={() => onOptionChange(option)}
                                     position='leading'
                                 />
+                                <Text style={MMStyles.mt10}>{option}</Text>
+                                </View>
                             ))}
                         </View>
                     )}

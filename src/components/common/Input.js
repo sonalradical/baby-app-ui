@@ -1,19 +1,18 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import { useTheme, Text, TextInput } from 'react-native-paper';
+import { Text, TextInput } from 'react-native-paper';
 import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMFormErrorText from './FormErrorText';
 
 const MMInput = ({ label, description, errorText, mode = 'outlined', ...props }) => {
-    const theme = useTheme();
 
     return (
-        <View style={styles(theme).container}>
-            <Text style={styles(theme).label}>{label}</Text>
+        <View style={styles.container}>
+            <Text style={styles.label}>{label}</Text>
             <TextInput
-                style={styles(theme).input}
+                style={styles.input}
                 mode={mode}
                 outlineColor={MMColors.inputBorder}
                 autoCapitalize='none'
@@ -26,7 +25,7 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
     )
 };
 
-const styles = (theme) => StyleSheet.create({
+const styles  = StyleSheet.create({
     container: {
         width: '100%',
         marginBottom: 10,

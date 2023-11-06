@@ -12,7 +12,7 @@ export default function Profile({ route }) {
     const renderView = () => {
         return (
             <>
-                <Button onPress={() => navigation.navigate('Logout')}>click</Button>
+                <Button onPress={() => navigation.navigate('Logout')}>Logout</Button>
             </>
         );
     };
