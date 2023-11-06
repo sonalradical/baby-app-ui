@@ -38,6 +38,7 @@ export default function Header({ navigation, route }) {
             }
             else {
                 setBabyDetail();
+                setIsOverlayLoading(false);
             }
         }
         loadBabyProfileDetail();

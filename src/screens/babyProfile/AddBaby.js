@@ -41,7 +41,6 @@ export default function AddBaby({ route }) {
         gender: '',
         showBirthDate: false,
         showBirthTime: false,
-        babyCategory: [],
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -54,6 +53,7 @@ export default function AddBaby({ route }) {
                     setIsOverlayLoading(true);
                     const response = await MMApiService.getBabyById(babyId);
                     if (response.data) {
+                        console.log(response.data, 'response.data.specialCircumstances')
                         setState({
                             ...state,
                             name: response.data.name,
@@ -62,7 +62,6 @@ export default function AddBaby({ route }) {
                             birthPlace: response.data.birthPlace,
                             gender: response.data.gender,
                             picture: response.data.picture,
-                            babyCategory: response.data.specialCircumstances,
                         });
                         if (response.data.picture) {
                             imageSourceUri = MMUtils.getImagePath(response.data.picture);
@@ -153,18 +152,6 @@ export default function AddBaby({ route }) {
         setState({ ...state, gender: value });
     };
 
-    const onBabyCategorySelect = (selectedCategory) => {
-        const newState = { ...state };
-        if (newState.babyCategory.includes(selectedCategory)) {
-            newState.babyCategory = newState.babyCategory.filter(
-                (category) => category !== selectedCategory
-            );
-        } else {
-            newState.babyCategory = [...newState.babyCategory, selectedCategory];
-        }
-        setState(newState);
-    };
-
     const onSubmit = () => {
         if (isOverlayLoading) {
             return;
@@ -213,7 +200,6 @@ export default function AddBaby({ route }) {
                 birthPlace: state.birthPlace,
                 gender: state.gender,
                 picture: state.picture,
-                specialCircumstances: state.babyCategory
             };
 
             await MMApiService.addBaby(apiData)
@@ -244,8 +230,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
-                picture: state.picture,
-                specialCircumstances: state.babyCategory
+                picture: state.picture
             };
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
@@ -453,22 +438,6 @@ export default function AddBaby({ route }) {
                         ))}
                     </View>
                     <MMFormErrorText errorText={state.errors.gender} />
-                </View>
-                <View style={MMStyles.mt5}>
-                    <Text style={MMStyles.boldText}>Do any of this apply to you?</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        {MMConstants.babyCategory.map((option) => (
-                            <View key={option.value} style={MMStyles.rowCenter}>
-                                <Checkbox
-                                    value={option.value}
-                                    status={state.babyCategory.includes(option.value) ? 'checked' : 'unchecked'}
-                                    onPress={() => onBabyCategorySelect(option.value)}
-                                />
-                                <Text style={MMStyles.subTitle}>{option.label}</Text>
-                            </View>
-                        ))}
-                    </View>
-                    <MMFormErrorText errorText={state.errors.babyCategory} />
                 </View>
                 {
                     babyId ?

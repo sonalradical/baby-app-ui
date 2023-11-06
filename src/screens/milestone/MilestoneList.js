@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, Text, Title } from 'react-native-paper';
+import { Card, Text, Title, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -17,6 +17,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 
 export default function MilestoneList({ navigation, route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const { milestoneId } = route.params || '';
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
     const [milestones, setMilestones] = useState();
@@ -44,17 +45,31 @@ export default function MilestoneList({ navigation, route }) {
                 }
             }
             else {
-                MMUtils.showToastMessage('No Data found')
+                setMilestones();
+                setIsOverlayLoading(false);
             }
         }
         loadMilestoneList();
-    }, []);
+    }, [selectedBabyId, MMConstants.storage.selectedBaby]);
+
+    useEffect(() => {
+        if (milestoneId) {
+            const updatedMilestones = _.map(milestones, milestone => {
+                if (milestone._id === milestoneId) {
+                    return { ...milestone, status: 'complete' };
+                }
+                return milestone;
+            });
+            setMilestones(updatedMilestones);
+        }
+    }, [milestoneId]);
+
 
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
             <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => navigation.navigate('MilestoneQuiz', { babyId: babyId, milestoneId: item._id })}>
-                <View style={styles.imageView}>
+                <View style={[styles.imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
                     <Image
                         textAlign="center"
                         resizeMode="contain"

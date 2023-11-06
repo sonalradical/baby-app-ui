@@ -13,7 +13,7 @@ import MMScrollView from '../../components/common/ScrollView';
 import { Dimensions, Image, Keyboard, StyleSheet, View } from 'react-native';
 import MMInput from '../../components/common/Input';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
-import MMSpinner from '../../components/common/Spinner';
+import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import { MMRoundButton } from '../../components/common/Button';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
@@ -22,6 +22,7 @@ export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
     const theme = useTheme();
     const [isLoading, setIsLoading] = useState(false);
+    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const initialState = {
         description: '',
         date: null,
@@ -89,7 +90,7 @@ export default function MilestoneQuiz({ navigation, route }) {
         const photo = imageData.assets[0];
         let storageFileKeys = [];
         try {
-            setIsLoading(true);
+            setIsOverlayLoading(true);
             let picIndex = 0;
 
             for (const pic of imageData.assets) {
@@ -102,10 +103,10 @@ export default function MilestoneQuiz({ navigation, route }) {
                             if (responseData) {
                                 const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
                                 if (_.isNil(result)) {
-                                    setIsLoading(false);
+                                    setIsOverlayLoading(false);
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
                                 } else {
-                                    setIsLoading(false);
+                                    setIsOverlayLoading(false);
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
                                     setState({
                                         ...state,
@@ -121,7 +122,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                         })();
                     })
                     .catch(function (error) {
-                        setIsLoading(false);
+                        setIsOverlayLoading(false);
                         const serverError = MMUtils.apiErrorMessage(error);
                         if (serverError) {
                             MMUtils.showToastMessage(serverError);
@@ -152,8 +153,8 @@ export default function MilestoneQuiz({ navigation, route }) {
             const response = await MMApiService.saveQuiz(apiData);
             if (response) {
                 console.log('saved...', response)
-                navigation.navigate('MilestoneList')
                 setIsLoading(false);
+                navigation.navigate('MilestoneList', { milestoneId: milestoneId })
             }
         } catch (error) {
             const serverError = MMUtils.apiErrorMessage(error);
@@ -224,7 +225,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                                 <Text style={MMStyles.subTitle}>Upload Photo</Text>
                             </View> : null
                         }
-                        {imageSource ? <Image source={imageSource}
+                        {imageSource ? <Image source={{ uri: imageSource }}
                             style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 2 }]} onPress={toggleModal} /> : null}
                     </>
                     <MMRoundButton label='Save' style={MMStyles.mt20} onPress={() => onSubmit()} />
@@ -250,6 +251,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                 <MMScrollView>
                     {isLoading ? <MMSpinner /> : renderView()}
                 </MMScrollView>
+                <MMOverlaySpinner visible={isOverlayLoading} />
             </MMContentContainer>
         </>
     );
