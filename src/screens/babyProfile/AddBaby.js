@@ -428,7 +428,7 @@ export default function AddBaby({ route }) {
                     <View style={{ flexDirection: 'row' }}>
                         {MMConstants.gender.map((option) => (
                             <View key={option.value} style={MMStyles.rowCenter}>
-                                <RadioButton
+                                <RadioButton.Android
                                     value={option.value}
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
                                     onPress={() => onGenderSelect(option.value)}
