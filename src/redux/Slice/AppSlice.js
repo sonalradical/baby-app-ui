@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	selectedBaby: '',
 	headerTitle: '',
-	reloadChapterList: true,
+	reloadChapterList: false,
 };
 
 // slice

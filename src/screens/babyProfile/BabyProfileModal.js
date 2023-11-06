@@ -33,7 +33,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				console.log('Loading baby profile list...');
 				const response = await MMApiService.babyList();
 				if (response.data) {
-					// Find the index of the selectedBaby in the profiles array
 					const babyProfiles = response.data;
 					if (selectedBaby) {
 						const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
@@ -97,7 +96,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					<Card.Content style={MMStyles.rowCenter}>
 						<Avatar.Image
 							size={56}
-							source={profileData ? { uri: MMUtils.getImagePath(profileData.profilePicture) } : require('../../assets/images/parenthood.jpg')}
+							source={profileData ? { uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender}
 							style={{ width: 100 }} titleStyle={MMStyles.boldText} subtitleStyle={MMStyles.subTitle} />

@@ -36,7 +36,7 @@ export default function ChapterList({ route }) {
                 try {
                     setIsOverlayLoading(true);
                     setBabyId(babyId);
-                    const response = await MMApiService.getChapterList(babyId);
+                    const response = await MMApiService.getTypeList(babyId, 'chapter');
                     if (response.data) {
                         const chapters = response.data.chapterDetail
                         setChapterList(chapters);
@@ -44,15 +44,16 @@ export default function ChapterList({ route }) {
                     }
                 } catch (error) {
                     setChapterList();
+                    setIsOverlayLoading(false);
                     const serverError = MMUtils.apiErrorMessage(error);
                     if (serverError) {
                         MMUtils.showToastMessage(serverError);
                     }
-                    setIsOverlayLoading(false);
                 }
             }
             else {
-                MMUtils.showToastMessage('No Data found')
+                setChapterList();
+                setIsOverlayLoading(false);
             }
         }
         loadChapterList();
@@ -105,7 +106,7 @@ export default function ChapterList({ route }) {
         <>
             <MMContentContainer>
                 <MMScrollView>
-                    {!_.isEmpty(chapterList) ? renderView() : <MMNoRecordsFound title={'No Chapter Found'} />}
+                    {!_.isEmpty(chapterList) ? renderView() : <MMNoRecordsFound title={'No Chapter Found.'} />}
                 </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
             </MMContentContainer>

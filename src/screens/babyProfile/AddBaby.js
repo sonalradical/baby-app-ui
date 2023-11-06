@@ -19,7 +19,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
-import MMProfileAvatar from '../../components/common/ImagePicker';
+import MMProfileAvatar from '../../components/common/profileAvatar';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
@@ -34,7 +34,7 @@ export default function AddBaby({ route }) {
 
     const initState = {
         name: '',
-        profilePicture: '',
+        picture: '',
         birthDate: undefined,
         birthTime: undefined,
         birthPlace: '',
@@ -61,11 +61,11 @@ export default function AddBaby({ route }) {
                             birthTime: response.data.birthTime,
                             birthPlace: response.data.birthPlace,
                             gender: response.data.gender,
-                            profilePicture: response.data.profilePicture,
+                            picture: response.data.picture,
                             babyCategory: response.data.specialCircumstances,
                         });
-                        if (response.data.profilePicture) {
-                            imageSourceUri = MMUtils.getImagePath(response.data.profilePicture);
+                        if (response.data.picture) {
+                            imageSourceUri = MMUtils.getImagePath(response.data.picture);
                             setImageSource(imageSourceUri);
                         }
                         setIsOverlayLoading(false);
@@ -106,7 +106,7 @@ export default function AddBaby({ route }) {
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
                                     setState({
                                         ...state,
-                                        profilePicture: responseData.storageFileKey
+                                        picture: responseData.storageFileKey
                                     })
                                     setImageSource(photo.uri);
                                     storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
@@ -212,7 +212,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
-                profilePicture: state.profilePicture,
+                picture: state.picture,
                 specialCircumstances: state.babyCategory
             };
 
@@ -244,7 +244,7 @@ export default function AddBaby({ route }) {
                 birthTime: state.birthTime,
                 birthPlace: state.birthPlace,
                 gender: state.gender,
-                profilePicture: state.profilePicture,
+                picture: state.picture,
                 specialCircumstances: state.babyCategory
             };
             await MMApiService.updateBaby(apiData, babyId)

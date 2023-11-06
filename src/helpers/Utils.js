@@ -179,8 +179,8 @@ function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
     return result;
 };
 
-function getImagePath(profilePicture) {
-    return `${MMConstants.AWS_S3_BASE_URL}/${profilePicture}`
+function getImagePath(picture) {
+    return `${MMConstants.AWS_S3_BASE_URL}/${picture}`
 }
 
 

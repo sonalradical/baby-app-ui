@@ -7,6 +7,7 @@ import MMUtils from '../../helpers/Utils';
 import MMSpinner from '../../components/common/Spinner';
 import { View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
+import { setReloadChapterList } from '../../redux/Slice/AppSlice';
 
 export default function Logout() {
 	const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Logout() {
 			try {
 				MMUtils.removeItemFromStorage(MMConstants.storage.accessToken);
 				MMUtils.removeItemFromStorage(MMConstants.storage.userDetail);
+				dispatch(setReloadChapterList(false))
 				dispatch(setLogout());
 			} catch (err) {
 				MMUtils.consoleError(err);

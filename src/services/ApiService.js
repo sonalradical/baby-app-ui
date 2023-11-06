@@ -107,23 +107,15 @@ async function deleteBaby(babyId) {
 
 //------------------------------------------------------------------- Manage Chapter APIs
 
-async function getChapterList(babyId) {
+async function getTypeList(babyId, type) {
     const config = {
-        url: `chapter/list/${babyId}`,
+        url: `chapter/list/${babyId}/${type}`,
         method: 'get'
     };
     const result = await axios(config);
     return result;
 }
 
-async function getMilestoneList() {
-    const config = {
-        url: `chapter/list`,
-        method: 'get'
-    };
-    const result = await axios(config);
-    return result;
-}
 //------------------------------------------------------------------ Quiz API
 
 async function getQuiz(babyId, chapterId) {
@@ -191,12 +183,11 @@ export default {
     updateBaby,
     addBaby,
     deleteBaby,
-    getChapterList,
+    getTypeList,
     getQuiz,
     saveQuiz,
     getPreSignedUrl,
     getFile,
     deleteFile,
-    getMilestoneList,
 };
 //#endregion

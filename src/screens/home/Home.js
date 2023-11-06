@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
@@ -11,7 +11,8 @@ import { setHeaderTitle } from '../../redux/Slice/AppSlice';
 import MMContentContainer from '../../components/common/ContentContainer';
 import ChapterList from '../chapter/ChapterList';
 
-export default function Home({ navigation, route }) {
+export default function Home() {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
 
     useFocusEffect(
