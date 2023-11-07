@@ -132,9 +132,9 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <View style={MMStyles.m10}>
-                <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.title]}>Your Profile</Text>
+            <View style={{ margin: 10 }}>
+                <View style={{ alignItems: 'center', marginBottom: 15 }}>
+                    <Text style={theme.fonts.headlineLarge}>Your Profile</Text>
                 </View>
 
                 <MMInput
@@ -190,22 +190,22 @@ export default function SignUp({ navigation, route }) {
                     />}
                 />
                 <View>
-                    <Text style={MMStyles.boldText}>Gender *</Text>
+                    <Text style={theme.fonts.titleMedium}>Gender *</Text>
                     <View style={{ flexDirection: 'row' }}>
                         {MMConstants.gender.map((option) => (
-                            <View key={option.value} style={MMStyles.rowCenter}>
+                            <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <RadioButton
                                     value={option.value}
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
                                     onPress={() => onGenderChange(option.value)}
                                 />
-                                <Text style={MMStyles.subTitle}>{option.label}</Text>
+                                <Text style={{ color: theme.colors.text.secondary }}>{option.label}</Text>
                             </View>
                         ))}
                     </View>
                     <MMFormErrorText errorText={state.errors.gender} />
                 </View>
-                <View style={MMStyles.rowCenter}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox
                         color={theme.colors.primary}
                         size="sm"
@@ -213,22 +213,20 @@ export default function SignUp({ navigation, route }) {
                         onPress={onTermsCheck}
                         value={state.terms}
                         style={{ borderColor: theme.colors.primary }} />
-                    <Text style={MMStyles.subTitle}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use</Text> and
-                        <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text>.</Text>
+                    <Text style={{ color: theme.colors.text.secondary }}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
+                        <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
 
                 </View>
                 {!checked && state.errors.terms ? <MMFormErrorText errorText={state.errors.terms} /> : null}
                 <MMButton
-                    optionalTextStyle={[MMStyles.h5]}
                     label="Sign Up"
                     onPress={() => onSubmit()}
-                    optionalStyle={[MMStyles.mt10]}
                 />
-                <View style={MMStyles.alignItems}>
+                <View style={{ alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[MMStyles.boldText, MMStyles.h6, MMStyles.mt15]}>Already have an account?</Text>
+                        <Text style={{ color: theme.colors.text.secondary, marginTop: 10 }}>Already have an account?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN IN'
-                            style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('Login')} />
+                            style={{ marginTop: 2 }} onPress={() => navigation.navigate('Login')} />
                     </View>
                 </View>
             </View>

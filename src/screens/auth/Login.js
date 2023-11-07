@@ -148,8 +148,8 @@ export default function Login({ navigation }) {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
                 <View style={{ margin: 10 }}>
-                    <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                        <Text style={theme.fonts.displayLarge}>Get Started</Text>
+                    <View style={{ alignItems: 'center', marginBottom: 15 }}>
+                        <Text style={theme.fonts.headlineLarge}>Get Started</Text>
                     </View>
 
                     <MMInput
@@ -190,7 +190,7 @@ export default function Login({ navigation }) {
                         onPress={() => onLogin('password')}
                     />
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[MMStyles.subTitle, MMStyles.h5]}>Or</Text>
+                        <Text style={theme.fonts.labelLarge}>Or</Text>
                     </View>
                     <MMOutlineButton
                         label="Login With OTP"
@@ -206,7 +206,7 @@ export default function Login({ navigation }) {
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[theme.fonts.labelLarge, { marginTop: 20 }]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
-                            style={{ marginTop: 10 }} onPress={() => navigation.navigate('SignUp')} />
+                            style={{ marginTop: 12 }} onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface>

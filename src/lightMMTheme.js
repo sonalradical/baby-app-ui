@@ -47,6 +47,10 @@ const fontConfig = {
     fontWeight: 700,
     color: '#153634',
   },
+  headlineLarge: {
+    fontFamily: 'Wulkan display',
+    color: '#000',
+  }
 };
 
 export const lightMMTheme = {
