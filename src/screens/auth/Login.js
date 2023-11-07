@@ -146,16 +146,10 @@ export default function Login({ navigation }) {
 
     const renderView = () => {
         return (
-            <MMSurface margin={[0, 0, 0, 0]} style={{
-                borderTopLeftRadius: 40,
-                borderTopRightRadius: 40,
-                bottom: 0,
-                position: 'absolute',
-                backgroundColor: MMColors.backgroundColor
-            }}>
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
                 <View style={MMStyles.m10}>
-                    <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
-                        <Text style={[MMStyles.title]}>Get Started</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={theme.fonts.displayLarge}>Get Started</Text>
                     </View>
 
                     <MMInput
@@ -234,11 +228,12 @@ Login.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = StyleSheet.create({
-    separator: {
-        height: 2,
-        width: 150,
-        backgroundColor: 'black',
-        marginTop: 20,
-    },
+const styles = (theme) => StyleSheet.create({
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: theme.colors.background
+    }
 });
