@@ -15,7 +15,7 @@ import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
-import { MMOutlineButton, MMRoundButton, MMTransparentButton } from '../../components/common/Button';
+import { MMOutlineButton, MMButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMSurface from '../../components/common/Surface';
@@ -184,7 +184,7 @@ export default function Login({ navigation }) {
                         />}
                     />
 
-                    <MMRoundButton
+                    <MMButton
                         optionalTextStyle={[MMStyles.h5]}
                         label="Login"
                         onPress={() => onLogin('password')}
@@ -199,14 +199,14 @@ export default function Login({ navigation }) {
                         width={'70%'}
                     ></MMOutlineButton>
                 </View>
-                <View style={[MMStyles.mt15, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.subTitle, MMStyles.h5]}>By continuing you agree to our </Text>
-                    <Text style={[MMStyles.subTitle, MMStyles.h5]}><Text style={{ color: theme.colors.primary }}>Terms of Services</Text> and
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={theme.fonts.labelLarge}>By continuing you agree to our </Text>
+                    <Text style={theme.fonts.labelLarge}><Text style={{ color: theme.colors.primary }}>Terms of Services</Text> and
                         <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text></Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[MMStyles.boldText, MMStyles.h6, MMStyles.mt15]}>Need an account ?</Text>
+                        <Text style={[theme.fonts.labelLarge, { marginTop: 20 }]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
-                            style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('SignUp')} />
+                            style={{ marginTop: 10 }} onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface>

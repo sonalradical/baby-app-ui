@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -10,34 +10,20 @@ import MMConstants from '../../helpers/Constants';
 
 //import MMIcon from './icon';
 
-export default function MMButton(props) {
-    const {
-        label, optionalStyle
-    } = props;
-    return (
-        <Button style={optionalStyle ? [MMStyles.buttonPrimary, optionalStyle] : MMStyles.buttonPrimary} {...props}>
-            {label}
-        </Button>
-    );
-}
-MMButton.propTypes = {
-    label: PropTypes.string.isRequired,
-    optionalStyle: PropTypes.any,
-};
-
 const defaultSetting = {
     width: '100%',
 }
 
-function MMRoundButton(props) {
+function MMButton(props) {
+    const theme = useTheme();
     const {
         label, bgColor, width, onPress, style
     } = props;
-    const backgroundColor = bgColor || MMColors.orange;
+    const backgroundColor = bgColor || theme.colors.primary;
 
     return (
         <Button mode="contained" onPress={onPress} style={[buttonStyle(width), { ...style }]} backgroundColor={backgroundColor}>
-            <Text style={{ fontFamily: MMConstants.fonts.book, color: MMColors.white }}>{label}</Text>
+            <Text style={{ color: theme.colors.onPrimary }}>{label}</Text>
         </Button>
     );
 }
@@ -54,18 +40,19 @@ const buttonStyle = function (width) {
     }
 };
 
-MMRoundButton.propTypes = {
+MMButton.propTypes = {
     label: PropTypes.string.isRequired,
     bgColor: PropTypes.string,
     optionalStyle: PropTypes.any,
 };
 
 function MMTransparentButton(props) {
-    const { label } = props;
+    const theme = useTheme();
+    const { label, style } = props;
 
     return (
-        <Button variant="none" transparent {...props}>
-            {label}
+        <Button variant="none" transparent {...props} style={style}>
+            <Text style={{ color: theme.colors.primary }}>{label}</Text>
         </Button>
     );
 }
@@ -76,11 +63,13 @@ MMTransparentButton.propTypes = {
 };
 
 function MMOutlineButton(props) {
+    const theme = useTheme();
     const { label, onPress, color, disabled = false, width } = props;
+
     return (
         <Button
             mode="outlined"
-            textColor={color}
+            textColor={theme.colors.primary}
             onPress={onPress}
             disabled={disabled}
             style={buttonStyle(width)}
@@ -97,7 +86,6 @@ MMOutlineButton.propTypes = {
 
 export {
     MMButton,
-    MMRoundButton,
     MMTransparentButton,
     MMOutlineButton
 };

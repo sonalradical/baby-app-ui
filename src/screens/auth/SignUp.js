@@ -13,7 +13,7 @@ import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
-import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
+import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 
@@ -218,7 +218,7 @@ export default function SignUp({ navigation, route }) {
 
                 </View>
                 {!checked && state.errors.terms ? <MMFormErrorText errorText={state.errors.terms} /> : null}
-                <MMRoundButton
+                <MMButton
                     optionalTextStyle={[MMStyles.h5]}
                     label="Sign Up"
                     onPress={() => onSubmit()}

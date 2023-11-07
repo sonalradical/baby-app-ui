@@ -18,7 +18,7 @@ import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
-import { MMOutlineButton, MMRoundButton } from '../../components/common/Button';
+import { MMOutlineButton, MMButton } from '../../components/common/Button';
 import MMProfileAvatar from '../../components/common/profileAvatar';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
@@ -454,13 +454,13 @@ export default function AddBaby({ route }) {
                                 onPress={() => onDelete()}
                                 width='45%'
                             />
-                            <MMRoundButton
+                            <MMButton
                                 label="Save"
                                 onPress={() => onSubmit()}
                                 width='45%'
                             />
                         </MMFlexView> :
-                        <MMRoundButton
+                        <MMButton
                             optionalTextStyle={[MMStyles.h5]}
                             label="Save"
                             onPress={() => onSubmit()}

@@ -14,7 +14,7 @@ import { Dimensions, Image, Keyboard, StyleSheet, View } from 'react-native';
 import MMInput from '../../components/common/Input';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
-import { MMRoundButton } from '../../components/common/Button';
+import { MMButton } from '../../components/common/Button';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
 
@@ -228,7 +228,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                         {imageSource ? <Image source={{ uri: imageSource }}
                             style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 2 }]} onPress={toggleModal} /> : null}
                     </>
-                    <MMRoundButton label='Save' style={MMStyles.mt20} onPress={() => onSubmit()} />
+                    <MMButton label='Save' style={MMStyles.mt20} onPress={() => onSubmit()} />
                 </View>
                 <MMImagePickerModal visible={isModalVisible} toggleModal={toggleModal} onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>

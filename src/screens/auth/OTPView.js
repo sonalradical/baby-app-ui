@@ -13,7 +13,7 @@ import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
-import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
+import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
@@ -209,7 +209,7 @@ export default function OTPView({ navigation, route }) {
 
 
                 </View>
-                <MMRoundButton
+                <MMButton
                     optionalTextStyle={[MMStyles.h5]}
                     label="Verify"
                     onPress={() => onVerify()}
