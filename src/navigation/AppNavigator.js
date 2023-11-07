@@ -15,6 +15,7 @@ import MMUtils from '../helpers/Utils';
 
 import MMSpinner from '../components/common/Spinner';
 
+import lightMMTheme from '../lightMMTheme'
 // auth screens
 import Login from '../screens/auth/Login';
 import OTPView from '../screens/auth/OTPView';
@@ -122,7 +123,7 @@ export default function AppNavigator() {
     }
 
     return (
-        <PaperProvider>
+        <PaperProvider theme={lightMMTheme}>
             <NavigationContainer ref={navigationRef}>
                 {(_.isNil(accessToken)) ? <AuthStackNavigator /> : <AppStackNavigator />}
             </NavigationContainer>

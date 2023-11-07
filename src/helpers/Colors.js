@@ -1,53 +1,20 @@
 const MMColors = {
-    label: '#153634',
-    pressedColor: '#2a343d',
-
-    inputIcon: '#B7C8D5',
-    error: '#DD0000',
-
+    primary:'#F68D43',
+    secondary:'#9E8CCC',
+    info:'',
+    success:'#4CAF50',
+    warning:'#FF9800',
+    error:'#EF5350',
+    label:'#153634',
+    hint:'#C1C1C1',
+    textDark:'#000',
     white: '#FFFFFF',
-    black: '#000000',
-    orange: '#F68E43',
-    purple: '#9E8CCC',
-    lightPurple: '#D1CCFF',
-    lightBlue: '#D6E0F2',
-    backgroundColor: '#F8F4E9',
-    secondary: '#F5F5F5',
-    inputBorder: '#B7C8D5',
-
-    disabled: '#808080',
-    textContent: '#707070',
-    menuTopBackground: '#B7C8D5',
-    menuContents: '#384F63',
-    footerButtonSeparator: '#7FC4FD',
-
-    cardTitle: '#2699FB',
-    trendUpIcon: '#29BE56',
-    trendDownIcon: '#E53935',
-    trendStableIcon: '#1E88E5',
-
+    lightPrimary: '#FEE4CB',
+    lightSecondary: '#D1CCFF',
+    background: '#F8F4E9',
+    secondaryBackground: '#D6E0F2',
     lightGray: '#F1F4F7',
     gray: '#515151',
-    green: '#21880E',
-    green_1: '#097969',
-    darkButton: '#384F63',
-
-    // primary
-    purplePrimary: '#B59DFF',
-    bluePrimary: '#B3D9FF',
-    pinkPrimary: '#EA94c5',
-
-    // secondary
-    purpleSecondary: '#B59DFF',
-    blueSecondary: '#B3D9ff',
-    pinkSecondary: '#EA94C5',
-    greenSecondary: '#E7F6E6',
-    creamSecondary: '#FCF4E6',
-
-    // grays
-    gray1: '#595959',
-    gray2: '#E2E2E2'
-
 };
 
 export default MMColors;

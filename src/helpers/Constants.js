@@ -33,11 +33,11 @@ const MMConstants = {
     },
     fonts: {
         // new fonts
-        bold: 'MaisonNeue-Bold',
-        book: 'MaisonNeue-Book',
-        wulkanDisplaymedium: 'Wulkan Display Medium',
-        wulkanDisplayRegular: 'Wulkan Display Regular',
-        tangerineregular: 'TangerineRegular',
+        bold: 'Maison Neue',
+        book: 'Maison Neue',
+        wulkanDisplaymedium: "Wulkan Display",
+        wulkanDisplayRegular: "Wulkan Display",
+        tangerineregular: 'Tangerine',
     },
     reducerAction: {
         accessToken: 'accessToken',
