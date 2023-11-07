@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
-import { Card, Text } from 'react-native-paper';
+import { Card, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -22,6 +22,7 @@ import MMNoRecordsFound from '../../components/common/NoRecordsFound';
 import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function ChapterList({ route }) {
+    const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
     const navigation = useNavigation();
@@ -63,30 +64,30 @@ export default function ChapterList({ route }) {
     const renderView = () => {
         return (
             <>
-                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10, { flex: 1 }]}>Chapters</Text>
+                <Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center', marginBottom: 10 }]}>Chapters</Text>
                 {_.map(chapterList, (chapter) => {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
-                        <Card style={styles.whiteBg} key={chapter._id}
+                        <Card style={styles(theme).whiteBg} key={chapter._id}
                             onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id, title: chapter.title })}>
-                            <View style={[MMStyles.m10, { flexDirection: 'row' }]}>
+                            <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'space-between' }}>
                                 <Image
                                     textAlign="center"
                                     resizeMode="contain"
                                     source={chapterImage}
-                                    style={styles.image}
+                                    style={styles(theme).image}
                                 />
-                                <View style={[MMStyles.flex1, MMUtils.isPlatformAndroid() ? { marginVertical: 15 } : { marginVertical:25 }]}>
-                                    <Text style={[MMStyles.labelTitle, MMStyles.h3]} numberOfLines={1} ellipsizeMode='tail'>
+                                <View style={[MMUtils.isPlatformAndroid() ? { marginVertical: 22 } : { marginVertical: 25 }]}>
+                                    <Text style={[theme.fonts.labelLarge, { fontSize: 22, lineHeight: 22, width: 150 }]} numberOfLines={1} ellipsizeMode='tail'>
                                         {chapter.title}</Text>
-                                    <Text style={[MMStyles.labelTitle, MMStyles.h7]} numberOfLines={1} ellipsizeMode='tail'>
+                                    <Text style={theme.fonts.labelMedium} numberOfLines={1} ellipsizeMode='tail'>
                                         {'You’ve grown and learnt'}</Text>
                                 </View>
-                                <View style={MMStyles.m10}>
+                                <View style={{ margin: 10 }}>
                                     <CircularProgress value={chapter.totalAnswers}
                                         title={`${chapter.totalAnswers} / ${chapter.totalQuestions}`}
                                         radius={30}
-                                        titleStyle={[MMStyles.labelTitle, MMStyles.h6]}
+                                        titleStyle={theme.fonts.labelLarge}
                                         activeStrokeWidth={5}
                                         inActiveStrokeWidth={5}
                                         activeStrokeColor={chapter.color}
@@ -119,14 +120,14 @@ ChapterList.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
     addButton: {
         position: 'absolute',
         top: 10,
         right: 10,
     },
     card: {
-        backgroundColor: MMColors.white
+        backgroundColor: theme.colors.onPrimary
     },
     chip: {
         borderRadius: 20,
@@ -136,18 +137,18 @@ const styles = StyleSheet.create({
         flex: 0,
         borderWidth: 0,
         shadowColor: MMUtils.isPlatformAndroid() ? MMColors.black : null,
-        shadowOpacity:  MMUtils.isPlatformAndroid() ?  0.15 : 0,
-        shadowRadius:  MMUtils.isPlatformAndroid() ? 50 : 0,
+        shadowOpacity: MMUtils.isPlatformAndroid() ? 0.15 : 0,
+        shadowRadius: MMUtils.isPlatformAndroid() ? 50 : 0,
         marginBottom: 20,
         elevation: 10,
         borderRadius: 30,
         position: 'relative',
-        backgroundColor: MMColors.white
+        backgroundColor: theme.colors.onPrimary
     },
     image: {
         width: Dimensions.get('window').width / 7,
         height: Dimensions.get('window').height / 10,
         borderRadius: 50,
-        marginHorizontal: 10
+        marginLeft: 10
     },
 });

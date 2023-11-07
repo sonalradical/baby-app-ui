@@ -12,20 +12,20 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
 
 	return (
-		<Appbar.Header style={styles.appBarHeader}>
-			<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
+		<Appbar.Header style={styles(theme).appBarHeader}>
+			<TouchableOpacity onPress={onAvatarPress} style={{ marginLeft: 10 }}>
 				<Avatar.Image
 					size={50}
 					source={babyDetail ? { uri: MMUtils.getImagePath(babyDetail.picture) } : require('../../assets/images/parenthood.jpg')}
 				/>
 				{
-					!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={theme.colors.primary} /> : null
+					!babyDetail ? <MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.primary} /> : null
 				}
 			</TouchableOpacity>
 			{
-				headerTitle ? <Appbar.Content title={headerTitle} titleStyle={[MMStyles.mediumText, { alignSelf: 'center' }]} /> :
+				headerTitle ? <Appbar.Content title={headerTitle} titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /> :
 					<Appbar.Content title={babyDetail ? babyDetail.name : 'Mini Memoirs'}
-						titleStyle={[MMStyles.mediumText, { alignSelf: 'center' }]} />
+						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
 			}
 
 			<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
@@ -34,9 +34,9 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
 	appBarHeader: {
-		backgroundColor: MMColors.white,
+		backgroundColor: theme.colors.onPrimary,
 		borderBottomRightRadius: 20,
 		borderBottomLeftRadius: 20,
 		marginBottom: 10
