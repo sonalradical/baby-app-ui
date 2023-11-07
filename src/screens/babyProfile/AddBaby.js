@@ -149,7 +149,14 @@ export default function AddBaby({ route }) {
     };
 
     const onGenderSelect = (value) => {
-        setState({ ...state, gender: value });
+        setState({
+            ...state,
+            gender: value,
+            errors: {
+                ...state.errors,
+                gender: '',
+            },
+        });
     };
 
     const onSubmit = () => {
@@ -419,7 +426,7 @@ export default function AddBaby({ route }) {
                     name='birthPlace'
                     placeholder='Enter Birth Place'
                     value={state.birthPlace}
-                    errorText={state.errors.name}
+                    errorText={state.errors.birthPlace}
                     onChangeText={(value) => onInputChange('birthPlace', value)}
                     maxLength={50}
                 />

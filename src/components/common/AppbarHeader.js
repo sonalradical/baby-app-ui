@@ -24,7 +24,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 			</TouchableOpacity>
 			{
 				headerTitle ? <Appbar.Content title={headerTitle} titleStyle={[MMStyles.mediumText, { alignSelf: 'center' }]} /> :
-					<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'}
+					<Appbar.Content title={babyDetail ? babyDetail.name : 'Mini Memoirs'}
 						titleStyle={[MMStyles.mediumText, { alignSelf: 'center' }]} />
 			}
 
