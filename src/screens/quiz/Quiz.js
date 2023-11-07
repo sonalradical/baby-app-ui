@@ -60,7 +60,7 @@ export default function Quiz({ navigation, route }) {
     useEffect(() => {
         // Update selectedAnswer based on the currentQuestionType
         const currentQuestionType = questionList[currentQuestion]?.questionType;
-        const currentQuestionId = questionList[currentQuestion]?._id;
+        const currentQuestionId = questionList[currentQuestion]?.questionId;
 
         const matchingAnswer = answerList.find(answer => answer.questionId === currentQuestionId);
 
@@ -74,7 +74,7 @@ export default function Quiz({ navigation, route }) {
 
     const onNextClick = () => {
         const currentAnswer = getAnswer();
-        const questionId = questionList[currentQuestion]._id;
+        const questionId = questionList[currentQuestion].questionId;
 
         if (!_.isEmpty(currentAnswer)) {
             onSaveQuiz(questionId, currentAnswer);

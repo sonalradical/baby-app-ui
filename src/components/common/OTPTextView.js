@@ -68,12 +68,12 @@ const styles = (theme) => StyleSheet.create({
         height: 42,
         fontSize: 28,
         borderWidth: 2,
-        borderColor: MMColors.disabled,
+        borderColor: theme.colors.outline,
         borderRadius: 10,
         marginHorizontal: 10,
         marginTop: 20,
         textAlign: 'center',
-        color: MMColors.black
+        color: theme.colors.text.secondary,
     },
     focusCell: {
         borderColor: theme.colors.primary,
@@ -86,7 +86,6 @@ const styles = (theme) => StyleSheet.create({
         color: theme.colors.error,
     },
     fieldRow: {
-        marginVertical: 15,
         alignSelf: 'center',
     },
 });

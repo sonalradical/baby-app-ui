@@ -143,7 +143,7 @@ export default function MilestoneQuiz({ navigation, route }) {
             const apiData = {
                 chapterId: milestoneId,
                 babyId: babyId,
-                questionId: questions[0]._id,
+                questionId: questions[0].questionId,
                 answer: {
                     description: state.description,
                     date: state.date,

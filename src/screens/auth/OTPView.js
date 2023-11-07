@@ -174,19 +174,13 @@ export default function OTPView({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <MMSurface margin={[0, 0, 0, 0]} style={{
-                borderTopLeftRadius: 40,
-                borderTopRightRadius: 40,
-                bottom: 0,
-                position: 'absolute',
-                backgroundColor: MMColors.backgroundColor
-            }}>
-                <View style={MMStyles.m5}>
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
+                <View style={{ margin: 10 }}>
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[MMStyles.title]}>OTP Verification</Text>
-                        <Text style={[MMStyles.boldText, MMStyles.h4, MMStyles.mt30]}>Enter OTP</Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h5, MMStyles.mt20]}>{`We have sent a verification code to`}</Text>
-                        <Text style={[MMStyles.boldText, MMStyles.h5]}>{mobileNumber}</Text>
+                        <Text style={[theme.fonts.headlineLarge, { marginBottom: 15 }]}>OTP Verification</Text>
+                        <Text style={theme.fonts.headlineSmall}>Enter OTP</Text>
+                        <Text style={[theme.fonts.labelLarge, { marginTop: 10 }]}>{`We have sent a verification code to`}</Text>
+                        <Text style={theme.fonts.titleMedium}>{mobileNumber}</Text>
                     </View>
                     <View>
                         <MMPinTextInput
@@ -199,8 +193,8 @@ export default function OTPView({ navigation, route }) {
                     {
                         isResendVisible
                             ? (
-                                <View style={[MMStyles.mt20, MMStyles.mb5]}>
-                                    <Text style={[MMStyles.subTitle, MMStyles.h5, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
+                                <View style={{ marginTop: 20 }}>
+                                    <Text style={[theme.fonts.labelLarge, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
                                     <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>
                             )
@@ -235,9 +229,12 @@ OTPView.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = StyleSheet.create({
-    roundedTextInput: {
-        borderRadius: 10,
-        borderWidth: 2,
-    },
+const styles = (theme) => StyleSheet.create({
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: theme.colors.background
+    }
 });
