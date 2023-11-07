@@ -183,14 +183,14 @@ export default function Quiz({ navigation, route }) {
 
         return (
             <>
-                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10]}>{title}</Text>
-                <View style={MMStyles.p10}>
+                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>{title}</Text>
+                <View style={{ padding: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={MMStyles.mb10}>{currentQuestion + 1}. </Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h5]} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
+                        <Text>{currentQuestion + 1}. </Text>
+                        <Text style={theme.fonts.labelLarge} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
                     {currentQuestionType === "radio" && (
-                        <View>
+                        <View style={{ marginTop: 5 }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <RadioButton.Android
@@ -199,7 +199,7 @@ export default function Quiz({ navigation, route }) {
                                         onPress={() => onOptionChange(option)}
                                         position='leading'
                                     />
-                                    <Text style={MMStyles.mt10}>{option}</Text>
+                                    <Text style={[theme.fonts.labelLarge, { marginTop: 8 }]}>{option}</Text>
                                 </View>
                             ))}
                         </View>
@@ -265,7 +265,7 @@ export default function Quiz({ navigation, route }) {
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header style={{ backgroundColor: MMColors.white }}>
+            <Appbar.Header style={{ backgroundColor: theme.colors.onPrimary }}>
                 <Appbar.BackAction onPress={() => { onPressBack(); }} />
                 <Appbar.Content title={'Quiz'} titleStyle={[MMStyles.mediumText]} />
             </Appbar.Header>
@@ -278,7 +278,7 @@ export default function Quiz({ navigation, route }) {
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> : renderView()}
             </MMContentContainer >
-            <View style={[MMStyles.p10, { backgroundColor: MMColors.white }]}>
+            <View style={[{ backgroundColor: MMColors.white, padding: 10 }]}>
                 {renderActionButtons()}
             </View>
         </>

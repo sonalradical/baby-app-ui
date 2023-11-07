@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, Text, Title } from 'react-native-paper';
+import { Card, Text, Title, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -16,6 +16,7 @@ import MMNoRecordsFound from '../../components/common/NoRecordsFound';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 
 export default function MilestoneList({ navigation, route }) {
+    const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
     const { milestoneId } = route.params || '';
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -77,7 +78,7 @@ export default function MilestoneList({ navigation, route }) {
                         style={styles.image}
                     />
                 </View>
-                <Text style={[MMStyles.labelTitle, MMStyles.h6, MMStyles.mt5, { width: 80, textAlign: 'center' }]} numberOfLines={1} ellipsizeMode='tail'>
+                <Text style={[theme.fonts.labelLarge, { width: 80, textAlign: 'center', marginTop: 5 }]} numberOfLines={1} ellipsizeMode='tail'>
                     {item.title}</Text>
             </TouchableOpacity>
         );
@@ -87,8 +88,8 @@ export default function MilestoneList({ navigation, route }) {
         return (
             <FlatList
                 data={milestones}
-                columnWrapperStyle={[MMStyles.m20, { justifyContent: 'space-between' }]}
-                ListHeaderComponent={<Text style={[MMStyles.cardHeaderText, MMStyles.mt10]}>My first</Text>}
+                columnWrapperStyle={{ justifyContent: 'space-between', margin: 20 }}
+                ListHeaderComponent={<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center', marginBottom: 10 }]}>My first</Text>}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
                 numColumns={3}
