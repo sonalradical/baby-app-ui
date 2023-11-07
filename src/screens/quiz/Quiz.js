@@ -192,15 +192,14 @@ export default function Quiz({ navigation, route }) {
                     {currentQuestionType === "radio" && (
                         <View>
                             {questionList[currentQuestion].options.map((option, index) => (
-                                 <View style={{ flexDirection: 'row' }}>
-                                <RadioButton.Android
-                                    key={index}
-                                    value={option}
-                                    status={selectedAnswer.option === option ? 'checked' : 'unchecked'}
-                                    onPress={() => onOptionChange(option)}
-                                    position='leading'
-                                />
-                                <Text style={MMStyles.mt10}>{option}</Text>
+                                <View style={{ flexDirection: 'row' }} key={index}>
+                                    <RadioButton.Android
+                                        value={option}
+                                        status={selectedAnswer.option === option ? 'checked' : 'unchecked'}
+                                        onPress={() => onOptionChange(option)}
+                                        position='leading'
+                                    />
+                                    <Text style={MMStyles.mt10}>{option}</Text>
                                 </View>
                             ))}
                         </View>
