@@ -44,7 +44,8 @@ const fontConfig = {
     fontFamily: 'Wulkan display',
   },
   titleMedium: {
-    fontFamily: 'Wulkan display',
+    fontWeight: 700,
+    color: '#153634',
   },
 };
 

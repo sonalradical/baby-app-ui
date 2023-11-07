@@ -147,8 +147,8 @@ export default function Login({ navigation }) {
     const renderView = () => {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
-                <View style={MMStyles.m10}>
-                    <View style={{ alignItems: 'center' }}>
+                <View style={{ margin: 10 }}>
+                    <View style={{ alignItems: 'center', marginBottom: 10 }}>
                         <Text style={theme.fonts.displayLarge}>Get Started</Text>
                     </View>
 

@@ -1,20 +1,21 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Text, TextInput, useTheme } from 'react-native-paper';
 import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMFormErrorText from './FormErrorText';
 
 const MMInput = ({ label, description, errorText, mode = 'outlined', ...props }) => {
+    const theme = useTheme();
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={theme.fonts.titleMedium}>{label}</Text>
             <TextInput
-                style={styles.input}
+                style={styles(theme).input}
                 mode={mode}
-                outlineColor={MMColors.inputBorder}
+                outlineColor={theme.colors.outline}
                 autoCapitalize='none'
                 textBreakStrategy='simple'
                 label=''
@@ -25,22 +26,15 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
     )
 };
 
-const styles  = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
     container: {
         width: '100%',
-        marginBottom: 10,
-    },
-    label: {
-        marginBottom: 10,
-        color: MMColors.black,
-        fontFamily: MMConstants.fonts.bold
     },
     input: {
         height: 43,
         lineHeight: 20,
-        backgroundColor: MMColors.white,
+        backgroundColor: theme.colors.onPrimary,
         borderRadius: 10,
-        fontFamily: MMConstants.fonts.book,
         marginBottom: 10
     },
 });
