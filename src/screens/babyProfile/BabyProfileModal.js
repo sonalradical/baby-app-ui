@@ -23,6 +23,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
+	console.log(babyList, 'babyList')
 
 	useEffect(() => {
 		async function Init() {
@@ -40,14 +41,14 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						}
 						setSelectedBabyDetail(selectedBaby);
 					} else {
-						selectedBabyDetail();
+						setSelectedBabyDetail();
 						// if (babyProfiles.length > 0) {
 						// 	const firstBaby = babyProfiles[0];
 						// 	setSelectedBabyDetail(firstBaby);
 						// 	dispatch(setSelectedBabyId(firstBaby._id));
 						// 	MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, firstBaby._id);
 						// } else {
-						// 	selectedBabyDetail();
+						// 	setSelectedBabyDetail();
 						// }
 					}
 					setBabyList(babyProfiles);
