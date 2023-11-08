@@ -98,6 +98,10 @@ const MMConstants = {
         fathersDay: require('../assets/images/milestone/fathersDay.png'),
         ultraSound: require('../assets/images/milestone/ultraSound.png'),
         babyMoveKick: require('../assets/images/milestone/babyMoveKick.png'),
+        bath: require('../assets/images/milestone/bath.png'),
+        swimming: require('../assets/images/milestone/swim.png'),
+        birthday: require('../assets/images/milestone/birthday.png'),
+        beachday: require('../assets/images/milestone/beachHoliday.png'),
     }
 };
 

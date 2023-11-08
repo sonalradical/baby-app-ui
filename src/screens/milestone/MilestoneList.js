@@ -31,7 +31,6 @@ export default function MilestoneList({ navigation, route }) {
                     const response = await MMApiService.getTypeList(babyId, 'milestone');
                     if (response.data) {
                         const milestone = _.sortBy(response.data.milestoneList, 'position');
-                        console.log(milestone, 'milestone')
                         setMilestones(milestone);
                         setIsOverlayLoading(false);
                     }
@@ -68,7 +67,7 @@ export default function MilestoneList({ navigation, route }) {
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
-            <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => navigation.navigate('MilestoneQuiz', { babyId: babyId, milestoneId: item._id })}>
+            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: 10 }} onPress={() => navigation.navigate('MilestoneQuiz', { babyId: babyId, milestoneId: item._id })}>
                 <View style={[styles(theme).imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
                     <Image
                         textAlign="center"
@@ -87,7 +86,7 @@ export default function MilestoneList({ navigation, route }) {
         return (
             <FlatList
                 data={milestones}
-                columnWrapperStyle={{ justifyContent: 'space-between', margin: 20 }}
+                columnWrapperStyle={{ alignContent: 'center' }}
                 ListHeaderComponent={<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center', marginBottom: 10 }]}>My first</Text>}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
