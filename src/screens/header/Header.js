@@ -30,11 +30,11 @@ export default function Header({ navigation, route }) {
                     }
                 } catch (error) {
                     setBabyDetail();
+                    setIsOverlayLoading(false);
                     const serverError = MMUtils.apiErrorMessage(error);
                     if (serverError) {
                         MMUtils.showToastMessage(serverError);
                     }
-                    setIsOverlayLoading(false);
                 }
             }
             else {

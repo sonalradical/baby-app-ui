@@ -40,7 +40,15 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						}
 						setSelectedBabyDetail(selectedBaby);
 					} else {
-						setSelectedBabyDetail();
+						selectedBabyDetail();
+						// if (babyProfiles.length > 0) {
+						// 	const firstBaby = babyProfiles[0];
+						// 	setSelectedBabyDetail(firstBaby);
+						// 	dispatch(setSelectedBabyId(firstBaby._id));
+						// 	MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, firstBaby._id);
+						// } else {
+						// 	selectedBabyDetail();
+						// }
 					}
 					setBabyList(babyProfiles);
 				}
@@ -129,7 +137,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						</View>
 						{
 							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[theme.fonts.labelMedium, { textAlign: 'center', marginBottom: 10 }]}>Please Select Baby</Text> : null
+								<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: 10 }]}>Please Select Baby</Text> : null
 						}
 						{isLoading ? (
 							<View style={{ height: 40 }}>

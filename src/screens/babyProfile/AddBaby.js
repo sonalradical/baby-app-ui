@@ -268,9 +268,10 @@ export default function AddBaby({ route }) {
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
-                dispatch(setSelectedBabyId(''));
-                navigation.navigate('Home');
+                dispatch(setSelectedBabyId(null));
                 setIsOverlayLoading(false);
+                dispatch(setReloadPage(false));
+                navigation.navigate('Home');
                 setIsModalOpen(false);
             }
         } catch (error) {
