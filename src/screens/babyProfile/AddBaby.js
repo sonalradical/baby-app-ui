@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Keyboard, Alert } from 'react-native';
-import { Checkbox, RadioButton, SegmentedButtons, TextInput, useTheme } from 'react-native-paper';
+import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
