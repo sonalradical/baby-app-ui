@@ -23,7 +23,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
-	console.log(babyList, 'babyList')
 
 	useEffect(() => {
 		async function Init() {
