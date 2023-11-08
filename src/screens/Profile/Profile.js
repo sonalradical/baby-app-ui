@@ -2,17 +2,18 @@ import React from 'react';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 
 import MMContentContainer from '../../components/common/ContentContainer';
-import { Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { MMButton } from '../../components/common/Button';
 
 export default function Profile({ route }) {
     const navigation = useNavigation();
+
     const renderView = () => {
         return (
             <>
-                <Button onPress={() => navigation.navigate('Logout')}>Logout</Button>
+                <MMButton label='Logout' onPress={() => navigation.navigate('Logout')} />
             </>
         );
     };
