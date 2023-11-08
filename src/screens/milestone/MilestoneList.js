@@ -30,7 +30,7 @@ export default function MilestoneList({ navigation, route }) {
                     setBabyId(babyId);
                     const response = await MMApiService.getTypeList(babyId, 'milestone');
                     if (response.data) {
-                        const milestone = response.data.milestoneList;
+                        const milestone = _.sortBy(response.data.milestoneList, 'position');
                         console.log(milestone, 'milestone')
                         setMilestones(milestone);
                         setIsOverlayLoading(false);
