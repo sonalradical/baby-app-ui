@@ -185,7 +185,7 @@ export default function Quiz({ navigation, route }) {
                 <View style={{ padding: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text>{currentQuestion + 1}. </Text>
-                        <Text style={theme.fonts.labelLarge} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
+                        <Text style={theme.fonts.default} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
                     {currentQuestionType === "radio" && (
                         <View style={{ marginTop: 5 }}>
@@ -197,7 +197,7 @@ export default function Quiz({ navigation, route }) {
                                         onPress={() => onOptionChange(option)}
                                         position='leading'
                                     />
-                                    <Text style={[theme.fonts.labelLarge, { marginTop: 8 }]}>{option}</Text>
+                                    <Text style={[theme.fonts.default, { marginTop: 8 }]}>{option}</Text>
                                 </View>
                             ))}
                         </View>

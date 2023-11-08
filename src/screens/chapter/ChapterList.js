@@ -85,7 +85,7 @@ export default function ChapterList({ route }) {
                                     <CircularProgress value={chapter.totalAnswers}
                                         title={`${chapter.totalAnswers} / ${chapter.totalQuestions}`}
                                         radius={30}
-                                        titleStyle={theme.fonts.labelLarge}
+                                        titleStyle={theme.fonts.default}
                                         activeStrokeWidth={5}
                                         inActiveStrokeWidth={5}
                                         activeStrokeColor={chapter.color}

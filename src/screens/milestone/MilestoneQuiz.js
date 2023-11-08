@@ -220,7 +220,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                         {!imageSource ?
                             <View style={styles(theme).imagePickerSquare}>
                                 <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
-                                <Text style={theme.fonts.labelLarge} >Upload Photo</Text>
+                                <Text style={theme.fonts.default} >Upload Photo</Text>
                             </View> : null
                         }
                         {imageSource ? <Image source={{ uri: imageSource }}

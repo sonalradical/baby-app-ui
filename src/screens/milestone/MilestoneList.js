@@ -76,7 +76,7 @@ export default function MilestoneList({ navigation, route }) {
                         style={styles(theme).image}
                     />
                 </View>
-                <Text style={[theme.fonts.labelLarge, { width: 80, textAlign: 'center', marginTop: 5 }]} numberOfLines={1} ellipsizeMode='tail'>
+                <Text style={[theme.fonts.default, { width: 80, textAlign: 'center', marginTop: 5 }]} numberOfLines={1} ellipsizeMode='tail'>
                     {item.title}</Text>
             </TouchableOpacity>
         );

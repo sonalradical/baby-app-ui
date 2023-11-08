@@ -440,7 +440,7 @@ export default function AddBaby({ route }) {
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
                                     onPress={() => onGenderSelect(option.value)}
                                 />
-                                <Text style={theme.fonts.labelLarge}>{option.label}</Text>
+                                <Text style={theme.fonts.default}>{option.label}</Text>
                             </View>
                         ))}
                     </View>

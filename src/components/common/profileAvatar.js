@@ -59,7 +59,7 @@ const MMProfileAvatar = (props) => {
                     {image ? (
                         <Image source={source ? source : require('../../assets/images/parenthood.jpg')} style={styles(theme).avatar} />
                     ) : (
-                        <Text style={theme.fonts.labelLarge}>{`Upload \n Photo`}</Text>
+                        <Text style={theme.fonts.default}>{`Upload \n Photo`}</Text>
                     )}
 
                     <IconButton
