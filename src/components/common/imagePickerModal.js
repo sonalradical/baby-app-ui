@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Divider, useTheme } from 'react-native-paper';
 import { View, StyleSheet, Text, Image, Modal, TouchableOpacity } from 'react-native';
+
 import ImagePicker, { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
 import MMUtils from '../../helpers/Utils';
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
-import { Divider } from 'react-native-paper';
+
 
 const MMImagePickerModal = (props) => {
+    const theme = useTheme();
     const { visible, toggleModal, onImageChange } = props;
 
     const handleImageSelect = (type) => {
@@ -65,7 +67,7 @@ const MMImagePickerModal = (props) => {
                     </TouchableOpacity>
                     <Divider />
                     <TouchableOpacity onPress={toggleModal}>
-                        <Text style={[styles.bottomSheetOption, { color: MMColors.textContent }]}>Cancel</Text>
+                        <Text style={[styles.bottomSheetOption, { color: theme.colors.text.secondory }]}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -73,14 +75,14 @@ const MMImagePickerModal = (props) => {
     );
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
     bottomSheet: {
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        backgroundColor: MMColors.white,
+        backgroundColor: theme.colors.onPrimary,
         padding: 16,
-        shadowColor: '#000000',
+        shadowColor: theme.colors.shadow,
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
         shadowOpacity: 30,
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         padding: 10,
         textAlign: 'center',
-        color: MMColors.black,
+        color: theme.colors.text.secondory,
     },
 });
 

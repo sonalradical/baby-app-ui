@@ -6,10 +6,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
-import MMColors from '../../helpers/Colors';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMNoRecordsFound from '../../components/common/NoRecordsFound';
@@ -70,12 +68,12 @@ export default function MilestoneList({ navigation, route }) {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
             <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => navigation.navigate('MilestoneQuiz', { babyId: babyId, milestoneId: item._id })}>
-                <View style={[styles.imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
+                <View style={[styles(theme).imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
                     <Image
                         textAlign="center"
                         resizeMode="contain"
                         source={milestoneImage}
-                        style={styles.image}
+                        style={styles(theme).image}
                     />
                 </View>
                 <Text style={[theme.fonts.labelLarge, { width: 80, textAlign: 'center', marginTop: 5 }]} numberOfLines={1} ellipsizeMode='tail'>
@@ -112,7 +110,7 @@ MilestoneList.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
     image: {
         width: Dimensions.get('window').width / 6,
         height: Dimensions.get('window').height / 12,
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
     },
     imageView: {
         borderRadius: 50,
-        backgroundColor: MMColors.white,
+        backgroundColor: theme.colors.onPrimary,
         width: Dimensions.get('window').width / 6 + 10,
         height: Dimensions.get('window').height / 12 + 10,
         alignItems: 'center',

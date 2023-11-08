@@ -2,8 +2,6 @@ import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import MMStyles from '../../helpers/Styles';
-import MMColors from '../../helpers/Colors';
 import MMUtils from '../../helpers/Utils';
 import MMIcon from './Icon';
 

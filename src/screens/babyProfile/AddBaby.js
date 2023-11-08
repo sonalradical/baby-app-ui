@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Keyboard, Alert } from 'react-native';
-import { Checkbox, RadioButton, SegmentedButtons, TextInput } from 'react-native-paper';
+import { Checkbox, RadioButton, SegmentedButtons, TextInput, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
-import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';
@@ -27,6 +26,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function AddBaby({ route }) {
     const { babyId } = route.params || '';
+    const theme = useTheme();
     const dispatch = useDispatch();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [imageSource, setImageSource] = useState();
@@ -322,9 +322,9 @@ export default function AddBaby({ route }) {
 
     const renderView = () => {
         return (
-            <View style={MMStyles.m10}>
-                <View style={[MMStyles.mb10, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.title]}>Baby Profile</Text>
+            <View style={{ margin: 10 }}>
+                <View style={{ alignItems: 'center', marginBottom: 10 }}>
+                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>Baby Profile</Text>
                 </View>
                 <MMProfileAvatar image={imageSource}
                     source={{ uri: imageSource ? imageSource : null }}
@@ -431,16 +431,16 @@ export default function AddBaby({ route }) {
                     maxLength={50}
                 />
                 <View>
-                    <Text style={MMStyles.boldText}>Gender *</Text>
+                    <Text style={theme.fonts.titleMedium}>Gender *</Text>
                     <View style={{ flexDirection: 'row' }}>
                         {MMConstants.gender.map((option) => (
-                            <View key={option.value} style={MMStyles.rowCenter}>
+                            <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <RadioButton.Android
                                     value={option.value}
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
                                     onPress={() => onGenderSelect(option.value)}
                                 />
-                                <Text style={MMStyles.subTitle}>{option.label}</Text>
+                                <Text style={theme.fonts.labelLarge}>{option.label}</Text>
                             </View>
                         ))}
                     </View>
@@ -461,10 +461,8 @@ export default function AddBaby({ route }) {
                             />
                         </MMFlexView> :
                         <MMButton
-                            optionalTextStyle={[MMStyles.h5]}
                             label="Save"
                             onPress={() => onSubmit()}
-                            optionalStyle={[MMStyles.mt20]}
                         />
 
                 }

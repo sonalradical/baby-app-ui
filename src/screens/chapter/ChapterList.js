@@ -10,9 +10,7 @@ import CircularProgress, {
     CircularProgressWithChild,
 } from 'react-native-circular-progress-indicator';
 
-import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
-import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 
 import MMApiService from '../../services/ApiService';
@@ -136,7 +134,7 @@ const styles = (theme) => StyleSheet.create({
     whiteBg: {
         flex: 0,
         borderWidth: 0,
-        shadowColor: MMUtils.isPlatformAndroid() ? MMColors.black : null,
+        shadowColor: MMUtils.isPlatformAndroid() ? theme.colors.shadow : null,
         shadowOpacity: MMUtils.isPlatformAndroid() ? 0.15 : 0,
         shadowRadius: MMUtils.isPlatformAndroid() ? 50 : 0,
         marginBottom: 20,

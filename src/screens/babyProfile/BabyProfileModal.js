@@ -10,8 +10,6 @@ import { useDispatch } from 'react-redux';
 import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
-import MMStyles from '../../helpers/Styles';
-import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
@@ -87,24 +85,24 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				onPress={() => onSelectProfile(profileData)}
 				key={index}
 			>
-				<Card style={[MMStyles.mb10, {
+				<Card style={{
 					shadowColor: isSelected ? 'blue' : 'transparent',
 					shadowOpacity: isSelected ? 1 : 0,
 					shadowRadius: isSelected ? 2 : 0,
-					opacity: isSelected ? 1 : 0.5
-				}]}>
-					<Card.Content style={MMStyles.rowCenter}>
+					opacity: isSelected ? 1 : 0.5,
+					marginBottom: 10
+				}}>
+					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Avatar.Image
 							size={56}
 							source={profileData ? { uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender}
-							style={{ width: 100 }} titleStyle={MMStyles.boldText} subtitleStyle={MMStyles.subTitle} />
+							style={{ width: 100, marginLeft: 10 }} titleStyle={[theme.fonts.labelLarge, { fontWeight: 700, fontSize: 18 }]} subtitleStyle={theme.fonts.labelMedium} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
 							{isSelected ? <MMIcon
 								iconName="edit"
 								iconColor={theme.colors.primary}
-								style={MMStyles.mr10}
 								iconSize={24}
 								onPress={() => onBabyEdit(profileData._id)}
 							/> : null}
@@ -121,17 +119,17 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				animationType="slide"
 				transparent={true}
 				visible={isModalOpen}>
-				<View style={styles.centeredView}>
-					<View style={MMStyles.card}>
-						<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'center' }]}>
-							<Text style={[MMStyles.cardHeaderText, { flex: 1 }]}>Minimemoirs</Text>
-							<View style={{ alignSelf: 'flex-end' }}>
+				<View style={styles(theme).centeredView}>
+					<View style={styles(theme).card}>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
+							<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center' }]}>Minimemoirs</Text>
+							<View style={{ alignSelf: 'flex-end', marginBottom: 5 }}>
 								<MMIcon iconName={'close'} iconSize={24} onPress={() => setIsModalOpen(false)} />
 							</View>
 						</View>
 						{
 							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[MMStyles.cardSubHeaderText, MMStyles.mb10, { textAlign: 'center' }]}>Please Select Baby</Text> : null
+								<Text style={[theme.fonts.titleMedium, { textAlign: 'center', marginBottom: 10 }]}>Please Select Baby</Text> : null
 						}
 						{isLoading ? (
 							<View style={{ height: 40 }}>
@@ -142,7 +140,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							))
 						)}
 						{_.isEmpty(babyList) ?
-							<Text style={[MMStyles.cardSubHeaderText, { textAlign: 'center' }]}>No Babies Found Please Add New Baby</Text> : null}
+							<Text style={[theme.fonts.titleMedium, { textAlign: 'center' }]}>No Babies Found Please Add New Baby</Text> : null}
 						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
 				</View>
@@ -151,11 +149,25 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
 	centeredView: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.5)'
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+	},
+	card: {
+		backgroundColor: theme.colors.onPrimary,
+		padding: 10,
+		borderRadius: 20,
+		elevation: 10,
+		margin: 20,
+		shadowColor: theme.colors.shadow,
+		shadowOpacity: 0.4,
+		shadowRadius: 2,
+		shadowOffset: {
+			height: 1,
+			width: 1,
+		},
 	},
 });
 

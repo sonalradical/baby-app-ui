@@ -2,8 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
-import MMColors from '../../helpers/Colors';
-import MMConstants from '../../helpers/Constants';
 import MMFormErrorText from './FormErrorText';
 
 const MMInput = ({ label, description, errorText, mode = 'outlined', ...props }) => {

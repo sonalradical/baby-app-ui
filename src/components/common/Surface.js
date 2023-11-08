@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme, Surface } from 'react-native-paper';
 import _ from 'lodash';
-import MMColors from '../../helpers/Colors';
 
 const defaultSetting = {
 	padding: [18, 18, 18, 18],

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import MMColors from '../../helpers/Colors';
+import { Searchbar, useTheme } from 'react-native-paper';
 
 const MMSearchbar = ({ placeholder = 'Search below...', ...props }) => {
+	const theme = useTheme()
 
 	return (
 		<Searchbar
 			placeholder={placeholder}
-			placeholderTextColor={MMColors.label}
+			placeholderTextColor={theme.colors.text.primary}
 			elevation={1}
 			autoCapitalize='none'
 			inputStyle={styles.searchbarInput}
@@ -18,10 +18,10 @@ const MMSearchbar = ({ placeholder = 'Search below...', ...props }) => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
 	searchbar: {
 		marginBottom: 8,
-		backgroundColor: MMColors.white,
+		backgroundColor: theme.colors.onPrimary,
 		borderRadius: 10,
 	},
 	searchbarInput: {

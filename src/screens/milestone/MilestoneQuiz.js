@@ -5,8 +5,6 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import MMUtils from '../../helpers/Utils';
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMScrollView from '../../components/common/ScrollView';
@@ -169,8 +167,8 @@ export default function MilestoneQuiz({ navigation, route }) {
         if (!questions || questions.length === 0) return null;
         return (
             <>
-                <Text style={[MMStyles.cardHeaderText, MMStyles.mb10]}>{questions[0].question}</Text>
-                <View style={MMStyles.p10}>
+                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>{questions[0].question}</Text>
+                <View style={{ margin: 10 }}>
                     <MMInput
                         label='Description'
                         numberOfLines={4}
@@ -218,17 +216,17 @@ export default function MilestoneQuiz({ navigation, route }) {
                         }
                     </View>
                     <>
-                        <Text style={[MMStyles.boldText, MMStyles.mb5]}>Photo</Text>
+                        <Text style={theme.fonts.titleMedium}>Photo</Text>
                         {!imageSource ?
-                            <View style={styles.imagePickerSquare}>
+                            <View style={styles(theme).imagePickerSquare}>
                                 <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
-                                <Text style={MMStyles.subTitle}>Upload Photo</Text>
+                                <Text style={theme.fonts.labelLarge} >Upload Photo</Text>
                             </View> : null
                         }
                         {imageSource ? <Image source={{ uri: imageSource }}
-                            style={[MMStyles.responsiveImage, { height: Dimensions.get('window').height / 2 }]} onPress={toggleModal} /> : null}
+                            style={{ height: Dimensions.get('window').height / 2, width: '100%' }} onPress={toggleModal} /> : null}
                     </>
-                    <MMButton label='Save' style={MMStyles.mt20} onPress={() => onSubmit()} />
+                    <MMButton label='Save' style={{ marginTop: 20 }} onPress={() => onSubmit()} />
                 </View>
                 <MMImagePickerModal visible={isModalVisible} toggleModal={toggleModal} onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>
@@ -237,9 +235,9 @@ export default function MilestoneQuiz({ navigation, route }) {
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header style={{ backgroundColor: MMColors.white }}>
+            <Appbar.Header style={{ backgroundColor: theme.colors.onPrimary }}>
                 <Appbar.BackAction onPress={() => { navigation.goBack(); }} />
-                <Appbar.Content title={'Milestone Quiz'} titleStyle={[MMStyles.mediumText]} />
+                <Appbar.Content title={'Milestone Quiz'} titleStyle={theme.fonts.headlineMedium} />
             </Appbar.Header>
         );
     };
@@ -262,15 +260,15 @@ MilestoneQuiz.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
     imagePickerSquare: {
         width: '100%',
         height: Dimensions.get('window').height / 6,
-        backgroundColor: MMColors.white,
+        backgroundColor: theme.colors.onPrimary,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: MMColors.inputBorder
+        borderColor: theme.colors.outline
     },
 });

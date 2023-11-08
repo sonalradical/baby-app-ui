@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Dimensions, StyleSheet, Keyboard } from 'react-native';
-import { Button, TextInput, useTheme } from 'react-native-paper';
+import { View, Text, StyleSheet, Keyboard } from 'react-native';
+import { TextInput, useTheme } from 'react-native-paper';
 
 import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
@@ -9,9 +9,7 @@ import { useDispatch } from 'react-redux';
 
 import { setLogin } from '../../redux/Slice/AuthSlice';
 
-import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
-import MMColors from '../../helpers/Colors';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
@@ -185,7 +183,6 @@ export default function Login({ navigation }) {
                     />
 
                     <MMButton
-                        optionalTextStyle={[MMStyles.h5]}
                         label="Login"
                         onPress={() => onLogin('password')}
                     />

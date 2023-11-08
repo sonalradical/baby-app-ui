@@ -1,5 +1,3 @@
-import MMColors from "./Colors";
-
 const MMConstants = {
     platformIos: 'ios',
     platformAndroid: 'android',
@@ -30,14 +28,6 @@ const MMConstants = {
     },
     format: {
         dateTimePickerTime: 'hh:mm A',
-    },
-    fonts: {
-        // new fonts
-        bold: 'Maison Neue',
-        book: 'Maison Neue',
-        wulkanDisplaymedium: "Wulkan Display",
-        wulkanDisplayRegular: "Wulkan Display",
-        tangerineregular: 'Tangerine',
     },
     reducerAction: {
         accessToken: 'accessToken',

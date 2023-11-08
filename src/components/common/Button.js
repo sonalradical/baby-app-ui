@@ -4,10 +4,6 @@ import { Button, Text, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import MMStyles from '../../helpers/Styles';
-import MMColors from '../../helpers/Colors';
-import MMConstants from '../../helpers/Constants';
-
 //import MMIcon from './icon';
 
 const defaultSetting = {

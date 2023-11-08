@@ -1,13 +1,11 @@
 import React from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import { BottomNavigation, Text, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
-import MMUtils from '../../helpers/Utils';
 
 export default function FooterTab({ navigation, state, descriptors, insets }) {
+    const theme = useTheme();
 
     return (
         <View style={{
@@ -16,7 +14,7 @@ export default function FooterTab({ navigation, state, descriptors, insets }) {
             overflow: 'hidden',
         }}>
             <BottomNavigation.Bar
-                style={{ backgroundColor: MMColors.white }}
+                style={{ backgroundColor: theme.colors.onPrimary }}
                 navigationState={state}
                 safeAreaInsets={insets}
                 onTabPress={({ route, preventDefault }) => {
@@ -49,7 +47,7 @@ export default function FooterTab({ navigation, state, descriptors, insets }) {
                                 ? options.title
                                 : route.title;
 
-                    return MMUtils.isPlatformAndroid() ? <Text style={[MMStyles.subTitle, MMStyles.h8]}>{label}</Text> : label;
+                    return label;
                 }}
             />
         </View>

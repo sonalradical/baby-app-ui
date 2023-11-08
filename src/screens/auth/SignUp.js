@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
 
-import MMStyles from '../../helpers/Styles';
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';

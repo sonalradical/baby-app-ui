@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, Modal, TouchableOpacity } from 'react-native';
 import ImagePicker, { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import MMUtils from '../../helpers/Utils';
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
-import { Divider, IconButton } from 'react-native-paper';
+import { Divider, IconButton, useTheme } from 'react-native-paper';
 
 const MMProfileAvatar = (props) => {
+    const theme = useTheme();
     const { image, source, onImageChange } = props;
     const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
@@ -54,20 +53,20 @@ const MMProfileAvatar = (props) => {
             <TouchableOpacity onPress={showBottomSheet} style={{ alignItems: 'center' }}>
                 <View
                     style={[
-                        styles.avatarContainer
+                        styles(theme).avatarContainer
                     ]}
                 >
                     {image ? (
-                        <Image source={source ? source : require('../../assets/images/parenthood.jpg')} style={styles.avatar} />
+                        <Image source={source ? source : require('../../assets/images/parenthood.jpg')} style={styles(theme).avatar} />
                     ) : (
-                        <Text style={MMStyles.subTitle}>{`Upload \n Photo`}</Text>
+                        <Text style={theme.fonts.labelLarge}>{`Upload \n Photo`}</Text>
                     )}
 
                     <IconButton
                         icon="camera"
-                        color={MMColors.black}
+                        color={theme.colors.text.secondary}
                         size={24}
-                        style={styles.iconButton}
+                        style={styles(theme).iconButton}
                         onPress={showBottomSheet}
                     />
                 </View>
@@ -83,16 +82,16 @@ const MMProfileAvatar = (props) => {
                     justifyContent: 'center',
                     backgroundColor: 'rgba(0, 0, 0, 0.5)'
                 }}>
-                    <View style={styles.bottomSheet}>
+                    <View style={styles(theme).bottomSheet}>
                         <TouchableOpacity onPress={() => handleImageSelect('photo')}>
-                            <Text style={styles.bottomSheetOption}>Choose from Photos</Text>
+                            <Text style={styles(theme).bottomSheetOption}>Choose from Photos</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => handleImageSelect('camera')}>
-                            <Text style={styles.bottomSheetOption}>Take Photo</Text>
+                            <Text style={styles(theme).bottomSheetOption}>Take Photo</Text>
                         </TouchableOpacity>
                         <Divider />
                         <TouchableOpacity onPress={hideBottomSheet}>
-                            <Text style={[styles.bottomSheetOption, { color: MMColors.textContent }]}>Cancel</Text>
+                            <Text style={[styles(theme).bottomSheetOption, { color: theme.colors.text.secondary }]}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -101,7 +100,7 @@ const MMProfileAvatar = (props) => {
     );
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
     avatarContainer: {
         width: 100,
         height: 100,
@@ -109,8 +108,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'visible',
-        backgroundColor: MMColors.white,
-        borderColor: MMColors.black,
+        backgroundColor: theme.colors.onPrimary,
+        borderColor: theme.colors.outline,
         borderWidth: 1,
         marginBottom: 30
     },
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        backgroundColor: MMColors.white,
+        backgroundColor: theme.colors.onPrimary,
         padding: 16,
         shadowColor: '#000000',
         borderTopRightRadius: 40,
@@ -139,13 +138,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         padding: 10,
         textAlign: 'center',
-        color: MMColors.black,
+        color: theme.colors.text.secondary,
     },
     iconButton: {
         position: 'absolute',
         bottom: -12,
         right: -12,
-        backgroundColor: MMColors.white,
+        backgroundColor: theme.colors.onPrimary,
         zIndex: 1,
         borderWidth: 1,
     },

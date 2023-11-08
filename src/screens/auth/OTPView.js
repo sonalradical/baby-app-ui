@@ -8,8 +8,6 @@ import { useDispatch } from 'react-redux';
 
 import { setLogin } from '../../redux/Slice/AuthSlice';
 
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
@@ -204,10 +202,9 @@ export default function OTPView({ navigation, route }) {
 
                 </View>
                 <MMButton
-                    optionalTextStyle={[MMStyles.h5]}
                     label="Verify"
                     onPress={() => onVerify()}
-                    Style={[MMStyles.mt20]}
+                    Style={{ marginTop: 20 }}
                 />
             </MMSurface>
 

@@ -1,19 +1,20 @@
 import * as React from 'react';
+import { List, Surface, useTheme } from 'react-native-paper';
+
 import PropTypes from 'prop-types';
-import { List, Surface } from 'react-native-paper';
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
 
 const MMNoRecordsFound = ({ title, withIcon = false, padding = [0, 0, 0, 0], margin = [0, 0, 0, 0], ...props }) => {
+	const theme = useTheme();
+
 	if (withIcon) {
 		return (
-			<Surface style={{ backgroundColor: MMColors.white }}>
+			<Surface style={{ backgroundColor: theme.colors.onPrimary }}>
 				<List.Item
 					title={title}
 					titleNumberOfLines={2}
 					left={props => <List.Icon {...props} icon='sticker-remove' />}
 					{...props}
-					style={MMStyles.subTitle}
+					style={theme.fonts.default}
 				>
 				</List.Item>
 			</Surface>

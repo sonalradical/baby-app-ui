@@ -9,10 +9,8 @@ import { useDispatch } from 'react-redux';
 import { setReloadChapterList, setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMApiService from '../../services/ApiService';
-import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
-import MMColors from '../../helpers/Colors';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
@@ -236,7 +234,7 @@ export default function Quiz({ navigation, route }) {
                 <MMIcon
                     iconName='arrow-circle-o-left'
                     iconSize={30}
-                    iconColor={currentQuestion === 0 ? MMColors.disabled : theme.colors.primary}
+                    iconColor={currentQuestion === 0 ? theme.colors.outline : theme.colors.primary}
                     onPress={onPreviousClick}
                     disabled={currentQuestion === 0}
                 />
@@ -267,7 +265,7 @@ export default function Quiz({ navigation, route }) {
         return (
             <Appbar.Header style={{ backgroundColor: theme.colors.onPrimary }}>
                 <Appbar.BackAction onPress={() => { onPressBack(); }} />
-                <Appbar.Content title={'Quiz'} titleStyle={[MMStyles.mediumText]} />
+                <Appbar.Content title={'Quiz'} titleStyle={[theme.fonts.headlineMedium]} />
             </Appbar.Header>
         );
     };
@@ -278,7 +276,7 @@ export default function Quiz({ navigation, route }) {
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> : renderView()}
             </MMContentContainer >
-            <View style={[{ backgroundColor: MMColors.white, padding: 10 }]}>
+            <View style={[{ backgroundColor: theme.colors.onPrimary, padding: 10 }]}>
                 {renderActionButtons()}
             </View>
         </>

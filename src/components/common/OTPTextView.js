@@ -9,7 +9,6 @@ import {
 } from 'react-native-confirmation-code-field';
 import { useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
-import MMColors from '../../helpers/Colors';
 
 const MMPinTextInput = ({ value, cellCount, setValue, errorText }) => {
     const theme = useTheme();
