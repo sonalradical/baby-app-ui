@@ -67,7 +67,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const onBabyEdit = (babyId) => {
 		setIsModalOpen(false);
-		navigation.navigate('AddBaby', { babyId: babyId })
+		navigation.navigate('AddBaby', { babyId: babyId, babyListSize: _.size(babyList) })
 	}
 
 	const onSelectProfile = (babyDetail) => {

@@ -25,7 +25,8 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function AddBaby({ route }) {
-    const { babyId } = route.params || '';
+    const { babyId, babyListSize } = route.params || '';
+    console.log(babyListSize, 'babyListSize')
     const theme = useTheme();
     const dispatch = useDispatch();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
@@ -450,15 +451,16 @@ export default function AddBaby({ route }) {
                 {
                     babyId ?
                         <MMFlexView>
-                            <MMOutlineButton
-                                label="Delete"
-                                onPress={() => onDelete()}
-                                width='45%'
-                            />
+                            {babyListSize > 1 ?
+                                <MMOutlineButton
+                                    label="Delete"
+                                    onPress={() => onDelete()}
+                                    width='45%'
+                                /> : null}
                             <MMButton
                                 label="Save"
                                 onPress={() => onSubmit()}
-                                width='45%'
+                                width={babyListSize > 1 ? '45%' : '100%'}
                             />
                         </MMFlexView> :
                         <MMButton
