@@ -60,7 +60,7 @@ MMTransparentButton.propTypes = {
 
 function MMOutlineButton(props) {
     const theme = useTheme();
-    const { label, onPress, color, disabled = false, width } = props;
+    const { label, onPress, disabled = false, width } = props;
 
     return (
         <Button
@@ -70,7 +70,7 @@ function MMOutlineButton(props) {
             disabled={disabled}
             style={buttonStyle(width)}
         >
-            {label}
+            <Text style={{ color: theme.colors.primary }}>{label}</Text>
         </Button>
     );
 };
