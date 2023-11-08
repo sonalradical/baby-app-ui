@@ -49,7 +49,7 @@ export default function MilestoneList({ navigation, route }) {
             }
         }
         loadMilestoneList();
-    }, [selectedBabyId, MMConstants.storage.selectedBaby]);
+    }, [selectedBabyId]);
 
     useEffect(() => {
         if (milestoneId) {

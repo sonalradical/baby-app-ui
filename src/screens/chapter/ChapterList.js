@@ -56,7 +56,7 @@ export default function ChapterList({ route }) {
             }
         }
         loadChapterList();
-    }, [selectedBabyId, MMConstants.storage.selectedBaby, reloadChapterList]);
+    }, [selectedBabyId, reloadChapterList]);
 
 
     const renderView = () => {
