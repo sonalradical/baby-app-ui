@@ -31,6 +31,7 @@ export default function MilestoneList({ navigation, route }) {
                     const response = await MMApiService.getTypeList(babyId, 'milestone');
                     if (response.data) {
                         const milestone = response.data.milestoneList;
+                        console.log(milestone, 'milestone')
                         setMilestones(milestone);
                         setIsOverlayLoading(false);
                     }

@@ -67,7 +67,7 @@ export default function ChapterList({ route }) {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
                         <Card style={styles(theme).whiteBg} key={chapter._id}
-                            onPress={() => navigation.navigate('Quiz', { babyId: babyId, chapterId: chapter._id, title: chapter.title })}>
+                            onPress={() => navigation.navigate('ChapterQuiz', { babyId: babyId, chapterId: chapter._id, title: chapter.title })}>
                             <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'space-between' }}>
                                 <Image
                                     textAlign="center"

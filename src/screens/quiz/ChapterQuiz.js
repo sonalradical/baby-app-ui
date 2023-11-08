@@ -17,7 +17,7 @@ import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
 import MMContentContainer from '../../components/common/ContentContainer';
 
-export default function Quiz({ navigation, route }) {
+export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -283,7 +283,7 @@ export default function Quiz({ navigation, route }) {
     );
 }
 
-Quiz.propTypes = {
+ChapterQuiz.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };

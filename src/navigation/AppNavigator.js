@@ -24,7 +24,7 @@ import SignUp from '../screens/auth/SignUp';
 // app screens
 import AddBaby from '../screens/babyProfile/AddBaby';
 import Logout from '../screens/auth/Logout';
-import Quiz from '../screens/quiz/Quiz';
+import ChapterQuiz from '../screens/quiz/ChapterQuiz';
 import Footer from '../screens/footer/Footer';
 import Header from '../screens/header/Header';
 import ChapterList from '../screens/chapter/ChapterList';
@@ -67,8 +67,8 @@ function AppStackNavigator() {
                     options={{ headerShown: false }}
                 />
                 <AppStack.Screen
-                    name="Quiz"
-                    component={Quiz}
+                    name="ChapterQuiz"
+                    component={ChapterQuiz}
                     options={{ headerShown: false }}
                 />
                 <AppStack.Screen
