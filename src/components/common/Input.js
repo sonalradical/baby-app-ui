@@ -8,7 +8,7 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
     const theme = useTheme();
 
     return (
-        <View style={styles.container}>
+        <View style={styles(theme).container}>
             <Text style={theme.fonts.titleMedium}>{label}</Text>
             <TextInput
                 style={styles(theme).input}

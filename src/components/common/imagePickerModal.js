@@ -57,16 +57,16 @@ const MMImagePickerModal = (props) => {
                 justifyContent: 'center',
                 backgroundColor: 'rgba(0, 0, 0, 0.5)'
             }}>
-                <View style={styles.bottomSheet}>
+                <View style={styles(theme).bottomSheet}>
                     <TouchableOpacity onPress={() => handleImageSelect('photo')}>
-                        <Text style={styles.bottomSheetOption}>Choose from Photos</Text>
+                        <Text style={styles(theme).bottomSheetOption}>Choose from Photos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleImageSelect('camera')}>
-                        <Text style={styles.bottomSheetOption}>Take Photo</Text>
+                        <Text style={styles(theme).bottomSheetOption}>Take Photo</Text>
                     </TouchableOpacity>
                     <Divider />
                     <TouchableOpacity onPress={toggleModal}>
-                        <Text style={[styles.bottomSheetOption, { color: theme.colors.text.secondory }]}>Cancel</Text>
+                        <Text style={[styles(theme).bottomSheetOption, { color: theme.colors.text.secondory }]}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
             </View>

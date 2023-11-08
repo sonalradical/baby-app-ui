@@ -11,8 +11,8 @@ const MMSearchbar = ({ placeholder = 'Search below...', ...props }) => {
 			placeholderTextColor={theme.colors.text.primary}
 			elevation={1}
 			autoCapitalize='none'
-			inputStyle={styles.searchbarInput}
-			style={styles.searchbar}
+			inputStyle={styles(theme).searchbarInput}
+			style={styles(theme).searchbar}
 			{...props}
 		/>
 	);
