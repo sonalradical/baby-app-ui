@@ -12,6 +12,7 @@ import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
 export default function Header({ navigation, route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const reloadPage = useSelector((state) => state.AppReducer.reloadPage)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [babyDetail, setBabyDetail] = useState();
@@ -19,7 +20,7 @@ export default function Header({ navigation, route }) {
     useEffect(() => {
         const loadBabyProfileDetail = async () => {
             const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
-            if (babyId) {
+            if (babyId || reloadPage) {
                 try {
                     setIsOverlayLoading(true);
                     const response = await MMApiService.getBabyById(babyId);
@@ -42,7 +43,7 @@ export default function Header({ navigation, route }) {
             }
         }
         loadBabyProfileDetail();
-    }, [selectedBabyId, MMConstants.storage.selectedBaby]);
+    }, [selectedBabyId, reloadPage]);
 
     const onAvatarPress = () => {
         setIsModalOpen(true);

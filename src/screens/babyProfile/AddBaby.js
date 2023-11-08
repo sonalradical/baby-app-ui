@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 
-import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
+import { setReloadPage, setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
@@ -242,8 +242,9 @@ export default function AddBaby({ route }) {
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
                     if (response) {
-                        dispatch(setSelectedBabyId(babyId));
-                        navigation.navigate('Home', { babyId: babyId });
+                        dispatch(setSelectedBabyId(response.data._id));
+                        dispatch(setReloadPage({ reloadPage: true }));
+                        navigation.navigate('Home', { babyId: response.data._id });
                     }
                     setIsOverlayLoading(false);
                 })

@@ -4,6 +4,7 @@ const initialState = {
 	selectedBaby: '',
 	headerTitle: '',
 	reloadChapterList: false,
+	setReloadPage: false,
 };
 
 // slice
@@ -20,6 +21,9 @@ const AppReducer = createSlice({
 		setReloadChapterList: (state, action) => {
 			state.reloadChapterList = action.payload;
 		},
+		setReloadPage: (state, action) => {
+			state.reloadPage = action.payload;
+		}
 
 	},
 });
@@ -30,4 +34,5 @@ export const {
 	setSelectedBabyId,
 	setHeaderTitle,
 	setReloadChapterList,
+	setReloadPage
 } = AppReducer.actions;

@@ -140,12 +140,10 @@ async function saveQuiz(data) {
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
-    console.log(fileName, 'fileName')
     const config = {
         url: `baby/getPreSignedUrl/${fileName}`,
         method: 'get'
     };
-    console.log(config.url, 'url')
     const result = await axios(config);
     return result;
 }

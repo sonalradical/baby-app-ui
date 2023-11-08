@@ -41,7 +41,6 @@ const MMImagePickerModal = (props) => {
         } else if (response.errorCode === 'others') {
             MMUtils.displayConsoleLog(response.errorMessage);
         } else {
-            console.log(response, 'response');
             onImageChange(response);
         }
     };
