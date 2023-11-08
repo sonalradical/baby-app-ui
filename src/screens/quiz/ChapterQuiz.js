@@ -181,7 +181,6 @@ export default function ChapterQuiz({ navigation, route }) {
 
         return (
             <>
-                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>{title}</Text>
                 <View style={{ padding: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text>{currentQuestion + 1}. </Text>
@@ -265,7 +264,7 @@ export default function ChapterQuiz({ navigation, route }) {
         return (
             <Appbar.Header style={{ backgroundColor: theme.colors.onPrimary }}>
                 <Appbar.BackAction onPress={() => { onPressBack(); }} />
-                <Appbar.Content title={'Quiz'} titleStyle={[theme.fonts.headlineMedium]} />
+                <Appbar.Content title={title} titleStyle={[theme.fonts.headlineMedium]} />
             </Appbar.Header>
         );
     };
