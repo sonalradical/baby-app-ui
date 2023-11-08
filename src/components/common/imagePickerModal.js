@@ -95,7 +95,7 @@ const styles = (theme) => StyleSheet.create({
         fontSize: 18,
         padding: 10,
         textAlign: 'center',
-        color: theme.colors.text.secondory,
+        color: theme.colors.text.primary,
     },
 });
 

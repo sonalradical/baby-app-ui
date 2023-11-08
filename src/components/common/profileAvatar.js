@@ -123,7 +123,7 @@ const styles = (theme) => StyleSheet.create({
         width: '100%',
         backgroundColor: theme.colors.onPrimary,
         padding: 16,
-        shadowColor: '#000000',
+        shadowColor: theme.colors.shadow,
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
         shadowOpacity: 30,
