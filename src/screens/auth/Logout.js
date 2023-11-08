@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setLogout } from '../../redux/Slice/AuthSlice';
 
-import { setReloadChapterList, setReloadPage } from '../../redux/Slice/AppSlice';
+import { setReloadChapterList, setReloadPage, setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -18,7 +18,6 @@ export default function Logout() {
 			try {
 				MMUtils.removeItemFromStorage(MMConstants.storage.accessToken);
 				MMUtils.removeItemFromStorage(MMConstants.storage.userDetail);
-				MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
 				dispatch(setReloadChapterList(false));
 				dispatch(setReloadPage(false))
 				dispatch(setLogout());
