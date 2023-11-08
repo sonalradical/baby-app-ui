@@ -152,7 +152,6 @@ export default function OTPView({ navigation, route }) {
                                 childCount: userDetail.childCount ? userDetail.childCount : 0
                             },
                         };
-                        console.log(userDetails.userDetail, 'userDetails.userDetail')
                         MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetails.accessToken);
                         MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetails.userDetail));
 

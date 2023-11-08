@@ -87,21 +87,23 @@ export default function Login({ navigation }) {
 
                     const responseData = response.data;
                     if (responseData) {
-                        const { accessToken, mobileNumber, name, email, password, gender } = responseData;
-                        const userDetail = {
+                        const { accessToken, userDetail } = responseData;
+                        const userDetails = {
                             accessToken,
                             userDetail: {
-                                mobileNumber,
-                                name,
-                                email,
-                                password,
-                                gender
+                                mobileNumber: userDetail.mobileNumber,
+                                name: userDetail.name,
+                                email: userDetail.email,
+                                password: userDetail.password,
+                                gender: userDetail.gender,
+                                childCount: userDetail.childCount ? userDetail.childCount : 0
                             },
                         };
 
-                        MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetail.accessToken);
-                        MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetail.userDetail));
-                        dispatch(setLogin({ userDetail: userDetail.userDetail, accessToken: userDetail.accessToken }));
+                        MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetails.accessToken);
+                        MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetails.userDetail));
+
+                        dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
                     }
                     setIsOverlayLoading(false);
                 })
