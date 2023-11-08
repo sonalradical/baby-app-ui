@@ -76,7 +76,7 @@ export default function MilestoneList({ navigation, route }) {
                         style={styles(theme).image}
                     />
                 </View>
-                <Text style={[theme.fonts.default, { width: 80, textAlign: 'center', marginTop: 5 }]} numberOfLines={1} ellipsizeMode='tail'>
+                <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={1} ellipsizeMode='tail'>
                     {item.title}</Text>
             </TouchableOpacity>
         );
@@ -111,6 +111,12 @@ MilestoneList.propTypes = {
 };
 
 const styles = (theme) => StyleSheet.create({
+    milestone: {
+        color: theme.colors.text.primary,
+        width: 80,
+        textAlign: 'center',
+        marginTop: 5
+    },
     image: {
         width: Dimensions.get('window').width / 6,
         height: Dimensions.get('window').height / 12,

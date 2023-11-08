@@ -72,7 +72,7 @@ const styles = (theme) => StyleSheet.create({
         marginHorizontal: 10,
         marginTop: 20,
         textAlign: 'center',
-        color: theme.colors.text.secondary,
+        color: theme.colors.text.primary,
     },
     focusCell: {
         borderColor: theme.colors.primary,

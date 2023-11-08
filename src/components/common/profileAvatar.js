@@ -64,7 +64,7 @@ const MMProfileAvatar = (props) => {
 
                     <IconButton
                         icon="camera"
-                        color={theme.colors.text.secondary}
+                        color={theme.colors.text.primary}
                         size={24}
                         style={styles(theme).iconButton}
                         onPress={showBottomSheet}
@@ -138,7 +138,7 @@ const styles = (theme) => StyleSheet.create({
         fontSize: 18,
         padding: 10,
         textAlign: 'center',
-        color: theme.colors.text.secondary,
+        color: theme.colors.text.primary,
     },
     iconButton: {
         position: 'absolute',

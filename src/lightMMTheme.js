@@ -6,6 +6,7 @@ const fontConfig = {
     fontFamily: 'Maison Neue',
     letterSpacing: 0.05,
     fontSize: 15,
+    color: '#153634',
   },
   displayLarge: {
     fontSize: 50, // Large headings

@@ -177,7 +177,7 @@ export default function OTPView({ navigation, route }) {
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[theme.fonts.headlineLarge, { marginBottom: 15 }]}>OTP Verification</Text>
                         <Text style={theme.fonts.headlineSmall}>Enter OTP</Text>
-                        <Text style={[theme.fonts.default, { color: theme.colors.text.secondary, marginTop: 10 }]}>{`We have sent a verification code to`}</Text>
+                        <Text style={[theme.fonts.default, { marginTop: 10 }]}>{`We have sent a verification code to`}</Text>
                         <Text style={theme.fonts.titleMedium}>{mobileNumber}</Text>
                     </View>
                     <View>
@@ -192,7 +192,7 @@ export default function OTPView({ navigation, route }) {
                         isResendVisible
                             ? (
                                 <View style={{ marginTop: 20 }}>
-                                    <Text style={[theme.fonts.default, { color: theme.colors.text.secondary, alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
+                                    <Text style={[theme.fonts.default, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
                                     <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>
                             )

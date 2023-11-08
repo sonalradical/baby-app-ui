@@ -198,7 +198,7 @@ export default function SignUp({ navigation, route }) {
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
                                     onPress={() => onGenderChange(option.value)}
                                 />
-                                <Text style={[theme.fonts.default, { color: theme.colors.text.secondary }]}>{option.label}</Text>
+                                <Text style={theme.fonts.default}>{option.label}</Text>
                             </View>
                         ))}
                     </View>
@@ -212,7 +212,7 @@ export default function SignUp({ navigation, route }) {
                         onPress={onTermsCheck}
                         value={state.terms}
                         style={{ borderColor: theme.colors.primary }} />
-                    <Text style={[theme.fonts.default, { color: theme.colors.text.secondary }]}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
+                    <Text style={theme.fonts.default}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
                         <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
 
                 </View>
@@ -223,7 +223,7 @@ export default function SignUp({ navigation, route }) {
                 />
                 <View style={{ alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { color: theme.colors.text.secondary, marginTop: 10 }]}>Already have an account?</Text>
+                        <Text style={[theme.fonts.default, { marginTop: 10 }]}>Already have an account?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN IN'
                             style={{ marginTop: 2 }} onPress={() => navigation.navigate('Login')} />
                     </View>

@@ -197,12 +197,12 @@ export default function Login({ navigation }) {
                     ></MMOutlineButton>
                 </View>
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={[theme.fonts.default, { color: theme.colors.text.secondary }]}>By continuing you agree to our </Text>
-                    <Text style={[theme.fonts.default, { color: theme.colors.text.secondary }]}>
+                    <Text style={[theme.fonts.default]}>By continuing you agree to our </Text>
+                    <Text style={[theme.fonts.default]}>
                         <Text style={{ color: theme.colors.primary }}> Terms of Services</Text> and
                         <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text></Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { color: theme.colors.text.secondary, marginTop: 20 }]}>Need an account ?</Text>
+                        <Text style={[theme.fonts.default, { marginTop: 20 }]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
                             style={{ marginTop: 12 }} onPress={() => navigation.navigate('SignUp')} />
                     </View>
