@@ -17,7 +17,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 					source={babyDetail ? { uri: MMUtils.getImagePath(babyDetail.picture) } : require('../../assets/images/parenthood.jpg')}
 				/>
 				{
-					!babyDetail ? <MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.primary} /> : null
+					!babyDetail ? <MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.accent} /> : null
 				}
 			</TouchableOpacity>
 			{
