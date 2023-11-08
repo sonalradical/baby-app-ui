@@ -129,7 +129,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						</View>
 						{
 							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[theme.fonts.titleMedium, { textAlign: 'center', marginBottom: 10 }]}>Please Select Baby</Text> : null
+								<Text style={[theme.fonts.labelMedium, { textAlign: 'center', marginBottom: 10 }]}>Please Select Baby</Text> : null
 						}
 						{isLoading ? (
 							<View style={{ height: 40 }}>
@@ -140,7 +140,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							))
 						)}
 						{_.isEmpty(babyList) ?
-							<Text style={[theme.fonts.titleMedium, { textAlign: 'center' }]}>No Babies Found Please Add New Baby</Text> : null}
+							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: 10 }]}>No Babies Found Please Add New Baby</Text> : null}
 						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
 				</View>

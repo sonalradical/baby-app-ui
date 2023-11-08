@@ -26,12 +26,11 @@ import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function AddBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
-    console.log(babyListSize, 'babyListSize')
     const theme = useTheme();
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [imageSource, setImageSource] = useState();
-    const navigation = useNavigation();
 
     const initState = {
         name: '',
@@ -54,7 +53,6 @@ export default function AddBaby({ route }) {
                     setIsOverlayLoading(true);
                     const response = await MMApiService.getBabyById(babyId);
                     if (response.data) {
-                        console.log(response.data, 'response.data.specialCircumstances')
                         setState({
                             ...state,
                             name: response.data.name,
