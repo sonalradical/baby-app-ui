@@ -15,7 +15,7 @@ export default function MMSpinner(props) {
     const { size, text } = props;
 
     return (
-        <View style={styles.spinnerWrap}>
+        <View style={styles(theme).spinnerWrap}>
             <View>
                 <ActivityIndicator size={size ? size : 'large'} color={theme.colors.primary}
                     style={{
