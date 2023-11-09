@@ -26,7 +26,7 @@ export default function ChapterList({ route }) {
     const navigation = useNavigation();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
-    const [chapterList, setChapterList] = useState();
+    const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {
         const loadChapterList = async () => {

@@ -42,6 +42,12 @@ const MMConstants = {
         { value: 'male', label: 'Male' },
         { value: 'female', label: 'Female' }
     ],
+    situation: [
+        { value: 'currentlyPregnant', label: 'Currently Pregnant' },
+        { value: 'justGivenBirth', label: 'Just Given Birth' },
+        { value: 'toddlerMum', label: 'Toddler Mum' },
+        { value: 'mumToMultiple', label: 'Mum To Multiple' }
+    ],
     babyCategory: [
         { value: 'adoption', label: 'Adoption' },
         { value: 'surrogacy', label: 'Surrogacy' },
@@ -53,7 +59,7 @@ const MMConstants = {
         text: 'text'
     },
     //AWS Base url
-    AWS_S3_BASE_URL: 'https://skuvent-staging-field-inventory.s3.us-east-2.amazonaws.com',
+    AWS_S3_BASE_URL: 'https://mm-uat.s3.ap-southeast-2.amazonaws.com',
     chapters: {
         pregnancy: require('../assets/images/chapter/pregnancy.png'),
         adoption: require('../assets/images/chapter/adoption.png'),
