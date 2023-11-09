@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
@@ -19,7 +19,7 @@ export default function Header({ navigation, route }) {
 
     useEffect(() => {
         const loadBabyProfileDetail = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
+            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
             if (babyId || reloadPage) {
                 try {
                     setIsOverlayLoading(true);

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMNoRecordsFound from '../../components/common/NoRecordsFound';
@@ -23,7 +24,7 @@ export default function MilestoneList({ navigation, route }) {
 
     useEffect(() => {
         const loadMilestoneList = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
+            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
             if (babyId) {
                 try {
                     setIsOverlayLoading(true);

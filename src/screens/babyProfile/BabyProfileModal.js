@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
 import MMSpinner from '../../components/common/Spinner';
@@ -41,14 +41,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						setSelectedBabyDetail(selectedBaby);
 					} else {
 						setSelectedBabyDetail();
-						// if (babyProfiles.length > 0) {
-						// 	const firstBaby = babyProfiles[0];
-						// 	setSelectedBabyDetail(firstBaby);
-						// 	dispatch(setSelectedBabyId(firstBaby._id));
-						// 	MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, firstBaby._id);
-						// } else {
-						// 	setSelectedBabyDetail();
-						// }
 					}
 					setBabyList(babyProfiles);
 				}
@@ -82,7 +74,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
 		dispatch(setSelectedBabyId(babyDetail._id));
-		MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, babyDetail._id);
+		MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, babyDetail._id);
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 

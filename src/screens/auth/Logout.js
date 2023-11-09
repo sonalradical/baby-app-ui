@@ -4,11 +4,10 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setLogout } from '../../redux/Slice/AuthSlice';
 
-import { setReloadChapterList, setReloadPage, setSelectedBabyId } from '../../redux/Slice/AppSlice';
-
 import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMSpinner from '../../components/common/Spinner';
+
 
 export default function Logout() {
 	const dispatch = useDispatch();
@@ -16,8 +15,8 @@ export default function Logout() {
 	React.useEffect(() => {
 		async function bootstrapAsync() {
 			try {
-				MMUtils.removeItemFromStorage(MMConstants.storage.accessToken);
-				MMUtils.removeItemFromStorage(MMConstants.storage.userDetail);
+				MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
+				MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
 				dispatch(setLogout());
 			} catch (err) {
 				MMUtils.consoleError(err);

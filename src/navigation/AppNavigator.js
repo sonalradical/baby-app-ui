@@ -29,6 +29,7 @@ import Footer from '../screens/footer/Footer';
 import Header from '../screens/header/Header';
 import ChapterList from '../screens/chapter/ChapterList';
 import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
+import MMEnums from '../helpers/Enums';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -103,8 +104,9 @@ export default function AppNavigator() {
     }, []);
 
     const initApp = async () => {
-        const accessToken = await MMUtils.getItemFromStorage(MMConstants.storage.accessToken);
-        const existingUserDetail = await MMUtils.getItemFromStorage(MMConstants.storage.userDetail);
+        const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
+        console.log(accessToken, 'accessToken')
+        const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
 
         if (accessToken && existingUserDetail) {
             dispatch(setLogin({

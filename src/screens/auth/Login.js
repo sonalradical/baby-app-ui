@@ -18,6 +18,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMSurface from '../../components/common/Surface';
 import MMImageBackground from '../../components/common/ImageBackground';
+import MMEnums from '../../helpers/Enums';
 
 export default function Login({ navigation }) {
     const theme = useTheme();
@@ -70,6 +71,7 @@ export default function Login({ navigation }) {
                 }
             })
             .catch(errors => {
+                console.log(errors);
                 console.log("Validation Errors:", errors);
                 setState({
                     ...state,
@@ -99,11 +101,12 @@ export default function Login({ navigation }) {
                                 childCount: userDetail.childCount ? userDetail.childCount : 0
                             },
                         };
-
-                        MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetails.accessToken);
-                        MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetails.userDetail));
-
+                        console.log('before....')
+                        MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                        MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
+                        console.log('after....')
                         dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
+                        console.log('after dispach....')
                     }
                     setOverlayLoading(false);
                 })

@@ -3,17 +3,17 @@ const MMConstants = {
     platformAndroid: 'android',
     emailRegex: '[a-z0-9]+@[a-z]+.[a-z]{2,3}',
     toastDuration: 3000,
-  
+
     dateTimePickerTime: 'hh:mm A',
-     
+
     gender: [
         { value: 'male', label: 'Male' },
-        { value: 'female', label: 'Female' }
+        { value: 'female', label: 'Female' },
         { value: 'unknown', label: 'Unknown' }
     ],
 
-    
-    situation: [
+
+    situations: [
         { value: 'currentlyPregnant', label: 'Currently Pregnant' },
         { value: 'justGivenBirth', label: 'Just Given Birth' },
         { value: 'toddlerMum', label: 'Toddler Mum' },

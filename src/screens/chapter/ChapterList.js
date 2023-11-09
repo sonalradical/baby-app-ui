@@ -12,6 +12,7 @@ import CircularProgress, {
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -30,7 +31,7 @@ export default function ChapterList({ route }) {
 
     useEffect(() => {
         const loadChapterList = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
+            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
             if (babyId || reloadChapterList) {
                 try {
                     setIsOverlayLoading(true);

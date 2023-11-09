@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -9,17 +10,14 @@ import { useDispatch } from 'react-redux';
 import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMPinTextInput from '../../components/common/OTPTextView';
 import MMImageBackground from '../../components/common/ImageBackground';
 import MMSurface from '../../components/common/Surface';
-import { useTheme } from 'react-native-paper';
-
 
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
@@ -152,8 +150,8 @@ export default function OTPView({ navigation, route }) {
                                 childCount: userDetail.childCount ? userDetail.childCount : 0
                             },
                         };
-                        MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetails.accessToken);
-                        MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetails.userDetail));
+                        MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                        MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
 
                         dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
                     }

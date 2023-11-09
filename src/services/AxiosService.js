@@ -31,15 +31,15 @@ axios.interceptors.response.use(async (response) => {
 
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
-        case MMEnums.responseStatusCodes.Success:
+        case MMEnums.ServiceResult.Ok:
             if (friendlyMassage) {
                 MMUtils.showToastMessage(friendlyMassage);
             }
             return response.data;
-        case MMEnums.responseStatusCodes.NotFound:
+        case MMEnums.ServiceResult.NotFound:
             MMUtils.showToastMessage(friendlyMassage);
             break;
-        case MMEnums.responseStatusCodes.authentication:
+        case MMEnums.ServiceResult.UnAuthorized:
             const navigation = useNavigation();
             navigation.navigate('Logout');
             MMUtils.showToastMessage(error.message);
@@ -55,15 +55,15 @@ axios.interceptors.response.use(async (response) => {
         // Handle network errors separately
         MMUtils.showToastMessage('Network Error: Please check your internet connection.');
     }
-    else if (error.response.status === MMEnums.responseStatusCodes.NotFound) {
+    else if (error.response.status === MMEnums.ServiceResult.NotFound) {
         const errorMessage = error.response.data.message;
         MMUtils.showToastMessage(errorMessage);
     }
-    else if (error.response.status === MMEnums.responseStatusCodes.authentication) {
+    else if (error.response.status === MMEnums.ServiceResult.UnAuthorized) {
         const navigation = useNavigation();
         navigation.navigate('Logout');
     }
-    else if (error.response.status === MMEnums.responseStatusCodes.BadRequest) {
+    else if (error.response.status === MMEnums.ServiceResult.BadRequest) {
         const errorMessage = error.response.data.message;
         MMUtils.showToastMessage(errorMessage);
     }

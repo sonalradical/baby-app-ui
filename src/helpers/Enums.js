@@ -6,13 +6,13 @@ const MMEnums = {
         success: 'success',
         warning: 'warning',
     },
-      // serviceResult code
+    // serviceResult code
     ServiceResult: {
         Ok: 200,
-        Unauthorized: 201,
+        NotFound: 404,
+        UnAuthorized: 401,
         BadRequest: 400,
         AccessDenied: 403,
-        NotFound: 404,
         ValidationError: 406,
         Timeout: 408,
         InternalServerError: 500,

@@ -23,6 +23,7 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMEnums from '../../helpers/Enums';
 
 export default function AddBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
@@ -45,7 +46,7 @@ export default function AddBaby({ route }) {
     };
     const [state, setState] = useState(initState);
 
-    useEffect(() => {       
+    useEffect(() => {
         loadBabyProfileDetail();
     }, [babyId]);
 
@@ -55,21 +56,23 @@ export default function AddBaby({ route }) {
             const response = await MMApiService.getBabyById(babyId);
             if (response.data) {
                 setState({
-                ...state,
-                name: response.data.name,
-                birthDate: response.data.birthDate,
-                birthTime: response.data.birthTime,
-                birthPlace: response.data.birthPlace,
-                gender: response.data.gender,
-                picture: response.data.picture});
-            if (response.data.picture) {
-                imageSourceUri = MMUtils.getImagePath(response.data.picture);
-                setImageSource(imageSourceUri);
+                    ...state,
+                    name: response.data.name,
+                    birthDate: response.data.birthDate,
+                    birthTime: response.data.birthTime,
+                    birthPlace: response.data.birthPlace,
+                    gender: response.data.gender,
+                    picture: response.data.picture
+                });
+                if (response.data.picture) {
+                    imageSourceUri = MMUtils.getImagePath(response.data.picture);
+                    setImageSource(imageSourceUri);
+                }
             }
+            setIsOverlayLoading(false);
         }
-        setIsOverlayLoading(false);
     }
-    
+
     const setImageUri = async (imageData) => {
         const photo = imageData.assets[0];
         let storageFileKeys = [];
@@ -257,7 +260,7 @@ export default function AddBaby({ route }) {
             const response = await MMApiService.deleteBaby(babyId);
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
-                MMUtils.removeItemFromStorage(MMConstants.storage.selectedBaby);
+                MMUtils.removeItemFromStorage(MMEnums.storage.selectedBaby);
                 dispatch(setSelectedBabyId(null));
                 setIsOverlayLoading(false);
                 dispatch(setReloadPage(false));

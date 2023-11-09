@@ -248,7 +248,7 @@ async function clearStorage() {
 }
 
 async function getToken() {
-    return await getItemFromStorage(MMConstants.storage.accessToken);
+    return await getItemFromStorage(MMEnums.storage.accessToken);
 }
 
 async function removeItemFromStorage(key) {

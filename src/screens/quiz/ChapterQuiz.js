@@ -16,6 +16,7 @@ import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMEnums from '../../helpers/Enums';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
@@ -102,11 +103,11 @@ export default function ChapterQuiz({ navigation, route }) {
 
     const setSelectedAnswerByType = (questionType, answer) => {
         switch (questionType) {
-            case MMConstants.questionType.radio:
+            case MMEnums.questionType.radio:
                 return { option: answer, checkboxes: [], text: "" };
-            case MMConstants.questionType.checkbox:
+            case MMEnums.questionType.checkbox:
                 return { checkboxes: answer, text: "", option: "" };
-            case MMConstants.questionType.text:
+            case MMEnums.questionType.text:
                 return { text: answer, checkboxes: [], option: "" };
             default:
                 return { option: "", checkboxes: [], text: "" };
@@ -141,11 +142,11 @@ export default function ChapterQuiz({ navigation, route }) {
     const getAnswer = () => {
         const currentQuestionType = questionList[currentQuestion].questionType;
 
-        if (currentQuestionType === MMConstants.questionType.radio) {
+        if (currentQuestionType === MMEnums.questionType.radio) {
             return selectedAnswer.option;
-        } else if (currentQuestionType === MMConstants.questionType.checkbox) {
+        } else if (currentQuestionType === MMEnums.questionType.checkbox) {
             return selectedAnswer.checkboxes;
-        } else if (currentQuestionType === MMConstants.questionType.text) {
+        } else if (currentQuestionType === MMEnums.questionType.text) {
             return selectedAnswer.text;
         }
         return null;
@@ -186,7 +187,7 @@ export default function ChapterQuiz({ navigation, route }) {
                         <Text>{currentQuestion + 1}. </Text>
                         <Text style={theme.fonts.default} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
-                    {currentQuestionType === "radio" && (
+                    {currentQuestionType === MMEnums.questionType.radio && (
                         <View style={{ marginTop: 5 }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
@@ -201,7 +202,7 @@ export default function ChapterQuiz({ navigation, route }) {
                             ))}
                         </View>
                     )}
-                    {currentQuestionType === "checkbox" && (
+                    {currentQuestionType === MMEnums.questionType.checkbox && (
                         <View style={{ alignItems: 'flex-start' }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View key={index}>
@@ -215,7 +216,7 @@ export default function ChapterQuiz({ navigation, route }) {
                             ))}
                         </View>
                     )}
-                    {currentQuestionType === "text" && (
+                    {currentQuestionType === MMEnums.questionType.text && (
                         <MMInput
                             placeholder="Your answer..."
                             value={selectedAnswer.text}
