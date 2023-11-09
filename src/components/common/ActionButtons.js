@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
 		paddingBottom: 4,
 		paddingHorizontal: 1,
 		borderTopWidth: 1,
-		//borderTopColor: theme.colors.elevation.level5,
 	},
 	bottomWrap: {
 		paddingHorizontal: 12,

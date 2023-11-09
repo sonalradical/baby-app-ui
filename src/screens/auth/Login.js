@@ -21,7 +21,7 @@ import MMImageBackground from '../../components/common/ImageBackground';
 
 export default function Login({ navigation }) {
     const theme = useTheme();
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
     const dispatch = useDispatch();
 
@@ -62,7 +62,7 @@ export default function Login({ navigation }) {
 
         validateAll(state, rules, messages)
             .then(() => {
-                setIsOverlayLoading(true);
+                setOverlayLoading(true);
                 if (loginType === 'password') {
                     onLoginWithPassword();
                 } else {
@@ -105,10 +105,10 @@ export default function Login({ navigation }) {
 
                         dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
                     }
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                 })
                 .catch(function (error) {
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)
@@ -130,10 +130,10 @@ export default function Login({ navigation }) {
                     if (response) {
                         navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                     }
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                 })
                 .catch(function (error) {
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)

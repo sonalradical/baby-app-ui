@@ -27,7 +27,7 @@ export default function OTPView({ navigation, route }) {
     const otpRef = useRef(null);
     const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
 
     const initState = {
         otp: null,
@@ -71,14 +71,14 @@ export default function OTPView({ navigation, route }) {
 
 
     const onResendOTP = async () => {
-        setIsOverlayLoading(true);
+        setOverlayLoading(true);
         setIsResendVisible(false);
         const apiData = {
             mobileNumber: mobileNumber
         };
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
-            setIsOverlayLoading(false);
+            setOverlayLoading(false);
             setState({
                 ...state,
                 otp: '',
@@ -114,7 +114,7 @@ export default function OTPView({ navigation, route }) {
 
         validateAll(state, rules, messages)
             .then(async () => {
-                setIsOverlayLoading(true);
+                setOverlayLoading(true);
                 onVerifyOtp();
             })
             .catch((errors) => {
@@ -123,7 +123,7 @@ export default function OTPView({ navigation, route }) {
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
                 });
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
             });
     }
 
@@ -157,10 +157,10 @@ export default function OTPView({ navigation, route }) {
 
                         dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
                     }
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                 })
                 .catch(function (error) {
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)

@@ -1,18 +1,38 @@
 const MMEnums = {
-    responseStatusCodes: {
-        Success: 200,
-        BadRequest: 400,
-        NotFound: 404,
-        authentication: 401,
-        NoDataFound: 108,
-        RecordAlreadyExists: 121,
-    },
     toastType: {
         default: 'default',
         error: 'error',
         info: 'info',
         success: 'success',
         warning: 'warning',
+    },
+      // serviceResult code
+    ServiceResult: {
+        Ok: 200,
+        Unauthorized: 201,
+        BadRequest: 400,
+        AccessDenied: 403,
+        NotFound: 404,
+        ValidationError: 406,
+        Timeout: 408,
+        InternalServerError: 500,
+        InsufficientStorage: 507,
+    },
+    // Storage
+    storage: {
+        userProfile: 'userProfile',
+        deviceToken: 'deviceToken',
+        apiPlaceholder: 'apiPlaceholder',
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+        userDetail: 'userDetail',
+        selectedBaby: 'selectedBaby',
+
+    },
+    questionType: {
+        radio: 'radio',
+        checkbox: 'checkbox',
+        text: 'text'
     },
 };
 

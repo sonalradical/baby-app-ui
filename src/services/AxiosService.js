@@ -7,7 +7,7 @@ import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
 
 // Defaults
-axios.defaults.baseURL = 'http://localhost:4000/';
+axios.defaults.baseURL = 'http://192.168.1.108:4000/';
 
 
 // Request interceptor
@@ -32,11 +32,12 @@ axios.interceptors.response.use(async (response) => {
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
         case MMEnums.responseStatusCodes.Success:
-            friendlyMassage ? MMUtils.showToastMessage(friendlyMassage) : null;
-            return _.isNil(response.data) ? true : response.data;
+            if (friendlyMassage) {
+                MMUtils.showToastMessage(friendlyMassage);
+            }
+            return response.data;
         case MMEnums.responseStatusCodes.NotFound:
             MMUtils.showToastMessage(friendlyMassage);
-            MMUtils.showToastMessage(error.message);
             break;
         case MMEnums.responseStatusCodes.authentication:
             const navigation = useNavigation();

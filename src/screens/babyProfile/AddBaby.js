@@ -45,41 +45,31 @@ export default function AddBaby({ route }) {
     };
     const [state, setState] = useState(initState);
 
-    useEffect(() => {
-
-        const loadBabyProfileDetail = async () => {
-            if (babyId) {
-                try {
-                    setIsOverlayLoading(true);
-                    const response = await MMApiService.getBabyById(babyId);
-                    if (response.data) {
-                        setState({
-                            ...state,
-                            name: response.data.name,
-                            birthDate: response.data.birthDate,
-                            birthTime: response.data.birthTime,
-                            birthPlace: response.data.birthPlace,
-                            gender: response.data.gender,
-                            picture: response.data.picture,
-                        });
-                        if (response.data.picture) {
-                            imageSourceUri = MMUtils.getImagePath(response.data.picture);
-                            setImageSource(imageSourceUri);
-                        }
-                        setIsOverlayLoading(false);
-                    }
-                } catch (error) {
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
-                    setIsOverlayLoading(false);
-                }
-            }
-        }
+    useEffect(() => {       
         loadBabyProfileDetail();
     }, [babyId]);
 
+    const loadBabyProfileDetail = async () => {
+        setIsOverlayLoading(true);
+        if (babyId) {
+            const response = await MMApiService.getBabyById(babyId);
+            if (response.data) {
+                setState({
+                ...state,
+                name: response.data.name,
+                birthDate: response.data.birthDate,
+                birthTime: response.data.birthTime,
+                birthPlace: response.data.birthPlace,
+                gender: response.data.gender,
+                picture: response.data.picture});
+            if (response.data.picture) {
+                imageSourceUri = MMUtils.getImagePath(response.data.picture);
+                setImageSource(imageSourceUri);
+            }
+        }
+        setIsOverlayLoading(false);
+    }
+    
     const setImageUri = async (imageData) => {
         const photo = imageData.assets[0];
         let storageFileKeys = [];
@@ -318,8 +308,6 @@ export default function AddBaby({ route }) {
             showBirthTime: true
         });
     };
-
-
 
     const renderView = () => {
         return (

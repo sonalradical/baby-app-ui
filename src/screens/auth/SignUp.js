@@ -18,7 +18,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
 
     const initState = {
@@ -72,7 +72,7 @@ export default function SignUp({ navigation, route }) {
 
         validateAll(state, rules, messages)
             .then(async () => {
-                setIsOverlayLoading(true);
+                setOverlayLoading(true);
                 if (checked) {
                     onSignUp();
                 }
@@ -84,7 +84,7 @@ export default function SignUp({ navigation, route }) {
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
                 });
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
             });
     };
 
@@ -114,10 +114,10 @@ export default function SignUp({ navigation, route }) {
                     if (response) {
                         navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                     }
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                 })
                 .catch(function (error) {
-                    setIsOverlayLoading(false);
+                    setOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)

@@ -18,8 +18,6 @@ export default function Logout() {
 			try {
 				MMUtils.removeItemFromStorage(MMConstants.storage.accessToken);
 				MMUtils.removeItemFromStorage(MMConstants.storage.userDetail);
-				dispatch(setReloadChapterList(false));
-				dispatch(setReloadPage(false))
 				dispatch(setLogout());
 			} catch (err) {
 				MMUtils.consoleError(err);

@@ -29,11 +29,11 @@ const getTodayDateTime = () => moment();
 const getTodayUtcDateTime = () => moment().utc();
 
 function displayDate(date) {
-    return moment(date).format('MM/DD/yyyy');
+    return moment(date).format('DD/MM/yyyy');
 }
 
 function displayUtcDate(date) {
-    return moment(`${date}Z`).format('MM/DD/yyyy');
+    return moment(`${date}Z`).format('DD/MM/yyyy');
 }
 
 function displayTime(dateTime) {
