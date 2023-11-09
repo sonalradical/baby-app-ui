@@ -21,7 +21,7 @@ const MMSearchbar = ({ placeholder = 'Search below...', ...props }) => {
 const styles = (theme) => StyleSheet.create({
 	searchbar: {
 		marginBottom: 8,
-		backgroundColor: theme.colors.onPrimary,
+		backgroundColor: theme.colors.secondaryContainer,
 		borderRadius: 10,
 	},
 	searchbarInput: {

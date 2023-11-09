@@ -8,7 +8,7 @@ const MMNoRecordsFound = ({ title, withIcon = false, padding = [0, 0, 0, 0], mar
 
 	if (withIcon) {
 		return (
-			<Surface style={{ backgroundColor: theme.colors.onPrimary }}>
+			<Surface style={{ backgroundColor: theme.colors.secondaryContainer }}>
 				<List.Item
 					title={title}
 					titleNumberOfLines={2}

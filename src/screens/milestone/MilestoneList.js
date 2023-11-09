@@ -125,7 +125,7 @@ const styles = (theme) => StyleSheet.create({
     },
     imageView: {
         borderRadius: 50,
-        backgroundColor: theme.colors.onPrimary,
+        backgroundColor: theme.colors.secondaryContainer,
         width: Dimensions.get('window').width / 6 + 10,
         height: Dimensions.get('window').height / 12 + 10,
         alignItems: 'center',

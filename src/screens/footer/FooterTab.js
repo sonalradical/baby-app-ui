@@ -14,7 +14,7 @@ export default function FooterTab({ navigation, state, descriptors, insets }) {
             overflow: 'hidden',
         }}>
             <BottomNavigation.Bar
-                style={{ backgroundColor: theme.colors.onPrimary }}
+                style={{ backgroundColor: theme.colors.secondaryContainer }}
                 navigationState={state}
                 safeAreaInsets={insets}
                 onTabPress={({ route, preventDefault }) => {

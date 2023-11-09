@@ -19,7 +19,7 @@ function MMButton(props) {
 
     return (
         <Button mode="contained" onPress={onPress} style={[buttonStyle(width), { ...style }]} backgroundColor={backgroundColor}>
-            <Text style={{ color: theme.colors.onPrimary }}>{label}</Text>
+            <Text style={{ color: theme.colors.secondaryContainer }}>{label}</Text>
         </Button>
     );
 }

@@ -126,7 +126,7 @@ const styles = (theme) => StyleSheet.create({
         right: 10,
     },
     card: {
-        backgroundColor: theme.colors.onPrimary
+        backgroundColor: theme.colors.secondaryContainer
     },
     chip: {
         borderRadius: 20,
@@ -142,7 +142,7 @@ const styles = (theme) => StyleSheet.create({
         elevation: 10,
         borderRadius: 30,
         position: 'relative',
-        backgroundColor: theme.colors.onPrimary
+        backgroundColor: theme.colors.secondaryContainer
     },
     image: {
         width: Dimensions.get('window').width / 7,

@@ -29,7 +29,7 @@ const MMSurface = ({ padding, margin, width, children, style, ...props }) => {
 
 const surfaceStyle = function (theme, paddingValue, marginValue, widthValue) {
 	return {
-		backgroundColor: theme.colors.onPrimary,
+		backgroundColor: theme.colors.secondaryContainer,
 		paddingTop: paddingValue[0],
 		paddingRight: paddingValue[1],
 		paddingBottom: paddingValue[2],

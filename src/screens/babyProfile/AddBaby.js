@@ -379,7 +379,7 @@ export default function AddBaby({ route }) {
                         label='Birth Time'
                         name='birthTime'
                         placeholder='Enter Birth Time'
-                        value={_.isNil(state.birthTime) ? '' : moment(state.birthTime).format(MMConstants.format.dateTimePickerTime)}
+                        value={_.isNil(state.birthTime) ? '' : moment(state.birthTime).format(MMConstants.dateTimePickerTime)}
                         errorText={state.errors.birthTime}
                         onPressIn={onPressBirthTime}
                         onKeyPress={onPressBirthTime}

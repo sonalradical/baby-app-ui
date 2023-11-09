@@ -263,7 +263,7 @@ export default function ChapterQuiz({ navigation, route }) {
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header style={{ backgroundColor: theme.colors.onPrimary }}>
+            <Appbar.Header style={{ backgroundColor: theme.colors.secondaryContainer }}>
                 <Appbar.BackAction onPress={() => { onPressBack(); }} />
                 <Appbar.Content title={title} titleStyle={[theme.fonts.headlineMedium]} />
             </Appbar.Header>
@@ -276,7 +276,7 @@ export default function ChapterQuiz({ navigation, route }) {
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> : renderView()}
             </MMContentContainer >
-            <View style={[{ backgroundColor: theme.colors.onPrimary, padding: 10 }]}>
+            <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: 10 }]}>
                 {renderActionButtons()}
             </View>
         </>

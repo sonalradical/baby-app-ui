@@ -17,7 +17,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 					source={babyDetail ? { uri: MMUtils.getImagePath(babyDetail.picture) } : require('../../assets/images/parenthood.jpg')}
 				/>
 				{
-					!babyDetail ? <MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.accent} /> : null
+					!babyDetail ? <MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.secondary} /> : null
 				}
 			</TouchableOpacity>
 			{
@@ -34,7 +34,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 
 const styles = (theme) => StyleSheet.create({
 	appBarHeader: {
-		backgroundColor: theme.colors.onPrimary,
+		backgroundColor: theme.colors.secondaryContainer,
 		borderBottomRightRadius: 20,
 		borderBottomLeftRadius: 20,
 		marginBottom: 10

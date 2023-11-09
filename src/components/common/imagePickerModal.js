@@ -79,7 +79,7 @@ const styles = (theme) => StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        backgroundColor: theme.colors.onPrimary,
+        backgroundColor: theme.colors.secondaryContainer,
         padding: 16,
         shadowColor: theme.colors.shadow,
         borderTopRightRadius: 40,

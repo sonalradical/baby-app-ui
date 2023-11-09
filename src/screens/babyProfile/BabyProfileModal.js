@@ -156,7 +156,7 @@ const styles = (theme) => StyleSheet.create({
 		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	},
 	card: {
-		backgroundColor: theme.colors.onPrimary,
+		backgroundColor: theme.colors.secondaryContainer,
 		padding: 10,
 		borderRadius: 20,
 		elevation: 10,

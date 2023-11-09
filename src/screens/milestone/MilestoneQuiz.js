@@ -235,7 +235,7 @@ export default function MilestoneQuiz({ navigation, route }) {
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header style={{ backgroundColor: theme.colors.onPrimary }}>
+            <Appbar.Header style={{ backgroundColor: theme.colors.secondaryContainer }}>
                 <Appbar.BackAction onPress={() => { navigation.goBack(); }} />
                 <Appbar.Content title={'Milestone Quiz'} titleStyle={theme.fonts.headlineMedium} />
             </Appbar.Header>
@@ -264,7 +264,7 @@ const styles = (theme) => StyleSheet.create({
     imagePickerSquare: {
         width: '100%',
         height: Dimensions.get('window').height / 6,
-        backgroundColor: theme.colors.onPrimary,
+        backgroundColor: theme.colors.secondaryContainer,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
