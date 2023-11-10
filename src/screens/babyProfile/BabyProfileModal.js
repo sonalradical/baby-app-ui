@@ -98,7 +98,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							source={profileData ? { uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
 						/>
 						<Card.Title title={profileData.name} subtitle={profileData.gender}
-							style={{ width: 100, marginLeft: 10 }} titleStyle={[theme.fonts.default, { fontWeight: 700, fontSize: 18 }]} subtitleStyle={theme.fonts.labelMedium} />
+							style={{ width: 100, marginLeft: 10 }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
 							{isSelected ? <MMIcon
 								iconName="edit"
