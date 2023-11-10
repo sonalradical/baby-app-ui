@@ -66,9 +66,9 @@ async function babyList() {
     return result;
 }
 
-async function addBaby(data) {
+async function saveBaby(data) {
     const config = {
-        url: `baby/add`,
+        url: `baby/save`,
         method: 'post',
         data: data
     };
@@ -80,16 +80,6 @@ async function getBabyById(babyId) {
     const config = {
         url: `baby/get/${babyId}`,
         method: 'get'
-    };
-    const result = await axios(config);
-    return result;
-}
-
-async function updateBaby(data, babyId) {
-    const config = {
-        url: `baby/update/${babyId}`,
-        method: 'put',
-        data: data
     };
     const result = await axios(config);
     return result;
@@ -178,8 +168,7 @@ export default {
     userLoginWithOTP,
     babyList,
     getBabyById,
-    updateBaby,
-    addBaby,
+    saveBaby,
     deleteBaby,
     getTypeList,
     getQuiz,

@@ -47,7 +47,9 @@ export default function AddEditBaby({ route }) {
     const [state, setState] = useState(initState);
 
     useEffect(() => {
-        loadBabyProfileDetail();
+        if (babyId) {
+            loadBabyProfileDetail();
+        }
     }, [babyId]);
 
     const loadBabyProfileDetail = async () => {
@@ -151,17 +153,17 @@ export default function AddEditBaby({ route }) {
         });
     };
 
-    const onSubmit = () => {
+    const messages = {
+        'name.required': 'Please enter name.',
+        'birthDate.required': 'Plese enter birth date.',
+        'birthPlace.required': 'Please enter birth place.',
+        'gender.required': 'Please select gender',
+    };
+
+    const onSave = () => {
         if (isOverlayLoading) {
             return;
         }
-
-        const messages = {
-            'name.required': 'Please enter name.',
-            'birthDate.required': 'Plese enter birth date.',
-            'birthPlace.required': 'Please enter birth place.',
-            'gender.required': 'Please select gender',
-        };
 
         const rules = {
             name: 'required|string',
@@ -173,12 +175,37 @@ export default function AddEditBaby({ route }) {
         validateAll(state, rules, messages)
             .then(async () => {
                 setIsOverlayLoading(true);
-                if (babyId) {
-                    onEditBaby();
+                try {
+                    const apiData = {
+                        babyId: babyId ? babyId : '',
+                        name: state.name,
+                        birthDate: state.birthDate,
+                        birthTime: state.birthTime,
+                        birthPlace: state.birthPlace,
+                        gender: state.gender,
+                        picture: state.picture,
+                    };
+                    await MMApiService.saveBaby(apiData)
+                        .then(function (response) {
+                            if (response) {
+                                dispatch(setBaby(response.data._id));
+                                if (babyId) {
+                                    dispatch(reloadPage({ reloadPage: true }));
+                                }
+                                navigation.navigate('Home');
+                            }
+
+                        })
+                        .catch(function (error) {
+                            setState({
+                                ...state,
+                                errors: MMUtils.apiErrorParamMessages(error)
+                            });
+                        });
+                } catch (err) {
+                    MMUtils.consoleError(err);
                 }
-                else {
-                    onAddBaby();
-                }
+                setIsOverlayLoading(false);
             })
             .catch((errors) => {
                 console.log("Validation Errors:", errors);
@@ -189,68 +216,6 @@ export default function AddEditBaby({ route }) {
                 setIsOverlayLoading(false);
             });
     };
-
-    async function onAddBaby() {
-        try {
-            const apiData = {
-                name: state.name,
-                birthDate: state.birthDate,
-                birthTime: state.birthTime,
-                birthPlace: state.birthPlace,
-                gender: state.gender,
-                picture: state.picture,
-            };
-
-            await MMApiService.addBaby(apiData)
-                .then(function (response) {
-                    if (response) {
-                        dispatch(setBaby(response.data._id));
-                        navigation.navigate('Home');
-                    }
-                    setIsOverlayLoading(false);
-                })
-                .catch(function (error) {
-                    setIsOverlayLoading(false);
-                    setState({
-                        ...state,
-                        errors: MMUtils.apiErrorParamMessages(error)
-                    });
-                });
-        } catch (err) {
-            MMUtils.consoleError(err);
-        }
-    }
-
-    async function onEditBaby() {
-        try {
-            const apiData = {
-                name: state.name,
-                birthDate: state.birthDate,
-                birthTime: state.birthTime,
-                birthPlace: state.birthPlace,
-                gender: state.gender,
-                picture: state.picture
-            };
-            await MMApiService.updateBaby(apiData, babyId)
-                .then(function (response) {
-                    if (response) {
-                        dispatch(setBaby(response.data._id));
-                        dispatch(reloadPage({ reloadPage: true }));
-                        navigation.navigate('Home', { babyId: response.data._id });
-                    }
-                    setIsOverlayLoading(false);
-                })
-                .catch(function (error) {
-                    setIsOverlayLoading(false);
-                    setState({
-                        ...state,
-                        errors: MMUtils.apiErrorParamMessages(error)
-                    });
-                });
-        } catch (err) {
-            MMUtils.consoleError(err);
-        }
-    }
 
     async function onBabyDelete() {
         try {
@@ -449,13 +414,13 @@ export default function AddEditBaby({ route }) {
                                 /> : null}
                             <MMButton
                                 label="Save"
-                                onPress={() => onSubmit()}
+                                onPress={() => onSave()}
                                 width={babyListSize > 1 ? '45%' : '100%'}
                             />
                         </MMFlexView> :
                         <MMButton
                             label="Save"
-                            onPress={() => onSubmit()}
+                            onPress={() => onSave()}
                         />
 
                 }
