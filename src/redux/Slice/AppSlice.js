@@ -12,7 +12,7 @@ const AppReducer = createSlice({
 	name: 'AppReducer',
 	initialState: initialState,
 	reducers: {
-		setSelectedBabyId: (state, action) => {
+		setBaby: (state, action) => {
 			state.selectedBaby = action.payload;
 		},
 		setHeaderTitle: (state, action) => {
@@ -31,7 +31,7 @@ const AppReducer = createSlice({
 export default AppReducer;
 
 export const {
-	setSelectedBabyId,
+	setBaby,
 	setHeaderTitle,
 	setReloadChapterList,
 	setReloadPage

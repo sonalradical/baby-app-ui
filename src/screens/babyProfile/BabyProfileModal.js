@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
-import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
+import { setBaby } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
@@ -73,7 +73,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
-		dispatch(setSelectedBabyId(babyDetail._id));
+		dispatch(setBaby(babyDetail._id));
 		MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, babyDetail._id);
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}

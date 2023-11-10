@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 
-import { setReloadPage, setSelectedBabyId } from '../../redux/Slice/AppSlice';
+import { setReloadPage, setBaby } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
@@ -204,7 +204,7 @@ export default function AddBaby({ route }) {
             await MMApiService.addBaby(apiData)
                 .then(function (response) {
                     if (response) {
-                        dispatch(setSelectedBabyId(response.data._id));
+                        dispatch(setBaby(response.data._id));
                         navigation.navigate('Home');
                     }
                     setIsOverlayLoading(false);
@@ -234,7 +234,7 @@ export default function AddBaby({ route }) {
             await MMApiService.updateBaby(apiData, babyId)
                 .then(function (response) {
                     if (response) {
-                        dispatch(setSelectedBabyId(response.data._id));
+                        dispatch(setBaby(response.data._id));
                         dispatch(setReloadPage({ reloadPage: true }));
                         navigation.navigate('Home', { babyId: response.data._id });
                     }
@@ -261,7 +261,7 @@ export default function AddBaby({ route }) {
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMEnums.storage.selectedBaby);
-                dispatch(setSelectedBabyId(null));
+                dispatch(setBaby(null));
                 setIsOverlayLoading(false);
                 dispatch(setReloadPage(false));
                 navigation.navigate('Home');

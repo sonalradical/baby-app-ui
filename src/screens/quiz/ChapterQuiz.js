@@ -6,11 +6,10 @@ import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-nativ
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { setReloadChapterList, setSelectedBabyId } from '../../redux/Slice/AppSlice';
+import { setReloadChapterList, setBaby } from '../../redux/Slice/AppSlice';
 
 import MMApiService from '../../services/ApiService';
 import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
