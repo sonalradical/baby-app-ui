@@ -11,7 +11,7 @@ import MMAppbarHeader from '../../components/common/AppbarHeader';
 import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
 export default function Header({ navigation, route }) {
-    const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadPage = useSelector((state) => state.AppReducer.reloadPage)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);

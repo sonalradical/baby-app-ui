@@ -22,7 +22,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function ChapterList({ route }) {
     const theme = useTheme();
-    const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
     const navigation = useNavigation();
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);

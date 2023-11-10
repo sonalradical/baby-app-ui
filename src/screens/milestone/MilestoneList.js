@@ -16,7 +16,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 
 export default function MilestoneList({ navigation, route }) {
     const theme = useTheme();
-    const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
+    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const { milestoneId } = route.params || '';
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
     const [babyId, setBabyId] = useState();
