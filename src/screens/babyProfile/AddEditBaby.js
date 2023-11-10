@@ -25,7 +25,7 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMEnums from '../../helpers/Enums';
 
-export default function AddBaby({ route }) {
+export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -473,7 +473,7 @@ export default function AddBaby({ route }) {
     );
 }
 
-AddBaby.propTypes = {
+AddEditBaby.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };

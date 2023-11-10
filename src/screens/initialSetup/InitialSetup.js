@@ -58,7 +58,7 @@ export default function InitialSetup({ route, navigation }) {
 
     const onAddBaby = () => {
         navigation.navigate('AppStackNavigator', {
-            screen: 'AddBaby',
+            screen: 'AddEditBaby',
             params: {}
         });
     };

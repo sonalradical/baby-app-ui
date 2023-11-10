@@ -62,12 +62,12 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const onAddBaby = () => {
 		setIsModalOpen(false);
-		navigation.navigate('AddBaby');
+		navigation.navigate('AddEditBaby');
 	};
 
 	const onBabyEdit = (babyId) => {
 		setIsModalOpen(false);
-		navigation.navigate('AddBaby', { babyId: babyId, babyListSize: _.size(babyList) })
+		navigation.navigate('AddEditBaby', { babyId: babyId, babyListSize: _.size(babyList) })
 	}
 
 	const onSelectProfile = (babyDetail) => {

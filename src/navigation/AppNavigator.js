@@ -22,7 +22,7 @@ import OTPView from '../screens/auth/OTPView';
 import SignUp from '../screens/auth/SignUp';
 
 // app screens
-import AddBaby from '../screens/babyProfile/AddBaby';
+import AddEditBaby from '../screens/babyProfile/AddEditBaby';
 import Logout from '../screens/auth/Logout';
 import ChapterQuiz from '../screens/quiz/ChapterQuiz';
 import Footer from '../screens/footer/Footer';
@@ -62,8 +62,8 @@ function AppStackNavigator() {
                 }}
             >
                 <AppStack.Screen
-                    name="AddBaby"
-                    component={AddBaby}
+                    name="AddEditBaby"
+                    component={AddEditBaby}
                     options={{ headerShown: false }}
                 />
                 <AppStack.Screen

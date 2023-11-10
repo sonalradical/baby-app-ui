@@ -31,7 +31,6 @@ export default function SignUp({ navigation, route }) {
         errors: {},
     };
     const [state, setState] = useState(initState);
-    const [checked, setChecked] = useState(false);
 
     const onInputChange = (field, value) => {
         setState({
@@ -58,7 +57,7 @@ export default function SignUp({ navigation, route }) {
             'password.required': 'Please enter password.',
             'password.min': 'Password should have a minimum of 8 characters.',
             'gender.required': 'Please select gender.',
-            'terms.required': 'please Accept Terms.'
+            'terms.required': 'please Accept Terms.',
         };
 
         const rules = {
@@ -73,7 +72,8 @@ export default function SignUp({ navigation, route }) {
         validateAll(state, rules, messages)
             .then(async () => {
                 setOverlayLoading(true);
-                if (checked) {
+
+                if (state.terms) {
                     onSignUp();
                 }
 
@@ -93,10 +93,9 @@ export default function SignUp({ navigation, route }) {
     };
     const onTermsCheck = () => {
         // Update the checkbox state in the form data
-        setChecked(!checked)
         setState({
             ...state,
-            terms: !checked,
+            terms: !state.terms,
         });
     };
 
@@ -208,7 +207,7 @@ export default function SignUp({ navigation, route }) {
                     <Checkbox
                         color={theme.colors.primary}
                         size="sm"
-                        status={checked ? 'checked' : 'unchecked'}
+                        status={state.terms ? 'checked' : 'unchecked'}
                         onPress={onTermsCheck}
                         value={state.terms}
                         style={{ borderColor: theme.colors.primary }} />
@@ -216,7 +215,7 @@ export default function SignUp({ navigation, route }) {
                         <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
 
                 </View>
-                {!checked && state.errors.terms ? <MMFormErrorText errorText={state.errors.terms} /> : null}
+                <MMFormErrorText errorText={state.errors.terms} />
                 <MMButton
                     label="Sign Up"
                     onPress={() => onSubmit()}
