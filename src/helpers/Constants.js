@@ -6,6 +6,8 @@ const MMConstants = {
 
     dateTimePickerTime: 'hh:mm A',
 
+    otpTimeOut: 60000,
+
     gender: [
         { value: 'male', label: 'Male' },
         { value: 'female', label: 'Female' },

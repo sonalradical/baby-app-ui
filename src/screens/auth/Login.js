@@ -101,12 +101,10 @@ export default function Login({ navigation }) {
                                 childCount: userDetail.childCount ? userDetail.childCount : 0
                             },
                         };
-                        console.log('before....')
                         MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
                         MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
-                        console.log('after....')
+
                         dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
-                        console.log('after dispach....')
                     }
                     setOverlayLoading(false);
                 })

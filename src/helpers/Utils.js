@@ -247,10 +247,6 @@ async function clearStorage() {
     await AsyncStorage.clear();
 }
 
-async function getToken() {
-    return await getItemFromStorage(MMEnums.storage.accessToken);
-}
-
 async function removeItemFromStorage(key) {
     await AsyncStorage.removeItem(key);
 }
@@ -287,7 +283,6 @@ export default {
     setItemToStorage,
     clearStorage,
     removeItemFromStorage,
-    getToken,
     parseMoment,
     parseDateTimeToMoment,
     handleBackButton,

@@ -10,8 +10,8 @@ import _ from 'lodash';
 
 import { setLogin } from '../redux/Slice/AuthSlice';
 
-import MMConstants from '../helpers/Constants';
 import MMUtils from '../helpers/Utils';
+import MMEnums from '../helpers/Enums';
 
 import MMSpinner from '../components/common/Spinner';
 
@@ -29,7 +29,6 @@ import Footer from '../screens/footer/Footer';
 import Header from '../screens/header/Header';
 import ChapterList from '../screens/chapter/ChapterList';
 import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
-import MMEnums from '../helpers/Enums';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -105,7 +104,6 @@ export default function AppNavigator() {
 
     const initApp = async () => {
         const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
-        console.log(accessToken, 'accessToken')
         const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
 
         if (accessToken && existingUserDetail) {

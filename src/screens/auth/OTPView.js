@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
@@ -11,6 +11,7 @@ import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -22,7 +23,6 @@ import MMSurface from '../../components/common/Surface';
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const otpRef = useRef(null);
     const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function OTPView({ navigation, route }) {
         async function Init() {
             setTimeout(() => {
                 setIsResendVisible(true);
-            }, 60000);
+            }, MMConstants.otpTimeOut);
         }
         Init();
     }, []);
@@ -86,7 +86,7 @@ export default function OTPView({ navigation, route }) {
             });
             setTimeout(() => {
                 setIsResendVisible(true);
-            }, 60000);
+            }, MMConstants.otpTimeOut);
             MMUtils.showToastMessage("OTP send successfully.")
         }
     }
