@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
+import { store } from '../redux/Store/configureStores';
 
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
@@ -9,12 +10,14 @@ import MMEnums from '../helpers/Enums';
 // Defaults
 axios.defaults.baseURL = 'http://localhost:4000/';
 
+const { getState } = store;
 
 // Request interceptor
 axios.interceptors.request.use(async (config) => {
-    const token = await MMUtils.getToken();
-    if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
+    const { AuthReducer } = getState();
+    const accessToken = AuthReducer.auth.accessToken;
+    if (accessToken) {
+        config.headers['Authorization'] = 'Bearer ' + accessToken;
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8';
     config.headers['Request-Type'] = 'application';
