@@ -30,18 +30,16 @@ export default function AddEditBaby({ route }) {
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [imageSource, setImageSource] = useState();
 
     const initState = {
         name: '',
         picture: '',
         birthDate: undefined,
-        birthTime: undefined,
         birthPlace: '',
         gender: '',
         showBirthDate: false,
-        showBirthTime: false,
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -53,7 +51,7 @@ export default function AddEditBaby({ route }) {
     }, [babyId]);
 
     const loadBabyProfileDetail = async () => {
-        setIsOverlayLoading(true);
+        setOverlayLoading(true);
         if (babyId) {
             const response = await MMApiService.getBabyById(babyId);
             if (response.data) {
@@ -61,7 +59,6 @@ export default function AddEditBaby({ route }) {
                     ...state,
                     name: response.data.name,
                     birthDate: response.data.birthDate,
-                    birthTime: response.data.birthTime,
                     birthPlace: response.data.birthPlace,
                     gender: response.data.gender,
                     picture: response.data.picture
@@ -71,7 +68,7 @@ export default function AddEditBaby({ route }) {
                     setImageSource(imageSourceUri);
                 }
             }
-            setIsOverlayLoading(false);
+            setOverlayLoading(false);
         }
     }
 
@@ -79,7 +76,7 @@ export default function AddEditBaby({ route }) {
         const photo = imageData.assets[0];
         let storageFileKeys = [];
         try {
-            setIsOverlayLoading(true);
+            setOverlayLoading(true);
             let picIndex = 0;
 
             for (const pic of imageData.assets) {
@@ -92,10 +89,10 @@ export default function AddEditBaby({ route }) {
                             if (responseData) {
                                 const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
                                 if (_.isNil(result)) {
-                                    setIsOverlayLoading(false);
+                                    setOverlayLoading(false);
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
                                 } else {
-                                    setIsOverlayLoading(false);
+                                    setOverlayLoading(false);
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
                                     setState({
                                         ...state,
@@ -105,13 +102,13 @@ export default function AddEditBaby({ route }) {
                                     storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
                                 }
                             } else {
-                                setIsOverlayLoading(false);
+                                setOverlayLoading(false);
                                 MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
                             }
                         })();
                     })
                     .catch(function (error) {
-                        setIsOverlayLoading(false);
+                        setOverlayLoading(false);
                         setState({
                             ...state,
                             errors: MMUtils.apiErrorParamMessages(error)
@@ -124,7 +121,7 @@ export default function AddEditBaby({ route }) {
                     });
             }
         } catch (err) {
-            setIsOverlayLoading(false);
+            setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
 
@@ -155,7 +152,7 @@ export default function AddEditBaby({ route }) {
 
     const messages = {
         'name.required': 'Please enter name.',
-        'birthDate.required': 'Plese enter birth date.',
+        'birthDate.required': 'Please enter birth date.',
         'birthPlace.required': 'Please enter birth place.',
         'gender.required': 'Please select gender',
     };
@@ -174,13 +171,12 @@ export default function AddEditBaby({ route }) {
 
         validateAll(state, rules, messages)
             .then(async () => {
-                setIsOverlayLoading(true);
+                setOverlayLoading(true);
                 try {
                     const apiData = {
                         babyId: babyId ? babyId : '',
                         name: state.name,
                         birthDate: state.birthDate,
-                        birthTime: state.birthTime,
                         birthPlace: state.birthPlace,
                         gender: state.gender,
                         picture: state.picture,
@@ -192,7 +188,8 @@ export default function AddEditBaby({ route }) {
                                 if (babyId) {
                                     dispatch(reloadPage({ reloadPage: true }));
                                 }
-                                navigation.navigate('Home');
+                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, response.data._id);
+                                navigation.navigate('Footer');
                             }
 
                         })
@@ -205,7 +202,7 @@ export default function AddEditBaby({ route }) {
                 } catch (err) {
                     MMUtils.consoleError(err);
                 }
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
             })
             .catch((errors) => {
                 console.log("Validation Errors:", errors);
@@ -213,13 +210,13 @@ export default function AddEditBaby({ route }) {
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
                 });
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
             });
     };
 
     async function onBabyDelete() {
         try {
-            setIsOverlayLoading(true);
+            setOverlayLoading(true);
             console.log('Loading baby profile list...');
 
             const response = await MMApiService.deleteBaby(babyId);
@@ -227,7 +224,7 @@ export default function AddEditBaby({ route }) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMEnums.storage.selectedBaby);
                 dispatch(setBaby(null));
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
                 dispatch(reloadPage(false));
                 navigation.navigate('Home');
                 setIsModalOpen(false);
@@ -237,7 +234,7 @@ export default function AddEditBaby({ route }) {
             if (serverError) {
                 MMUtils.showToastMessage(serverError);
             }
-            setIsOverlayLoading(false);
+            setOverlayLoading(false);
         }
     }
 
@@ -266,14 +263,6 @@ export default function AddEditBaby({ route }) {
         setState({
             ...state,
             showBirthDate: true
-        });
-    };
-
-    const onPressBirthTime = () => {
-        Keyboard.dismiss();
-        setState({
-            ...state,
-            showBirthTime: true
         });
     };
 
@@ -334,45 +323,6 @@ export default function AddEditBaby({ route }) {
                                 setState({
                                     ...state,
                                     showBirthDate: false
-                                })
-                            }}
-                        />
-                    }
-                </View>
-                <View >
-                    <MMInput
-                        label='Birth Time'
-                        name='birthTime'
-                        placeholder='Enter Birth Time'
-                        value={_.isNil(state.birthTime) ? '' : moment(state.birthTime).format(MMConstants.dateTimePickerTime)}
-                        errorText={state.errors.birthTime}
-                        onPressIn={onPressBirthTime}
-                        onKeyPress={onPressBirthTime}
-                        left={<TextInput.Icon
-                            icon='clock-time-four-outline'
-                            forceTextInputFocus={false}
-                            onPress={onPressBirthTime}
-                        />}
-                    />
-                    {
-                        state.showBirthTime &&
-                        <MMDateTimePicker
-                            name='birthTime'
-                            mode='time'
-                            date={_.isNil(state.birthTime) ? new Date() : new Date(state.birthTime)}
-                            minimumDate={new Date()}
-                            maximumDate={null}
-                            onConfirm={(date) => {
-                                setState({
-                                    ...state,
-                                    birthTime: new Date(date),
-                                    showBirthTime: false
-                                })
-                            }}
-                            onCancel={() => {
-                                setState({
-                                    ...state,
-                                    showBirthTime: false
                                 })
                             }}
                         />

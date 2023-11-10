@@ -29,6 +29,7 @@ import Footer from '../screens/footer/Footer';
 import Header from '../screens/header/Header';
 import ChapterList from '../screens/chapter/ChapterList';
 import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
+import InitialSetup from '../screens/initialSetup/InitialSetup';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -52,15 +53,20 @@ function AuthStackNavigator() {
 
 // App Stack 
 const AppStack = createStackNavigator();
-function AppStackNavigator() {
+function AppStackNavigator(userDetail) {
     return (
         <NavigationContainer independent>
             <AppStack.Navigator
-                initialRouteName="Footer"
+                initialRouteName={userDetail.childCount > 0 ? "Footer" : "InitialSetup"}
                 screenOptions={{
                     header: (props) => <Header {...props} />
                 }}
             >
+                <AppStack.Screen
+                    name="InitialSetup"
+                    component={InitialSetup}
+                    options={{ headerShown: false }}
+                />
                 <AppStack.Screen
                     name="AddEditBaby"
                     component={AddEditBaby}
@@ -95,7 +101,7 @@ function AppStackNavigator() {
 }
 
 export default function AppNavigator() {
-    const { isLoading, isLoggedOut, accessToken } = useSelector((state) => state.AuthReducer.auth);
+    const { isLoading, isLoggedOut, accessToken, userDetail } = useSelector((state) => state.AuthReducer.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -105,6 +111,7 @@ export default function AppNavigator() {
     const initApp = async () => {
         const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
         const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
+
 
         if (accessToken && existingUserDetail) {
             dispatch(setLogin({
@@ -121,11 +128,10 @@ export default function AppNavigator() {
     if (isLoading) {
         return <MMSpinner />;
     }
-
     return (
         <PaperProvider theme={lightMMTheme}>
             <NavigationContainer ref={navigationRef}>
-                {(_.isNil(accessToken)) ? <AuthStackNavigator /> : <AppStackNavigator />}
+                {(_.isNil(accessToken)) ? <AuthStackNavigator /> : AppStackNavigator(userDetail ? userDetail : null)}
             </NavigationContainer>
         </PaperProvider>
     );

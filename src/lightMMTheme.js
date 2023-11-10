@@ -28,9 +28,10 @@ const fontConfig = {
   },
   // Labels
   labelLarge: {
-    fontSize: 15, // Secondary headings
-    fontWeight: 400, // Bold style for emphasis
+    fontSize: 22, // Secondary headings
+    fontWeight: 500, // Bold style for emphasis
     color: '#153634',
+    lineHeight: 22,
     fontFamily: 'Maison Neue',
   },
   labelMedium: {

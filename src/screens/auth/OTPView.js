@@ -137,7 +137,6 @@ export default function OTPView({ navigation, route }) {
 
                     const responseData = response.data;
                     if (responseData) {
-                        console.log(responseData)
                         const { accessToken, userDetail } = responseData;
                         const userDetails = {
                             accessToken,

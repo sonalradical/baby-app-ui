@@ -55,6 +55,20 @@ async function userLoginWithOTP(data) {
 
 //#endregion
 
+//------------------------------------------------------------------- Manage User APIs
+
+async function updateInItProfile(data) {
+    const config = {
+        url: `user/updateInitProfile`,
+        method: 'put',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#endregion
+
 //------------------------------------------------------------------- Manage Baby APIs
 
 async function babyList() {
@@ -158,6 +172,15 @@ async function deleteFile(data) {
     return result;
 }
 
+async function addInit() {
+    const config = {
+        url: `baby/addInit`,
+        method: 'post',
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //------------------------------------------------------------------- Export All APIs
 //#region
 export default {
@@ -166,7 +189,9 @@ export default {
     resendOTP,
     userLoginWithPassword,
     userLoginWithOTP,
+    updateInItProfile,
     babyList,
+    addInit,
     getBabyById,
     saveBaby,
     deleteBaby,

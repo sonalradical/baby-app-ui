@@ -94,7 +94,6 @@ export default function Login({ navigation }) {
                 setOverlayLoading(false);
             })
             .catch(errors => {
-                console.log(errors);
                 console.log("Validation Errors:", errors);
                 setState({
                     ...state,
@@ -130,7 +129,6 @@ export default function Login({ navigation }) {
                     })
             })
             .catch(errors => {
-                console.log(errors);
                 console.log("Validation Errors:", errors);
                 setState({
                     ...state,

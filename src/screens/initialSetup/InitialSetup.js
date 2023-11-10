@@ -4,35 +4,51 @@ import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
+import { validateAll } from 'indicative/validator';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
+import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMButton } from '../../components/common/Button';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBaby } from '../../redux/Slice/AppSlice';
+import { setLogin } from '../../redux/Slice/AuthSlice';
+import MMEnums from '../../helpers/Enums';
 
 export default function InitialSetup({ route, navigation }) {
     const theme = useTheme();
+    const dispatch = useDispatch();
+
+    const { accessToken } = useSelector((state) => state.AuthReducer.auth);
+
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const initState = {
-        birth: '',
-        situation: '',
+        birthingParent: '',
+        situation: null,
         dueDate: undefined,
         showDueDate: false,
         errors: {},
     };
     const [state, setState] = useState(initState);
 
+    const messages = {
+        'birthingParent.required': 'Please answer the question.',
+        'situation.required': 'Please select situation.',
+        'dueDate.required': 'Please select due date.',
+    };
 
-    const onSelectBirth = (value) => {
+    const onSelectBirthingParent = (value) => {
         setState({
             ...state,
-            birth: value,
+            birthingParent: value,
             errors: {
                 ...state.errors,
-                birth: '',
+                birthingParent: '',
             },
         });
     };
@@ -56,11 +72,62 @@ export default function InitialSetup({ route, navigation }) {
         });
     };
 
-    const onAddBaby = () => {
-        navigation.navigate('AppStackNavigator', {
-            screen: 'AddEditBaby',
-            params: {}
-        });
+    const onClickButton = () => {
+        if (isOverlayLoading) {
+            return;
+        }
+        const rules = state.situation === 'currentlyPregnant' ? {
+            birthingParent: 'required',
+            situation: 'required',
+            dueDate: 'required'
+        } : {
+            birthingParent: 'required',
+            situation: 'required',
+        };
+        validateAll(state, rules, messages)
+            .then(async () => {
+                setOverlayLoading(true);
+                const apiData = {
+                    birthingParent: state.birthingParent,
+                    situation: state.situation,
+                    dueDate: state.dueDate,
+                    childCount: 1
+                };
+
+                await MMApiService.updateInItProfile(apiData)
+                    .then(function (response) {
+                        if (response) {
+                            dispatch(setLogin({ userDetail: response.data, accessToken: accessToken }));
+                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data));
+                            if (state.situation === 'currentlyPregnant') {
+                                MMApiService.addInit().then(function (responseData) {
+                                    if (responseData) {
+                                        dispatch(setBaby(responseData.data._id));
+                                        navigation.navigate('Footer');
+                                    }
+                                });
+                            } else {
+                                navigation.navigate('AddEditBaby');
+                            }
+                        }
+
+                    })
+                    .catch(function (error) {
+                        setState({
+                            ...state,
+                            errors: MMUtils.apiErrorParamMessages(error)
+                        });
+                    });
+                setOverlayLoading(false);
+            })
+            .catch((errors) => {
+                console.log("Validation Errors:", errors);
+                setState({
+                    ...state,
+                    errors: MMUtils.clientErrorMessages(errors)
+                });
+                setOverlayLoading(false);
+            });
     };
 
     const renderView = () => {
@@ -74,18 +141,18 @@ export default function InitialSetup({ route, navigation }) {
                     <View style={{ flexDirection: 'row' }}>
                         <RadioButton.Android
                             value="Yes"
-                            status={state.birth === 'Yes' ? 'checked' : 'unchecked'}
-                            onPress={() => onSelectBirth('Yes')}
+                            status={state.birthingParent === 'Yes' ? 'checked' : 'unchecked'}
+                            onPress={() => onSelectBirthingParent('Yes')}
                         />
-                        <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirth('Yes')}>Yes</Text>
+                        <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirthingParent('Yes')}>Yes</Text>
                         <RadioButton.Android
                             value="No"
-                            status={state.birth === 'No' ? 'checked' : 'unchecked'}
-                            onPress={() => onSelectBirth('No')}
+                            status={state.birthingParent === 'No' ? 'checked' : 'unchecked'}
+                            onPress={() => onSelectBirthingParent('No')}
                         />
-                        <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirth('No')}>No</Text>
+                        <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirthingParent('No')}>No</Text>
                     </View>
-                    <MMFormErrorText errorText={state.errors.birth} />
+                    <MMFormErrorText errorText={state.errors.birthingParent} />
                 </View>
                 <View style={{ marginTop: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
@@ -93,7 +160,7 @@ export default function InitialSetup({ route, navigation }) {
                         <Text style={[theme.fonts.titleMedium]} numberOfLines={2}>Which of these best describes your situation?</Text>
                     </View>
                     <View style={{ flexDirection: 'column' }}>
-                        {MMConstants.situation.map((option) => (
+                        {MMConstants.situations.map((option) => (
                             <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <RadioButton.Android
                                     value={option.value}
@@ -107,50 +174,55 @@ export default function InitialSetup({ route, navigation }) {
                     <MMFormErrorText errorText={state.errors.situation} />
                 </View>
                 {
-                    !_.isNil(state.situation) && state.situation === 'currentlyPregnant' ?
-                        <View style={{ marginTop: 10 }}>
-                            <MMInput
-                                label='3. what is your due date?'
-                                name='dueDate'
-                                placeholder='Date of Due'
-                                value={_.isNil(state.dueDate) ? '' : MMUtils.displayDate(state.dueDate)}
-                                errorText={state.errors.dueDate}
-                                onPressIn={onPressDueDate}
-                                onKeyPress={onPressDueDate}
-                                left={<TextInput.Icon
-                                    icon='calendar-range'
-                                    forceTextInputFocus={false}
-                                    onPress={onPressDueDate}
-                                />}
-                            />
-                            {
-                                state.showDueDate &&
-                                <MMDateTimePicker
-                                    name='dueDate'
-                                    mode='date'
-                                    display={MMUtils.isPlatformIos() ? 'inline' : 'default'}
-                                    date={_.isNil(state.dueDate) ? new Date() : new Date(state.dueDate)}
-                                    maximumDate={new Date()}
-                                    onConfirm={(date) => {
-                                        setState({
-                                            ...state,
-                                            dueDate: new Date(date),
-                                            showDueDate: false,
-                                            errors: {
-                                                ...state.errors,
-                                                dueDate: ''
-                                            }
-                                        })
-                                    }}
-                                    onCancel={() => {
-                                        setState({
-                                            ...state,
-                                            showDueDate: false
-                                        })
-                                    }}
-                                />
-                            }
-                        </View> : !_.isNil(state.situation) && <MMButton label='+  Add New Baby' onPress={() => onAddBaby()} />
+                    !_.isNil(state.situation) ?
+                        state.situation === 'currentlyPregnant' ?
+                            <View style={{ marginTop: 10 }}>
+                                <>
+                                    <MMInput
+                                        label='3. what is your due date?'
+                                        name='dueDate'
+                                        placeholder='Date of Due'
+                                        value={_.isNil(state.dueDate) ? '' : MMUtils.displayDate(state.dueDate)}
+                                        errorText={state.errors.dueDate}
+                                        onPressIn={onPressDueDate}
+                                        onKeyPress={onPressDueDate}
+                                        left={<TextInput.Icon
+                                            icon='calendar-range'
+                                            forceTextInputFocus={false}
+                                            onPress={onPressDueDate}
+                                        />}
+                                    />
+                                    <MMButton label='submit' onPress={() => onClickButton()} />
+                                </>
+                                {
+                                    state.showDueDate &&
+                                    <MMDateTimePicker
+                                        name='dueDate'
+                                        mode='date'
+                                        display={MMUtils.isPlatformIos() ? 'inline' : 'default'}
+                                        date={_.isNil(state.dueDate) ? new Date() : new Date(state.dueDate)}
+                                        minimumDate={new Date()}
+                                        onConfirm={(date) => {
+                                            setState({
+                                                ...state,
+                                                dueDate: new Date(date),
+                                                showDueDate: false,
+                                                errors: {
+                                                    ...state.errors,
+                                                    dueDate: ''
+                                                }
+                                            })
+                                        }}
+                                        onCancel={() => {
+                                            setState({
+                                                ...state,
+                                                showDueDate: false
+                                            })
+                                        }}
+                                    />
+                                }
+                            </View> : <MMButton label='+  Add New Baby' onPress={() => onClickButton()} />
+                        : null
                 }
             </View>
         );

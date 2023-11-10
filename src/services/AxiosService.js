@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as _ from 'lodash';
 
-import { useNavigation } from '@react-navigation/native';
 import { store } from '../redux/Store/configureStores';
 
 import MMUtils from '../helpers/Utils';
@@ -10,7 +9,7 @@ import MMEnums from '../helpers/Enums';
 // Defaults
 axios.defaults.baseURL = 'http://localhost:4000/';
 
-const { getState } = store;
+const { dispatch, getState } = store;
 
 // Request interceptor
 axios.interceptors.request.use(async (config) => {
@@ -30,7 +29,6 @@ axios.interceptors.request.use(async (config) => {
 
 // Response interceptor
 axios.interceptors.response.use(async (response) => {
-    console.log(response.data, 'response axioss')
 
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
@@ -43,8 +41,9 @@ axios.interceptors.response.use(async (response) => {
             MMUtils.showToastMessage(friendlyMassage);
             break;
         case MMEnums.ServiceResult.UnAuthorized:
-            const navigation = useNavigation();
-            navigation.navigate('Logout');
+            MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
+            MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
+            dispatch(setLogout());
             MMUtils.showToastMessage(error.message);
             break;
         default:
@@ -63,8 +62,9 @@ axios.interceptors.response.use(async (response) => {
         MMUtils.showToastMessage(errorMessage);
     }
     else if (error.response.status === MMEnums.ServiceResult.UnAuthorized) {
-        const navigation = useNavigation();
-        navigation.navigate('Logout');
+        MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
+        MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
+        dispatch(setLogout());
     }
     else if (error.response.status === MMEnums.ServiceResult.BadRequest) {
         const errorMessage = error.response.data.message;

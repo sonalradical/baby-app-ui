@@ -77,7 +77,7 @@ export default function ChapterList({ route }) {
                                     style={styles(theme).image}
                                 />
                                 <View style={[MMUtils.isPlatformAndroid() ? { marginVertical: 22 } : { marginVertical: 25 }]}>
-                                    <Text style={[theme.fonts.labelLarge, { fontSize: 22, lineHeight: 22, width: 150 }]} numberOfLines={1} ellipsizeMode='tail'>
+                                    <Text style={theme.fonts.labelLarge} numberOfLines={1} ellipsizeMode='tail'>
                                         {chapter.title}</Text>
                                     <Text style={theme.fonts.labelMedium} numberOfLines={1} ellipsizeMode='tail'>
                                         {'You’ve grown and learnt'}</Text>
