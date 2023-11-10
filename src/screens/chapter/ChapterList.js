@@ -63,7 +63,7 @@ export default function ChapterList({ route }) {
     const renderView = () => {
         return (
             <>
-                <Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center', marginBottom: 10 }]}>Chapters</Text>
+                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>Chapters</Text>
                 {_.map(chapterList, (chapter) => {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
