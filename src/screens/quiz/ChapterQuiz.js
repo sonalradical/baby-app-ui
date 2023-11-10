@@ -6,7 +6,7 @@ import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-nativ
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { setReloadChapterList, setBaby } from '../../redux/Slice/AppSlice';
+import { reloadChapterList, setBaby } from '../../redux/Slice/AppSlice';
 
 import MMApiService from '../../services/ApiService';
 import MMUtils from '../../helpers/Utils';
@@ -93,7 +93,7 @@ export default function ChapterQuiz({ navigation, route }) {
 
         if (currentQuestion === questionList.length - 1) {
             setCurrentQuestion(0);
-            dispatch(setReloadChapterList({ reloadChapterList: true }))
+            dispatch(reloadChapterList({ reloadChapterList: true }))
             navigation.navigate('Home');
         } else {
             setCurrentQuestion(currentQuestion + 1);
@@ -256,7 +256,7 @@ export default function ChapterQuiz({ navigation, route }) {
         );
     };
     const onPressBack = () => {
-        dispatch(setReloadChapterList({ reloadChapterList: true }));
+        dispatch(reloadChapterList({ reloadChapterList: true }));
         navigation.goBack();
     }
 

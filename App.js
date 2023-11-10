@@ -30,7 +30,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <RootSiblingParent>
-        <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.colors.primary }]}>
+        <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.colors.secondaryContainer }]}>
           <StatusBar backgroundColor={theme.colors.secondaryContainer} barStyle="dark-content" />
           <AppNavigator />
         </SafeAreaView>

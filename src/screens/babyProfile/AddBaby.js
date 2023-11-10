@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 
-import { setReloadPage, setBaby } from '../../redux/Slice/AppSlice';
+import { reloadPage, setBaby } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
@@ -235,7 +235,7 @@ export default function AddBaby({ route }) {
                 .then(function (response) {
                     if (response) {
                         dispatch(setBaby(response.data._id));
-                        dispatch(setReloadPage({ reloadPage: true }));
+                        dispatch(reloadPage({ reloadPage: true }));
                         navigation.navigate('Home', { babyId: response.data._id });
                     }
                     setIsOverlayLoading(false);
@@ -263,7 +263,7 @@ export default function AddBaby({ route }) {
                 MMUtils.removeItemFromStorage(MMEnums.storage.selectedBaby);
                 dispatch(setBaby(null));
                 setIsOverlayLoading(false);
-                dispatch(setReloadPage(false));
+                dispatch(reloadPage(false));
                 navigation.navigate('Home');
                 setIsModalOpen(false);
             }
