@@ -241,7 +241,7 @@ export default function AddEditBaby({ route }) {
         }
     }
 
-    const onDelete = () => {
+    const onConfirm = () => {
         return (
             Alert.alert(
                 "Alert",
@@ -409,7 +409,7 @@ export default function AddEditBaby({ route }) {
                             {babyListSize > 1 ?
                                 <MMOutlineButton
                                     label="Delete"
-                                    onPress={() => onDelete()}
+                                    onPress={() => onConfirm()}
                                     width='45%'
                                 /> : null}
                             <MMButton

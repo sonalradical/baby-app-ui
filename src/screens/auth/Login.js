@@ -44,31 +44,54 @@ export default function Login({ navigation }) {
         });
     };
 
-    const onLogin = (loginType) => {
+    const messages = {
+        'mobileNumber.required': 'Please enter mobile no.',
+        'mobileNumber.min': 'Mobile number must be 10 digits.',
+        'password.required': 'Please enter password.',
+        'password.min': 'Password should have a minimum of 8 characters.',
+    };
+
+    function onLoginWithPassword() {
         Keyboard.dismiss();
-
-        const messages = {
-            'mobileNumber.required': 'Please enter mobile no.',
-            'mobileNumber.min': 'Mobile number must be 10 digits.',
-            'password.required': 'Please enter password.',
-            'password.min': 'Password should have a minimum of 8 characters.',
-        };
-
-        const rules = loginType === 'password' ? {
+        const rules = {
             mobileNumber: 'required|string|min:10',
             password: 'required|string|min:8|max:8',
-        } : {
-            mobileNumber: 'required|string|min:10'
         };
-
         validateAll(state, rules, messages)
-            .then(() => {
+            .then(async () => {
                 setOverlayLoading(true);
-                if (loginType === 'password') {
-                    onLoginWithPassword();
-                } else {
-                    onLoginWithOTP();
-                }
+                const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
+                await MMApiService.userLoginWithPassword(authTokan)
+                    .then(function (response) {
+
+                        const responseData = response.data;
+                        if (responseData) {
+                            const { accessToken, userDetail } = responseData;
+                            const userDetails = {
+                                accessToken,
+                                userDetail: {
+                                    mobileNumber: userDetail.mobileNumber,
+                                    name: userDetail.name,
+                                    email: userDetail.email,
+                                    password: userDetail.password,
+                                    gender: userDetail.gender,
+                                    childCount: userDetail.childCount ? userDetail.childCount : 0
+                                },
+                            };
+                            MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
+
+                            dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
+                        }
+
+                    })
+                    .catch(function (error) {
+                        setState({
+                            ...state,
+                            errors: MMUtils.apiErrorParamMessages(error)
+                        });
+                    });
+                setOverlayLoading(false);
             })
             .catch(errors => {
                 console.log(errors);
@@ -78,71 +101,42 @@ export default function Login({ navigation }) {
                     errors: MMUtils.clientErrorMessages(errors)
                 });
             });
-    };
-
-    async function onLoginWithPassword() {
-        try {
-            const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
-
-            await MMApiService.userLoginWithPassword(authTokan)
-                .then(function (response) {
-
-                    const responseData = response.data;
-                    if (responseData) {
-                        const { accessToken, userDetail } = responseData;
-                        const userDetails = {
-                            accessToken,
-                            userDetail: {
-                                mobileNumber: userDetail.mobileNumber,
-                                name: userDetail.name,
-                                email: userDetail.email,
-                                password: userDetail.password,
-                                gender: userDetail.gender,
-                                childCount: userDetail.childCount ? userDetail.childCount : 0
-                            },
-                        };
-                        MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
-                        MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
-
-                        dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
-                    }
-                    setOverlayLoading(false);
-                })
-                .catch(function (error) {
-                    setOverlayLoading(false);
-                    setState({
-                        ...state,
-                        errors: MMUtils.apiErrorParamMessages(error)
-                    });
-                });
-        } catch (err) {
-            MMUtils.consoleError(err);
-        }
     }
 
-    async function onLoginWithOTP() {
-        try {
-            const apiData = {
-                mobileNumber: state.mobileNumber
-            };
+    function onLoginWithOTP() {
+        Keyboard.dismiss();
+        const rules = {
+            mobileNumber: 'required|string|min:10'
+        };
+        validateAll(state, rules, messages)
+            .then(async () => {
+                const apiData = {
+                    mobileNumber: state.mobileNumber
+                };
 
-            await MMApiService.userLoginWithOTP(apiData)
-                .then(function (response) {
-                    if (response) {
-                        navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
-                    }
-                    setOverlayLoading(false);
-                })
-                .catch(function (error) {
-                    setOverlayLoading(false);
-                    setState({
-                        ...state,
-                        errors: MMUtils.apiErrorParamMessages(error)
-                    });
+                await MMApiService.userLoginWithOTP(apiData)
+                    .then(function (response) {
+                        if (response) {
+                            navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
+                        }
+                        setOverlayLoading(false);
+                    })
+                    .catch(function (error) {
+                        setOverlayLoading(false);
+                        setState({
+                            ...state,
+                            errors: MMUtils.apiErrorParamMessages(error)
+                        });
+                    })
+            })
+            .catch(errors => {
+                console.log(errors);
+                console.log("Validation Errors:", errors);
+                setState({
+                    ...state,
+                    errors: MMUtils.clientErrorMessages(errors)
                 });
-        } catch (err) {
-            MMUtils.consoleError(err);
-        }
+            });
     }
 
     const renderView = () => {
@@ -187,7 +181,7 @@ export default function Login({ navigation }) {
 
                     <MMButton
                         label="Login"
-                        onPress={() => onLogin('password')}
+                        onPress={() => onLoginWithPassword()}
                     />
                     <View style={{ alignItems: 'center' }}>
                         <Text style={theme.fonts.default}>Or</Text>
@@ -195,7 +189,7 @@ export default function Login({ navigation }) {
                     <MMOutlineButton
                         label="Login With OTP"
                         mode='text'
-                        onPress={() => { onLogin('otp') }}
+                        onPress={() => { onLoginWithOTP() }}
                         width={'70%'}
                     ></MMOutlineButton>
                 </View>
