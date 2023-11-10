@@ -1,23 +1,21 @@
-import React, { useCallback, useEffect } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Button } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import { setHeaderTitle } from '../../redux/Slice/AppSlice';
+import { setHeader } from '../../redux/Slice/AppSlice';
 
 import MMContentContainer from '../../components/common/ContentContainer';
 import ChapterList from '../chapter/ChapterList';
 
 export default function Home() {
-    const navigation = useNavigation();
     const dispatch = useDispatch();
 
     useFocusEffect(
         useCallback(() => {
-            dispatch(setHeaderTitle(''));
+            dispatch(setHeader(''));
         }, [dispatch])
     );
 

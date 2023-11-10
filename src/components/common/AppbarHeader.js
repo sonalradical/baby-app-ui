@@ -7,7 +7,7 @@ import MMIcon from './Icon';
 
 const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	const theme = useTheme();
-	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
+	const header = useSelector((state) => state.AppReducer.header);
 
 	return (
 		<Appbar.Header style={styles(theme).appBarHeader}>
@@ -21,7 +21,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 				}
 			</TouchableOpacity>
 			{
-				headerTitle ? <Appbar.Content title={headerTitle} titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /> :
+				header ? <Appbar.Content title={header} titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /> :
 					<Appbar.Content title={babyDetail ? babyDetail.name : 'Mini Memoirs'}
 						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
 			}

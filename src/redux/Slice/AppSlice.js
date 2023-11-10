@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	baby: '',
-	headerTitle: '',
+	header: '',
 	reloadChapterList: false,
 	setReloadPage: false,
 };
@@ -15,8 +15,8 @@ const AppReducer = createSlice({
 		setBaby: (state, action) => {
 			state.baby = action.payload;
 		},
-		setHeaderTitle: (state, action) => {
-			state.headerTitle = action.payload;
+		setHeader: (state, action) => {
+			state.header = action.payload;
 		},
 		setReloadChapterList: (state, action) => {
 			state.reloadChapterList = action.payload;
@@ -32,7 +32,7 @@ export default AppReducer;
 
 export const {
 	setBaby,
-	setHeaderTitle,
+	setHeader,
 	setReloadChapterList,
 	setReloadPage
 } = AppReducer.actions;
