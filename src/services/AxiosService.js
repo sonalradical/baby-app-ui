@@ -7,7 +7,7 @@ import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
 
 // Defaults
-axios.defaults.baseURL = 'http://192.168.1.108:4000/';
+axios.defaults.baseURL = 'http://localhost:4000/';
 
 const { dispatch, getState } = store;
 
