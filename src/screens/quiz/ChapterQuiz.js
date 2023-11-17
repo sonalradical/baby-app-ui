@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { BackHandler, Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { reloadChapterList, setBaby } from '../../redux/Slice/AppSlice';
+import { reloadChapterList } from '../../redux/Slice/AppSlice';
 
-import MMApiService from '../../services/ApiService';
+import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMEnums from '../../helpers/Enums';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
@@ -34,6 +34,15 @@ export default function ChapterQuiz({ navigation, route }) {
     useEffect(() => {
         loadQuiz();
     }, [babyId, chapterId]);
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            dispatch(reloadChapterList({ reloadChapterList: true }));
+            navigation.goBack();
+            return true;
+        });
+        return () => backHandler.remove();
+    }, [dispatch, navigation]);
 
     const loadQuiz = async () => {
         if (babyId && chapterId) {
@@ -257,10 +266,6 @@ export default function ChapterQuiz({ navigation, route }) {
             </MMActionButtons>
         );
     };
-    const onPressBack = () => {
-        dispatch(reloadChapterList({ reloadChapterList: true }));
-        navigation.goBack();
-    }
 
     const renderScreenHeader = () => {
         return (
