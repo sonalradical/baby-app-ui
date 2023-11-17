@@ -132,99 +132,101 @@ export default function InitialSetup({ route, navigation }) {
 
     const renderView = () => {
         return (
-            <View style={{ margin: 10 }}>
-                <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>TELL US A BIT ABOUT YOURSELF</Text>
-                </View>
-                <View>
-                    <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <RadioButton.Android
-                            value="Yes"
-                            status={state.birthingParent === 'Yes' ? 'checked' : 'unchecked'}
-                            onPress={() => onSelectBirthingParent('Yes')}
-                        />
-                        <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirthingParent('Yes')}>Yes</Text>
-                        <RadioButton.Android
-                            value="No"
-                            status={state.birthingParent === 'No' ? 'checked' : 'unchecked'}
-                            onPress={() => onSelectBirthingParent('No')}
-                        />
-                        <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirthingParent('No')}>No</Text>
+            <>
+                <View style={{ margin: 10 }}>
+                    <View style={{ alignItems: 'center', marginBottom: 10 }}>
+                        <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>TELL US A BIT ABOUT YOURSELF</Text>
                     </View>
-                    <MMFormErrorText errorText={state.errors.birthingParent} />
-                </View>
-                <View style={{ marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={theme.fonts.titleMedium}>2. </Text>
-                        <Text style={[theme.fonts.titleMedium]} numberOfLines={2}>Which of these best describes your situation?</Text>
+                    <View>
+                        <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <RadioButton.Android
+                                value="Yes"
+                                status={state.birthingParent === 'Yes' ? 'checked' : 'unchecked'}
+                                onPress={() => onSelectBirthingParent('Yes')}
+                            />
+                            <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirthingParent('Yes')}>Yes</Text>
+                            <RadioButton.Android
+                                value="No"
+                                status={state.birthingParent === 'No' ? 'checked' : 'unchecked'}
+                                onPress={() => onSelectBirthingParent('No')}
+                            />
+                            <Text style={[theme.fonts.default, { marginTop: 8 }]} onPress={() => onSelectBirthingParent('No')}>No</Text>
+                        </View>
+                        <MMFormErrorText errorText={state.errors.birthingParent} />
                     </View>
-                    <View style={{ flexDirection: 'column' }}>
-                        {MMConstants.situations.map((option) => (
-                            <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <RadioButton.Android
-                                    value={option.value}
-                                    status={state.situation === option.value ? 'checked' : 'unchecked'}
-                                    onPress={() => onSelectSituation(option.value)}
-                                />
-                                <Text style={theme.fonts.default} onPress={() => onSelectSituation(option.value)}>{option.label}</Text>
-                            </View>
-                        ))}
-                    </View>
-                    <MMFormErrorText errorText={state.errors.situation} />
-                </View>
-                {
-                    !_.isNil(state.situation) ?
-                        state.situation === 'currentlyPregnant' ?
-                            <View style={{ marginTop: 10 }}>
-                                <>
-                                    <MMInput
-                                        label='3. what is your due date?'
-                                        name='dueDate'
-                                        placeholder='Date of Due'
-                                        value={_.isNil(state.dueDate) ? '' : MMUtils.displayDate(state.dueDate)}
-                                        errorText={state.errors.dueDate}
-                                        onPressIn={onPressDueDate}
-                                        onKeyPress={onPressDueDate}
-                                        left={<TextInput.Icon
-                                            icon='calendar-range'
-                                            forceTextInputFocus={false}
-                                            onPress={onPressDueDate}
-                                        />}
+                    <View style={{ marginTop: 10 }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={theme.fonts.titleMedium}>2. </Text>
+                            <Text style={[theme.fonts.titleMedium]} numberOfLines={2}>Which of these best describes your situation?</Text>
+                        </View>
+                        <View style={{ flexDirection: 'column' }}>
+                            {MMConstants.situations.map((option) => (
+                                <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RadioButton.Android
+                                        value={option.value}
+                                        status={state.situation === option.value ? 'checked' : 'unchecked'}
+                                        onPress={() => onSelectSituation(option.value)}
                                     />
-                                    <MMButton label='submit' onPress={() => onClickButton()} />
-                                </>
-                                {
-                                    state.showDueDate &&
-                                    <MMDateTimePicker
-                                        name='dueDate'
-                                        mode='date'
-                                        display={MMUtils.isPlatformIos() ? 'inline' : 'default'}
-                                        date={_.isNil(state.dueDate) ? new Date() : new Date(state.dueDate)}
-                                        minimumDate={new Date()}
-                                        onConfirm={(date) => {
-                                            setState({
-                                                ...state,
-                                                dueDate: new Date(date),
-                                                showDueDate: false,
-                                                errors: {
-                                                    ...state.errors,
-                                                    dueDate: ''
-                                                }
-                                            })
-                                        }}
-                                        onCancel={() => {
-                                            setState({
-                                                ...state,
-                                                showDueDate: false
-                                            })
-                                        }}
-                                    />
-                                }
-                            </View> : <MMButton label='+  Add New Baby' onPress={() => onClickButton()} />
-                        : null
-                }
-            </View>
+                                    <Text style={theme.fonts.default} onPress={() => onSelectSituation(option.value)}>{option.label}</Text>
+                                </View>
+                            ))}
+                        </View>
+                        <MMFormErrorText errorText={state.errors.situation} />
+                    </View>
+                    {
+                        !_.isNil(state.situation) ?
+                            state.situation === 'currentlyPregnant' ?
+                                <View style={{ marginTop: 10 }}>
+                                    <>
+                                        <MMInput
+                                            label='3. What is your due date?'
+                                            name='dueDate'
+                                            placeholder='Date of Due'
+                                            value={_.isNil(state.dueDate) ? '' : MMUtils.displayDate(state.dueDate)}
+                                            errorText={state.errors.dueDate}
+                                            onPressIn={onPressDueDate}
+                                            onKeyPress={onPressDueDate}
+                                            left={<TextInput.Icon
+                                                icon='calendar-range'
+                                                forceTextInputFocus={false}
+                                                onPress={onPressDueDate}
+                                            />}
+                                        />
+                                        <MMButton label='Get Started' onPress={() => onClickButton()} />
+                                    </>
+                                    {
+                                        state.showDueDate &&
+                                        <MMDateTimePicker
+                                            name='dueDate'
+                                            mode='date'
+                                            display={MMUtils.isPlatformIos() ? 'inline' : 'default'}
+                                            date={_.isNil(state.dueDate) ? new Date() : new Date(state.dueDate)}
+                                            minimumDate={new Date()}
+                                            onConfirm={(date) => {
+                                                setState({
+                                                    ...state,
+                                                    dueDate: new Date(date),
+                                                    showDueDate: false,
+                                                    errors: {
+                                                        ...state.errors,
+                                                        dueDate: ''
+                                                    }
+                                                })
+                                            }}
+                                            onCancel={() => {
+                                                setState({
+                                                    ...state,
+                                                    showDueDate: false
+                                                })
+                                            }}
+                                        />
+                                    }
+                                </View> : <MMButton label='+  Add New Baby' onPress={() => onClickButton()} />
+                            : null
+                    }
+                </View>
+            </>
         );
     };
 

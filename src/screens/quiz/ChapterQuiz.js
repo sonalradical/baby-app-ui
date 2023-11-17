@@ -219,6 +219,7 @@ export default function ChapterQuiz({ navigation, route }) {
                         <MMInput
                             placeholder="Your answer..."
                             value={selectedAnswer.text}
+
                             onChangeText={(text) => onTextChange(text)}
                         />
                     )}
@@ -262,9 +263,8 @@ export default function ChapterQuiz({ navigation, route }) {
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header style={{ backgroundColor: theme.colors.secondaryContainer }}>
-                <Appbar.BackAction onPress={() => { onPressBack(); }} />
-                <Appbar.Content title={title} titleStyle={[theme.fonts.headlineMedium]} />
+            <Appbar.Header style={{ backgroundColor: theme.colors.primaryContainer }}>
+                <Appbar.Content title={title} titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
             </Appbar.Header>
         );
     };

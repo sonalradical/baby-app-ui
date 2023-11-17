@@ -33,7 +33,9 @@ const styles = (theme) => StyleSheet.create({
         lineHeight: 20,
         backgroundColor: theme.colors.secondaryContainer,
         borderRadius: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 6
+
     },
 });
 

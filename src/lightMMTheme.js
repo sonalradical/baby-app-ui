@@ -3,7 +3,7 @@ import { DefaultTheme, configureFonts } from 'react-native-paper';
 // custom theme
 const fontConfig = {
   default: {
-    fontFamily: 'Maison Neue',
+    fontFamily: 'MaisonNeue-Book',
     letterSpacing: 0.05,
     fontSize: 15,
     color: '#153634',
@@ -11,48 +11,50 @@ const fontConfig = {
   displayLarge: {
     fontSize: 50, // Large headings
     fontWeight: 400, // Bold style for emphasis
-    fontFamily: 'Wulkan display',
+    fontFamily: 'MaisonNeue-Book',
     color: '#000',
   },
   headlineMedium: {
     fontSize: 20, // Secondary headings
-    fontWeight: 700, // Bold style for emphasis
+    fontWeight: 600, // Bold style for emphasis
     color: '#153634',
-    fontFamily: 'Maison Neue',
+    fontFamily: 'TangerineRegular',
   },
   displayMedium: {
     fontSize: 20, // Secondary headings
     fontWeight: 400, // Bold style for emphasis
     color: '#153634',
-    fontFamily: 'Maison Neue',
+    fontFamily: 'MaisonNeue-Book',
   },
   // Labels
   labelLarge: {
     fontSize: 22, // Secondary headings
-    fontWeight: 500, // Bold style for emphasis
+    fontWeight: 600, // Bold style for emphasis
     color: '#153634',
     lineHeight: 22,
-    fontFamily: 'Maison Neue',
+    fontFamily: 'MaisonNeue-Bold',
   },
   labelMedium: {
     fontSize: 12, // Secondary headings
     fontWeight: 400, // Bold style for emphasis
-    color: '#000',
-    fontFamily: 'Wulkan display',
+    color: '#153634',
+    fontFamily: 'MaisonNeue-Book',
   },
   headlineSmall: {
     fontSize: 20, // Secondary headings
     fontWeight: 500, // Bold style for emphasis
     color: '#000',
-    fontFamily: 'Wulkan display',
+    fontFamily: 'MaisonNeue-Bold',
   },
   titleMedium: {
-    fontWeight: 700,
+    fontWeight: 500,
     color: '#153634',
   },
   headlineLarge: {
-    fontFamily: 'Wulkan display',
-    color: '#000',
+    fontFamily: 'TangerineRegular',
+    fontWeight: 600,
+    fontSize: 28, // Secondary headings
+    color: '#153634',
   }
 };
 

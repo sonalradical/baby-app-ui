@@ -79,7 +79,6 @@ export default function SignUp({ navigation, route }) {
 
             })
             .catch((errors) => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
@@ -130,7 +129,7 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <View style={{ margin: 10 }}>
+            <View style={{ padding: 10 }}>
                 <View style={{ alignItems: 'center', marginBottom: 15 }}>
                     <Text style={theme.fonts.headlineLarge}>Your Profile</Text>
                 </View>
@@ -203,7 +202,7 @@ export default function SignUp({ navigation, route }) {
                     </View>
                     <MMFormErrorText errorText={state.errors.gender} />
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ marginTop: 30, flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox
                         color={theme.colors.primary}
                         size="sm"

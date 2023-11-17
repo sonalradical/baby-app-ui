@@ -269,6 +269,7 @@ const styles = (theme) => StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 10,
+        marginTop: 6,
         borderColor: theme.colors.outline
     },
 });
