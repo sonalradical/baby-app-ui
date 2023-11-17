@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, Text, Title, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -11,14 +11,13 @@ import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMNoRecordsFound from '../../components/common/NoRecordsFound';
-import { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMSpinner from '../../components/common/Spinner';
 
 export default function MilestoneList({ navigation, route }) {
+    const { milestoneId } = route.params || '';
     const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
-    const { milestoneId } = route.params || '';
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [babyId, setBabyId] = useState();
     const [milestones, setMilestones] = useState();
 
@@ -27,16 +26,15 @@ export default function MilestoneList({ navigation, route }) {
     }, [selectedBabyId]);
 
     const loadMilestoneList = async () => {
+        setLoading(true);
         const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
         if (babyId) {
             try {
-                setIsOverlayLoading(true);
                 setBabyId(babyId);
                 const response = await MMApiService.getTypeList(babyId, 'milestone');
                 if (response.data) {
                     const milestone = _.sortBy(response.data.milestoneList, 'position');
                     setMilestones(milestone);
-                    setIsOverlayLoading(false);
                 }
             } catch (error) {
                 setMilestones();
@@ -44,12 +42,12 @@ export default function MilestoneList({ navigation, route }) {
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
                 }
-                setIsOverlayLoading(false);
             }
+            setLoading(false);
         }
         else {
             setMilestones();
-            setIsOverlayLoading(false);
+            setLoading(false);
         }
     }
 
@@ -98,12 +96,9 @@ export default function MilestoneList({ navigation, route }) {
     };
 
     return (
-        <>
-            <MMContentContainer>
-                {!_.isEmpty(milestones) ? renderView() : <MMNoRecordsFound title={'No Milestone Found.'} />}
-            </MMContentContainer>
-            <MMOverlaySpinner visible={isOverlayLoading} />
-        </>
+        <MMContentContainer>
+            {isLoading ? <MMSpinner /> : renderView()}
+        </MMContentContainer>
     );
 }
 
