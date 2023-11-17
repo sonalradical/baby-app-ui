@@ -16,7 +16,7 @@ const MMInputMultiline = ({ name, label, placeholder, errorText, ...props }) => 
 				placeholder={placeholder}
 				multiline={true}
 				numberOfLines={8}
-				maxLength={500}
+				maxLength={255}
 				autoCapitalize='sentences'
 				keyboardType='default'
 				errorText={errorText}

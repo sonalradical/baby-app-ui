@@ -270,6 +270,7 @@ const styles = (theme) => StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         marginTop: 6,
-        borderColor: theme.colors.outline
+        borderColor: theme.colors.outline,
+        borderStyle: 'dashed'
     },
 });
