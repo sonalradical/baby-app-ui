@@ -32,28 +32,29 @@ export default function ChapterQuiz({ navigation, route }) {
     const [answerList, setAnswerList] = useState([]);
 
     useEffect(() => {
-        const loadQuiz = async () => {
-            if (babyId && chapterId) {
-                try {
-                    setIsLoading(true);
-                    const response = await MMApiService.getQuiz(babyId, chapterId);
-                    if (response.data) {
-                        const sortedQuestions = _.sortBy(response.data.questionList, 'position');
-                        setQuestionList(sortedQuestions);
-                        setAnswerList(response.data.answerList);
-                        setIsLoading(false);
-                    }
-                } catch (error) {
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
-                    setIsLoading(false);
-                }
-            }
-        };
         loadQuiz();
     }, [babyId, chapterId]);
+
+    const loadQuiz = async () => {
+        if (babyId && chapterId) {
+            try {
+                setIsLoading(true);
+                const response = await MMApiService.getQuiz(babyId, chapterId);
+                if (response.data) {
+                    const sortedQuestions = _.sortBy(response.data.questionList, 'position');
+                    setQuestionList(sortedQuestions);
+                    setAnswerList(response.data.answerList);
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                const serverError = MMUtils.apiErrorMessage(error);
+                if (serverError) {
+                    MMUtils.showToastMessage(serverError);
+                }
+                setIsLoading(false);
+            }
+        }
+    };
 
     useEffect(() => {
         // Update selectedAnswer based on the currentQuestionType

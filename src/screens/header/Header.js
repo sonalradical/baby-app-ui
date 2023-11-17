@@ -18,32 +18,33 @@ export default function Header({ navigation, route }) {
     const [babyDetail, setBabyDetail] = useState();
 
     useEffect(() => {
-        const loadBabyProfileDetail = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
-            if (babyId || reloadPage) {
-                try {
-                    setIsOverlayLoading(true);
-                    const response = await MMApiService.getBabyById(babyId);
-                    if (response.data) {
-                        setBabyDetail(response.data)
-                        setIsOverlayLoading(false);
-                    }
-                } catch (error) {
-                    setBabyDetail();
-                    setIsOverlayLoading(false);
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
-                }
-            }
-            else {
-                setBabyDetail();
-                setIsOverlayLoading(false);
-            }
-        }
         loadBabyProfileDetail();
     }, [selectedBabyId, reloadPage]);
+
+    const loadBabyProfileDetail = async () => {
+        const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
+        if (babyId || reloadPage) {
+            try {
+                setIsOverlayLoading(true);
+                const response = await MMApiService.getBabyById(babyId);
+                if (response.data) {
+                    setBabyDetail(response.data)
+                    setIsOverlayLoading(false);
+                }
+            } catch (error) {
+                setBabyDetail();
+                setIsOverlayLoading(false);
+                const serverError = MMUtils.apiErrorMessage(error);
+                if (serverError) {
+                    MMUtils.showToastMessage(serverError);
+                }
+            }
+        }
+        else {
+            setBabyDetail();
+            setIsOverlayLoading(false);
+        }
+    }
 
     const onAvatarPress = () => {
         setIsModalOpen(true);

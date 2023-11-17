@@ -33,37 +33,38 @@ export default function MilestoneQuiz({ navigation, route }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
-        const loadQuiz = async () => {
-            if (babyId && milestoneId) {
-                try {
-                    setIsLoading(true);
-                    const response = await MMApiService.getQuiz(babyId, milestoneId);
-                    if (response.data) {
-                        setQuestions(response.data.questionList);
-                        const answer = response.data.answerList[0].answer;
-                        setState({
-                            ...state,
-                            description: answer.description,
-                            date: answer.date,
-                            picture: answer.picture
-                        })
-                        if (answer.picture) {
-                            imageSourceUri = MMUtils.getImagePath(answer.picture);
-                            setImageSource(imageSourceUri);
-                        }
-                        setIsLoading(false);
-                    }
-                } catch (error) {
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
+        loadQuiz();
+    }, [babyId, milestoneId]);
+
+    const loadQuiz = async () => {
+        if (babyId && milestoneId) {
+            try {
+                setIsLoading(true);
+                const response = await MMApiService.getQuiz(babyId, milestoneId);
+                if (response.data) {
+                    setQuestions(response.data.questionList);
+                    const answer = response.data.answerList[0].answer;
+                    setState({
+                        ...state,
+                        description: answer.description,
+                        date: answer.date,
+                        picture: answer.picture
+                    })
+                    if (answer.picture) {
+                        imageSourceUri = MMUtils.getImagePath(answer.picture);
+                        setImageSource(imageSourceUri);
                     }
                     setIsLoading(false);
                 }
+            } catch (error) {
+                const serverError = MMUtils.apiErrorMessage(error);
+                if (serverError) {
+                    MMUtils.showToastMessage(serverError);
+                }
+                setIsLoading(false);
             }
-        };
-        loadQuiz();
-    }, [babyId, milestoneId]);
+        }
+    };
 
     const onTextChange = (value) => {
         setState({

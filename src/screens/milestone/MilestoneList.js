@@ -23,34 +23,35 @@ export default function MilestoneList({ navigation, route }) {
     const [milestones, setMilestones] = useState();
 
     useEffect(() => {
-        const loadMilestoneList = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
-            if (babyId) {
-                try {
-                    setIsOverlayLoading(true);
-                    setBabyId(babyId);
-                    const response = await MMApiService.getTypeList(babyId, 'milestone');
-                    if (response.data) {
-                        const milestone = _.sortBy(response.data.milestoneList, 'position');
-                        setMilestones(milestone);
-                        setIsOverlayLoading(false);
-                    }
-                } catch (error) {
-                    setMilestones();
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
+        loadMilestoneList();
+    }, [selectedBabyId]);
+
+    const loadMilestoneList = async () => {
+        const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
+        if (babyId) {
+            try {
+                setIsOverlayLoading(true);
+                setBabyId(babyId);
+                const response = await MMApiService.getTypeList(babyId, 'milestone');
+                if (response.data) {
+                    const milestone = _.sortBy(response.data.milestoneList, 'position');
+                    setMilestones(milestone);
                     setIsOverlayLoading(false);
                 }
-            }
-            else {
+            } catch (error) {
                 setMilestones();
+                const serverError = MMUtils.apiErrorMessage(error);
+                if (serverError) {
+                    MMUtils.showToastMessage(serverError);
+                }
                 setIsOverlayLoading(false);
             }
         }
-        loadMilestoneList();
-    }, [selectedBabyId]);
+        else {
+            setMilestones();
+            setIsOverlayLoading(false);
+        }
+    }
 
     useEffect(() => {
         if (milestoneId) {

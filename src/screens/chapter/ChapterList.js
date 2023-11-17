@@ -17,7 +17,6 @@ import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMNoRecordsFound from '../../components/common/NoRecordsFound';
 import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function ChapterList({ route }) {
@@ -30,59 +29,60 @@ export default function ChapterList({ route }) {
     const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {
-        const loadChapterList = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
-            if (babyId || reloadChapterList) {
-                try {
-                    setIsOverlayLoading(true);
-                    setBabyId(babyId);
-                    const response = await MMApiService.getTypeList(babyId, 'chapter');
-                    if (response.data) {
-                        const chapters = response.data.chapterDetail
-                        setChapterList(chapters);
-                        setIsOverlayLoading(false);
-                    }
-                } catch (error) {
-                    setChapterList();
-                    setIsOverlayLoading(false);
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
-                }
-            }
-            else {
-                setChapterList();
-                setIsOverlayLoading(false);
-            }
-        }
         loadChapterList();
     }, [selectedBabyId, reloadChapterList]);
+
+    const loadChapterList = async () => {
+        const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
+        if (babyId || reloadChapterList) {
+            try {
+                setIsOverlayLoading(true);
+                setBabyId(babyId);
+                const response = await MMApiService.getTypeList(babyId, 'chapter');
+                if (response.data) {
+                    const chapters = response.data.chapterDetail
+                    setChapterList(chapters);
+                    setIsOverlayLoading(false);
+                }
+            } catch (error) {
+                setChapterList();
+                setIsOverlayLoading(false);
+                const serverError = MMUtils.apiErrorMessage(error);
+                if (serverError) {
+                    MMUtils.showToastMessage(serverError);
+                }
+            }
+        }
+        else {
+            setChapterList();
+            setIsOverlayLoading(false);
+        }
+    }
 
 
     const renderView = () => {
         return (
             <>
-                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>Chapters</Text>
+                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: 10 }]}>Chapters</Text>
                 {_.map(chapterList, (chapter) => {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
                         <Card style={styles(theme).whiteBg} key={chapter._id}
                             onPress={() => navigation.navigate('ChapterQuiz', { babyId: babyId, chapterId: chapter._id, title: chapter.title })}>
-                            <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'space-between' }}>
+                            <View style={{ flexDirection: 'row', padding: 5, justifyContent: 'space-between' }}>
                                 <Image
                                     textAlign="center"
                                     resizeMode="contain"
                                     source={chapterImage}
                                     style={styles(theme).image}
                                 />
-                                <View style={[MMUtils.isPlatformAndroid() ? { marginVertical: 22 } : { marginVertical: 25 }]}>
-                                    <Text style={theme.fonts.labelLarge} numberOfLines={1} ellipsizeMode='tail'>
+                                <View style={[MMUtils.isPlatformAndroid() ? { paddingVertical: 22 } : { paddingVertical: 25 }]}>
+                                    <Text style={[theme.fonts.labelLarge, { width: 150 }]} numberOfLines={1} ellipsizeMode='tail'>
                                         {chapter.title}</Text>
                                     <Text style={theme.fonts.labelMedium} numberOfLines={1} ellipsizeMode='tail'>
                                         {'You’ve grown and learnt'}</Text>
                                 </View>
-                                <View style={{ margin: 10 }}>
+                                <View style={{ padding: 10 }}>
                                     <CircularProgress value={chapter.totalAnswers}
                                         title={`${chapter.totalAnswers} / ${chapter.totalQuestions}`}
                                         radius={30}
@@ -106,7 +106,7 @@ export default function ChapterList({ route }) {
         <>
             <MMContentContainer>
                 <MMScrollView>
-                    {!_.isEmpty(chapterList) ? renderView() : <MMNoRecordsFound title={'No Chapter Found.'} />}
+                    {renderView()}
                 </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
             </MMContentContainer>

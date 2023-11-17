@@ -25,40 +25,41 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const [babyList, setBabyList] = useState();
 
 	useEffect(() => {
-		async function Init() {
-			try {
-				setIsLoding(true);
-				console.log('Loading baby profile list...');
-				const response = await MMApiService.babyList();
-				if (response.data) {
-					const babyProfiles = response.data;
-					if (selectedBaby) {
-						const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
-						if (selectedIndex !== -1) {
-							babyProfiles.splice(selectedIndex, 1);
-							babyProfiles.unshift(selectedBaby);
-						}
-						setSelectedBabyDetail(selectedBaby);
-					} else {
-						setSelectedBabyDetail();
-					}
-					setBabyList(babyProfiles);
-				}
-				setIsLoding(false);
-			} catch (error) {
-				setBabyList([]);
-				setSelectedBabyDetail();
-				setIsLoding(false);
-				const serverError = MMUtils.apiErrorMessage(error);
-				if (serverError) {
-					MMUtils.showToastMessage(serverError);
-				}
-			}
-		}
 		if (isModalOpen) {
 			Init();
 		}
 	}, [isModalOpen]);
+
+	async function Init() {
+		try {
+			setIsLoding(true);
+			console.log('Loading baby profile list...');
+			const response = await MMApiService.babyList();
+			if (response.data) {
+				const babyProfiles = response.data;
+				if (selectedBaby) {
+					const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
+					if (selectedIndex !== -1) {
+						babyProfiles.splice(selectedIndex, 1);
+						babyProfiles.unshift(selectedBaby);
+					}
+					setSelectedBabyDetail(selectedBaby);
+				} else {
+					setSelectedBabyDetail();
+				}
+				setBabyList(babyProfiles);
+			}
+			setIsLoding(false);
+		} catch (error) {
+			setBabyList([]);
+			setSelectedBabyDetail();
+			setIsLoding(false);
+			const serverError = MMUtils.apiErrorMessage(error);
+			if (serverError) {
+				MMUtils.showToastMessage(serverError);
+			}
+		}
+	}
 
 	const onAddBaby = () => {
 		setIsModalOpen(false);
