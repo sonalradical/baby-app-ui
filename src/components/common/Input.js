@@ -9,7 +9,7 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
 
     return (
         <View style={styles(theme).container}>
-            <Text style={theme.fonts.titleMedium}>{label}</Text>
+            {label ? <Text style={theme.fonts.titleMedium}>{label}</Text> : null}
             <TextInput
                 style={styles(theme).input}
                 mode={mode}

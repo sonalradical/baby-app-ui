@@ -17,7 +17,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import { MMOutlineButton, MMButton } from '../../components/common/Button';
-import MMProfileAvatar from '../../components/common/profileAvatar';
+import MMProfileAvatar from '../../components/common/ProfileAvatar';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';

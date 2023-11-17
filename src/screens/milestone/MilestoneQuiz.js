@@ -15,6 +15,7 @@ import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import { MMButton } from '../../components/common/Button';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
+import MMInputMultiline from '../../components/common/InputMultiline';
 
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
@@ -169,11 +170,9 @@ export default function MilestoneQuiz({ navigation, route }) {
         return (
             <>
                 <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>{questions[0].question}</Text>
-                <View style={{ margin: 10 }}>
-                    <MMInput
+                <View style={{ padding: 10 }}>
+                    <MMInputMultiline
                         label='Description'
-                        numberOfLines={4}
-                        maxLength={100}
                         value={state.description}
                         onChangeText={onTextChange}
                         placeholder="Enter Description"

@@ -16,6 +16,7 @@ import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMInput from '../../components/common/Input';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMInputMultiline from '../../components/common/InputMultiline';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
@@ -226,10 +227,9 @@ export default function ChapterQuiz({ navigation, route }) {
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.text && (
-                        <MMInput
+                        <MMInputMultiline
                             placeholder="Your answer..."
                             value={selectedAnswer.text}
-
                             onChangeText={(text) => onTextChange(text)}
                         />
                     )}
