@@ -15,16 +15,16 @@ import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 
 import MMApiService from '../../services/ApiService';
-import { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMSpinner from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function ChapterList() {
     const theme = useTheme();
+    const navigation = useNavigation();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
-    const navigation = useNavigation();
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [babyId, setBabyId] = useState();
     const [chapterList, setChapterList] = useState([]);
 
@@ -33,29 +33,28 @@ export default function ChapterList() {
     }, [selectedBabyId, reloadChapterList]);
 
     const loadChapterList = async () => {
+        setLoading(true);
         const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
         if (babyId || reloadChapterList) {
             try {
-                setIsOverlayLoading(true);
                 setBabyId(babyId);
                 const response = await MMApiService.getTypeList(babyId, 'chapter');
                 if (response.data) {
                     const chapters = response.data.chapterDetail
                     setChapterList(chapters);
-                    setIsOverlayLoading(false);
                 }
             } catch (error) {
                 setChapterList();
-                setIsOverlayLoading(false);
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
                 }
             }
+            setLoading(false);
         }
         else {
             setChapterList();
-            setIsOverlayLoading(false);
+            setLoading(false);
         }
     }
 
@@ -103,21 +102,13 @@ export default function ChapterList() {
     };
 
     return (
-        <>
-            <MMContentContainer>
-                <MMScrollView>
-                    {renderView()}
-                </MMScrollView>
-                <MMOverlaySpinner visible={isOverlayLoading} />
-            </MMContentContainer>
-        </>
+        <MMContentContainer>
+            <MMScrollView>
+                {isLoading ? <MMSpinner /> : renderView()}
+            </MMScrollView>
+        </MMContentContainer>
     );
 }
-
-ChapterList.propTypes = {
-    navigation: PropTypes.object,
-    route: PropTypes.object,
-};
 
 const styles = (theme) => StyleSheet.create({
     addButton: {
