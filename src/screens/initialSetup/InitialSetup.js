@@ -5,8 +5,12 @@ import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
+import { useDispatch, useSelector } from 'react-redux';
 
-import MMConstants from '../../helpers/Constants';
+import { setBaby } from '../../redux/Slice/AppSlice';
+import { setLogin } from '../../redux/Slice/AuthSlice';
+
+import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
@@ -15,15 +19,12 @@ import { MMButton } from '../../components/common/Button';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
-import { useDispatch, useSelector } from 'react-redux';
-import { setBaby } from '../../redux/Slice/AppSlice';
-import { setLogin } from '../../redux/Slice/AuthSlice';
-import MMEnums from '../../helpers/Enums';
 
 export default function InitialSetup({ route, navigation }) {
     const theme = useTheme();
     const dispatch = useDispatch();
 
+    const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const { accessToken } = useSelector((state) => state.AuthReducer.auth);
 
     const [isOverlayLoading, setOverlayLoading] = useState(false);
@@ -161,7 +162,7 @@ export default function InitialSetup({ route, navigation }) {
                             <Text style={[theme.fonts.titleMedium]} numberOfLines={2}>Which of these best describes your situation?</Text>
                         </View>
                         <View style={{ flexDirection: 'column' }}>
-                            {MMConstants.situations.map((option) => (
+                            {lookupData.situations.map((option) => (
                                 <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <RadioButton.Android
                                         value={option.value}

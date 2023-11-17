@@ -19,7 +19,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
 
-export default function ChapterList({ route }) {
+export default function ChapterList() {
     const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);

@@ -5,13 +5,12 @@ import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
-import { useDispatch } from 'react-redux';
-import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { reloadPage, setBaby } from '../../redux/Slice/AppSlice';
 
-import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -23,13 +22,13 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMEnums from '../../helpers/Enums';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [imageSource, setImageSource] = useState();
 
@@ -340,7 +339,7 @@ export default function AddEditBaby({ route }) {
                 <View>
                     <Text style={theme.fonts.titleMedium}>Gender *</Text>
                     <View style={{ flexDirection: 'row' }}>
-                        {MMConstants.gender.map((option) => (
+                        {lookupData.gender.map((option) => (
                             <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <RadioButton.Android
                                     value={option.value}

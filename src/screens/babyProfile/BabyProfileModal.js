@@ -96,9 +96,11 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Avatar.Image
 							size={56}
-							source={profileData ? { uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
+							source={profileData.isBorn === 'Yes' ?
+								{ uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
 						/>
-						<Card.Title title={profileData.name} subtitle={profileData.gender}
+						<Card.Title title={profileData.isBorn === 'Yes' ? profileData.name : 'Mini Baby'}
+							subtitle={profileData.gender}
 							style={{ width: 100, marginLeft: 10 }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
 							{isSelected ? <MMIcon

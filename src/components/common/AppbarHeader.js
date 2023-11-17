@@ -7,25 +7,32 @@ import MMIcon from './Icon';
 
 const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 	const theme = useTheme();
-	const header = useSelector((state) => state.AppReducer.header);
 
 	return (
 		<Appbar.Header style={styles(theme).appBarHeader}>
-			<TouchableOpacity onPress={onAvatarPress} style={{ marginLeft: 10 }}>
-				<Avatar.Image
-					size={50}
-					source={babyDetail ? { uri: MMUtils.getImagePath(babyDetail.picture) } : require('../../assets/images/parenthood.jpg')}
-				/>
-				{
-					!babyDetail ? <MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.secondary} /> : null
-				}
-			</TouchableOpacity>
-			{
-				header ? <Appbar.Content title={header} titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /> :
-					<Appbar.Content title={babyDetail ? babyDetail.name : 'Mini Memoirs'}
+			{babyDetail ?
+				<>
+					<TouchableOpacity onPress={onAvatarPress} style={{ marginLeft: 10 }}>
+						<Avatar.Image
+							size={50}
+							source={babyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(babyDetail.picture) } :
+								require('../../assets/images/parenthood.jpg')}
+						/>
+					</TouchableOpacity>
+					<Appbar.Content title={babyDetail.isBorn === 'Yes' ? babyDetail.name : 'Mini Baby'}
+						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /></>
+				: <>
+					<TouchableOpacity onPress={onAvatarPress} style={{ marginLeft: 10 }}>
+						<Avatar.Image
+							size={50}
+							source={require('../../assets/images/parenthood.jpg')}
+						/>
+						<MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.secondary} />
+					</TouchableOpacity>
+					<Appbar.Content title={'Mini Memoirs'}
 						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
+				</>
 			}
-
 			<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
 			<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
 		</Appbar.Header>

@@ -5,6 +5,7 @@ import { Checkbox, RadioButton, TextInput, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
+import { useSelector } from 'react-redux';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
@@ -18,6 +19,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
+    const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
 
@@ -189,7 +191,7 @@ export default function SignUp({ navigation, route }) {
                 <View>
                     <Text style={theme.fonts.titleMedium}>Gender *</Text>
                     <View style={{ flexDirection: 'row' }}>
-                        {MMConstants.gender.map((option) => (
+                        {lookupData.gender.map((option) => (
                             <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <RadioButton
                                     value={option.value}

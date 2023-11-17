@@ -53,6 +53,15 @@ async function userLoginWithOTP(data) {
     return result;
 }
 
+async function getLookupData() {
+    const config = {
+        url: `/lookup`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#endregion
 
 //------------------------------------------------------------------- Manage User APIs
@@ -189,6 +198,7 @@ export default {
     resendOTP,
     userLoginWithPassword,
     userLoginWithOTP,
+    getLookupData,
     updateInItProfile,
     babyList,
     addInit,

@@ -8,24 +8,6 @@ const MMConstants = {
 
     otpTimeOut: 60000,
 
-    gender: [
-        { value: 'male', label: 'Male' },
-        { value: 'female', label: 'Female' },
-        { value: 'unknown', label: 'Unknown' }
-    ],
-
-
-    situations: [
-        { value: 'currentlyPregnant', label: 'Currently Pregnant' },
-        { value: 'justGivenBirth', label: 'Just Given Birth' },
-        { value: 'toddlerMum', label: 'Toddler Mum' },
-        { value: 'mumToMultiple', label: 'Mum To Multiple' }
-    ],
-    babyCategory: [
-        { value: 'adoption', label: 'Adoption' },
-        { value: 'surrogacy', label: 'Surrogacy' },
-        { value: 'twins', label: 'Twins' }
-    ],
 
     //AWS Base url
     AWS_S3_BASE_URL: 'https://mm-uat.s3.ap-southeast-2.amazonaws.com',
