@@ -114,17 +114,17 @@ export default function SignUp({ navigation, route }) {
                     if (response) {
                         navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                     }
-                    setOverlayLoading(false);
                 })
                 .catch(function (error) {
-                    setOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)
                     });
                 });
+            setOverlayLoading(false);
         } catch (err) {
             MMUtils.consoleError(err);
+            setOverlayLoading(false);
         }
     }
 

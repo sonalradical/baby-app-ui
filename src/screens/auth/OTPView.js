@@ -76,7 +76,6 @@ export default function OTPView({ navigation, route }) {
         };
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
-            setOverlayLoading(false);
             setState({
                 ...state,
                 otp: '',
@@ -87,6 +86,7 @@ export default function OTPView({ navigation, route }) {
             setTimeout(() => {
                 setIsResendVisible(true);
             }, MMConstants.otpTimeOut);
+            setOverlayLoading(false);
             MMUtils.showToastMessage("OTP send successfully.")
         }
     }
@@ -134,7 +134,6 @@ export default function OTPView({ navigation, route }) {
 
             await MMApiService.verifyOTP(apiData)
                 .then(function (response) {
-
                     const responseData = response.data;
                     if (responseData) {
                         const { accessToken, userDetail } = responseData;
@@ -154,15 +153,15 @@ export default function OTPView({ navigation, route }) {
 
                         dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
                     }
-                    setOverlayLoading(false);
+
                 })
                 .catch(function (error) {
-                    setOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)
                     });
                 });
+            setOverlayLoading(false);
         } catch (err) {
             MMUtils.consoleError(err);
         }

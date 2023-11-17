@@ -26,11 +26,6 @@ export default function Home() {
     );
 }
 
-Home.propTypes = {
-    navigation: PropTypes.object,
-    route: PropTypes.object
-};
-
 const styles = StyleSheet.create({
     cardContent: {
         flexDirection: 'row',

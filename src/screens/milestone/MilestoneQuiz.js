@@ -19,8 +19,8 @@ import MMImagePickerModal from '../../components/common/imagePickerModal';
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
     const theme = useTheme();
-    const [isLoading, setIsLoading] = useState(false);
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const initialState = {
         description: '',
         date: null,
@@ -39,7 +39,7 @@ export default function MilestoneQuiz({ navigation, route }) {
     const loadQuiz = async () => {
         if (babyId && milestoneId) {
             try {
-                setIsLoading(true);
+                setLoading(true);
                 const response = await MMApiService.getQuiz(babyId, milestoneId);
                 if (response.data) {
                     setQuestions(response.data.questionList);
@@ -54,14 +54,14 @@ export default function MilestoneQuiz({ navigation, route }) {
                         imageSourceUri = MMUtils.getImagePath(answer.picture);
                         setImageSource(imageSourceUri);
                     }
-                    setIsLoading(false);
+                    setLoading(false);
                 }
             } catch (error) {
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
                 }
-                setIsLoading(false);
+                setLoading(false);
             }
         }
     };
@@ -89,7 +89,7 @@ export default function MilestoneQuiz({ navigation, route }) {
         const photo = imageData.assets[0];
         let storageFileKeys = [];
         try {
-            setIsOverlayLoading(true);
+            setOverlayLoading(true);
             let picIndex = 0;
 
             for (const pic of imageData.assets) {
@@ -102,10 +102,10 @@ export default function MilestoneQuiz({ navigation, route }) {
                             if (responseData) {
                                 const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
                                 if (_.isNil(result)) {
-                                    setIsOverlayLoading(false);
+                                    setOverlayLoading(false);
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
                                 } else {
-                                    setIsOverlayLoading(false);
+                                    setOverlayLoading(false);
                                     MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
                                     setState({
                                         ...state,
@@ -115,13 +115,13 @@ export default function MilestoneQuiz({ navigation, route }) {
                                     storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
                                 }
                             } else {
-                                setIsLoading(false);
+                                setLoading(false);
                                 MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
                             }
                         })();
                     })
                     .catch(function (error) {
-                        setIsOverlayLoading(false);
+                        setOverlayLoading(false);
                         const serverError = MMUtils.apiErrorMessage(error);
                         if (serverError) {
                             MMUtils.showToastMessage(serverError);
@@ -129,7 +129,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                     });
             }
         } catch (err) {
-            setIsOverlayLoading(false);
+            setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
 
@@ -138,7 +138,7 @@ export default function MilestoneQuiz({ navigation, route }) {
 
     const onSubmit = async () => {
         try {
-            setIsLoading(true);
+            setLoading(true);
             const apiData = {
                 chapterId: milestoneId,
                 babyId: babyId,
@@ -152,7 +152,7 @@ export default function MilestoneQuiz({ navigation, route }) {
             const response = await MMApiService.saveQuiz(apiData);
             if (response) {
                 console.log('saved...', response)
-                setIsLoading(false);
+                setLoading(false);
                 navigation.navigate('MilestoneList', { milestoneId: milestoneId })
             }
         } catch (error) {
@@ -160,7 +160,7 @@ export default function MilestoneQuiz({ navigation, route }) {
             if (serverError) {
                 MMUtils.showToastMessage(serverError);
             }
-            setIsLoading(false);
+            setLoading(false);
         }
     }
 

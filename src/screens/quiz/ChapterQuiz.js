@@ -21,7 +21,7 @@ export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState({
         option: "",
@@ -37,22 +37,22 @@ export default function ChapterQuiz({ navigation, route }) {
 
     const loadQuiz = async () => {
         if (babyId && chapterId) {
+            setLoading(true);
             try {
-                setIsLoading(true);
                 const response = await MMApiService.getQuiz(babyId, chapterId);
                 if (response.data) {
                     const sortedQuestions = _.sortBy(response.data.questionList, 'position');
                     setQuestionList(sortedQuestions);
                     setAnswerList(response.data.answerList);
-                    setIsLoading(false);
+
                 }
             } catch (error) {
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
                 }
-                setIsLoading(false);
             }
+            setLoading(false);
         }
     };
 
@@ -117,7 +117,7 @@ export default function ChapterQuiz({ navigation, route }) {
     const onSaveQuiz = async (questionId, answer) => {
         if (questionId && !_.isEmpty(answer)) {
             try {
-                setIsLoading(true);
+                setLoading(true);
                 const apiData = {
                     chapterId,
                     babyId,
@@ -127,14 +127,14 @@ export default function ChapterQuiz({ navigation, route }) {
                 const response = await MMApiService.saveQuiz(apiData);
                 if (response) {
                     console.log('saved...', response)
-                    setIsLoading(false);
+                    setLoading(false);
                 }
             } catch (error) {
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
                 }
-                setIsLoading(false);
+                setLoading(false);
             }
         }
     };

@@ -109,6 +109,7 @@ export default function Login({ navigation }) {
         };
         validateAll(state, rules, messages)
             .then(async () => {
+                setOverlayLoading(true);
                 const apiData = {
                     mobileNumber: state.mobileNumber
                 };
@@ -118,15 +119,15 @@ export default function Login({ navigation }) {
                         if (response) {
                             navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                         }
-                        setOverlayLoading(false);
+
                     })
                     .catch(function (error) {
-                        setOverlayLoading(false);
                         setState({
                             ...state,
                             errors: MMUtils.apiErrorParamMessages(error)
                         });
                     })
+                setOverlayLoading(false);
             })
             .catch(errors => {
                 console.log("Validation Errors:", errors);

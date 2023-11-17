@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
@@ -10,10 +9,10 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
 import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
-export default function Header({ navigation, route }) {
+export default function Header() {
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadPage = useSelector((state) => state.AppReducer.reloadPage)
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [babyDetail, setBabyDetail] = useState();
 
@@ -22,27 +21,26 @@ export default function Header({ navigation, route }) {
     }, [selectedBabyId, reloadPage]);
 
     const loadBabyProfileDetail = async () => {
+        setOverlayLoading(true);
         const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
         if (babyId || reloadPage) {
             try {
-                setIsOverlayLoading(true);
                 const response = await MMApiService.getBabyById(babyId);
                 if (response.data) {
-                    setBabyDetail(response.data)
-                    setIsOverlayLoading(false);
+                    setBabyDetail(response.data);
                 }
             } catch (error) {
                 setBabyDetail();
-                setIsOverlayLoading(false);
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
                 }
             }
+            setOverlayLoading(false);
         }
         else {
             setBabyDetail();
-            setIsOverlayLoading(false);
+            setOverlayLoading(false);
         }
     }
 
@@ -60,7 +58,3 @@ export default function Header({ navigation, route }) {
     );
 }
 
-Header.propTypes = {
-    navigation: PropTypes.object,
-    route: PropTypes.object
-};
