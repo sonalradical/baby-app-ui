@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 import MMFormErrorText from './FormErrorText';
 
-const MMInput = ({ label, description, errorText, mode = 'outlined', ...props }) => {
+const MMInput = ({ label, description, errorText, leftIcon, rightIcon, onPress, mode = 'outlined', ...props }) => {
     const theme = useTheme();
 
     return (
@@ -18,6 +18,19 @@ const MMInput = ({ label, description, errorText, mode = 'outlined', ...props })
                 textBreakStrategy='simple'
                 label=''
                 {...props}
+                left={leftIcon ? <TextInput.Icon
+                    icon={leftIcon}
+                    forceTextInputFocus={false}
+                    onPress={onPress}
+                /> : null}
+                right={rightIcon ? (
+                    <TextInput.Icon
+                        color={theme.colors.primary}
+                        icon={rightIcon}
+                        onPress={onPress}
+                    />
+                ) : null}
+
             />
             {errorText ? <MMFormErrorText errorText={errorText} /> : null}
         </View>

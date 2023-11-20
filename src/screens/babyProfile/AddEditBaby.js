@@ -282,11 +282,8 @@ export default function AddEditBaby({ route }) {
                         errorText={state.errors.birthDate}
                         onPressIn={onPressBirthDate}
                         onKeyPress={onPressBirthDate}
-                        left={<TextInput.Icon
-                            icon='calendar-range'
-                            forceTextInputFocus={false}
-                            onPress={onPressBirthDate}
-                        />}
+                        leftIcon='calendar-range'
+                        onPress={onPressBirthDate}
                     />
                     {
                         state.showBirthDate &&

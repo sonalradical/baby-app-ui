@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Keyboard } from 'react-native';
-import { TextInput, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 
 import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
@@ -164,17 +164,8 @@ export default function Login({ navigation }) {
                         errorText={state.errors.password}
                         secureTextEntry={passwordHide}
                         name="password"
-                        right={passwordHide ? (
-                            <TextInput.Icon
-                                color={theme.colors.primary}
-                                icon='eye-off'
-                                onPress={() => setPasswordHide(false)}
-                            />
-                        ) : <TextInput.Icon
-                            color={theme.colors.primary}
-                            icon='eye'
-                            onPress={() => setPasswordHide(true)}
-                        />}
+                        rightIcon={passwordHide ? 'eye-off' : 'eye'}
+                        onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
                     />
 
                     <MMButton

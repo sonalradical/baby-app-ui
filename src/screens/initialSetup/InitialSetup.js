@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Keyboard, Alert } from 'react-native';
-import { RadioButton, TextInput, useTheme } from 'react-native-paper';
+import { View, Text, Keyboard } from 'react-native';
+import { RadioButton, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -184,11 +184,8 @@ export default function InitialSetup({ route, navigation }) {
                                             errorText={state.errors.dueDate}
                                             onPressIn={onPressDueDate}
                                             onKeyPress={onPressDueDate}
-                                            left={<TextInput.Icon
-                                                icon='calendar-range'
-                                                forceTextInputFocus={false}
-                                                onPress={onPressDueDate}
-                                            />}
+                                            leftIcon='calendar-range'
+                                            onPress={onPressDueDate}
                                         />
                                         <MMButton label='Get Started' onPress={() => onClickButton()} />
                                     </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Appbar, Text, TextInput, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -186,11 +186,8 @@ export default function MilestoneQuiz({ navigation, route }) {
                             value={_.isNil(state.date) ? '' : MMUtils.displayDate(state.date)}
                             onPressIn={onPressDate}
                             onKeyPress={onPressDate}
-                            left={<TextInput.Icon
-                                icon='calendar-range'
-                                forceTextInputFocus={false}
-                                onPress={onPressDate}
-                            />}
+                            leftIcon='calendar-range'
+                            onPress={onPressDate}
                         />
                         {
                             state.showDate &&

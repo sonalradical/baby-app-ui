@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Checkbox, RadioButton, TextInput, useTheme } from 'react-native-paper';
+import { Checkbox, RadioButton, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
 import { useSelector } from 'react-redux';
 
-import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -176,17 +175,8 @@ export default function SignUp({ navigation, route }) {
                     optionalIconSize={20}
                     secureTextEntry={passwordHide}
                     name="password"
-                    right={passwordHide ? (
-                        <TextInput.Icon
-                            color={theme.colors.primary}
-                            icon='eye-off'
-                            onPress={() => setPasswordHide(false)}
-                        />
-                    ) : <TextInput.Icon
-                        color={theme.colors.primary}
-                        icon='eye'
-                        onPress={() => setPasswordHide(true)}
-                    />}
+                    rightIcon={passwordHide ? 'eye-off' : 'eye'}
+                    onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
                 />
                 <View>
                     <Text style={theme.fonts.titleMedium}>Gender *</Text>
