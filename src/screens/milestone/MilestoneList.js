@@ -50,7 +50,7 @@ export default function MilestoneList({ navigation, route }) {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => { // call on click milestoneQuiz onSave button
         if (milestoneId) {
             const updatedMilestones = _.map(milestones, milestone => {
                 if (milestone._id === milestoneId) {
