@@ -52,7 +52,6 @@ export default function Login({ navigation }) {
     };
 
     function onLoginWithPassword() {
-        Keyboard.dismiss();
         const rules = {
             mobileNumber: 'required|string|min:10',
             password: 'required|string|min:8|max:8',
@@ -141,8 +140,8 @@ export default function Login({ navigation }) {
     const renderView = () => {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
-                <View style={{ margin: 10 }}>
-                    <View style={{ alignItems: 'center', marginBottom: 15 }}>
+                <View style={{ padding: 10 }}>
+                    <View style={{ alignItems: 'center', paddingBottom: 15 }}>
                         <Text style={theme.fonts.headlineLarge}>Get Started</Text>
                     </View>
 
@@ -198,9 +197,9 @@ export default function Login({ navigation }) {
                         <Text style={{ color: theme.colors.primary }}> Terms of Services</Text> and
                         <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text></Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { marginTop: 20 }]}>Need an account ?</Text>
+                        <Text style={[theme.fonts.default, { paddingTop: 20 }]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
-                            style={{ marginTop: 12 }} onPress={() => navigation.navigate('SignUp')} />
+                            style={{ paddingTop: 12 }} onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface >

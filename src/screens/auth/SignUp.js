@@ -193,7 +193,7 @@ export default function SignUp({ navigation, route }) {
                     <View style={{ flexDirection: 'row' }}>
                         {lookupData.gender.map((option) => (
                             <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <RadioButton
+                                <RadioButton.Android
                                     value={option.value}
                                     status={state.gender === option.value ? 'checked' : 'unchecked'}
                                     onPress={() => onGenderChange(option.value)}
@@ -204,8 +204,8 @@ export default function SignUp({ navigation, route }) {
                     </View>
                     <MMFormErrorText errorText={state.errors.gender} />
                 </View>
-                <View style={{ marginTop: 30, flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox
+                <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox.Android
                         color={theme.colors.primary}
                         size="sm"
                         status={state.terms ? 'checked' : 'unchecked'}
@@ -223,9 +223,9 @@ export default function SignUp({ navigation, route }) {
                 />
                 <View style={{ alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { marginTop: 10 }]}>Already have an account?</Text>
+                        <Text style={[theme.fonts.default, { paddingTop: 10 }]}>Already have an account?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN IN'
-                            style={{ marginTop: 2 }} onPress={() => navigation.navigate('Login')} />
+                            style={{ paddingTop: 2 }} onPress={() => navigation.navigate('Login')} />
                     </View>
                 </View>
             </View>
