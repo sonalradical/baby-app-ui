@@ -12,11 +12,12 @@ import { Dimensions, Image, Keyboard, StyleSheet, TouchableOpacity, View } from 
 import MMInput from '../../components/common/Input';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
-import { MMButton } from '../../components/common/Button';
+import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
 import MMInputMultiline from '../../components/common/InputMultiline';
 import MMPageTitle from '../../components/common/PageTitle';
+import MMFlexView from '../../components/common/FlexView';
 
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
@@ -225,7 +226,10 @@ export default function MilestoneQuiz({ navigation, route }) {
                                     style={{ height: Dimensions.get('window').height / 4, width: '100%' }} />
                             </TouchableOpacity> : null}
                     </>
-                    <MMButton label='Save' style={{ marginTop: 20 }} onPress={() => onSubmit()} />
+                    <MMFlexView>
+                        <MMOutlineButton label='Cancel' width='45%' onPress={() => navigation.goBack()} />
+                        <MMButton label='Save' width='45%' onPress={() => onSubmit()} />
+                    </MMFlexView>
                 </View>
                 <MMImagePickerModal visible={isModalVisible} toggleModal={toggleModal} onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>
