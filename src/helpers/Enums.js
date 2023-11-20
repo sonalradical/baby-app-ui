@@ -20,9 +20,6 @@ const MMEnums = {
     },
     // Storage
     storage: {
-        userProfile: 'userProfile',
-        deviceToken: 'deviceToken',
-        apiPlaceholder: 'apiPlaceholder',
         accessToken: 'accessToken',
         refreshToken: 'refreshToken',
         userDetail: 'userDetail',

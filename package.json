@@ -18,6 +18,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.5.1",
     "indicative": "^7.4.4",
+    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",

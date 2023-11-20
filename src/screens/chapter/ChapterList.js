@@ -4,7 +4,6 @@ import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import CircularProgress, {
     CircularProgressWithChild,
