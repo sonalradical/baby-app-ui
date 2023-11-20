@@ -225,7 +225,7 @@ export default function SignUp({ navigation, route }) {
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[theme.fonts.default, { paddingTop: 10 }]}>Already have an account?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN IN'
-                            style={{ paddingTop: 2 }} onPress={() => navigation.navigate('Login')} />
+                            style={{ paddingTop: 0 }} onPress={() => navigation.navigate('Login')} />
                     </View>
                 </View>
             </View>

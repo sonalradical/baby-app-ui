@@ -199,7 +199,7 @@ export default function Login({ navigation }) {
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[theme.fonts.default, { paddingTop: 20 }]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
-                            style={{ paddingTop: 12 }} onPress={() => navigation.navigate('SignUp')} />
+                            style={{ paddingTop: 10 }} onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface >
