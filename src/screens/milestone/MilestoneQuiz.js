@@ -8,7 +8,7 @@ import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMScrollView from '../../components/common/ScrollView';
-import { Dimensions, Image, Keyboard, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MMInput from '../../components/common/Input';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -173,15 +173,13 @@ export default function MilestoneQuiz({ navigation, route }) {
                 <MMPageTitle title={questions[0].question} />
                 <View style={{ padding: 10 }}>
                     <MMInputMultiline
-                        label='Description'
                         value={state.description}
                         onChangeText={onTextChange}
                         placeholder="Enter Description"
                         maxLength={2000}
                     />
-                    <View>
+                    <View style={{ paddingTop: 10 }}>
                         <MMInput
-                            label='Date'
                             name='date'
                             placeholder='Enter Date'
                             value={_.isNil(state.date) ? '' : MMUtils.displayDate(state.date)}
@@ -215,15 +213,17 @@ export default function MilestoneQuiz({ navigation, route }) {
                         }
                     </View>
                     <>
-                        <Text style={theme.fonts.titleMedium}>Photo</Text>
                         {!imageSource ?
                             <View style={styles(theme).imagePickerSquare}>
                                 <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
                                 <Text style={theme.fonts.default} >Upload Photo</Text>
                             </View> : null
                         }
-                        {imageSource ? <Image source={{ uri: imageSource }}
-                            style={{ height: Dimensions.get('window').height / 2, width: '100%' }} onPress={toggleModal} /> : null}
+                        {imageSource ?
+                            <TouchableOpacity onPress={toggleModal}>
+                                <Image source={{ uri: imageSource }}
+                                    style={{ height: Dimensions.get('window').height / 4, width: '100%' }} />
+                            </TouchableOpacity> : null}
                     </>
                     <MMButton label='Save' style={{ marginTop: 20 }} onPress={() => onSubmit()} />
                 </View>
