@@ -22,6 +22,7 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMConfirmDialog from '../../components/common/ConfirmDialog';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
@@ -238,23 +239,10 @@ export default function AddEditBaby({ route }) {
     }
 
     const onConfirm = () => {
-        return (
-            Alert.alert(
-                "Alert",
-                `Are you sure you want to delete this baby?`,
-                [
-                    {
-                        text: 'No',
-                        style: 'cancel'
-                    },
-                    {
-                        text: 'Yes',
-                        onPress: () => onBabyDelete()
-                    }
-                ],
-                { cancelable: true }
-            )
-        );
+        MMConfirmDialog({
+            message: "Are you sure you want to delete this baby?",
+            onConfirm: onBabyDelete
+        });
     };
 
     const onPressBirthDate = () => {
