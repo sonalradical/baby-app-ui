@@ -197,7 +197,7 @@ export default function ChapterQuiz({ navigation, route }) {
                         <Text style={theme.fonts.default} numberOfLines={2}>{questionList[currentQuestion].question}</Text>
                     </View>
                     {currentQuestionType === MMEnums.questionType.radio && (
-                        <View style={{ marginTop: 5 }}>
+                        <View style={{ paddingTop: 5 }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <RadioButton.Android
@@ -206,7 +206,7 @@ export default function ChapterQuiz({ navigation, route }) {
                                         onPress={() => onOptionChange(option)}
                                         position='leading'
                                     />
-                                    <Text style={[theme.fonts.default, { marginTop: 8 }]}>{option}</Text>
+                                    <Text style={[theme.fonts.default, { paddingTop: 10 }]}>{option}</Text>
                                 </View>
                             ))}
                         </View>
@@ -214,13 +214,13 @@ export default function ChapterQuiz({ navigation, route }) {
                     {currentQuestionType === MMEnums.questionType.checkbox && (
                         <View style={{ alignItems: 'flex-start' }}>
                             {questionList[currentQuestion].options.map((option, index) => (
-                                <View key={index}>
-                                    <Checkbox.Item
-                                        label={option}
+                                <View style={{ flexDirection: 'row' }} key={index}>
+                                    <Checkbox.Android
                                         status={selectedAnswer.checkboxes.includes(option) ? 'checked' : 'unchecked'}
                                         onPress={() => onCheckboxChange(option)}
                                         position='leading'
                                     />
+                                    <Text style={[theme.fonts.default, { paddingTop: 10 }]}>{option}</Text>
                                 </View>
                             ))}
                         </View>

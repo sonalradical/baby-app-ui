@@ -15,7 +15,6 @@ const Blank = () => {
     };
 
     const onImageChange = (response) => {
-        console.log(response.assets[0].uri, 'response.uri')
         setImage(response.assets[0].uri);
     };
 
