@@ -98,16 +98,14 @@ export default function InitialSetup({ route, navigation }) {
 
                 await MMApiService.updateInItProfile(apiData)
                     .then(function (response) {
+                        console.log(response, 'response')
                         if (response) {
-                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data));
-                            dispatch(setLogin({ userDetail: response.data, accessToken: accessToken }));
-                            if (state.situation === MMEnums.situation.currentlyPregnant) {
-                                MMApiService.addInit().then(function (responseData) {
-                                    if (responseData) {
-                                        dispatch(setBaby(responseData.data._id));
-                                        navigation.navigate('Footer');
-                                    }
-                                });
+                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data.userDetail));
+                            dispatch(setLogin({ userDetail: response.data.userDetail, accessToken: accessToken }));
+                            if (state.situation == MMEnums.situation.currentlyPregnant) {
+                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, response.data.babyDetail._id);
+                                dispatch(setBaby(response.data.babyDetail._id));
+                                navigation.navigate('Footer');
                             } else {
                                 navigation.navigate('AddEditBaby');
                             }
