@@ -19,7 +19,6 @@ export default function MilestoneList({ navigation, route }) {
     const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const [isLoading, setLoading] = useState(false);
-    const [babyId, setBabyId] = useState();
     const [milestones, setMilestones] = useState([]);
 
     useEffect(() => {
@@ -28,11 +27,9 @@ export default function MilestoneList({ navigation, route }) {
 
     const loadMilestoneList = async () => {
         setLoading(true);
-        const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
-        if (babyId) {
+        if (selectedBabyId) {
             try {
-                setBabyId(babyId);
-                const response = await MMApiService.getTypeList(babyId, 'milestone');
+                const response = await MMApiService.getTypeList(selectedBabyId, 'milestone');
                 setMilestones(response.data.milestoneList);
 
             } catch (error) {
@@ -66,7 +63,8 @@ export default function MilestoneList({ navigation, route }) {
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
-            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: 10 }} onPress={() => navigation.navigate('MilestoneQuiz', { babyId: babyId, milestoneId: item._id })}>
+            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: 10 }}
+                onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBabyId, milestoneId: item._id })}>
                 <View style={[styles(theme).imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
                     <Image
                         textAlign="center"

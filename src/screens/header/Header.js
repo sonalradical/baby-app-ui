@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
-import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
@@ -22,10 +21,9 @@ export default function Header() {
 
     const loadBabyProfileDetail = async () => {
         setOverlayLoading(true);
-        const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
-        if (babyId || reloadPage) {
+        if (selectedBabyId || reloadPage) {
             try {
-                const response = await MMApiService.getBabyById(babyId);
+                const response = await MMApiService.getBabyById(selectedBabyId);
                 if (response.data) {
                     setBabyDetail(response.data);
                 }

@@ -30,6 +30,7 @@ import Header from '../screens/header/Header';
 import ChapterList from '../screens/chapter/ChapterList';
 import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
 import InitialSetup from '../screens/initialSetup/InitialSetup';
+import { setBaby } from '../redux/Slice/AppSlice';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -111,7 +112,7 @@ export default function AppNavigator() {
     const initApp = async () => {
         const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
         const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
-
+        const babyId = await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby);
 
         if (accessToken && existingUserDetail) {
             dispatch(setLogin({
@@ -120,6 +121,7 @@ export default function AppNavigator() {
                 isLoading: false,
                 isLoggedOut: false
             }));
+            dispatch(setBaby(babyId));
         } else {
             dispatch(setLogin({ isLoading: false }));
         }

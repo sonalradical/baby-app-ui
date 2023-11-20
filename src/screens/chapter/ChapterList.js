@@ -11,7 +11,6 @@ import CircularProgress, {
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
-import MMEnums from '../../helpers/Enums';
 
 import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
@@ -25,7 +24,6 @@ export default function ChapterList() {
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
     const [isLoading, setLoading] = useState(false);
-    const [babyId, setBabyId] = useState();
     const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {
@@ -34,11 +32,9 @@ export default function ChapterList() {
 
     const loadChapterList = async () => {
         setLoading(true);
-        const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby));
-        if (babyId || reloadChapterList) {
+        if (selectedBabyId || reloadChapterList) {
             try {
-                setBabyId(babyId);
-                const response = await MMApiService.getTypeList(babyId, 'chapter');
+                const response = await MMApiService.getTypeList(selectedBabyId, 'chapter');
                 if (response.data) {
                     const chapters = _.sortBy(response.data.chapterDetail, 'position');
                     setChapterList(chapters);
@@ -67,7 +63,7 @@ export default function ChapterList() {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
                         <Card style={styles(theme).whiteBg} key={chapter._id}
-                            onPress={() => navigation.navigate('ChapterQuiz', { babyId: babyId, chapterId: chapter._id, title: chapter.title })}>
+                            onPress={() => navigation.navigate('ChapterQuiz', { babyId: selectedBabyId, chapterId: chapter._id, title: chapter.title })}>
                             <View style={{ flexDirection: 'row', padding: 5, justifyContent: 'space-between' }}>
                                 <Image
                                     textAlign="center"
