@@ -19,6 +19,7 @@ import { MMButton } from '../../components/common/Button';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMPageTitle from '../../components/common/PageTitle';
 
 export default function InitialSetup({ route, navigation }) {
     const theme = useTheme();
@@ -77,7 +78,7 @@ export default function InitialSetup({ route, navigation }) {
         if (isOverlayLoading) {
             return;
         }
-        const rules = state.situation === 'currentlyPregnant' ? {
+        const rules = state.situation === MMEnums.situation.currentlyPregnant ? {
             birthingParent: 'required',
             situation: 'required',
             dueDate: 'required'
@@ -98,9 +99,9 @@ export default function InitialSetup({ route, navigation }) {
                 await MMApiService.updateInItProfile(apiData)
                     .then(function (response) {
                         if (response) {
-                            dispatch(setLogin({ userDetail: response.data, accessToken: accessToken }));
                             MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data));
-                            if (state.situation === 'currentlyPregnant') {
+                            dispatch(setLogin({ userDetail: response.data, accessToken: accessToken }));
+                            if (state.situation === MMEnums.situation.currentlyPregnant) {
                                 MMApiService.addInit().then(function (responseData) {
                                     if (responseData) {
                                         dispatch(setBaby(responseData.data._id));
@@ -111,7 +112,6 @@ export default function InitialSetup({ route, navigation }) {
                                 navigation.navigate('AddEditBaby');
                             }
                         }
-
                     })
                     .catch(function (error) {
                         setState({
@@ -135,9 +135,7 @@ export default function InitialSetup({ route, navigation }) {
         return (
             <>
                 <View style={{ margin: 10 }}>
-                    <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                        <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>TELL US A BIT ABOUT YOURSELF</Text>
-                    </View>
+                    <MMPageTitle title='TELL US A BIT ABOUT YOURSELF' />
                     <View>
                         <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -177,7 +175,7 @@ export default function InitialSetup({ route, navigation }) {
                     </View>
                     {
                         !_.isNil(state.situation) ?
-                            state.situation === 'currentlyPregnant' ?
+                            state.situation === MMEnums.situation.currentlyPregnant ?
                                 <View style={{ marginTop: 10 }}>
                                     <>
                                         <MMInput
@@ -245,24 +243,3 @@ InitialSetup.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = (theme) => StyleSheet.create({
-    milestone: {
-        color: theme.colors.text.primary,
-        width: 80,
-        textAlign: 'center',
-        marginTop: 5
-    },
-    image: {
-        width: Dimensions.get('window').width / 6,
-        height: Dimensions.get('window').height / 12,
-        borderRadius: 50,
-    },
-    imageView: {
-        borderRadius: 50,
-        backgroundColor: theme.colors.secondaryContainer,
-        width: Dimensions.get('window').width / 6 + 10,
-        height: Dimensions.get('window').height / 12 + 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-});

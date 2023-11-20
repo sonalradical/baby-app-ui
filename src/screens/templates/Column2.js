@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-nat
 import { Text, useTheme } from 'react-native-paper';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
+import MMPageTitle from '../../components/common/PageTitle';
 
 const Column2 = () => {
     const theme = useTheme();
@@ -31,7 +32,7 @@ const Column2 = () => {
 
     return (
         <>
-            <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingVertical: 20 }]}>Select your baby's photo</Text>
+            <MMPageTitle title={`Select your baby's photo`} />
             <View style={styles(theme).container}>
                 <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
                     onPress={() => onPickImage('col1')}>

@@ -17,6 +17,7 @@ import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMPageTitle from '../../components/common/PageTitle';
 
 export default function ChapterList() {
     const theme = useTheme();
@@ -61,7 +62,7 @@ export default function ChapterList() {
     const renderView = () => {
         return (
             <>
-                <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: 10 }]}>Chapters</Text>
+                <MMPageTitle title='Chapters' />
                 {_.map(chapterList, (chapter) => {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (

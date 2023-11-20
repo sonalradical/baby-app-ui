@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Dimensions, View } from 'react-native';
+import { BackHandler, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 
@@ -14,7 +14,6 @@ import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
-import MMInput from '../../components/common/Input';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMInputMultiline from '../../components/common/InputMultiline';
 
@@ -36,15 +35,6 @@ export default function ChapterQuiz({ navigation, route }) {
         loadQuiz();
     }, [babyId, chapterId]);
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            dispatch(reloadChapterList({ reloadChapterList: true }));
-            navigation.goBack();
-            return true;
-        });
-        return () => backHandler.remove();
-    }, [dispatch, navigation]);
-
     const loadQuiz = async () => {
         if (babyId && chapterId) {
             setLoading(true);
@@ -65,6 +55,15 @@ export default function ChapterQuiz({ navigation, route }) {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            dispatch(reloadChapterList({ reloadChapterList: true }));
+            navigation.goBack();
+            return true;
+        });
+        return () => backHandler.remove();
+    }, [dispatch, navigation]);
 
     useEffect(() => {
         // Update selectedAnswer based on the currentQuestionType

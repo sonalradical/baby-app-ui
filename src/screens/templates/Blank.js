@@ -3,6 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
+import MMPageTitle from '../../components/common/PageTitle';
 
 const Blank = () => {
     const theme = useTheme();
@@ -24,7 +25,7 @@ const Blank = () => {
 
     return (
         <>
-            <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingVertical: 20 }]}>Select your baby's photo</Text>
+            <MMPageTitle title={`Select your baby's photo`} />
             <TouchableOpacity style={styles(theme).container} onPress={() => onPickImage()}>
                 {image ? <Image source={{ uri: image }} style={styles(theme).image} /> :
                     <MMIcon iconName={'plus-circle'} iconSize={24} style={styles(theme).imagePickerButton} />}

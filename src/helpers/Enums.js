@@ -31,6 +31,9 @@ const MMEnums = {
         checkbox: 'checkbox',
         text: 'text'
     },
+    situation: {
+        currentlyPregnant: 'currentlyPregnant'
+    }
 };
 
 export default MMEnums;

@@ -12,6 +12,7 @@ import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSpinner from '../../components/common/Spinner';
+import MMPageTitle from '../../components/common/PageTitle';
 
 export default function MilestoneList({ navigation, route }) {
     const { milestoneId } = route.params || '';
@@ -19,7 +20,7 @@ export default function MilestoneList({ navigation, route }) {
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const [isLoading, setLoading] = useState(false);
     const [babyId, setBabyId] = useState();
-    const [milestones, setMilestones] = useState();
+    const [milestones, setMilestones] = useState([]);
 
     useEffect(() => {
         loadMilestoneList();
@@ -32,12 +33,10 @@ export default function MilestoneList({ navigation, route }) {
             try {
                 setBabyId(babyId);
                 const response = await MMApiService.getTypeList(babyId, 'milestone');
-                if (response.data) {
-                    const milestone = _.sortBy(response.data.milestoneList, 'position');
-                    setMilestones(milestone);
-                }
+                setMilestones(response.data.milestoneList);
+
             } catch (error) {
-                setMilestones();
+                setMilestones([]);
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
                     MMUtils.showToastMessage(serverError);
@@ -46,7 +45,7 @@ export default function MilestoneList({ navigation, route }) {
             setLoading(false);
         }
         else {
-            setMilestones();
+            setMilestones([]);
             setLoading(false);
         }
     }
@@ -87,7 +86,7 @@ export default function MilestoneList({ navigation, route }) {
             <FlatList
                 data={milestones}
                 columnWrapperStyle={{ alignContent: 'center' }}
-                ListHeaderComponent={<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center', marginBottom: 10 }]}>My first</Text>}
+                ListHeaderComponent={<MMPageTitle title='My First' />}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
                 numColumns={3}

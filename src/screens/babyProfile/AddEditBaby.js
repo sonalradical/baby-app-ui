@@ -23,6 +23,7 @@ import MMFlexView from '../../components/common/FlexView';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
+import MMPageTitle from '../../components/common/PageTitle';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
@@ -256,8 +257,8 @@ export default function AddEditBaby({ route }) {
     const renderView = () => {
         return (
             <View style={{ margin: 10 }}>
+                <MMPageTitle title='Baby Profile' />
                 <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', marginBottom: 10 }]}>Baby Profile</Text>
                 </View>
                 <MMProfileAvatar image={imageSource}
                     source={{ uri: imageSource ? imageSource : null }}
