@@ -177,6 +177,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                         value={state.description}
                         onChangeText={onTextChange}
                         placeholder="Enter Description"
+                        maxLength={2000}
                     />
                     <View>
                         <MMInput

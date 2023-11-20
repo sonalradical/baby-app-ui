@@ -42,8 +42,7 @@ const styles = (theme) => StyleSheet.create({
         width: '100%',
     },
     input: {
-        height: 43,
-        lineHeight: 20,
+        height: 42,
         backgroundColor: theme.colors.secondaryContainer,
         borderRadius: 10,
         marginBottom: 10,

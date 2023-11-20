@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 		paddingTop: 12,
 		paddingBottom: 4,
 		paddingHorizontal: 1,
-		borderTopWidth: 1,
 	},
 	bottomWrap: {
 		paddingHorizontal: 12,

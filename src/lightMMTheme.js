@@ -67,6 +67,7 @@ export const lightMMTheme = {
     secondary: '#F68D43', // Main secondary color
     background: '#F8F4E9', // Default background color
     secondaryContainer: '#FFFFFF',
+    outline:'#dadde1',
     text: {
       primary: '#153634', // Primary text color
       hint: '#C1C1C1', // Hint text color
