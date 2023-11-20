@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Keyboard, Alert } from 'react-native';
-import { RadioButton, TextInput, useTheme } from 'react-native-paper';
+import { View, Keyboard } from 'react-native';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -20,14 +19,13 @@ import { MMOutlineButton, MMButton } from '../../components/common/Button';
 import MMProfileAvatar from '../../components/common/ProfileAvatar';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFlexView from '../../components/common/FlexView';
-import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPageTitle from '../../components/common/PageTitle';
+import MMRadioButton from '../../components/common/RadioButton';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
-    const theme = useTheme();
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
@@ -322,22 +320,13 @@ export default function AddEditBaby({ route }) {
                     onChangeText={(value) => onInputChange('birthPlace', value)}
                     maxLength={50}
                 />
-                <View>
-                    <Text style={theme.fonts.titleMedium}>Gender *</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        {lookupData.gender.map((option) => (
-                            <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <RadioButton.Android
-                                    value={option.value}
-                                    status={state.gender === option.value ? 'checked' : 'unchecked'}
-                                    onPress={() => onGenderSelect(option.value)}
-                                />
-                                <Text style={theme.fonts.default}>{option.label}</Text>
-                            </View>
-                        ))}
-                    </View>
-                    <MMFormErrorText errorText={state.errors.gender} />
-                </View>
+                <MMRadioButton
+                    label='Gender *'
+                    options={lookupData.gender}
+                    selectedValue={state.gender}
+                    onValueChange={onGenderSelect}
+                    errorText={state.errors.gender}
+                />
                 {
                     babyId ?
                         <MMFlexView>

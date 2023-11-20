@@ -15,6 +15,7 @@ import MMScrollView from '../../components/common/ScrollView';
 import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMRadioButton from '../../components/common/RadioButton';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
@@ -178,22 +179,13 @@ export default function SignUp({ navigation, route }) {
                     rightIcon={passwordHide ? 'eye-off' : 'eye'}
                     onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
                 />
-                <View>
-                    <Text style={theme.fonts.titleMedium}>Gender *</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        {lookupData.gender.map((option) => (
-                            <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <RadioButton.Android
-                                    value={option.value}
-                                    status={state.gender === option.value ? 'checked' : 'unchecked'}
-                                    onPress={() => onGenderChange(option.value)}
-                                />
-                                <Text style={theme.fonts.default}>{option.label}</Text>
-                            </View>
-                        ))}
-                    </View>
-                    <MMFormErrorText errorText={state.errors.gender} />
-                </View>
+                <MMRadioButton
+                    label='Gender *'
+                    options={lookupData.gender}
+                    selectedValue={state.gender}
+                    onValueChange={onGenderChange}
+                    errorText={state.errors.gender}
+                />
                 <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox.Android
                         color={theme.colors.primary}
