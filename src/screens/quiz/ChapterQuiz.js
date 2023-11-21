@@ -102,7 +102,6 @@ export default function ChapterQuiz({ navigation, route }) {
     }
 
     const onNextClick = async () => {
-
         if (!_.isEmpty(selectedAnswer)) {
             await onSaveQuiz();
         }

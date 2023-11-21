@@ -18,7 +18,7 @@ export default function MilestoneList({ navigation, route }) {
     const { milestoneId } = route.params || '';
     const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [milestones, setMilestones] = useState([]);
 
     useEffect(() => {
