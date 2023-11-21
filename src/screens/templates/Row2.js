@@ -10,25 +10,38 @@ import MMPageTitle from '../../components/common/PageTitle';
 
 const Row2 = () => {
     const theme = useTheme();
-    const [row1Image, setRow1Image] = useState(null);
-    const [row2Image, setRow2Image] = useState(null);
+    const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedRow, setSelectedRow] = useState(null);
+    const [selectedName, setSelectedName] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
     };
 
     const onImageChange = (response) => {
-        if (selectedRow === 'row1') {
-            setRow1Image(response.assets[0].uri);
-        } else if (selectedRow === 'row2') {
-            setRow2Image(response.assets[0].uri);
+        if (selectedName && selectedType) {
+            setTemplateData((prevData) => {
+                const newData = [...prevData];
+                const existingItemIndex = newData.findIndex(item => item.name === selectedName);
+
+                if (existingItemIndex !== -1) {
+                    // Update existing item with new image URI and dynamic type
+                    newData[existingItemIndex] = { ...newData[existingItemIndex], type: selectedType, value: response.assets[0].uri };
+                } else {
+                    // Create a new item if it doesn't exist
+                    newData.push({ name: selectedName, type: selectedType, value: response.assets[0].uri });
+                }
+
+                return newData;
+            });
         }
+
     };
 
-    const onPickImage = (row) => {
-        setSelectedRow(row);
+    const onPickImage = (name, type) => {
+        setSelectedName(name);
+        setSelectedType(type);
         toggleModal();
     };
 
@@ -37,12 +50,14 @@ const Row2 = () => {
             <MMPageTitle title={`Select your baby's photo`} />
             <View style={styles(theme).container}>
                 <TouchableOpacity style={[styles(theme).row, { borderBottomWidth: 1, borderBottomColor: theme.colors.outline }]}
-                    onPress={() => onPickImage('row1')}>
-                    {row1Image ? <Image source={{ uri: row1Image }} style={styles(theme).image} /> :
+                    onPress={() => onPickImage('p1', 'img')}>
+                    {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').value }}
+                        style={styles(theme).image} /> :
                         <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
                 </TouchableOpacity>
-                <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('row2')}>
-                    {row2Image ? <Image source={{ uri: row2Image }} style={styles(theme).image} /> :
+                <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('p2', 'img')}>
+                    {templateData.some(item => item.name === 'p2') ? <Image source={{ uri: templateData.find(item => item.name === 'p2').value }}
+                        style={styles(theme).image} /> :
                         <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
                 </TouchableOpacity>
             </View>

@@ -10,26 +10,48 @@ import MMPageTitle from '../../components/common/PageTitle';
 
 const Blank = () => {
     const theme = useTheme();
-    const [image, setImage] = useState(null);
+    const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [selectedName, setSelectedName] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
     };
 
     const onImageChange = (response) => {
-        setImage(response.assets[0].uri);
+        if (selectedName && selectedType) {
+            setTemplateData((prevData) => {
+                const newData = [...prevData];
+                const existingItemIndex = newData.findIndex(item => item.name === selectedName);
+
+                if (existingItemIndex !== -1) {
+                    // Update existing item with new image URI and dynamic type
+                    newData[existingItemIndex] = { ...newData[existingItemIndex], type: selectedType, value: response.assets[0].uri };
+                } else {
+                    // Create a new item if it doesn't exist
+                    newData.push({ name: selectedName, type: selectedType, value: response.assets[0].uri });
+                }
+
+                return newData;
+            });
+        }
+
     };
 
-    const onPickImage = () => {
+    const onPickImage = (name, type) => {
+        setSelectedName(name);
+        setSelectedType(type);
         toggleModal();
     };
 
     return (
         <>
             <MMPageTitle title={`Select your baby's photo`} />
-            <TouchableOpacity style={styles(theme).container} onPress={() => onPickImage()}>
-                {image ? <Image source={{ uri: image }} style={styles(theme).image} /> :
+            <TouchableOpacity style={[styles(theme).container, { borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
+                onPress={() => onPickImage('p1', 'img')}>
+                {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').value }}
+                    style={styles(theme).image} /> :
                     <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
             </TouchableOpacity>
             <MMImagePickerModal
