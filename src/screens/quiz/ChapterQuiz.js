@@ -40,7 +40,8 @@ export default function ChapterQuiz({ navigation, route }) {
                 if (response.data) {
                     setQuestionList(response.data.questionList);
                     setAnswerList(response.data.answerList);
-                    setSelectedQuestion(0);
+                    const indexOfNextUnansweredQuestion = findNextUnansweredQuestion(response.data.questionList, response.data.answerList);
+                    setSelectedQuestion(indexOfNextUnansweredQuestion);
                 }
             } catch (error) {
                 const serverError = MMUtils.apiErrorMessage(error);
@@ -67,6 +68,16 @@ export default function ChapterQuiz({ navigation, route }) {
         setSelectedAnswer(matchingAnswer && matchingAnswer.answer ? matchingAnswer.answer : []);
     }, [selectedQuestion]);
 
+
+    // Function to find the next unanswered question
+    const findNextUnansweredQuestion = (questions, answers) => {
+        const index = _.findIndex(questions, (question) => {
+            return !answers.some((answer) => answer.questionId === question.questionId);
+        });
+
+        return index ?? 0;
+    };
+
     const onAnswerChange = (value) => {
         setSelectedAnswer([value]);
     };
@@ -79,25 +90,21 @@ export default function ChapterQuiz({ navigation, route }) {
         }
     };
 
-    const onPreviousClick = () => {
+    const onPreviousClick = async () => {
+        if (!_.isEmpty(selectedAnswer)) {
+            await onSaveQuiz();
+        }
+        setSelectedAnswer([]);
+        setLoading(false);
         if (selectedQuestion > 0) {
             setSelectedQuestion(selectedQuestion - 1);
         };
     }
 
     const onNextClick = async () => {
-        const questionId = questionList[selectedQuestion].questionId;
 
-        if (questionId && !_.isEmpty(selectedAnswer)) {
-            await onSaveQuiz(questionId);
-            const updatedAnswers = [...answerList];
-            const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionId === questionId);
-            if (existingAnswerIndex >= 0) { //Answer exist then update
-                updatedAnswers[existingAnswerIndex].answer = selectedAnswer;
-            } else {
-                updatedAnswers.push({ questionId, answer: selectedAnswer });
-            }
-            setAnswerList(updatedAnswers);
+        if (!_.isEmpty(selectedAnswer)) {
+            await onSaveQuiz();
         }
         setSelectedAnswer([]);
         setLoading(false);
@@ -109,9 +116,10 @@ export default function ChapterQuiz({ navigation, route }) {
         }
     };
 
-    const onSaveQuiz = async (questionId) => {
+    const onSaveQuiz = async () => {
         try {
             setLoading(true);
+            const questionId = questionList[selectedQuestion].questionId;
             const apiData = {
                 chapterId,
                 babyId,
@@ -119,6 +127,14 @@ export default function ChapterQuiz({ navigation, route }) {
                 answer: selectedAnswer
             }
             await MMApiService.saveQuiz(apiData);
+            const updatedAnswers = [...answerList];
+            const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionId === questionId);
+            if (existingAnswerIndex >= 0) { //Answer exist then update
+                updatedAnswers[existingAnswerIndex].answer = selectedAnswer;
+            } else {
+                updatedAnswers.push({ questionId, answer: selectedAnswer });
+            }
+            setAnswerList(updatedAnswers);
 
         } catch (error) {
             const serverError = MMUtils.apiErrorMessage(error);
