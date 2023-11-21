@@ -223,7 +223,7 @@ export default function AddEditBaby({ route }) {
             if (response) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMEnums.storage.selectedBaby);
-                dispatch(setBaby(''));
+                dispatch(setBaby(null));
                 setOverlayLoading(false);
                 dispatch(reloadPage(false));
                 navigation.navigate('Footer');
