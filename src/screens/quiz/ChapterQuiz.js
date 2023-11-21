@@ -1,34 +1,30 @@
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { BackHandler, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
-
-import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { reloadChapterList } from '../../redux/Slice/AppSlice';
-
-import MMEnums from '../../helpers/Enums';
-import MMConstants from '../../helpers/Constants';
-import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
-import MMSpinner from '../../components/common/Spinner';
-import MMIcon from '../../components/common/Icon';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMIcon from '../../components/common/Icon';
 import MMInputMultiline from '../../components/common/InputMultiline';
+import MMSpinner from '../../components/common/Spinner';
+
+import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
+import MMUtils from '../../helpers/Utils';
+
+import { reloadChapterList } from '../../redux/Slice/AppSlice';
+import MMApiService from '../../services/ApiService';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
-    const [isLoading, setLoading] = useState(false);
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState({
-        option: "",
-        checkboxes: [],
-        text: ""
-    });
+    const [isLoading, setLoading] = useState(true);
+    const [selectedQuestion, setSelectedQuestion] = useState();
+    const [selectedAnswer, setSelectedAnswer] = useState([]);
     const [questionList, setQuestionList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
 
@@ -44,7 +40,7 @@ export default function ChapterQuiz({ navigation, route }) {
                 if (response.data) {
                     setQuestionList(response.data.questionList);
                     setAnswerList(response.data.answerList);
-
+                    setSelectedQuestion(0);
                 }
             } catch (error) {
                 const serverError = MMUtils.apiErrorMessage(error);
@@ -66,141 +62,90 @@ export default function ChapterQuiz({ navigation, route }) {
     }, [dispatch, navigation]);
 
     useEffect(() => {
-        // Update selectedAnswer based on the currentQuestionType
-        const currentQuestionType = questionList[currentQuestion]?.questionType;
-        const currentQuestionId = questionList[currentQuestion]?.questionId;
-
+        const currentQuestionId = questionList[selectedQuestion]?.questionId;
         const matchingAnswer = answerList.find(answer => answer.questionId === currentQuestionId);
+        setSelectedAnswer(matchingAnswer && matchingAnswer.answer ? matchingAnswer.answer : []);
+    }, [selectedQuestion]);
 
-        if (matchingAnswer && matchingAnswer.questionId === currentQuestionId) {
-            setSelectedAnswer(setSelectedAnswerByType(currentQuestionType, matchingAnswer.answer));
-        }
-        else {
-            setSelectedAnswer({ option: "", checkboxes: [], text: "" });
-        }
-    }, [currentQuestion, questionList, answerList]);
-
-    const onNextClick = () => {
-        const currentAnswer = getAnswer();
-        const questionId = questionList[currentQuestion].questionId;
-
-        if (!_.isEmpty(currentAnswer)) {
-            onSaveQuiz(questionId, currentAnswer);
-        }
-
-        const existingAnswerIndex = answerList.findIndex((answer) => answer.questionId === questionId);
-
-        const updatedAnswers = [...answerList];
-
-        if (existingAnswerIndex !== -1) {
-            updatedAnswers[existingAnswerIndex].answer = currentAnswer;
-        } else {
-            updatedAnswers.push({ questionId, answer: currentAnswer });
-            setSelectedAnswer({ option: "", checkboxes: [], text: "" });
-        }
-
-        setAnswerList(updatedAnswers);
-
-        if (currentQuestion === questionList.length - 1) {
-            setCurrentQuestion(0);
-            dispatch(reloadChapterList({ reloadChapterList: true }))
-            navigation.navigate('Home');
-        } else {
-            setCurrentQuestion(currentQuestion + 1);
-        }
-    };
-
-    const setSelectedAnswerByType = (questionType, answer) => {
-        switch (questionType) {
-            case MMEnums.questionType.radio:
-                return { option: answer, checkboxes: [], text: "" };
-            case MMEnums.questionType.checkbox:
-                return { checkboxes: answer, text: "", option: "" };
-            case MMEnums.questionType.text:
-                return { text: answer, checkboxes: [], option: "" };
-            default:
-                return { option: "", checkboxes: [], text: "" };
-        }
-    };
-
-    const onSaveQuiz = async (questionId, answer) => {
-        if (questionId && !_.isEmpty(answer)) {
-            try {
-                setLoading(true);
-                const apiData = {
-                    chapterId,
-                    babyId,
-                    questionId,
-                    answer
-                }
-                const response = await MMApiService.saveQuiz(apiData);
-                if (response) {
-                    console.log('saved...', response)
-                    setLoading(false);
-                }
-            } catch (error) {
-                const serverError = MMUtils.apiErrorMessage(error);
-                if (serverError) {
-                    MMUtils.showToastMessage(serverError);
-                }
-                setLoading(false);
-            }
-        }
-    };
-
-    const getAnswer = () => {
-        const currentQuestionType = questionList[currentQuestion].questionType;
-
-        if (currentQuestionType === MMEnums.questionType.radio) {
-            return selectedAnswer.option;
-        } else if (currentQuestionType === MMEnums.questionType.checkbox) {
-            return selectedAnswer.checkboxes;
-        } else if (currentQuestionType === MMEnums.questionType.text) {
-            return selectedAnswer.text;
-        }
-        return null;
-    };
-
-    const onPreviousClick = () => {
-        if (currentQuestion > 0) {
-            setCurrentQuestion(currentQuestion - 1);
-        };
-    }
-
-    const onOptionChange = (value) => {
-        setSelectedAnswer({ ...selectedAnswer, option: value });
-    };
-
-    const onTextChange = (value) => {
-        setSelectedAnswer({ ...selectedAnswer, text: value });
+    const onAnswerChange = (value) => {
+        setSelectedAnswer([value]);
     };
 
     const onCheckboxChange = (option) => {
-        const { checkboxes } = selectedAnswer;
-        if (checkboxes.includes(option)) {
-            setSelectedAnswer({ ...selectedAnswer, checkboxes: checkboxes.filter((item) => item !== option) });
+        if (selectedAnswer.includes(option)) {
+            setSelectedAnswer(selectedAnswer.filter((item) => item !== option));
         } else {
-            setSelectedAnswer({ ...selectedAnswer, checkboxes: [...checkboxes, option] });
+            setSelectedAnswer([...selectedAnswer, option]); // Use spread operator to create a new array
         }
+    };
+
+    const onPreviousClick = () => {
+        if (selectedQuestion > 0) {
+            setSelectedQuestion(selectedQuestion - 1);
+        };
+    }
+
+    const onNextClick = async () => {
+        const questionId = questionList[selectedQuestion].questionId;
+
+        if (questionId && !_.isEmpty(selectedAnswer)) {
+            await onSaveQuiz(questionId);
+            const updatedAnswers = [...answerList];
+            const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionId === questionId);
+            if (existingAnswerIndex >= 0) { //Answer exist then update
+                updatedAnswers[existingAnswerIndex].answer = selectedAnswer;
+            } else {
+                updatedAnswers.push({ questionId, answer: selectedAnswer });
+            }
+            setAnswerList(updatedAnswers);
+        }
+        setSelectedAnswer([]);
+        setLoading(false);
+        if (selectedQuestion === questionList.length - 1) {
+            dispatch(reloadChapterList({ reloadChapterList: true }))
+            navigation.navigate('Home');
+        } else {
+            setSelectedQuestion(selectedQuestion + 1);
+        }
+    };
+
+    const onSaveQuiz = async (questionId) => {
+        try {
+            setLoading(true);
+            const apiData = {
+                chapterId,
+                babyId,
+                questionId,
+                answer: selectedAnswer
+            }
+            await MMApiService.saveQuiz(apiData);
+
+        } catch (error) {
+            const serverError = MMUtils.apiErrorMessage(error);
+            if (serverError) {
+                MMUtils.showToastMessage(serverError);
+            }
+            setLoading(false);
+        }
+
     };
 
     const renderView = () => {
         if (!questionList || questionList.length === 0) return null;
-
-        const currentQuestionType = questionList[currentQuestion].questionType;
+        const currentQuestionType = questionList[selectedQuestion].questionType;
 
         return (
             <>
                 <View style={{ padding: MMConstants.paddingLarge }}>
-                    <Text style={theme.fonts.titleMedium} >{questionList[currentQuestion].question}</Text>
+                    <Text style={theme.fonts.titleMedium} >{questionList[selectedQuestion].question}</Text>
                     {currentQuestionType === MMEnums.questionType.radio && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            {questionList[currentQuestion].options.map((option, index) => (
+                            {questionList[selectedQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <RadioButton.Android
                                         value={option}
-                                        status={selectedAnswer.option === option ? 'checked' : 'unchecked'}
-                                        onPress={() => onOptionChange(option)}
+                                        status={selectedAnswer.length > 0 && selectedAnswer[0] === option ? 'checked' : 'unchecked'}
+                                        onPress={() => onAnswerChange(option)}
                                         position='leading'
                                     />
                                     <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
@@ -210,10 +155,10 @@ export default function ChapterQuiz({ navigation, route }) {
                     )}
                     {currentQuestionType === MMEnums.questionType.checkbox && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            {questionList[currentQuestion].options.map((option, index) => (
+                            {questionList[selectedQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <Checkbox.Android
-                                        status={selectedAnswer.checkboxes.includes(option) ? 'checked' : 'unchecked'}
+                                        status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
                                         onPress={() => onCheckboxChange(option)}
                                         position='leading'
                                     />
@@ -224,11 +169,10 @@ export default function ChapterQuiz({ navigation, route }) {
                     )}
                     {currentQuestionType === MMEnums.questionType.text && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
-
                             <MMInputMultiline
                                 placeholder="Your answer..."
-                                value={selectedAnswer.text}
-                                onChangeText={(text) => onTextChange(text)}
+                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                onChangeText={(text) => onAnswerChange(text)}
                                 maxLength={2000}
                             />
                         </View>
@@ -244,12 +188,12 @@ export default function ChapterQuiz({ navigation, route }) {
                 <MMIcon
                     iconName='arrow-circle-o-left'
                     iconSize={30}
-                    iconColor={currentQuestion === 0 ? theme.colors.outline : theme.colors.primary}
+                    iconColor={selectedQuestion === 0 ? theme.colors.outline : theme.colors.primary}
                     onPress={onPreviousClick}
-                    disabled={currentQuestion === 0}
+                    disabled={selectedQuestion === 0}
                 />
-                <Chip>{`${currentQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
-                {currentQuestion === questionList.length - 1 ?
+                <Chip>{`${selectedQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
+                {selectedQuestion === questionList.length - 1 ?
                     <MMIcon
                         iconName='check-circle-o'
                         iconSize={30}
@@ -261,7 +205,7 @@ export default function ChapterQuiz({ navigation, route }) {
                         iconSize={30}
                         iconColor={theme.colors.primary}
                         onPress={onNextClick}
-                        disabled={questionList ? currentQuestion === questionList.length - 1 : false}
+                        disabled={questionList ? selectedQuestion === questionList.length - 1 : false}
                     />}
             </MMActionButtons>
         );
