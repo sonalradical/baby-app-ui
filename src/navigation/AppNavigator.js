@@ -121,13 +121,13 @@ export default function AppNavigator() {
         const babyId = await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby);
 
         if (accessToken && existingUserDetail) {
+            dispatch(setBaby(babyId));
             dispatch(setLogin({
                 accessToken,
                 userDetail: JSON.parse(existingUserDetail),
                 isLoading: false,
                 isLoggedOut: false
             }));
-            dispatch(setBaby(babyId));
         } else {
             dispatch(setLogin({ isLoading: false }));
         }
