@@ -1,15 +1,25 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import MMStyles from '../../helpers/Styles';
+import { useTheme } from 'react-native-paper';
 
 const MMContentContainer = ({ children }) => {
+	const theme = useTheme();
 
 	return (
-		<View style={MMStyles.container}>
+		<View style={styles(theme).container}>
 			{children}
 		</View>
 	);
 };
+
+const styles = (theme) => StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: theme.colors.background,
+		paddingHorizontal: 12,
+		paddingVertical: 8,
+	},
+});
 
 
 export default MMContentContainer;

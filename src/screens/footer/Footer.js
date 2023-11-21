@@ -1,11 +1,14 @@
 import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Feather'
 
-import Home from '../home/Home';
-import ChapterList from '../chapter/ChapterList';
 import MMIcon from '../../components/common/Icon';
 import FooterTab from './FooterTab';
+import Home from '../home/Home';
+import MilestoneList from '../milestone/MilestoneList';
+import BookPreview from '../book/BookPreview';
+import Profile from '../Profile/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,17 +28,37 @@ export default function Footer() {
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => {
-                        return <MMIcon iconName="home" iconSize={size} iconColor={color} />;
+                        return <Icon name="home" size={size} color={color} />;
                     },
                 }}
             />
             <Tab.Screen
-                name="ChapterList"
-                component={ChapterList}
+                name="MilestoneList"
+                component={MilestoneList}
                 options={{
-                    tabBarLabel: 'Chapter',
+                    tabBarLabel: 'Milestone',
                     tabBarIcon: ({ color, size }) => {
-                        return <MMIcon iconName="book" iconSize={size} iconColor={color} />;
+                        return <Icon name="flag" size={size} color={color} />;
+                    },
+                }}
+            />
+            <Tab.Screen
+                name="BookPreview"
+                component={BookPreview}
+                options={{
+                    tabBarLabel: 'Book Preview',
+                    tabBarIcon: ({ color, size }) => {
+                        return <Icon name="book-open" size={size} color={color} />;
+                    },
+                }}
+            />
+            <Tab.Screen
+                name="Profile"
+                component={Profile}
+                options={{
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color, size }) => {
+                        return <MMIcon iconName="user-o" iconSize={size} iconColor={color} />;
                     },
                 }}
             />

@@ -53,6 +53,29 @@ async function userLoginWithOTP(data) {
     return result;
 }
 
+async function getLookupData() {
+    const config = {
+        url: `/lookup`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#endregion
+
+//------------------------------------------------------------------- Manage User APIs
+
+async function updateInItProfile(data) {
+    const config = {
+        url: `user/updateInitProfile`,
+        method: 'put',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#endregion
 
 //------------------------------------------------------------------- Manage Baby APIs
@@ -66,9 +89,9 @@ async function babyList() {
     return result;
 }
 
-async function addBaby(data) {
+async function saveBaby(data) {
     const config = {
-        url: `baby/add`,
+        url: `baby/save`,
         method: 'post',
         data: data
     };
@@ -80,16 +103,6 @@ async function getBabyById(babyId) {
     const config = {
         url: `baby/get/${babyId}`,
         method: 'get'
-    };
-    const result = await axios(config);
-    return result;
-}
-
-async function updateBaby(data, babyId) {
-    const config = {
-        url: `baby/update/${babyId}`,
-        method: 'put',
-        data: data
     };
     const result = await axios(config);
     return result;
@@ -107,9 +120,9 @@ async function deleteBaby(babyId) {
 
 //------------------------------------------------------------------- Manage Chapter APIs
 
-async function getChapterList(babyId) {
+async function getTypeList(babyId, type) {
     const config = {
-        url: `chapter/list/${babyId}`,
+        url: `chapter/list/${babyId}/${type}`,
         method: 'get'
     };
     const result = await axios(config);
@@ -140,12 +153,10 @@ async function saveQuiz(data) {
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
-    console.log(fileName, 'fileName')
     const config = {
         url: `baby/getPreSignedUrl/${fileName}`,
         method: 'get'
     };
-    console.log(config.url, 'url')
     const result = await axios(config);
     return result;
 }
@@ -170,6 +181,15 @@ async function deleteFile(data) {
     return result;
 }
 
+async function addInit() {
+    const config = {
+        url: `baby/addInit`,
+        method: 'post',
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //------------------------------------------------------------------- Export All APIs
 //#region
 export default {
@@ -178,12 +198,14 @@ export default {
     resendOTP,
     userLoginWithPassword,
     userLoginWithOTP,
+    getLookupData,
+    updateInItProfile,
     babyList,
+    addInit,
     getBabyById,
-    updateBaby,
-    addBaby,
+    saveBaby,
     deleteBaby,
-    getChapterList,
+    getTypeList,
     getQuiz,
     saveQuiz,
     getPreSignedUrl,

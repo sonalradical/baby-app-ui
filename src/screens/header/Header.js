@@ -1,47 +1,47 @@
 import React, { useEffect, useState } from 'react';
 
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
 import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
-export default function Header({ navigation, route }) {
-    const selectedBabyId = useSelector((state) => state.AppReducer.selectedBaby);
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+export default function Header(props) {
+    const { showHome } = props;
+    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const reloadPage = useSelector((state) => state.AppReducer.reloadPage)
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [babyDetail, setBabyDetail] = useState();
 
     useEffect(() => {
-        const loadBabyProfileDetail = async () => {
-            const babyId = selectedBabyId || (await MMUtils.getItemFromStorage(MMConstants.storage.selectedBaby));
-            if (babyId) {
-                try {
-                    setIsOverlayLoading(true);
-                    const response = await MMApiService.getBabyById(babyId);
-                    if (response.data) {
-                        setBabyDetail(response.data)
-                        setIsOverlayLoading(false);
-                    }
-                } catch (error) {
-                    setBabyDetail();
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
-                    setIsOverlayLoading(false);
+        loadBabyProfileDetail();
+    }, [selectedBabyId, reloadPage]);
+
+    const loadBabyProfileDetail = async () => {
+        setOverlayLoading(true);
+        if (selectedBabyId || reloadPage) {
+            try {
+                const response = await MMApiService.getBabyById(selectedBabyId);
+                if (response.data) {
+                    setBabyDetail(response.data);
+                }
+            } catch (error) {
+                setBabyDetail();
+                const serverError = MMUtils.apiErrorMessage(error);
+                if (serverError) {
+                    MMUtils.showToastMessage(serverError);
                 }
             }
-            else {
-                setBabyDetail();
-            }
+            setOverlayLoading(false);
         }
-        loadBabyProfileDetail();
-    }, [selectedBabyId, MMConstants.storage.selectedBaby]);
+        else {
+            setBabyDetail();
+            setOverlayLoading(false);
+        }
+    }
 
     const onAvatarPress = () => {
         setIsModalOpen(true);
@@ -50,14 +50,10 @@ export default function Header({ navigation, route }) {
 
     return (
         <>
-            <MMAppbarHeader onAvatarPress={() => onAvatarPress()} babyDetail={babyDetail} />
+            <MMAppbarHeader onAvatarPress={() => onAvatarPress()} babyDetail={babyDetail} showHome={showHome} />
             <MMBabyProfileModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} selectedBaby={babyDetail} />
             <MMOverlaySpinner visible={isOverlayLoading} />
         </>
     );
 }
 
-Header.propTypes = {
-    navigation: PropTypes.object,
-    route: PropTypes.object
-};

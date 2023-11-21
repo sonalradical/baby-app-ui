@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Text } from 'react-native-paper';
+import { Avatar, Card, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
-import { setSelectedBabyId } from '../../redux/Slice/AppSlice';
+import { setBaby } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
-import MMStyles from '../../helpers/Styles';
-import MMColors from '../../helpers/Colors';
+import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
@@ -20,63 +19,64 @@ import MMIcon from '../../components/common/Icon';
 
 const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const dispatch = useDispatch();
+	const theme = useTheme();
 	const navigation = useNavigation();
 	const [isLoading, setIsLoding] = useState(false);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
 
 	useEffect(() => {
-		async function Init() {
-			try {
-				setIsLoding(true);
-				console.log('Loading baby profile list...');
-				const response = await MMApiService.babyList();
-				if (response.data) {
-					// Find the index of the selectedBaby in the profiles array
-					const babyProfiles = response.data;
-					if (selectedBaby) {
-						const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
-						if (selectedIndex !== -1) {
-							babyProfiles.splice(selectedIndex, 1);
-							babyProfiles.unshift(selectedBaby);
-						}
-						setSelectedBabyDetail(selectedBaby);
-					} else {
-						setSelectedBabyDetail();
-					}
-					setBabyList(babyProfiles);
-				}
-				setIsLoding(false);
-			} catch (error) {
-				setBabyList([]);
-				setSelectedBabyDetail();
-				setIsLoding(false);
-				const serverError = MMUtils.apiErrorMessage(error);
-				if (serverError) {
-					MMUtils.showToastMessage(serverError);
-				}
-			}
-		}
 		if (isModalOpen) {
 			Init();
 		}
 	}, [isModalOpen]);
 
+	async function Init() {
+		try {
+			setIsLoding(true);
+			console.log('Loading baby profile list...');
+			const response = await MMApiService.babyList();
+			if (response.data) {
+				const babyProfiles = response.data;
+				if (selectedBaby) {
+					const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
+					if (selectedIndex !== -1) {
+						babyProfiles.splice(selectedIndex, 1);
+						babyProfiles.unshift(selectedBaby);
+					}
+					setSelectedBabyDetail(selectedBaby);
+				} else {
+					setSelectedBabyDetail();
+				}
+				setBabyList(babyProfiles);
+			}
+			setIsLoding(false);
+		} catch (error) {
+			setBabyList([]);
+			setSelectedBabyDetail();
+			setIsLoding(false);
+			const serverError = MMUtils.apiErrorMessage(error);
+			if (serverError) {
+				MMUtils.showToastMessage(serverError);
+			}
+		}
+	}
+
 	const onAddBaby = () => {
 		setIsModalOpen(false);
-		navigation.navigate('AddBaby');
+		navigation.navigate('AddEditBaby');
 	};
 
 	const onBabyEdit = (babyId) => {
 		setIsModalOpen(false);
-		navigation.navigate('AddBaby', { babyId: babyId })
+		navigation.navigate('AddEditBaby', { babyId: babyId, babyListSize: _.size(babyList) })
 	}
 
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
-		dispatch(setSelectedBabyId(babyDetail._id));
-		MMUtils.setItemToStorage(MMConstants.storage.selectedBaby, babyDetail._id);
+		dispatch(setBaby(babyDetail._id));
+		MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, babyDetail._id);
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 
@@ -87,24 +87,26 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				onPress={() => onSelectProfile(profileData)}
 				key={index}
 			>
-				<Card style={[MMStyles.mb10, {
+				<Card style={{
 					shadowColor: isSelected ? 'blue' : 'transparent',
 					shadowOpacity: isSelected ? 1 : 0,
 					shadowRadius: isSelected ? 2 : 0,
-					opacity: isSelected ? 1 : 0.5
-				}]}>
-					<Card.Content style={MMStyles.rowCenter}>
+					opacity: isSelected ? 1 : 0.5,
+					marginBottom: MMConstants.marginMedium
+				}}>
+					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Avatar.Image
 							size={56}
-							source={profileData?.profilePicture ? { uri: MMUtils.getImagePath(profileData.profilePicture) } : require('../../assets/images/girl.jpeg')}
+							source={profileData.isBorn === 'Yes' ?
+								{ uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
 						/>
-						<Card.Title title={profileData.name} subtitle={profileData.gender} style={{ width: 100 }} />
+						<Card.Title title={profileData.isBorn === 'Yes' ? profileData.name : 'Mini Baby'}
+							subtitle={profileData.gender}
+							style={{ width: 100, marginLeft: MMConstants.marginMedium }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
 							{isSelected ? <MMIcon
 								iconName="edit"
-								iconColor={MMColors.orange}
-								style={MMStyles.mr10}
-								iconSize={24}
+								iconColor={theme.colors.primary}
 								onPress={() => onBabyEdit(profileData._id)}
 							/> : null}
 						</View>
@@ -120,17 +122,17 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				animationType="slide"
 				transparent={true}
 				visible={isModalOpen}>
-				<View style={styles.centeredView}>
-					<View style={MMStyles.card}>
-						<View style={[MMStyles.mb10, { flexDirection: 'row', justifyContent: 'center' }]}>
-							<Text style={[MMStyles.cardHeaderText, { flex: 1 }]}>Minimemoirs</Text>
-							<View style={{ alignSelf: 'flex-end' }}>
-								<MMIcon iconName={'close'} iconSize={24} onPress={() => setIsModalOpen(false)} />
+				<View style={styles(theme).centeredView}>
+					<View style={styles(theme).card}>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: MMConstants.marginLarge }}>
+							<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center' }]}>Minimemoirs</Text>
+							<View style={{ alignSelf: 'flex-end', marginBottom: MMConstants.marginSmall }}>
+								<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
 							</View>
 						</View>
 						{
 							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[MMStyles.cardSubHeaderText, MMStyles.mb10, { textAlign: 'center' }]}>Please Select Baby</Text> : null
+								<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>Please Select Baby</Text> : null
 						}
 						{isLoading ? (
 							<View style={{ height: 40 }}>
@@ -141,7 +143,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							))
 						)}
 						{_.isEmpty(babyList) ?
-							<Text style={[MMStyles.cardSubHeaderText, { textAlign: 'center' }]}>No Babies Found Please Add New Baby</Text> : null}
+							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>No Babies Found Please Add New Baby</Text> : null}
 						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
 				</View>
@@ -150,11 +152,25 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
 	centeredView: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.5)'
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+	},
+	card: {
+		backgroundColor: theme.colors.secondaryContainer,
+		padding: MMConstants.paddingLarge,
+		borderRadius: 20,
+		elevation: 10,
+		margin: MMConstants.marginLarge,
+		shadowColor: theme.colors.shadow,
+		shadowOpacity: 0.4,
+		shadowRadius: 2,
+		shadowOffset: {
+			height: 1,
+			width: 1,
+		},
 	},
 });
 

@@ -29,11 +29,11 @@ const getTodayDateTime = () => moment();
 const getTodayUtcDateTime = () => moment().utc();
 
 function displayDate(date) {
-    return moment(date).format('MM/DD/yyyy');
+    return moment(date).format('DD/MM/yyyy');
 }
 
 function displayUtcDate(date) {
-    return moment(`${date}Z`).format('MM/DD/yyyy');
+    return moment(`${date}Z`).format('DD/MM/yyyy');
 }
 
 function displayTime(dateTime) {
@@ -108,7 +108,7 @@ function showToastMessage(message, delay = 0, type = MMEnums.toastType.default) 
             duration: MMConstants.toastDuration,
             delay: delay,
             containerStyle: { width: '90%', backgroundColor: bgColor },
-            textStyle: { padding: 4, textAlign: 'left' }
+            textStyle: { padding: MMConstants.paddingMedium, textAlign: 'left' }
         });
     return true;
 };
@@ -179,8 +179,8 @@ function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
     return result;
 };
 
-function getImagePath(profilePicture) {
-    return `${MMConstants.AWS_S3_BASE_URL}/${profilePicture}`
+function getImagePath(picture) {
+    return `${MMConstants.AWS_S3_BASE_URL}/${picture}`
 }
 
 
@@ -247,10 +247,6 @@ async function clearStorage() {
     await AsyncStorage.clear();
 }
 
-async function getToken() {
-    return await getItemFromStorage(MMConstants.storage.accessToken);
-}
-
 async function removeItemFromStorage(key) {
     await AsyncStorage.removeItem(key);
 }
@@ -287,7 +283,6 @@ export default {
     setItemToStorage,
     clearStorage,
     removeItemFromStorage,
-    getToken,
     parseMoment,
     parseDateTimeToMoment,
     handleBackButton,

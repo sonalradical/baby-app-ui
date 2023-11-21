@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as _ from 'lodash';
 
-import { useNavigation } from '@react-navigation/native';
+import { store } from '../redux/Store/configureStores';
 
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
@@ -9,12 +9,14 @@ import MMEnums from '../helpers/Enums';
 // Defaults
 axios.defaults.baseURL = 'http://localhost:4000/';
 
+const { dispatch, getState } = store;
 
 // Request interceptor
 axios.interceptors.request.use(async (config) => {
-    const token = await MMUtils.getToken();
-    if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
+    const { AuthReducer } = getState();
+    const accessToken = AuthReducer.auth.accessToken;
+    if (accessToken) {
+        config.headers['Authorization'] = 'Bearer ' + accessToken;
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8';
     config.headers['Request-Type'] = 'application';
@@ -27,20 +29,21 @@ axios.interceptors.request.use(async (config) => {
 
 // Response interceptor
 axios.interceptors.response.use(async (response) => {
-    console.log(response.data, 'response axioss')
 
     const { status, friendlyMassage, error } = response.data;
     switch (status) {
-        case MMEnums.responseStatusCodes.Success:
-            friendlyMassage ? MMUtils.showToastMessage(friendlyMassage) : null;
-            return _.isNil(response.data) ? true : response.data;
-        case MMEnums.responseStatusCodes.NotFound:
+        case MMEnums.ServiceResult.Ok:
+            if (friendlyMassage) {
+                MMUtils.showToastMessage(friendlyMassage);
+            }
+            return response.data;
+        case MMEnums.ServiceResult.NotFound:
             MMUtils.showToastMessage(friendlyMassage);
-            MMUtils.showToastMessage(error.message);
             break;
-        case MMEnums.responseStatusCodes.authentication:
-            const navigation = useNavigation();
-            navigation.navigate('Logout');
+        case MMEnums.ServiceResult.UnAuthorized:
+            MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
+            MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
+            dispatch(setLogout());
             MMUtils.showToastMessage(error.message);
             break;
         default:
@@ -54,15 +57,16 @@ axios.interceptors.response.use(async (response) => {
         // Handle network errors separately
         MMUtils.showToastMessage('Network Error: Please check your internet connection.');
     }
-    else if (error.response.status === MMEnums.responseStatusCodes.NotFound) {
+    else if (error.response.status === MMEnums.ServiceResult.NotFound) {
         const errorMessage = error.response.data.message;
         MMUtils.showToastMessage(errorMessage);
     }
-    else if (error.response.status === MMEnums.responseStatusCodes.authentication) {
-        const navigation = useNavigation();
-        navigation.navigate('Logout');
+    else if (error.response.status === MMEnums.ServiceResult.UnAuthorized) {
+        MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
+        MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
+        dispatch(setLogout());
     }
-    else if (error.response.status === MMEnums.responseStatusCodes.BadRequest) {
+    else if (error.response.status === MMEnums.ServiceResult.BadRequest) {
         const errorMessage = error.response.data.message;
         MMUtils.showToastMessage(errorMessage);
     }

@@ -10,22 +10,27 @@ import _ from 'lodash';
 
 import { setLogin } from '../redux/Slice/AuthSlice';
 
-import MMConstants from '../helpers/Constants';
 import MMUtils from '../helpers/Utils';
+import MMEnums from '../helpers/Enums';
 
 import MMSpinner from '../components/common/Spinner';
 
+import lightMMTheme from '../lightMMTheme'
 // auth screens
 import Login from '../screens/auth/Login';
 import OTPView from '../screens/auth/OTPView';
 import SignUp from '../screens/auth/SignUp';
 
 // app screens
-import AddBaby from '../screens/babyProfile/AddBaby';
+import AddEditBaby from '../screens/babyProfile/AddEditBaby';
 import Logout from '../screens/auth/Logout';
-import Quiz from '../screens/quiz/Quiz';
+import ChapterQuiz from '../screens/quiz/ChapterQuiz';
 import Footer from '../screens/footer/Footer';
 import Header from '../screens/header/Header';
+import ChapterList from '../screens/chapter/ChapterList';
+import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
+import InitialSetup from '../screens/initialSetup/InitialSetup';
+import { setBaby } from '../redux/Slice/AppSlice';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -49,32 +54,52 @@ function AuthStackNavigator() {
 
 // App Stack 
 const AppStack = createStackNavigator();
-function AppStackNavigator() {
+function AppStackNavigator(userDetail) {
     return (
         <NavigationContainer independent>
             <AppStack.Navigator
-                initialRouteName="Footer"
+                initialRouteName={userDetail.childCount > 0 ? "Footer" : "InitialSetup"}
                 screenOptions={{
                     header: (props) => <Header {...props} />
                 }}
             >
                 <AppStack.Screen
-                    name="Logout"
-                    component={Logout}
-                />
-                <AppStack.Screen
-                    name="AddBaby"
-                    component={AddBaby}
+                    name="InitialSetup"
+                    component={InitialSetup}
                     options={{ headerShown: false }}
                 />
                 <AppStack.Screen
-                    name="Quiz"
-                    component={Quiz}
+                    name="AddEditBaby"
+                    component={AddEditBaby}
                     options={{ headerShown: false }}
+                />
+                <AppStack.Screen
+                    name="ChapterQuiz"
+                    component={ChapterQuiz}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />
+                    }}
+                />
+                <AppStack.Screen
+                    name="MilestoneQuiz"
+                    component={MilestoneQuiz}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
+                />
+                <AppStack.Screen
+                    name="ChapterList"
+                    component={ChapterList}
                 />
                 <AppStack.Screen
                     name="Footer"
                     component={Footer}
+                />
+                <AppStack.Screen
+                    name="Logout"
+                    component={Logout}
                 />
 
             </AppStack.Navigator>
@@ -83,7 +108,7 @@ function AppStackNavigator() {
 }
 
 export default function AppNavigator() {
-    const { isLoading, isLoggedOut, accessToken } = useSelector((state) => state.AuthReducer.auth);
+    const { isLoading, isLoggedOut, accessToken, userDetail } = useSelector((state) => state.AuthReducer.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -91,10 +116,12 @@ export default function AppNavigator() {
     }, []);
 
     const initApp = async () => {
-        const accessToken = await MMUtils.getItemFromStorage(MMConstants.storage.accessToken);
-        const existingUserDetail = await MMUtils.getItemFromStorage(MMConstants.storage.userDetail);
+        const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
+        const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
+        const babyId = await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby);
 
         if (accessToken && existingUserDetail) {
+            dispatch(setBaby(babyId));
             dispatch(setLogin({
                 accessToken,
                 userDetail: JSON.parse(existingUserDetail),
@@ -109,11 +136,10 @@ export default function AppNavigator() {
     if (isLoading) {
         return <MMSpinner />;
     }
-
     return (
-        <PaperProvider>
+        <PaperProvider theme={lightMMTheme}>
             <NavigationContainer ref={navigationRef}>
-                {(_.isNil(accessToken)) ? <AuthStackNavigator /> : <AppStackNavigator />}
+                {(_.isNil(accessToken)) ? <AuthStackNavigator /> : AppStackNavigator(userDetail ? userDetail : null)}
             </NavigationContainer>
         </PaperProvider>
     );

@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Checkbox, RadioButton, TextInput, useTheme } from 'react-native-paper';
+import { Checkbox, RadioButton, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
+import { useSelector } from 'react-redux';
 
-import MMStyles from '../../helpers/Styles';
-import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils'
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
-import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
+import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMRadioButton from '../../components/common/RadioButton';
+import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const lookupData = useSelector((state) => state.AuthReducer.lookupData);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
 
     const initState = {
@@ -32,7 +35,6 @@ export default function SignUp({ navigation, route }) {
         errors: {},
     };
     const [state, setState] = useState(initState);
-    const [checked, setChecked] = useState(false);
 
     const onInputChange = (field, value) => {
         setState({
@@ -59,7 +61,7 @@ export default function SignUp({ navigation, route }) {
             'password.required': 'Please enter password.',
             'password.min': 'Password should have a minimum of 8 characters.',
             'gender.required': 'Please select gender.',
-            'terms.required': 'please Accept Terms.'
+            'terms.required': 'please Accept Terms.',
         };
 
         const rules = {
@@ -73,19 +75,19 @@ export default function SignUp({ navigation, route }) {
 
         validateAll(state, rules, messages)
             .then(async () => {
-                setIsOverlayLoading(true);
-                if (checked) {
+                setOverlayLoading(true);
+
+                if (state.terms) {
                     onSignUp();
                 }
 
             })
             .catch((errors) => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
                 });
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
             });
     };
 
@@ -94,10 +96,9 @@ export default function SignUp({ navigation, route }) {
     };
     const onTermsCheck = () => {
         // Update the checkbox state in the form data
-        setChecked(!checked)
         setState({
             ...state,
-            terms: !checked,
+            terms: !state.terms,
         });
     };
 
@@ -115,28 +116,25 @@ export default function SignUp({ navigation, route }) {
                     if (response) {
                         navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
                     }
-                    setIsOverlayLoading(false);
                 })
                 .catch(function (error) {
-                    setIsOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)
                     });
                 });
+            setOverlayLoading(false);
         } catch (err) {
             MMUtils.consoleError(err);
+            setOverlayLoading(false);
         }
     }
 
 
     const renderView = () => {
         return (
-            <View style={MMStyles.m10}>
-                <View style={[MMStyles.mb30, { alignItems: 'center' }]}>
-                    <Text style={[MMStyles.title]}>Your Profile</Text>
-                </View>
-
+            <View style={{ padding: MMConstants.paddingLarge }}>
+                <MMAuthHeader title='Your Profile' />
                 <MMInput
                     label='Phone Number *'
                     maxLength={10}
@@ -154,7 +152,6 @@ export default function SignUp({ navigation, route }) {
                     onChangeText={(value) => onInputChange('name', value)}
                     placeholder="Enter Your Name"
                     errorText={state.errors.name}
-                    optionalIconSize={20}
                 />
                 <MMInput
                     label='Email Address *'
@@ -165,7 +162,6 @@ export default function SignUp({ navigation, route }) {
                     autoCorrect={false}
                     maxLength={150}
                     errorText={state.errors.email}
-                    optionalIconSize={20}
                 />
                 <MMInput
                     label='Password *'
@@ -174,61 +170,40 @@ export default function SignUp({ navigation, route }) {
                     placeholder="Enter Password"
                     maxLength={8}
                     errorText={state.errors.password}
-                    optionalIconSize={20}
                     secureTextEntry={passwordHide}
                     name="password"
-                    right={passwordHide ? (
-                        <TextInput.Icon
-                            color={theme.colors.primary}
-                            icon='eye-off'
-                            onPress={() => setPasswordHide(false)}
-                        />
-                    ) : <TextInput.Icon
-                        color={theme.colors.primary}
-                        icon='eye'
-                        onPress={() => setPasswordHide(true)}
-                    />}
+                    rightIcon={passwordHide ? 'eye-off' : 'eye'}
+                    onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
                 />
-                <View>
-                    <Text style={MMStyles.boldText}>Gender *</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        {MMConstants.gender.map((option) => (
-                            <View key={option.value} style={MMStyles.rowCenter}>
-                                <RadioButton
-                                    value={option.value}
-                                    status={state.gender === option.value ? 'checked' : 'unchecked'}
-                                    onPress={() => onGenderChange(option.value)}
-                                />
-                                <Text style={MMStyles.subTitle}>{option.label}</Text>
-                            </View>
-                        ))}
-                    </View>
-                    <MMFormErrorText errorText={state.errors.gender} />
-                </View>
-                <View style={MMStyles.rowCenter}>
-                    <Checkbox
+                <MMRadioButton
+                    label='Gender *'
+                    options={lookupData.gender}
+                    selectedValue={state.gender}
+                    onValueChange={onGenderChange}
+                    errorText={state.errors.gender}
+                />
+                <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox.Android
                         color={theme.colors.primary}
                         size="sm"
-                        status={checked ? 'checked' : 'unchecked'}
+                        status={state.terms ? 'checked' : 'unchecked'}
                         onPress={onTermsCheck}
                         value={state.terms}
                         style={{ borderColor: theme.colors.primary }} />
-                    <Text style={MMStyles.subTitle}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use</Text> and
-                        <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text>.</Text>
+                    <Text style={theme.fonts.default}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
+                        <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
 
                 </View>
-                {!checked && state.errors.terms ? <MMFormErrorText errorText={state.errors.terms} /> : null}
-                <MMRoundButton
-                    optionalTextStyle={[MMStyles.h5]}
+                <MMFormErrorText errorText={state.errors.terms} />
+                <MMButton
                     label="Sign Up"
                     onPress={() => onSubmit()}
-                    optionalStyle={[MMStyles.mt10]}
                 />
-                <View style={MMStyles.alignItems}>
+                <View style={{ alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[MMStyles.boldText, MMStyles.h6, MMStyles.mt15]}>Already have an account?</Text>
+                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>Already have an account?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN IN'
-                            style={[MMStyles.subTitle, MMStyles.h6, MMStyles.mt5]} onPress={() => navigation.navigate('Login')} />
+                            style={{ paddingTop: 0 }} onPress={() => navigation.navigate('Login')} />
                     </View>
                 </View>
             </View>

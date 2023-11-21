@@ -1,50 +1,49 @@
-import React, { useCallback, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { BackHandler } from 'react-native';
+import * as _ from 'lodash';
 
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setHeaderTitle } from '../../redux/Slice/AppSlice';
+import { setBaby } from '../../redux/Slice/AppSlice';
 
-import MMStyles from '../../helpers/Styles';
+import MMUtils from '../../helpers/Utils';
+import MMEnums from '../../helpers/Enums';
+import MMApiService from '../../services/ApiService';
+import MMContentContainer from '../../components/common/ContentContainer';
+import ChapterList from '../chapter/ChapterList';
 
-export default function Home({ navigation, route }) {
+export default function Home() {
+    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const dispatch = useDispatch();
 
-    useFocusEffect(
-        useCallback(() => {
-            dispatch(setHeaderTitle(''));
-        }, [dispatch])
-    );
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            BackHandler.exitApp();
+        });
+        return () => { backHandler.remove() };
+    }, []);
 
-    const renderView = () => {
-        return (
-            <View style={MMStyles.containerPadding}>
-            </View>
-        );
-    };
+    useEffect(() => { //  when there is no selectedBabyId set 1st baby
+        if (_.isEmpty(selectedBabyId)) {
+            Init();
+        }
+    }, [selectedBabyId]);
+
+    async function Init() {
+        const response = await MMApiService.babyList();
+        if (response.data) {
+            const babyProfiles = response.data;
+            MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, babyProfiles[0]._id);
+            dispatch(setBaby(babyProfiles[0]._id));
+        }
+    }
 
     return (
         <>
-            <View style={MMStyles.container}>
-                {renderView()}
-            </View>
+            <MMContentContainer>
+                <ChapterList />
+            </MMContentContainer>
         </>
     );
 }
 
-Home.propTypes = {
-    navigation: PropTypes.object,
-    route: PropTypes.object
-};
-
-const styles = StyleSheet.create({
-    cardContent: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    avatarIcon: {
-        backgroundColor: 'transparent',
-    },
-});

@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-	selectedBaby: '',
-	headerTitle: '',
+	baby: null,
+	header: '',
+	reloadChapterList: false,
+	reloadPage: false,
 };
 
 // slice
@@ -10,11 +12,17 @@ const AppReducer = createSlice({
 	name: 'AppReducer',
 	initialState: initialState,
 	reducers: {
-		setSelectedBabyId: (state, action) => {
-			state.selectedBaby = action.payload;
+		setBaby: (state, action) => {
+			state.baby = action.payload;
 		},
-		setHeaderTitle: (state, action) => {
-			state.headerTitle = action.payload;
+		setHeader: (state, action) => {
+			state.header = action.payload;
+		},
+		reloadChapterList: (state, action) => {
+			state.reloadChapterList = action.payload;
+		},
+		reloadPage: (state, action) => {
+			state.reloadPage = action.payload;
 		}
 
 	},
@@ -23,6 +31,8 @@ const AppReducer = createSlice({
 export default AppReducer;
 
 export const {
-	setSelectedBabyId,
-	setHeaderTitle,
+	setBaby,
+	setHeader,
+	reloadChapterList,
+	reloadPage
 } = AppReducer.actions;

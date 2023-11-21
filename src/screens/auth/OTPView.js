@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -8,28 +9,24 @@ import { useDispatch } from 'react-redux';
 
 import { setLogin } from '../../redux/Slice/AuthSlice';
 
-import MMColors from '../../helpers/Colors';
-import MMStyles from '../../helpers/Styles';
 import MMUtils from '../../helpers/Utils';
+import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
-import { MMRoundButton, MMTransparentButton } from '../../components/common/Button';
+import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMPinTextInput from '../../components/common/OTPTextView';
 import MMImageBackground from '../../components/common/ImageBackground';
 import MMSurface from '../../components/common/Surface';
-import { useTheme } from 'react-native-paper';
-
+import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const otpRef = useRef(null);
     const { mobileNumber } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
 
     const initState = {
         otp: null,
@@ -42,7 +39,7 @@ export default function OTPView({ navigation, route }) {
         async function Init() {
             setTimeout(() => {
                 setIsResendVisible(true);
-            }, 60000);
+            }, MMConstants.otpTimeOut);
         }
         Init();
     }, []);
@@ -73,14 +70,13 @@ export default function OTPView({ navigation, route }) {
 
 
     const onResendOTP = async () => {
-        setIsOverlayLoading(true);
+        setOverlayLoading(true);
         setIsResendVisible(false);
         const apiData = {
             mobileNumber: mobileNumber
         };
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
-            setIsOverlayLoading(false);
             setState({
                 ...state,
                 otp: '',
@@ -90,7 +86,8 @@ export default function OTPView({ navigation, route }) {
             });
             setTimeout(() => {
                 setIsResendVisible(true);
-            }, 60000);
+            }, MMConstants.otpTimeOut);
+            setOverlayLoading(false);
             MMUtils.showToastMessage("OTP send successfully.")
         }
     }
@@ -116,7 +113,7 @@ export default function OTPView({ navigation, route }) {
 
         validateAll(state, rules, messages)
             .then(async () => {
-                setIsOverlayLoading(true);
+                setOverlayLoading(true);
                 onVerifyOtp();
             })
             .catch((errors) => {
@@ -125,7 +122,7 @@ export default function OTPView({ navigation, route }) {
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
                 });
-                setIsOverlayLoading(false);
+                setOverlayLoading(false);
             });
     }
 
@@ -138,35 +135,34 @@ export default function OTPView({ navigation, route }) {
 
             await MMApiService.verifyOTP(apiData)
                 .then(function (response) {
-
                     const responseData = response.data;
                     if (responseData) {
-                        const { accessToken, mobileNumber, name, email, password, gender } = responseData;
-                        const userDetail = {
+                        const { accessToken, userDetail } = responseData;
+                        const userDetails = {
                             accessToken,
                             userDetail: {
-                                mobileNumber,
-                                name,
-                                email,
-                                password,
-                                gender
+                                mobileNumber: userDetail.mobileNumber,
+                                name: userDetail.name,
+                                email: userDetail.email,
+                                password: userDetail.password,
+                                gender: userDetail.gender,
+                                childCount: userDetail.childCount ? userDetail.childCount : 0
                             },
                         };
+                        MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                        MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
 
-                        MMUtils.setItemToStorage(MMConstants.storage.accessToken, userDetail.accessToken);
-                        MMUtils.setItemToStorage(MMConstants.storage.userDetail, JSON.stringify(userDetail.userDetail));
-
-                        dispatch(setLogin({ userDetail: userDetail.userDetail, accessToken: userDetail.accessToken }));
+                        dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
                     }
-                    setIsOverlayLoading(false);
+
                 })
                 .catch(function (error) {
-                    setIsOverlayLoading(false);
                     setState({
                         ...state,
                         errors: MMUtils.apiErrorParamMessages(error)
                     });
                 });
+            setOverlayLoading(false);
         } catch (err) {
             MMUtils.consoleError(err);
         }
@@ -174,19 +170,13 @@ export default function OTPView({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <MMSurface margin={[0, 0, 0, 0]} style={{
-                borderTopLeftRadius: 40,
-                borderTopRightRadius: 40,
-                bottom: 0,
-                position: 'absolute',
-                backgroundColor: MMColors.backgroundColor
-            }}>
-                <View style={MMStyles.m5}>
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
+                <View style={{ padding: MMConstants.paddingLarge }}>
+                    <MMAuthHeader title='OTP Verification' />
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[MMStyles.title]}>OTP Verification</Text>
-                        <Text style={[MMStyles.boldText, MMStyles.h4, MMStyles.mt30]}>Enter OTP</Text>
-                        <Text style={[MMStyles.subTitle, MMStyles.h5, MMStyles.mt20]}>{`We have sent a verification code to`}</Text>
-                        <Text style={[MMStyles.boldText, MMStyles.h5]}>{mobileNumber}</Text>
+                        <Text style={theme.fonts.headlineSmall}>Enter OTP</Text>
+                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{`We have sent a verification code to`}</Text>
+                        <Text style={theme.fonts.titleMedium}>{mobileNumber}</Text>
                     </View>
                     <View>
                         <MMPinTextInput
@@ -199,8 +189,8 @@ export default function OTPView({ navigation, route }) {
                     {
                         isResendVisible
                             ? (
-                                <View style={[MMStyles.mt20, MMStyles.mb5]}>
-                                    <Text style={[MMStyles.subTitle, MMStyles.h5, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
+                                <View style={{ marginTop: MMConstants.marginLarge }}>
+                                    <Text style={[theme.fonts.default, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
                                     <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>
                             )
@@ -209,11 +199,9 @@ export default function OTPView({ navigation, route }) {
 
 
                 </View>
-                <MMRoundButton
-                    optionalTextStyle={[MMStyles.h5]}
+                <MMButton
                     label="Verify"
                     onPress={() => onVerify()}
-                    Style={[MMStyles.mt20]}
                 />
             </MMSurface>
 
@@ -235,9 +223,12 @@ OTPView.propTypes = {
     route: PropTypes.object,
 };
 
-const styles = StyleSheet.create({
-    roundedTextInput: {
-        borderRadius: 10,
-        borderWidth: 2,
-    },
+const styles = (theme) => StyleSheet.create({
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: theme.colors.background
+    }
 });

@@ -1,40 +1,57 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Appbar, Avatar } from 'react-native-paper';
-import { useSelector } from 'react-redux';
-import MMStyles from '../../helpers/Styles';
-import MMColors from '../../helpers/Colors';
+import { Appbar, Avatar, useTheme } from 'react-native-paper';
+
+import { useNavigation } from '@react-navigation/native';
+
+import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
 import MMIcon from './Icon';
 
-const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
-	const headerTitle = useSelector((state) => state.AppReducer.headerTitle);
+const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
+	const navigation = useNavigation();
+	const theme = useTheme();
 
 	return (
-		<Appbar.Header style={{ backgroundColor: MMColors.secondary }}>
-			<TouchableOpacity onPress={onAvatarPress} style={MMStyles.ml10}>
-				<Avatar.Image
-					size={50}
-					source={babyDetail?.profilePicture ? { uri: MMUtils.getImagePath(babyDetail.profilePicture) } : require('../../assets/images/girl.jpeg')}
-				/>
-				{
-					!babyDetail ? <MMIcon iconName='plus-circle' style={styles.addButton} iconSize={20} iconColor={MMColors.orange} /> : null
-				}
-			</TouchableOpacity>
-			{
-				headerTitle ? <Appbar.Content title={headerTitle} style={{ alignItems: 'center' }} /> :
-					<Appbar.Content title={babyDetail ? babyDetail.name : 'Baby'} style={{ alignItems: 'center' }} />
+		<Appbar.Header style={styles(theme).appBarHeader}>
+			{babyDetail ?
+				<>
+					<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
+						<Avatar.Image
+							size={50}
+							source={babyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(babyDetail.picture) } :
+								require('../../assets/images/parenthood.jpg')}
+						/>
+					</TouchableOpacity>
+					<Appbar.Content title={babyDetail.isBorn === 'Yes' ? babyDetail.name : 'Mini Baby'}
+						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /></>
+				: <>
+					<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
+						<Avatar.Image
+							size={50}
+							source={require('../../assets/images/parenthood.jpg')}
+						/>
+						<MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.secondary} />
+					</TouchableOpacity>
+					<Appbar.Content title={'Mini Memoirs'}
+						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
+				</>
 			}
-
-			<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
-			<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
+			{showHome ? <Appbar.Action icon="home" onPress={() => navigation.navigate('Home')} /> :
+				<>
+					<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
+					<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
+				</>}
 		</Appbar.Header>
 	);
 };
 
-const styles = StyleSheet.create({
-	defaultAvatar: {
-		backgroundColor: 'lightgray',
+const styles = (theme) => StyleSheet.create({
+	appBarHeader: {
+		backgroundColor: theme.colors.secondaryContainer,
+		borderBottomRightRadius: 20,
+		borderBottomLeftRadius: 20,
+		marginBottom: MMConstants.marginMedium
 	},
 	addButton: {
 		position: 'absolute',
