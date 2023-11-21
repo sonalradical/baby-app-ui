@@ -36,11 +36,11 @@ const Row2 = () => {
                 <TouchableOpacity style={[styles(theme).row, { borderBottomWidth: 1, borderBottomColor: theme.colors.outline }]}
                     onPress={() => onPickImage('row1')}>
                     {row1Image ? <Image source={{ uri: row1Image }} style={styles(theme).image} /> :
-                        <MMIcon iconName={'plus-circle'} iconSize={24} style={styles(theme).imagePickerButton} />}
+                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
                 </TouchableOpacity>
                 <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('row2')}>
                     {row2Image ? <Image source={{ uri: row2Image }} style={styles(theme).image} /> :
-                        <MMIcon iconName={'plus-circle'} iconSize={24} style={styles(theme).imagePickerButton} />}
+                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
                 </TouchableOpacity>
             </View>
             <MMImagePickerModal

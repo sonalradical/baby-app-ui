@@ -106,7 +106,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							{isSelected ? <MMIcon
 								iconName="edit"
 								iconColor={theme.colors.primary}
-								iconSize={24}
 								onPress={() => onBabyEdit(profileData._id)}
 							/> : null}
 						</View>
@@ -127,7 +126,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
 							<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center' }]}>Minimemoirs</Text>
 							<View style={{ alignSelf: 'flex-end', marginBottom: 5 }}>
-								<MMIcon iconName={'close'} iconSize={24} onPress={() => setIsModalOpen(false)} />
+								<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
 							</View>
 						</View>
 						{

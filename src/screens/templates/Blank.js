@@ -27,7 +27,7 @@ const Blank = () => {
             <MMPageTitle title={`Select your baby's photo`} />
             <TouchableOpacity style={styles(theme).container} onPress={() => onPickImage()}>
                 {image ? <Image source={{ uri: image }} style={styles(theme).image} /> :
-                    <MMIcon iconName={'plus-circle'} iconSize={24} style={styles(theme).imagePickerButton} />}
+                    <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
             </TouchableOpacity>
             <MMImagePickerModal
                 visible={modalVisible}

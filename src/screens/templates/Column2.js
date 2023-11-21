@@ -37,12 +37,12 @@ const Column2 = () => {
                 <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
                     onPress={() => onPickImage('col1')}>
                     {col1Image ? <Image source={{ uri: col1Image }} style={styles(theme).image} /> :
-                        <MMIcon iconName={'plus-circle'} iconSize={24} style={styles(theme).imagePickerButton} />}
+                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles(theme).column} onPress={() => onPickImage('col2')}>
                     {col2Image ? <Image source={{ uri: col2Image }} style={styles(theme).image} /> :
-                        <MMIcon iconName={'plus-circle'} iconSize={24} style={styles(theme).imagePickerButton} />}
+                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
                 </TouchableOpacity>
                 <MMImagePickerModal
                     visible={modalVisible}
