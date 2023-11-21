@@ -36,8 +36,7 @@ export default function ChapterList() {
             try {
                 const response = await MMApiService.getTypeList(selectedBabyId, 'chapter');
                 if (response.data) {
-                    const chapters = _.sortBy(response.data.chapterDetail, 'position');
-                    setChapterList(chapters);
+                    setChapterList(response.data.chapterDetail);
                 }
             } catch (error) {
                 setChapterList();

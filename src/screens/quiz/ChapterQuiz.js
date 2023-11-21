@@ -41,8 +41,7 @@ export default function ChapterQuiz({ navigation, route }) {
             try {
                 const response = await MMApiService.getQuiz(babyId, chapterId);
                 if (response.data) {
-                    const sortedQuestions = _.sortBy(response.data.questionList, 'position');
-                    setQuestionList(sortedQuestions);
+                    setQuestionList(response.data.questionList);
                     setAnswerList(response.data.answerList);
 
                 }
@@ -194,7 +193,7 @@ export default function ChapterQuiz({ navigation, route }) {
                 <View style={{ padding: 10 }}>
                     <Text style={theme.fonts.titleMedium} >{questionList[currentQuestion].question}</Text>
                     {currentQuestionType === MMEnums.questionType.radio && (
-                <View style={{ paddingTop: 10 }}>
+                        <View style={{ paddingTop: 10 }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <RadioButton.Android
@@ -209,7 +208,7 @@ export default function ChapterQuiz({ navigation, route }) {
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.checkbox && (
-                <View style={{ paddingTop: 10 }}>
+                        <View style={{ paddingTop: 10 }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <Checkbox.Android
@@ -223,14 +222,14 @@ export default function ChapterQuiz({ navigation, route }) {
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.text && (
-                                        <View style={{ paddingTop: 10 }}>
+                        <View style={{ paddingTop: 10 }}>
 
-                        <MMInputMultiline
-                            placeholder="Your answer..."
-                            value={selectedAnswer.text}
-                            onChangeText={(text) => onTextChange(text)}
-                            maxLength={2000}
-                        />
+                            <MMInputMultiline
+                                placeholder="Your answer..."
+                                value={selectedAnswer.text}
+                                onChangeText={(text) => onTextChange(text)}
+                                maxLength={2000}
+                            />
                         </View>
                     )}
                 </View>
