@@ -76,12 +76,18 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="ChapterQuiz"
                     component={ChapterQuiz}
-                    options={{ headerShown: true }}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />
+                    }}
                 />
                 <AppStack.Screen
                     name="MilestoneQuiz"
                     component={MilestoneQuiz}
-                    options={{ headerShown: true }}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
                 />
                 <AppStack.Screen
                     name="ChapterList"

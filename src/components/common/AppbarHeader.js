@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+
+import { useNavigation } from '@react-navigation/native';
+
 import MMUtils from '../../helpers/Utils';
 import MMIcon from './Icon';
 
-const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
+const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
+	const navigation = useNavigation();
 	const theme = useTheme();
 
 	return (
@@ -33,8 +36,11 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress }) => {
 						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
 				</>
 			}
-			<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
-			<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
+			{showHome ? <Appbar.Action icon="home" onPress={() => navigation.navigate('Home')} /> :
+				<>
+					<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
+					<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
+				</>}
 		</Appbar.Header>
 	);
 };

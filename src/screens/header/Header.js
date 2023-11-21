@@ -8,7 +8,8 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMAppbarHeader from '../../components/common/AppbarHeader';
 import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
-export default function Header() {
+export default function Header(props) {
+    const { showHome } = props;
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadPage = useSelector((state) => state.AppReducer.reloadPage)
     const [isOverlayLoading, setOverlayLoading] = useState(false);
@@ -49,7 +50,7 @@ export default function Header() {
 
     return (
         <>
-            <MMAppbarHeader onAvatarPress={() => onAvatarPress()} babyDetail={babyDetail} />
+            <MMAppbarHeader onAvatarPress={() => onAvatarPress()} babyDetail={babyDetail} showHome={showHome} />
             <MMBabyProfileModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} selectedBaby={babyDetail} />
             <MMOverlaySpinner visible={isOverlayLoading} />
         </>

@@ -153,7 +153,6 @@ export default function SignUp({ navigation, route }) {
                     onChangeText={(value) => onInputChange('name', value)}
                     placeholder="Enter Your Name"
                     errorText={state.errors.name}
-                    optionalIconSize={20}
                 />
                 <MMInput
                     label='Email Address *'
@@ -164,7 +163,6 @@ export default function SignUp({ navigation, route }) {
                     autoCorrect={false}
                     maxLength={150}
                     errorText={state.errors.email}
-                    optionalIconSize={20}
                 />
                 <MMInput
                     label='Password *'
@@ -173,7 +171,6 @@ export default function SignUp({ navigation, route }) {
                     placeholder="Enter Password"
                     maxLength={8}
                     errorText={state.errors.password}
-                    optionalIconSize={20}
                     secureTextEntry={passwordHide}
                     name="password"
                     rightIcon={passwordHide ? 'eye-off' : 'eye'}
