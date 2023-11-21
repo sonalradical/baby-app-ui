@@ -11,6 +11,7 @@ import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import { MMOutlineButton, MMButton, MMTransparentButton } from '../../components/common/Button';
@@ -18,7 +19,7 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMSurface from '../../components/common/Surface';
 import MMImageBackground from '../../components/common/ImageBackground';
-import MMEnums from '../../helpers/Enums';
+import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function Login({ navigation }) {
     const theme = useTheme();
@@ -140,11 +141,8 @@ export default function Login({ navigation }) {
     const renderView = () => {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
-                <View style={{ padding: 10 }}>
-                    <View style={{ alignItems: 'center', paddingBottom: 15 }}>
-                        <Text style={theme.fonts.headlineLarge}>Get Started</Text>
-                    </View>
-
+                <View style={{ padding: MMConstants.paddingLarge }}>
+                    <MMAuthHeader title='Get Started' />
                     <MMInput
                         label='Phone Number *'
                         maxLength={10}
@@ -190,7 +188,7 @@ export default function Login({ navigation }) {
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[theme.fonts.default, { paddingTop: 20 }]}>Need an account ?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN UP'
-                            style={{ paddingTop: 10 }} onPress={() => navigation.navigate('SignUp')} />
+                            style={{ paddingTop: MMConstants.paddingLarge }} onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface >

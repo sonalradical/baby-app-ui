@@ -11,7 +11,8 @@ import { setBaby } from '../../redux/Slice/AppSlice';
 import { setLogin } from '../../redux/Slice/AuthSlice';
 
 import MMEnums from '../../helpers/Enums';
-import MMUtils from '../../helpers/Utils'
+import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
@@ -132,7 +133,7 @@ export default function InitialSetup({ route, navigation }) {
     const renderView = () => {
         return (
             <>
-                <View style={{ margin: 10 }}>
+                <View style={{ padding: MMConstants.paddingLarge }}>
                     <MMPageTitle title='TELL US A BIT ABOUT YOURSELF' />
                     <View>
                         <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
@@ -152,7 +153,7 @@ export default function InitialSetup({ route, navigation }) {
                         </View>
                         <MMFormErrorText errorText={state.errors.birthingParent} />
                     </View>
-                    <View style={{ marginTop: 10 }}>
+                    <View style={{ marginTop: MMConstants.marginMedium }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={theme.fonts.titleMedium}>2. </Text>
                             <Text style={[theme.fonts.titleMedium]} numberOfLines={2}>Which of these best describes your situation?</Text>
@@ -174,7 +175,7 @@ export default function InitialSetup({ route, navigation }) {
                     {
                         !_.isNil(state.situation) ?
                             state.situation === MMEnums.situation.currentlyPregnant ?
-                                <View style={{ marginTop: 10 }}>
+                                <View style={{ marginTop: MMConstants.marginMedium }}>
                                     <>
                                         <MMInput
                                             label='3. What is your due date?'

@@ -8,6 +8,7 @@ import { validateAll } from 'indicative/validator';
 import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils'
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
@@ -16,6 +17,7 @@ import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRadioButton from '../../components/common/RadioButton';
+import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
@@ -131,11 +133,8 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <View style={{ padding: 10 }}>
-                <View style={{ alignItems: 'center', marginBottom: 15 }}>
-                    <Text style={theme.fonts.headlineLarge}>Your Profile</Text>
-                </View>
-
+            <View style={{ padding: MMConstants.paddingLarge }}>
+                <MMAuthHeader title='Your Profile' />
                 <MMInput
                     label='Phone Number *'
                     maxLength={10}
@@ -202,7 +201,7 @@ export default function SignUp({ navigation, route }) {
                 />
                 <View style={{ alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { paddingTop: 10 }]}>Already have an account?</Text>
+                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>Already have an account?</Text>
                         <MMTransparentButton variant="none" transparent label='SIGN IN'
                             style={{ paddingTop: 0 }} onPress={() => navigation.navigate('Login')} />
                     </View>

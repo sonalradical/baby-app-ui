@@ -11,6 +11,7 @@ import { reloadPage, setBaby } from '../../redux/Slice/AppSlice';
 
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils'
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMInput from '../../components/common/Input';
@@ -254,9 +255,9 @@ export default function AddEditBaby({ route }) {
 
     const renderView = () => {
         return (
-            <View style={{ margin: 10 }}>
+            <View style={{ padding: MMConstants.paddingLarge }}>
                 <MMPageTitle title='Baby Profile' />
-                <View style={{ alignItems: 'center', marginBottom: 10 }}>
+                <View style={{ alignItems: 'center', marginBottom: MMConstants.marginMedium }}>
                 </View>
                 <MMProfileAvatar image={imageSource}
                     source={{ uri: imageSource ? imageSource : null }}

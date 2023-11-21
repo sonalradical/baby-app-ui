@@ -9,6 +9,7 @@ import {
 } from 'react-native-confirmation-code-field';
 import { useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
+import MMConstants from '../../helpers/Constants';
 
 const MMPinTextInput = ({ value, cellCount, setValue, errorText }) => {
     const theme = useTheme();
@@ -69,8 +70,8 @@ const styles = (theme) => StyleSheet.create({
         borderWidth: 2,
         borderColor: theme.colors.outline,
         borderRadius: 10,
-        marginHorizontal: 10,
-        marginTop: 20,
+        marginHorizontal: MMConstants.marginMedium,
+        marginTop: MMConstants.marginLarge,
         textAlign: 'center',
         color: theme.colors.text.primary,
     },

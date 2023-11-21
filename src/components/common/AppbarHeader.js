@@ -4,6 +4,7 @@ import { Appbar, Avatar, useTheme } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
 
+import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
 import MMIcon from './Icon';
 
@@ -15,7 +16,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 		<Appbar.Header style={styles(theme).appBarHeader}>
 			{babyDetail ?
 				<>
-					<TouchableOpacity onPress={onAvatarPress} style={{ marginLeft: 10 }}>
+					<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
 						<Avatar.Image
 							size={50}
 							source={babyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(babyDetail.picture) } :
@@ -25,7 +26,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 					<Appbar.Content title={babyDetail.isBorn === 'Yes' ? babyDetail.name : 'Mini Baby'}
 						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} /></>
 				: <>
-					<TouchableOpacity onPress={onAvatarPress} style={{ marginLeft: 10 }}>
+					<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
 						<Avatar.Image
 							size={50}
 							source={require('../../assets/images/parenthood.jpg')}
@@ -50,7 +51,7 @@ const styles = (theme) => StyleSheet.create({
 		backgroundColor: theme.colors.secondaryContainer,
 		borderBottomRightRadius: 20,
 		borderBottomLeftRadius: 20,
-		marginBottom: 10
+		marginBottom: MMConstants.marginMedium
 	},
 	addButton: {
 		position: 'absolute',

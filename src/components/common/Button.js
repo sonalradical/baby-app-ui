@@ -4,6 +4,8 @@ import { Button, Text, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
+import MMConstants from '../../helpers/Constants';
+
 //import MMIcon from './icon';
 
 const defaultSetting = {
@@ -30,7 +32,7 @@ const buttonStyle = function (width) {
     return {
         width: widthValue,
         borderRadius: 10,
-        marginVertical: 10,
+        marginVertical: MMConstants.marginMedium,
         paddingVertical: 2,
         alignSelf: 'center'
     }

@@ -63,7 +63,7 @@ export default function MilestoneList({ navigation, route }) {
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
-            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: 10 }}
+            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBabyId, milestoneId: item._id })}>
                 <View style={[styles(theme).imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
                     <Image
@@ -109,7 +109,7 @@ const styles = (theme) => StyleSheet.create({
         color: theme.colors.text.primary,
         width: 80,
         textAlign: 'center',
-        marginTop: 5
+        marginTop: MMConstants.marginSmall
     },
     image: {
         width: Dimensions.get('window').width / 6,

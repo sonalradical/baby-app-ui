@@ -5,6 +5,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMScrollView from '../../components/common/ScrollView';
@@ -172,14 +173,14 @@ export default function MilestoneQuiz({ navigation, route }) {
         return (
             <>
                 <MMPageTitle title={questions[0].question} />
-                <View style={{ padding: 10 }}>
+                <View style={{ padding: MMConstants.paddingLarge }}>
                     <MMInputMultiline
                         value={state.description}
                         onChangeText={onTextChange}
                         placeholder="Enter Description"
                         maxLength={2000}
                     />
-                    <View style={{ paddingTop: 10 }}>
+                    <View style={{ paddingTop: MMConstants.paddingLarge }}>
                         <MMInput
                             name='date'
                             placeholder='Enter Date'
@@ -263,7 +264,7 @@ const styles = (theme) => StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 10,
-        marginTop: 6,
+        marginTop: MMConstants.marginSmall,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed'
     },

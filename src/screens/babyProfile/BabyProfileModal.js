@@ -11,6 +11,7 @@ import { setBaby } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMTransparentButton } from '../../components/common/Button';
 import MMSpinner from '../../components/common/Spinner';
@@ -91,7 +92,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					shadowOpacity: isSelected ? 1 : 0,
 					shadowRadius: isSelected ? 2 : 0,
 					opacity: isSelected ? 1 : 0.5,
-					marginBottom: 10
+					marginBottom: MMConstants.marginMedium
 				}}>
 					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Avatar.Image
@@ -101,7 +102,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						/>
 						<Card.Title title={profileData.isBorn === 'Yes' ? profileData.name : 'Mini Baby'}
 							subtitle={profileData.gender}
-							style={{ width: 100, marginLeft: 10 }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
+							style={{ width: 100, marginLeft: MMConstants.marginMedium }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
 						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
 							{isSelected ? <MMIcon
 								iconName="edit"
@@ -123,15 +124,15 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				visible={isModalOpen}>
 				<View style={styles(theme).centeredView}>
 					<View style={styles(theme).card}>
-						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: MMConstants.marginLarge }}>
 							<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center' }]}>Minimemoirs</Text>
-							<View style={{ alignSelf: 'flex-end', marginBottom: 5 }}>
+							<View style={{ alignSelf: 'flex-end', marginBottom: MMConstants.marginSmall }}>
 								<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
 							</View>
 						</View>
 						{
 							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: 10 }]}>Please Select Baby</Text> : null
+								<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>Please Select Baby</Text> : null
 						}
 						{isLoading ? (
 							<View style={{ height: 40 }}>
@@ -142,7 +143,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 							))
 						)}
 						{_.isEmpty(babyList) ?
-							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: 10 }]}>No Babies Found Please Add New Baby</Text> : null}
+							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>No Babies Found Please Add New Baby</Text> : null}
 						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
 					</View>
 				</View>
@@ -159,10 +160,10 @@ const styles = (theme) => StyleSheet.create({
 	},
 	card: {
 		backgroundColor: theme.colors.secondaryContainer,
-		padding: 10,
+		padding: MMConstants.paddingLarge,
 		borderRadius: 20,
 		elevation: 10,
-		margin: 20,
+		margin: MMConstants.marginLarge,
 		shadowColor: theme.colors.shadow,
 		shadowOpacity: 0.4,
 		shadowRadius: 2,

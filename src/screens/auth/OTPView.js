@@ -19,6 +19,7 @@ import MMScrollView from '../../components/common/ScrollView';
 import MMPinTextInput from '../../components/common/OTPTextView';
 import MMImageBackground from '../../components/common/ImageBackground';
 import MMSurface from '../../components/common/Surface';
+import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
@@ -170,11 +171,11 @@ export default function OTPView({ navigation, route }) {
     const renderView = () => {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
-                <View style={{ margin: 10 }}>
+                <View style={{ padding: MMConstants.paddingLarge }}>
+                    <MMAuthHeader title='OTP Verification' />
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[theme.fonts.headlineLarge, { marginBottom: 15 }]}>OTP Verification</Text>
                         <Text style={theme.fonts.headlineSmall}>Enter OTP</Text>
-                        <Text style={[theme.fonts.default, { marginTop: 10 }]}>{`We have sent a verification code to`}</Text>
+                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{`We have sent a verification code to`}</Text>
                         <Text style={theme.fonts.titleMedium}>{mobileNumber}</Text>
                     </View>
                     <View>
@@ -188,7 +189,7 @@ export default function OTPView({ navigation, route }) {
                     {
                         isResendVisible
                             ? (
-                                <View style={{ marginTop: 20 }}>
+                                <View style={{ marginTop: MMConstants.marginLarge }}>
                                     <Text style={[theme.fonts.default, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
                                     <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>

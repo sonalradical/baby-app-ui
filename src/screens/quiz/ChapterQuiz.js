@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMEnums from '../../helpers/Enums';
+import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
@@ -190,10 +191,10 @@ export default function ChapterQuiz({ navigation, route }) {
 
         return (
             <>
-                <View style={{ padding: 10 }}>
+                <View style={{ padding: MMConstants.paddingLarge }}>
                     <Text style={theme.fonts.titleMedium} >{questionList[currentQuestion].question}</Text>
                     {currentQuestionType === MMEnums.questionType.radio && (
-                        <View style={{ paddingTop: 10 }}>
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <RadioButton.Android
@@ -202,13 +203,13 @@ export default function ChapterQuiz({ navigation, route }) {
                                         onPress={() => onOptionChange(option)}
                                         position='leading'
                                     />
-                                    <Text style={[theme.fonts.default, { paddingTop: 10 }]}>{option}</Text>
+                                    <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
                                 </View>
                             ))}
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.checkbox && (
-                        <View style={{ paddingTop: 10 }}>
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             {questionList[currentQuestion].options.map((option, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <Checkbox.Android
@@ -216,13 +217,13 @@ export default function ChapterQuiz({ navigation, route }) {
                                         onPress={() => onCheckboxChange(option)}
                                         position='leading'
                                     />
-                                    <Text style={[theme.fonts.default, { paddingTop: 10 }]}>{option}</Text>
+                                    <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
                                 </View>
                             ))}
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.text && (
-                        <View style={{ paddingTop: 10 }}>
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
 
                             <MMInputMultiline
                                 placeholder="Your answer..."
@@ -280,7 +281,7 @@ export default function ChapterQuiz({ navigation, route }) {
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> : renderView()}
             </MMContentContainer >
-            <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: 10 }]}>
+            <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}
             </View>
         </>

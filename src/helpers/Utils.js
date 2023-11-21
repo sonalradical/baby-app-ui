@@ -108,7 +108,7 @@ function showToastMessage(message, delay = 0, type = MMEnums.toastType.default) 
             duration: MMConstants.toastDuration,
             delay: delay,
             containerStyle: { width: '90%', backgroundColor: bgColor },
-            textStyle: { padding: 4, textAlign: 'left' }
+            textStyle: { padding: MMConstants.paddingMedium, textAlign: 'left' }
         });
     return true;
 };

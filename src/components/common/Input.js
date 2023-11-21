@@ -2,6 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
+
+import MMConstants from '../../helpers/Constants';
 import MMFormErrorText from './FormErrorText';
 
 const MMInput = ({ label, description, errorText, leftIcon, rightIcon, onPress, mode = 'outlined', ...props }) => {
@@ -45,8 +47,8 @@ const styles = (theme) => StyleSheet.create({
         height: 42,
         backgroundColor: theme.colors.secondaryContainer,
         borderRadius: 10,
-        marginBottom: 10,
-        marginTop: 6
+        marginBottom: MMConstants.marginMedium,
+        marginTop: MMConstants.marginSmall
 
     },
 });

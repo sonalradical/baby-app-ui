@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { useTheme, TextInput } from 'react-native-paper';
+import MMConstants from '../../helpers/Constants';
 
 const MMInputMultiline = ({ name, label, placeholder, maxLength, mode, errorText, ...props }) => {
 	const theme = useTheme();
@@ -36,8 +37,8 @@ const styles = (theme) => StyleSheet.create({
 	},
 	textMultiline: {
 		backgroundColor: theme.colors.secondaryContainer,
-		marginBottom: 10,
-		marginTop: 6
+		marginBottom: MMConstants.marginMedium,
+		marginTop: MMConstants.marginSmall
 	},
 });
 

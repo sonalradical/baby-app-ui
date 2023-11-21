@@ -63,7 +63,7 @@ export default function ChapterList() {
                     return (
                         <Card style={styles(theme).whiteBg} key={chapter._id}
                             onPress={() => navigation.navigate('ChapterQuiz', { babyId: selectedBabyId, chapterId: chapter._id, title: chapter.title })}>
-                            <View style={{ flexDirection: 'row', padding: 5, justifyContent: 'space-between' }}>
+                            <View style={{ flexDirection: 'row', padding: MMConstants.paddingMedium, justifyContent: 'space-between' }}>
                                 <Image
                                     textAlign="center"
                                     resizeMode="contain"
@@ -76,7 +76,7 @@ export default function ChapterList() {
                                     <Text style={theme.fonts.labelMedium} numberOfLines={1} ellipsizeMode='tail'>
                                         {'You’ve grown and learnt'}</Text>
                                 </View>
-                                <View style={{ padding: 10 }}>
+                                <View style={{ padding: MMConstants.paddingLarge }}>
                                     <CircularProgress value={chapter.totalAnswers}
                                         title={`${chapter.totalAnswers} / ${chapter.totalQuestions}`}
                                         radius={30}
@@ -106,25 +106,13 @@ export default function ChapterList() {
 }
 
 const styles = (theme) => StyleSheet.create({
-    addButton: {
-        position: 'absolute',
-        top: 10,
-        right: 10,
-    },
-    card: {
-        backgroundColor: theme.colors.secondaryContainer
-    },
-    chip: {
-        borderRadius: 20,
-        padding: 5,
-    },
     whiteBg: {
         flex: 0,
         borderWidth: 0,
         shadowColor: MMUtils.isPlatformAndroid() ? theme.colors.shadow : null,
         shadowOpacity: MMUtils.isPlatformAndroid() ? 0.15 : 0,
         shadowRadius: MMUtils.isPlatformAndroid() ? 50 : 0,
-        marginBottom: 20,
+        marginBottom: MMConstants.marginLarge,
         elevation: 10,
         borderRadius: 30,
         position: 'relative',
@@ -134,6 +122,6 @@ const styles = (theme) => StyleSheet.create({
         width: Dimensions.get('window').width / 7,
         height: Dimensions.get('window').height / 10,
         borderRadius: 50,
-        marginLeft: 10
+        marginLeft: MMConstants.marginMedium
     },
 });

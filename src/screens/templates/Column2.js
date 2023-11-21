@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
+
+import MMConstants from '../../helpers/Constants';
+
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
 import MMPageTitle from '../../components/common/PageTitle';
@@ -61,7 +64,7 @@ const styles = (theme) => StyleSheet.create({
         height: Dimensions.get('window').height / 2,
         borderColor: theme.colors.outline,
         borderWidth: 1,
-        margin: 15,
+        margin: MMConstants.marginMedium,
         borderStyle: 'dashed'
     },
     column: {
@@ -70,7 +73,7 @@ const styles = (theme) => StyleSheet.create({
         justifyContent: 'center',
     },
     imagePickerButton: {
-        padding: 10,
+        padding: MMConstants.paddingLarge,
         borderRadius: 50,
 
     },

@@ -5,6 +5,7 @@ import { View, StyleSheet, Text, Image, Modal, TouchableOpacity } from 'react-na
 import ImagePicker, { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
 
 
 const MMImagePickerModal = (props) => {
@@ -80,7 +81,7 @@ const styles = (theme) => StyleSheet.create({
         bottom: 0,
         width: '100%',
         backgroundColor: theme.colors.secondaryContainer,
-        padding: 16,
+        padding: MMConstants.paddingLarge,
         shadowColor: theme.colors.shadow,
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
@@ -93,7 +94,7 @@ const styles = (theme) => StyleSheet.create({
     },
     bottomSheetOption: {
         fontSize: 18,
-        padding: 10,
+        padding: MMConstants.paddingLarge,
         textAlign: 'center',
         color: theme.colors.text.primary,
     },

@@ -59,7 +59,13 @@ const MMConstants = {
         swimming: require('../assets/images/milestone/swim.png'),
         birthday: require('../assets/images/milestone/birthday.png'),
         beachday: require('../assets/images/milestone/beachHoliday.png'),
-    }
+    },
+
+    paddingMedium: 5,
+    paddingLarge: 10,
+    marginSmall: 5,
+    marginMedium: 10,
+    marginLarge: 20,
 };
 
 export default MMConstants;

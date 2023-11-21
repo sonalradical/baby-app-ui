@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Searchbar, useTheme } from 'react-native-paper';
+import MMConstants from '../../helpers/Constants';
 
 const MMSearchbar = ({ placeholder = 'Search below...', ...props }) => {
 	const theme = useTheme()
@@ -20,7 +21,7 @@ const MMSearchbar = ({ placeholder = 'Search below...', ...props }) => {
 
 const styles = (theme) => StyleSheet.create({
 	searchbar: {
-		marginBottom: 8,
+		marginBottom: MMConstants.marginSmall,
 		backgroundColor: theme.colors.secondaryContainer,
 		borderRadius: 10,
 	},
