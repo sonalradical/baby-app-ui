@@ -14,22 +14,23 @@ import { Avatar, Button, List, Menu, Text, useTheme } from 'react-native-paper';
 import { FlatList, Keyboard, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
+import MMEnums from '../../helpers/Enums';
 
 export default function BookPreview({ route, navigation }) {
     const theme = useTheme();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const reloadBookPage = useSelector((state) => state.AppReducer.reloadBookPage)
+    const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isLoading, setLoading] = useState(true);
     const [babyDetail, setBabyDetail] = useState();
     const [bookData, setBookData] = useState();
-    const [visibleMenu, setVisibleMenu] = useState(null);
-
 
     useEffect(() => {
-        if (selectedBabyId) {
+        if (selectedBabyId || reloadBookPage) {
             loadBabyProfileDetail();
             loadBookPreview();
         }
-    }, [selectedBabyId]);
+    }, [selectedBabyId, reloadBookPage]);
 
     const loadBookPreview = async () => {
         setLoading(true);
@@ -56,12 +57,15 @@ export default function BookPreview({ route, navigation }) {
         setLoading(false);
     }
 
-    const openMenu = (itemId) => {
-        setVisibleMenu(itemId);
-    };
-
-    const closeMenu = () => {
-        setVisibleMenu(null);
+    const onPressAdd = (currentPosition) => {
+        let nextItemPosition = null;
+        const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
+        if (currentIndex < bookData.length - 1) {
+            const nextItem = bookData[currentIndex + 1];
+            nextItemPosition = nextItem.position;
+        }
+        const pagePosition = (currentPosition + nextItemPosition) / 2;
+        navigation.navigate('TemplateList', { position: pagePosition })
     };
 
     const renderQuestionAnswerList = (item, index) => {
@@ -78,34 +82,45 @@ export default function BookPreview({ route, navigation }) {
         );
     };
 
+    const renderPage = (templateId, pageDetails) => {
+        let templateName = null;
+        const template = _.find(lookupData.template, { '_id': templateId });
+        templateName = template.code;
+        const ComponentName = MMEnums.Components[templateName]
+        const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
+            pageDetail.source = MMUtils.getImagePath(pageDetail.value)
+            return pageDetail;
+        });
+        return (
+            <ComponentName onPickImage={null} templateData={customPageDetails} />
+            // <Text />
+        )
+    };
+
     const renderBookData = (item) => {
         if (!bookData || bookData.length === 0) return null;
+        const isTemplate = item?.templateId ? true : false;
 
         return (
-            <MMSurface key={item._id}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={theme.fonts.titleLarge}>{item.title}</Text>
-                    <Menu
-                        visible={visibleMenu === item._id}
-                        onDismiss={closeMenu}
-                        anchor={
-                            <MMIcon iconName={'plus'} onPress={() => openMenu(item._id)} />
-                        }>
-                        <View style={{ backgroundColor: theme.colors.secondaryContainer }}>
-                            <Menu.Item
-                                title='Add Page Before'
-                            />
-                            <Menu.Item
-                                title='Add Page After'
-                            />
-                        </View>
-                    </Menu>
+            <>
+                <View style={{ flexDirection: 'row-reverse', paddingHorizontal: MMConstants.paddingMedium }}>
+                    <MMIcon iconName={'pencil'} onPress={() => onPressAdd(item.position)} style={{ margin: MMConstants.marginSmall }} />
+                    <MMIcon iconName={'plus'} onPress={() => onPressAdd(item.position)} style={{ margin: MMConstants.marginSmall }} />
                 </View>
-                {_.map(item.pageDetails, (i, index) => {
-                    return renderQuestionAnswerList(i, index);
-                })
-                }
-            </MMSurface>
+                <MMSurface key={item._id}>
+                    {!isTemplate ? (
+                        <>
+                            <Text style={theme.fonts.titleLarge}>{item.title}</Text>
+                            {_.map(item.pageDetails, (i, index) => {
+                                return renderQuestionAnswerList(i, index);
+                            })}
+                        </>
+                    ) :
+                        renderPage(item.templateId, item.pageDetails)
+
+                    }
+                </MMSurface>
+            </>
         );
     };
 
@@ -114,8 +129,8 @@ export default function BookPreview({ route, navigation }) {
             <FlatList
                 data={bookData}
                 ListHeaderComponent={renderBabyProfile}
-                renderItem={({ item }) => {
-                    return renderBookData(item);
+                renderItem={({ item, index }) => {
+                    return renderBookData(item, index);
                 }}
                 keyExtractor={(item, index) => {
                     return item._id;

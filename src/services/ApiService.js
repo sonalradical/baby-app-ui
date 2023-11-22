@@ -163,6 +163,26 @@ async function getBookPreview(babyId) {
     return result;
 }
 
+async function getPagePreSignedUrl(babyId, fileName) {
+    const config = {
+        url: `page/getPreSignedUrl/${babyId}/${fileName}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+
+async function savePage(data) {
+    const config = {
+        url: `/page/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#end
 //------------------------------------------------------------------ Image upload API
 
@@ -223,6 +243,8 @@ export default {
     getQuiz,
     saveQuiz,
     getBookPreview,
+    savePage,
+    getPagePreSignedUrl,
     getPreSignedUrl,
     getFile,
     deleteFile,

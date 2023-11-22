@@ -1,31 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
-import MMEnums from '../../helpers/Enums';
-import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMSpinner from '../../components/common/Spinner';
 import MMPageTitle from '../../components/common/PageTitle';
 
 export default function TemplateList({ navigation, route }) {
+    const { position } = route.params;
     const theme = useTheme();
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
-    //const [isLoading, setLoading] = useState(true);
-
 
     const renderTemplate = ({ item }) => {
         const templateImage = MMConstants.templates[item.icon];
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
-                onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBabyId, milestoneId: item._id })}>
+                onPress={() => navigation.navigate('MainTemplate', { position: position, templateName: item.code, templateId: item._id })} >
                 <Image
                     textAlign="center"
                     resizeMode="contain"
