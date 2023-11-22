@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import MMConstants from '../../helpers/Constants';
+import * as _ from 'lodash';
 
+import MMApiService from '../../services/ApiService';
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
 import MMPageTitle from '../../components/common/PageTitle';
@@ -12,6 +15,7 @@ const Blank = () => {
     const theme = useTheme();
     const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [selectedName, setSelectedName] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
 
@@ -19,22 +23,76 @@ const Blank = () => {
         setModalVisible(!modalVisible);
     };
 
-    const onImageChange = (response) => {
+    const onImageChange = async (imageData) => {
         if (selectedName && selectedType) {
-            setTemplateData((prevData) => {
-                const newData = [...prevData];
-                const existingItemIndex = newData.findIndex(item => item.name === selectedName);
+            const photo = imageData.assets[0];
+            let storageFileKeys = [];
+            try {
+                setOverlayLoading(true);
+                let picIndex = 0;
 
-                if (existingItemIndex !== -1) {
-                    // Update existing item with new image URI and dynamic type
-                    newData[existingItemIndex] = { ...newData[existingItemIndex], type: selectedType, value: response.assets[0].uri };
-                } else {
-                    // Create a new item if it doesn't exist
-                    newData.push({ name: selectedName, type: selectedType, value: response.assets[0].uri });
+                for (const pic of imageData.assets) {
+                    picIndex++;
+
+                    await MMApiService.getPreSignedUrl(photo.fileName)
+                        .then(function (response) {
+                            (async () => {
+                                const responseData = response.data;
+                                if (responseData) {
+                                    const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
+                                    if (_.isNil(result)) {
+                                        setOverlayLoading(false);
+                                        MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
+                                    } else {
+                                        setOverlayLoading(false);
+                                        MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
+                                        setTemplateData((prevData) => {
+                                            const newData = [...prevData];
+                                            const existingItemIndex = newData.findIndex(item => item.name === selectedName);
+
+                                            if (existingItemIndex !== -1) {
+                                                // Update existing item with new image URI and dynamic type
+                                                newData[existingItemIndex] = {
+                                                    ...newData[existingItemIndex],
+                                                    type: selectedType,
+                                                    value: responseData.storageFileKey,
+                                                    source: photo.uri
+                                                };
+                                            } else {
+                                                // Create a new item if it doesn't exist
+                                                newData.push({
+                                                    name: selectedName, type: selectedType, value: responseData.storageFileKey,
+                                                    source: photo.uri
+                                                });
+                                            }
+                                            return newData;
+                                        });
+                                        storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
+                                    }
+                                } else {
+                                    setOverlayLoading(false);
+                                    MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
+                                }
+                            })();
+                        })
+                        .catch(function (error) {
+                            setOverlayLoading(false);
+                            setState({
+                                ...state,
+                                errors: MMUtils.apiErrorParamMessages(error)
+                            });
+
+                            const serverError = MMUtils.apiErrorMessage(error);
+                            if (serverError) {
+                                MMUtils.showToastMessage(serverError);
+                            }
+                        });
                 }
-
-                return newData;
-            });
+            } catch (err) {
+                setOverlayLoading(false);
+                MMUtils.consoleError(err);
+            }
+            return storageFileKeys;
         }
 
     };

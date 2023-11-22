@@ -31,6 +31,7 @@ import ChapterList from '../screens/chapter/ChapterList';
 import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
 import InitialSetup from '../screens/initialSetup/InitialSetup';
 import { setBaby } from '../redux/Slice/AppSlice';
+import TemplateList from '../screens/templates/TemplateList';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -92,6 +93,10 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="ChapterList"
                     component={ChapterList}
+                />
+                <AppStack.Screen
+                    name="TemplateList"
+                    component={TemplateList}
                 />
                 <AppStack.Screen
                     name="Footer"
