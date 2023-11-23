@@ -15,7 +15,7 @@ const Blank = (props) => {
 
     return (
         <>
-            <TouchableOpacity style={[styles(theme).container, { borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
+            <TouchableOpacity style={[{ borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
                 onPress={() => onPickImage('p1', 'img')}>
                 {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                     style={styles(theme).image} /> :
@@ -26,15 +26,7 @@ const Blank = (props) => {
 };
 
 const styles = (theme) => StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: Dimensions.get('window').height / 2,
-        margin: MMConstants.marginMedium,
-        borderColor: theme.colors.outline,
-        borderWidth: 1,
-        borderStyle: 'dashed',
-    },
+
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
         borderRadius: 50,
@@ -43,9 +35,6 @@ const styles = (theme) => StyleSheet.create({
         width: '100%',
         height: Dimensions.get('window').height / 2,
         resizeMode: 'cover',
-        borderWidth: 1,
-        borderColor: theme.colors.outline,
-        borderRadius: 8,
     },
 });
 

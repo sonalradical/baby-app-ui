@@ -12,9 +12,12 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { MMButton } from '../../components/common/Button';
 import { reloadBookPage } from '../../redux/Slice/AppSlice';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
+    const theme = useTheme();
     const { position, templateName, templateId } = route.params || '';
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const [templateData, setTemplateData] = useState([]);
@@ -137,7 +140,9 @@ export default function MainTemplate({ navigation, route }) {
         const ComponentName = MMEnums.Components[templateName]
         return (
             <>
-                <ComponentName onPickImage={onPickImage} templateData={templateData} />
+                <View style={[styles(theme).container]}>
+                    <ComponentName onPickImage={onPickImage} templateData={templateData} />
+                </View>
                 <MMButton label='Save Page' onPress={() => onSavePage()} />
                 <MMImagePickerModal
                     visible={modalVisible}
@@ -155,6 +160,17 @@ export default function MainTemplate({ navigation, route }) {
         </MMContentContainer>
     );
 }
+
+
+
+const styles = (theme) => StyleSheet.create({
+    container: {
+        height: Dimensions.get('window').height / 2,
+        borderColor: theme.colors.outline,
+        borderStyle: 'dashed',
+        borderWidth: 1,
+    }
+});
 
 MainTemplate.propTypes = {
     navigation: PropTypes.object,

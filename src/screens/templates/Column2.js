@@ -9,11 +9,15 @@ import MMIcon from '../../components/common/Icon';
 
 const Column2 = (props) => {
     const theme = useTheme();
-    const { onPickImage, templateData } = props;
+    const { onPickImage, borderWidth = 1, templateData } = props;
 
     return (
-        <View style={styles(theme).container}>
-            <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
+        <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            flex: 1
+        }}>
+            <TouchableOpacity style={[styles(theme).column, { borderRightWidth: borderWidth, borderColor: theme.colors.outline, borderStyle: 'dashed' }]}
                 onPress={() => onPickImage('p1', 'img')}>
                 {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                     style={styles(theme).image} /> :
@@ -30,31 +34,21 @@ const Column2 = (props) => {
 };
 
 const styles = (theme) => StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: Dimensions.get('window').height / 2,
-        borderColor: theme.colors.outline,
-        borderWidth: 1,
-        margin: MMConstants.marginMedium,
-        borderStyle: 'dashed'
-    },
+
     column: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        paddingRight: 1,
     },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
-        borderRadius: 50,
-
+        borderRadius: 50
     },
     image: {
         width: '100%',
         height: Dimensions.get('window').height / 2,
-        resizeMode: 'cover',
-        borderWidth: 1,
-        borderColor: theme.colors.outline,
+        resizeMode: 'cover'
     },
 });
 
