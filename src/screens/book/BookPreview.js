@@ -68,6 +68,13 @@ export default function BookPreview({ route, navigation }) {
         navigation.navigate('TemplateList', { position: pagePosition })
     };
 
+    const onPressEdit = (bookData, template) => {
+        navigation.navigate('MainTemplate', {
+            position: bookData.position,
+            templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id
+        })
+    };
+
     const renderQuestionAnswerList = (item, index) => {
         return (
             <List.Item
@@ -82,11 +89,8 @@ export default function BookPreview({ route, navigation }) {
         );
     };
 
-    const renderPage = (templateId, pageDetails) => {
-        let templateName = null;
-        const template = _.find(lookupData.template, { '_id': templateId });
-        templateName = template.code;
-        const ComponentName = MMEnums.Components[templateName]
+    const renderTemplatePage = (template, pageDetails) => {
+        const ComponentName = MMEnums.Components[template.code]
         const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
             pageDetail.source = MMUtils.getImagePath(pageDetail.value)
             return pageDetail;
@@ -100,46 +104,46 @@ export default function BookPreview({ route, navigation }) {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
         const chapterImage = !isTemplate && item?.icon ? MMConstants.chapters[item.icon] : null;
+        const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
         return (
             <>
                 <MMSurface key={item._id} margin={[0, 0, 0, 0]} padding={[0, 0, 0, 0]}>
-                    {!isTemplate ? (
-                        <>
-                            <View style={[styles(theme).title, { backgroundColor: item.color }]}>
-                                <View style={styles(theme).imageView}>
-                                    <Image
-                                        textAlign="center"
-                                        resizeMode="contain"
-                                        source={chapterImage}
-                                        style={styles(theme).image}
-                                    />
+                    {isTemplate ?
+                        renderTemplatePage(template, item.pageDetails) :
+                        (
+                            <>
+                                <View style={[styles(theme).title, { backgroundColor: item.color }]}>
+                                    <View style={styles(theme).imageView}>
+                                        <Image
+                                            textAlign="center"
+                                            resizeMode="contain"
+                                            source={chapterImage}
+                                            style={styles(theme).image}
+                                        />
+                                    </View>
+                                    <MMPageTitle title={item.title}
+                                        optionalStyle={{
+                                            marginTop: MMConstants.marginLarge,
+                                            paddingHorizontal: MMConstants.paddingLarge,
+                                            color: theme.colors.secondaryContainer
+                                        }} />
                                 </View>
-                                <MMPageTitle title={item.title}
-                                    optionalStyle={{
-                                        marginTop: MMConstants.marginLarge,
-                                        paddingHorizontal: MMConstants.paddingLarge,
-                                        color: theme.colors.secondaryContainer,
-                                        marginLeft: 50
-                                    }} />
-                            </View>
-                            {_.map(item.pageDetails, (i, index) => {
-                                return renderQuestionAnswerList(i, index);
-                            })}
-                        </>
-                    ) :
-                        renderPage(item.templateId, item.pageDetails)
+                                {_.map(item.pageDetails, (i, index) => {
+                                    return renderQuestionAnswerList(i, index);
+                                })}
+                            </>
+                        )
                     }
                 </MMSurface>
                 <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium }}>
                     <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
                     {isTemplate ?
                         <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
-                            onPress={() => onPressAdd(item.position)} style={{ marginLeft: 15, marginTop: 5 }} /> : null}
+                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: 5 }} /> : null}
                     <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
                         <Text>Page {index + 1}</Text>
                     </View>
                 </View>
-
             </>
         );
     };
