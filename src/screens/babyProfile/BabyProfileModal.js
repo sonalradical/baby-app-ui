@@ -21,7 +21,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const navigation = useNavigation();
-	const [isLoading, setIsLoding] = useState(false);
+	const [isLoading, setLoding] = useState(true);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
 
@@ -33,7 +33,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	async function Init() {
 		try {
-			setIsLoding(true);
+			setLoding(true);
 			console.log('Loading baby profile list...');
 			const response = await MMApiService.babyList();
 			if (response.data) {
@@ -50,11 +50,11 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				}
 				setBabyList(babyProfiles);
 			}
-			setIsLoding(false);
+			setLoding(false);
 		} catch (error) {
 			setBabyList([]);
 			setSelectedBabyDetail();
-			setIsLoding(false);
+			setLoding(false);
 			const serverError = MMUtils.apiErrorMessage(error);
 			if (serverError) {
 				MMUtils.showToastMessage(serverError);

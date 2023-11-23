@@ -23,7 +23,7 @@ export default function ChapterList() {
     const navigation = useNavigation();
     const selectedBabyId = useSelector((state) => state.AppReducer.baby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {

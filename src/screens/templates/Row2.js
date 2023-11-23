@@ -1,74 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
+import * as _ from 'lodash';
+
 import MMConstants from '../../helpers/Constants';
-
 import MMIcon from '../../components/common/Icon';
-import MMImagePickerModal from '../../components/common/imagePickerModal';
-import MMPageTitle from '../../components/common/PageTitle';
 
-const Row2 = () => {
+const Row2 = (props) => {
     const theme = useTheme();
-    const [row1Image, setRow1Image] = useState(null);
-    const [row2Image, setRow2Image] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedRow, setSelectedRow] = useState(null);
-
-    const toggleModal = () => {
-        setModalVisible(!modalVisible);
-    };
-
-    const onImageChange = (response) => {
-        if (selectedRow === 'row1') {
-            setRow1Image(response.assets[0].uri);
-        } else if (selectedRow === 'row2') {
-            setRow2Image(response.assets[0].uri);
-        }
-    };
-
-    const onPickImage = (row) => {
-        setSelectedRow(row);
-        toggleModal();
-    };
+    const { onPickImage, templateData, borderWidth = 1 } = props;
 
     return (
-        <>
-            <MMPageTitle title={`Select your baby's photo`} />
-            <View style={styles(theme).container}>
-                <TouchableOpacity style={[styles(theme).row, { borderBottomWidth: 1, borderBottomColor: theme.colors.outline }]}
-                    onPress={() => onPickImage('row1')}>
-                    {row1Image ? <Image source={{ uri: row1Image }} style={styles(theme).image} /> :
-                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
-                </TouchableOpacity>
-                <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('row2')}>
-                    {row2Image ? <Image source={{ uri: row2Image }} style={styles(theme).image} /> :
-                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
-                </TouchableOpacity>
-            </View>
-            <MMImagePickerModal
-                visible={modalVisible}
-                toggleModal={toggleModal}
-                onImageChange={onImageChange}
-            />
-        </>
+        <View style={{
+            flexDirection: 'column',
+            justifyContent: 'space-between', flex: 1
+        }
+        }>
+            <TouchableOpacity style={[styles(theme).row, { borderBottomWidth: borderWidth, borderBottomColor: theme.colors.outline }]}
+                onPress={() => onPickImage('p1', 'img')}>
+                {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
+                    style={styles(theme).image} /> :
+                    <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
+            </TouchableOpacity>
+            <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('p2', 'img')}>
+                {templateData.some(item => item.name === 'p2') ? <Image source={{ uri: templateData.find(item => item.name === 'p2').source }}
+                    style={styles(theme).image} /> :
+                    <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
+            </TouchableOpacity>
+        </View>
     );
 };
 
 const styles = (theme) => StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: Dimensions.get('window').height / 2,
-        borderColor: theme.colors.outline,
-        borderWidth: 1,
-        margin: MMConstants.marginMedium,
-        borderStyle: 'dashed',
-    },
+
     row: {
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
+        paddingVertical: 1,
+
     },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
@@ -78,8 +49,6 @@ const styles = (theme) => StyleSheet.create({
         width: '100%',
         height: Dimensions.get('window').height / 4,
         resizeMode: 'cover',
-        borderWidth: 1,
-        borderColor: theme.colors.outline,
     },
 });
 

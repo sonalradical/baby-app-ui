@@ -129,11 +129,13 @@ async function getTypeList(babyId, type) {
     return result;
 }
 
+//#end
+
 //------------------------------------------------------------------ Quiz API
 
 async function getQuiz(babyId, chapterId) {
     const config = {
-        url: `quiz/getQuiz/${chapterId}/${babyId}`,
+        url: `quiz/get/${chapterId}/${babyId}`,
         method: 'get'
     };
     const result = await axios(config);
@@ -150,6 +152,38 @@ async function saveQuiz(data) {
     return result;
 }
 
+//------------------------------------------------------------------ Book Preview API
+
+async function getBookPreview(babyId) {
+    const config = {
+        url: `book/bookPreview/${babyId}`,
+        method: 'post'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function getPagePreSignedUrl(babyId, fileName) {
+    const config = {
+        url: `page/getPreSignedUrl/${babyId}/${fileName}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+
+async function savePage(data) {
+    const config = {
+        url: `/page/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
@@ -189,7 +223,7 @@ async function addInit() {
     const result = await axios(config);
     return result;
 }
-
+//#end
 //------------------------------------------------------------------- Export All APIs
 //#region
 export default {
@@ -208,6 +242,9 @@ export default {
     getTypeList,
     getQuiz,
     saveQuiz,
+    getBookPreview,
+    savePage,
+    getPagePreSignedUrl,
     getPreSignedUrl,
     getFile,
     deleteFile,

@@ -99,7 +99,6 @@ export default function InitialSetup({ route, navigation }) {
 
                 await MMApiService.updateInItProfile(apiData)
                     .then(function (response) {
-                        console.log(response, 'response')
                         if (response) {
                             MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data.userDetail));
                             dispatch(setLogin({ userDetail: response.data.userDetail, accessToken: accessToken }));

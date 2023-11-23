@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { navigationRef } from '../services/NavigationServices';
 import { useDispatch, useSelector } from 'react-redux';
+import { setBaby } from '../redux/Slice/AppSlice';
 import _ from 'lodash';
 
 import { setLogin } from '../redux/Slice/AuthSlice';
@@ -30,7 +31,8 @@ import Header from '../screens/header/Header';
 import ChapterList from '../screens/chapter/ChapterList';
 import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
 import InitialSetup from '../screens/initialSetup/InitialSetup';
-import { setBaby } from '../redux/Slice/AppSlice';
+import TemplateList from '../screens/templates/TemplateList';
+import MainTemplate from '../screens/templates/MainTemplate';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -94,6 +96,14 @@ function AppStackNavigator(userDetail) {
                     component={ChapterList}
                 />
                 <AppStack.Screen
+                    name="TemplateList"
+                    component={TemplateList}
+                />
+                <AppStack.Screen
+                    name="MainTemplate"
+                    component={MainTemplate}
+                />
+                <AppStack.Screen
                     name="Footer"
                     component={Footer}
                 />
@@ -101,6 +111,7 @@ function AppStackNavigator(userDetail) {
                     name="Logout"
                     component={Logout}
                 />
+
 
             </AppStack.Navigator>
         </NavigationContainer>

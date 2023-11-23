@@ -23,7 +23,7 @@ import MMFlexView from '../../components/common/FlexView';
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
     const theme = useTheme();
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const initialState = {
         description: '',
@@ -58,8 +58,8 @@ export default function MilestoneQuiz({ navigation, route }) {
                         imageSourceUri = MMUtils.getImagePath(answer.picture);
                         setImageSource(imageSourceUri);
                     }
-                    setLoading(false);
                 }
+                setLoading(false);
             } catch (error) {
                 const serverError = MMUtils.apiErrorMessage(error);
                 if (serverError) {
@@ -155,10 +155,9 @@ export default function MilestoneQuiz({ navigation, route }) {
             }
             const response = await MMApiService.saveQuiz(apiData);
             if (response) {
-                console.log('saved...', response)
-                setLoading(false);
                 navigation.navigate('MilestoneList', { milestoneId: milestoneId })
             }
+            setLoading(false);
         } catch (error) {
             const serverError = MMUtils.apiErrorMessage(error);
             if (serverError) {
