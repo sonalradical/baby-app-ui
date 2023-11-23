@@ -10,7 +10,6 @@ import MMIcon from '../../components/common/Icon';
 const Column2 = (props) => {
     const theme = useTheme();
     const { onPickImage, templateData } = props;
-    console.log(templateData, 'templateData')
 
     return (
         <View style={styles(theme).container}>
