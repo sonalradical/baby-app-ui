@@ -14,7 +14,7 @@ const Blank = (props) => {
     } = props;
 
     return (
-        <TouchableOpacity style={[{ borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
+        <TouchableOpacity style={{ flex: 1 }}
             onPress={() => onPickImage('p1', 'img')}>
             {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                 style={styles(theme).image} /> :
