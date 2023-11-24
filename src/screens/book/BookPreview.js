@@ -8,9 +8,8 @@ import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
 import MMSurface from '../../components/common/Surface';
 import MMSpinner from '../../components/common/Spinner';
-import MMPageTitle from '../../components/common/PageTitle';
 import { Avatar, List, Text, useTheme } from 'react-native-paper';
-import { Dimensions, FlatList, Keyboard, StyleSheet, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import Icon from 'react-native-vector-icons/Feather';
 import CommonTemplate from '../../components/common/CommonTemplate';
@@ -21,7 +20,6 @@ export default function BookPreview({ route, navigation }) {
     const reloadBookPage = useSelector((state) => state.AppReducer.reloadBookPage)
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isLoading, setLoading] = useState(true);
-    const [babyDetail, setBabyDetail] = useState();
     const [bookData, setBookData] = useState();
 
     useEffect(() => {
@@ -128,7 +126,6 @@ export default function BookPreview({ route, navigation }) {
         return (
             <FlatList
                 data={bookData}
-                //ListHeaderComponent={renderBabyProfile}
                 renderItem={({ item, index }) => {
                     return renderBookData(item, index);
                 }}
