@@ -19,7 +19,6 @@ const flexViewStyle = function (alignItems) {
 	const alignItemsValue = (_.isNil(alignItems) ? defaultSetting.alignItems : alignItems);
 
 	return {
-		//flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: alignItemsValue,
