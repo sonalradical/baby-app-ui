@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 import MMSpinner from '../../components/common/Spinner';
 import MMPageTitle from '../../components/common/PageTitle';
@@ -15,6 +14,7 @@ import { Dimensions, FlatList, Image, Keyboard, StyleSheet, View } from 'react-n
 import MMConstants from '../../helpers/Constants';
 import Icon from 'react-native-vector-icons/Feather';
 import MMEnums from '../../helpers/Enums';
+import CommonTemplate from '../../components/common/CommonTemplate';
 
 export default function BookPreview({ route, navigation }) {
     const theme = useTheme();
@@ -90,13 +90,12 @@ export default function BookPreview({ route, navigation }) {
     };
 
     const renderTemplatePage = (template, pageDetails) => {
-        const ComponentName = MMEnums.Components[template.code]
         const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
             pageDetail.source = MMUtils.getImagePath(pageDetail.value)
             return pageDetail;
         });
         return (
-            <ComponentName borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true} />
+            <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true} templateName={template.code} />
         )
     };
 

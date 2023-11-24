@@ -17,6 +17,7 @@ import { useTheme } from 'react-native-paper';
 import MMFlexView from '../../components/common/FlexView';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
+import CommonTemplate from '../../components/common/CommonTemplate';
 
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
@@ -177,12 +178,11 @@ export default function MainTemplate({ navigation, route }) {
     };
 
     const renderView = () => {
-        const ComponentName = MMEnums.Components[templateName]
         return (
             <>
                 <MMPageTitle title='Select Image' />
                 <View style={[styles(theme).container]}>
-                    <ComponentName onPickImage={onPickImage} templateData={templateData} />
+                    <CommonTemplate onPickImage={onPickImage} templateData={templateData} templateName={templateName} />
                 </View>
                 <View style={{ paddingTop: 10 }}>
                     {
