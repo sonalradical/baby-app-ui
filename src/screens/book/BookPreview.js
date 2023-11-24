@@ -9,11 +9,10 @@ import MMApiService from '../../services/ApiService';
 import MMSurface from '../../components/common/Surface';
 import MMSpinner from '../../components/common/Spinner';
 import MMPageTitle from '../../components/common/PageTitle';
-import { Avatar, Button, Divider, List, Menu, Text, useTheme } from 'react-native-paper';
-import { Dimensions, FlatList, Image, Keyboard, StyleSheet, View } from 'react-native';
+import { Avatar, List, Text, useTheme } from 'react-native-paper';
+import { Dimensions, FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import Icon from 'react-native-vector-icons/Feather';
-import MMEnums from '../../helpers/Enums';
 import CommonTemplate from '../../components/common/CommonTemplate';
 
 export default function BookPreview({ route, navigation }) {
@@ -186,12 +185,5 @@ const styles = (theme) => StyleSheet.create({
     title: {
         flexDirection: 'row',
         padding: MMConstants.paddingLarge
-    },
-    image: {
-        width: Dimensions.get('window').width / 10,
-        height: Dimensions.get('window').height / 20,
-        backgroundColor: theme.colors.secondaryContainer,
-        padding: 20,
-        borderRadius: 50,
-    },
+    }
 });
