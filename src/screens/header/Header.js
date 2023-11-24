@@ -10,7 +10,7 @@ import MMBabyProfileModal from '../babyProfile/BabyProfileModal';
 
 export default function Header(props) {
     const { showHome } = props;
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const reloadPage = useSelector((state) => state.AppReducer.reloadPage)
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,13 +18,13 @@ export default function Header(props) {
 
     useEffect(() => {
         loadBabyProfileDetail();
-    }, [selectedBabyId, reloadPage]);
+    }, [selectedBaby, reloadPage]);
 
     const loadBabyProfileDetail = async () => {
         setOverlayLoading(true);
-        if (selectedBabyId || reloadPage) {
+        if (selectedBaby || reloadPage) {
             try {
-                const response = await MMApiService.getBabyById(selectedBabyId);
+                const response = await MMApiService.getBabyById(selectedBaby._id);
                 if (response.data) {
                     setBabyDetail(response.data);
                 }

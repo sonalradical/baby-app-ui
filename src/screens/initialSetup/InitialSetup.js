@@ -103,8 +103,8 @@ export default function InitialSetup({ route, navigation }) {
                             MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data.userDetail));
                             dispatch(setLogin({ userDetail: response.data.userDetail, accessToken: accessToken }));
                             if (state.situation == MMEnums.situation.currentlyPregnant) {
-                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, response.data.babyDetail._id);
-                                dispatch(setBaby(response.data.babyDetail._id));
+                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(response.data.babyDetail));
+                                dispatch(setBaby(response.data.babyDetail));
                                 navigation.navigate('Footer');
                             } else {
                                 navigation.navigate('AddEditBaby');

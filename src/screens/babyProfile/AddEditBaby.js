@@ -184,11 +184,11 @@ export default function AddEditBaby({ route }) {
                     await MMApiService.saveBaby(apiData)
                         .then(function (response) {
                             if (response) {
-                                dispatch(setBaby(response.data._id));
+                                dispatch(setBaby(response.data));
                                 if (babyId) {
                                     dispatch(reloadPage({ reloadPage: true }));
                                 }
-                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, response.data._id);
+                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(response.data));
                                 navigation.navigate('Footer');
                             }
 

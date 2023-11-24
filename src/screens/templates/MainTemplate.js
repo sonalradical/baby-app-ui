@@ -23,7 +23,7 @@ export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
     const { position, templateName, templateId, pageId, pageDetails } = route.params || '';
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
@@ -57,7 +57,7 @@ export default function MainTemplate({ navigation, route }) {
                 for (const pic of imageData.assets) {
                     picIndex++;
 
-                    await MMApiService.getPagePreSignedUrl(selectedBabyId, photo.fileName)
+                    await MMApiService.getPagePreSignedUrl(selectedBaby._id, photo.fileName)
                         .then(function (response) {
                             (async () => {
                                 const responseData = response.data;
@@ -132,7 +132,7 @@ export default function MainTemplate({ navigation, route }) {
             setOverlayLoading(true);
             const apiData = {
                 id: pageId ? pageId : null,
-                babyId: selectedBabyId,
+                babyId: selectedBaby._id,
                 templateId,
                 position,
                 pageDetails

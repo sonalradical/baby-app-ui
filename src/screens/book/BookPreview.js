@@ -17,7 +17,7 @@ import CommonTemplate from '../../components/common/CommonTemplate';
 
 export default function BookPreview({ route, navigation }) {
     const theme = useTheme();
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const reloadBookPage = useSelector((state) => state.AppReducer.reloadBookPage)
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isLoading, setLoading] = useState(true);
@@ -25,16 +25,15 @@ export default function BookPreview({ route, navigation }) {
     const [bookData, setBookData] = useState();
 
     useEffect(() => {
-        if (selectedBabyId || reloadBookPage) {
-            loadBabyProfileDetail();
+        if (selectedBaby || reloadBookPage) {
             loadBookPreview();
         }
-    }, [selectedBabyId, reloadBookPage]);
+    }, [selectedBaby, reloadBookPage]);
 
     const loadBookPreview = async () => {
         setLoading(true);
         try {
-            const response = await MMApiService.getBookPreview(selectedBabyId);
+            const response = await MMApiService.getBookPreview(selectedBaby._id);
             if (response.data) {
                 setBookData(response.data);
             }
@@ -46,15 +45,6 @@ export default function BookPreview({ route, navigation }) {
         }
         setLoading(false);
     };
-
-    const loadBabyProfileDetail = async () => {
-        setLoading(true);
-        const response = await MMApiService.getBabyById(selectedBabyId);
-        if (response.data) {
-            setBabyDetail(response.data);
-        }
-        setLoading(false);
-    }
 
     const onPressAdd = (currentPosition) => {
         let nextItemPosition = currentPosition + 10;
@@ -149,23 +139,6 @@ export default function BookPreview({ route, navigation }) {
                 keyboardShouldPersistTaps={'handled'}
                 enableEmptySections={true}
             />
-        );
-    };
-
-    const renderBabyProfile = () => {
-        if (!babyDetail || babyDetail.length === 0) return null;
-        const birthDate = MMUtils.displayDate(babyDetail.birthDate)
-        const babyImage = babyDetail.picture ? MMUtils.getImagePath(babyDetail.picture) : require('../../assets/images/parenthood.jpg')
-
-        return (
-            <MMSurface>
-                <MMPageTitle title='Memory Book' />
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={theme.fonts.titleMedium}>{birthDate}</Text>
-                    <Avatar.Image size={150} source={{ uri: babyImage }} style={{ marginTop: MMConstants.marginMedium }} />
-                    <Text style={[theme.fonts.headlineMedium, { marginTop: MMConstants.marginMedium }]}>{babyDetail.name}</Text>
-                </View>
-            </MMSurface>
         );
     };
 

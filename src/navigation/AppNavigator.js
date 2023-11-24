@@ -129,10 +129,10 @@ export default function AppNavigator() {
     const initApp = async () => {
         const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
         const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
-        const babyId = await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby);
+        const baby = await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby);
 
         if (accessToken && existingUserDetail) {
-            dispatch(setBaby(babyId));
+            dispatch(setBaby(JSON.parse(baby)));
             dispatch(setLogin({
                 accessToken,
                 userDetail: JSON.parse(existingUserDetail),
