@@ -58,7 +58,7 @@ export default function BookPreview({ route, navigation }) {
     }
 
     const onPressAdd = (currentPosition) => {
-        let nextItemPosition = null;
+        let nextItemPosition = currentPosition + 10;
         const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
         if (currentIndex < bookData.length - 1) {
             const nextItem = bookData[currentIndex + 1];
@@ -96,7 +96,7 @@ export default function BookPreview({ route, navigation }) {
             return pageDetail;
         });
         return (
-            <ComponentName borderWidth={0} onPickImage={null} templateData={customPageDetails} />
+            <ComponentName borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true} />
         )
     };
 

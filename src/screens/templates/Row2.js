@@ -9,7 +9,7 @@ import MMIcon from '../../components/common/Icon';
 
 const Row2 = (props) => {
     const theme = useTheme();
-    const { onPickImage, templateData, borderWidth = 1 } = props;
+    const { onPickImage, templateData, borderWidth = 1, isDisable = false } = props;
 
     return (
         <View style={{
@@ -18,12 +18,12 @@ const Row2 = (props) => {
         }
         }>
             <TouchableOpacity style={[styles(theme).row, { borderBottomWidth: borderWidth, borderBottomColor: theme.colors.outline }]}
-                onPress={() => onPickImage('p1', 'img')}>
+                onPress={() => onPickImage('p1', 'img')} disabled={isDisable}>
                 {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                     style={styles(theme).image} /> :
                     <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
             </TouchableOpacity>
-            <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('p2', 'img')}>
+            <TouchableOpacity style={styles(theme).row} onPress={() => onPickImage('p2', 'img')} disabled={isDisable}>
                 {templateData.some(item => item.name === 'p2') ? <Image source={{ uri: templateData.find(item => item.name === 'p2').source }}
                     style={styles(theme).image} /> :
                     <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}

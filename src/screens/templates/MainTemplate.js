@@ -28,6 +28,10 @@ export default function MainTemplate({ navigation, route }) {
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [selectedName, setSelectedName] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [imageSize, setImageSize] = useState({
+        height: 0,
+        width: 0
+    })
 
 
     const toggleModal = () => {
@@ -43,6 +47,7 @@ export default function MainTemplate({ navigation, route }) {
     const onImageChange = async (imageData) => {
         if (selectedName && selectedType) {
             const photo = imageData.assets[0];
+            setImageSize({ height: imageData.height, width: imageData.width })
             let storageFileKeys = [];
             try {
                 setOverlayLoading(true);

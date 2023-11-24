@@ -1,5 +1,6 @@
 import Blank from "../screens/templates/Blank";
 import Column2 from "../screens/templates/Column2";
+import Column2Row from "../screens/templates/Column2-Row";
 import Row2 from "../screens/templates/Row2";
 import Row2Column2 from "../screens/templates/Row2-Column2";
 
@@ -43,7 +44,8 @@ const MMEnums = {
         Blank: Blank,
         Column2: Column2,
         Row2: Row2,
-        //"Row2-Column2": Row2Column2
+        "Row2-Column2": Row2Column2,
+        "Column2-Row": Column2Row
     }
 };
 

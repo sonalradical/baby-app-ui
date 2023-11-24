@@ -38,10 +38,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 				</>
 			}
 			{showHome ? <Appbar.Action icon="home" onPress={() => navigation.navigate('Home')} /> :
-				<>
-					<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />
-					<Appbar.Action icon="cart" onPress={() => console.log('cart pressed')} />
-				</>}
+				<Appbar.Action icon="bell" onPress={() => console.log('Bell pressed')} />}
 		</Appbar.Header>
 	);
 };

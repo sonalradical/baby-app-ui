@@ -10,12 +10,12 @@ import MMIcon from '../../components/common/Icon';
 const Blank = (props) => {
     const theme = useTheme();
     const {
-        onPickImage, templateData
+        onPickImage, templateData, isDisable = false
     } = props;
 
     return (
         <TouchableOpacity style={styles(theme).container}
-            onPress={() => onPickImage('p1', 'img')}>
+            onPress={() => onPickImage('p1', 'img')} disabled={isDisable}>
             {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                 style={styles(theme).image} /> :
                 <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
