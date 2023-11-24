@@ -25,7 +25,6 @@ export default function Home() {
 
     useEffect(() => { //  when there is no selectedBabyId set 1st baby
         if (_.isEmpty(selectedBaby)) {
-            console.log('selectedBaby...')
             Init();
         }
     }, [selectedBaby]);
