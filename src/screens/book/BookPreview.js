@@ -113,20 +113,8 @@ export default function BookPreview({ route, navigation }) {
                         (
                             <>
                                 <View style={[styles(theme).title, { backgroundColor: item.color }]}>
-                                    <View style={styles(theme).imageView}>
-                                        <Image
-                                            textAlign="center"
-                                            resizeMode="contain"
-                                            source={chapterImage}
-                                            style={styles(theme).image}
-                                        />
-                                    </View>
-                                    <MMPageTitle title={item.title}
-                                        optionalStyle={{
-                                            marginTop: MMConstants.marginLarge,
-                                            paddingHorizontal: MMConstants.paddingLarge,
-                                            color: theme.colors.secondaryContainer
-                                        }} />
+                                    <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
+                                    <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{item.title}</Text>
                                 </View>
                                 {_.map(item.pageDetails, (i, index) => {
                                     return renderQuestionAnswerList(i, index);
@@ -198,20 +186,13 @@ BookPreview.propTypes = {
 const styles = (theme) => StyleSheet.create({
     title: {
         flexDirection: 'row',
-        paddingLeft: 10,
+        padding: MMConstants.paddingLarge
     },
     image: {
-        width: Dimensions.get('window').width / 8,
-        height: Dimensions.get('window').height / 16,
+        width: Dimensions.get('window').width / 10,
+        height: Dimensions.get('window').height / 20,
+        backgroundColor: theme.colors.secondaryContainer,
+        padding: 20,
         borderRadius: 50,
     },
-    imageView: {
-        borderRadius: 50,
-        backgroundColor: theme.colors.secondaryContainer,
-        width: Dimensions.get('window').width / 8 + 8,
-        height: Dimensions.get('window').height / 16 + 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: MMConstants.marginSmall,
-    }
 });

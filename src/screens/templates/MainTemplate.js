@@ -227,7 +227,7 @@ export default function MainTemplate({ navigation, route }) {
 
 const styles = (theme) => StyleSheet.create({
     container: {
-        height: Dimensions.get('window').height / 2,
+        height: Dimensions.get('window').width - 48,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
         borderWidth: 1,

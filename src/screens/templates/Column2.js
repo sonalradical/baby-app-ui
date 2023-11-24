@@ -17,7 +17,7 @@ const Column2 = (props) => {
             justifyContent: 'space-between',
             flex: 1
         }}>
-            <TouchableOpacity style={[styles(theme).column, { borderRightWidth: borderWidth, borderColor: theme.colors.outline, borderStyle: 'dashed' }]}
+            <TouchableOpacity style={[styles(theme).column, { borderRightWidth: borderWidth, borderColor: theme.colors.outline }]}
                 onPress={() => onPickImage('p1', 'img')} disabled={isDisable}>
                 {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                     style={styles(theme).image} /> :
