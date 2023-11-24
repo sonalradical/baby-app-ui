@@ -14,7 +14,7 @@ const Blank = (props) => {
     } = props;
 
     return (
-        <TouchableOpacity style={{ flex: 1 }}
+        <TouchableOpacity style={styles(theme).container}
             onPress={() => onPickImage('p1', 'img')}>
             {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
                 style={styles(theme).image} /> :
@@ -24,6 +24,11 @@ const Blank = (props) => {
 };
 
 const styles = (theme) => StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+    },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
         borderRadius: 50,
