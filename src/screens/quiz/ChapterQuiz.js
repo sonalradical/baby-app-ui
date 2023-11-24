@@ -17,6 +17,7 @@ import MMUtils from '../../helpers/Utils';
 
 import { reloadChapterList } from '../../redux/Slice/AppSlice';
 import MMApiService from '../../services/ApiService';
+import MMInput from '../../components/common/Input';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, title } = route.params;
@@ -27,6 +28,7 @@ export default function ChapterQuiz({ navigation, route }) {
     const [selectedAnswer, setSelectedAnswer] = useState([]);
     const [questionList, setQuestionList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
+    const [newOption, setNewOption] = useState('');
 
     useEffect(() => {
         loadQuiz();
@@ -145,6 +147,25 @@ export default function ChapterQuiz({ navigation, route }) {
 
     };
 
+
+    const onAddOption = () => {
+        if (newOption.trim() !== '') {
+            const updatedOptions = [...questionList[selectedQuestion].options, newOption];
+
+            // Update the specific question in the array
+            setQuestionList((prevQuestionList) => {
+                const updatedQuestions = [...prevQuestionList];
+                updatedQuestions[selectedQuestion] = {
+                    ...updatedQuestions[selectedQuestion],
+                    options: updatedOptions,
+                };
+                return updatedQuestions;
+            });
+            setSelectedAnswer([...selectedAnswer, newOption]);
+            setNewOption('');
+        }
+    };
+
     const renderView = () => {
         if (!questionList || questionList.length === 0) return null;
         const currentQuestionType = questionList[selectedQuestion].questionType;
@@ -180,6 +201,10 @@ export default function ChapterQuiz({ navigation, route }) {
                                     <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
                                 </View>
                             ))}
+                            <MMInput placeholder='Add Option' value={newOption}
+                                onChangeText={(text) => setNewOption(text)}
+                                rightIcon={'plus'}
+                                onPress={onAddOption} />
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.text && (
