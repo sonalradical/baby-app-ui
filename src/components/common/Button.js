@@ -49,7 +49,7 @@ function MMTransparentButton(props) {
     const { label, style } = props;
 
     return (
-        <Button variant="none" transparent {...props} style={style}>
+        <Button variant="none" transparent {...props} style={[style, { marginLeft: -5 }]}>
             <Text style={{ color: theme.colors.primary }}>{label}</Text>
         </Button>
     );

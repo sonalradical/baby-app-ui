@@ -133,7 +133,7 @@ export default function InitialSetup({ route, navigation }) {
         return (
             <>
                 <View style={{ padding: MMConstants.paddingLarge }}>
-                    <MMPageTitle title='TELL US A BIT ABOUT YOURSELF' />
+                    <MMPageTitle title='Tell us a bit about yourself' />
                     <View>
                         <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
                         <View style={{ flexDirection: 'row' }}>

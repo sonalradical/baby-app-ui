@@ -6,7 +6,7 @@ const fontConfig = {
     fontFamily: 'MaisonNeue-Book',
     letterSpacing: 0.05,
     fontSize: 15,
-    color: '#153634',
+    color: '#000',
   },
   displayLarge: {
     fontSize: 50, // Large headings
@@ -54,7 +54,7 @@ const fontConfig = {
   },
   titleMedium: {
     fontWeight: 500,
-    color: '#153634',
+    color: '#000',
   },
   headlineLarge: {
     fontFamily: 'TangerineRegular',
@@ -71,7 +71,7 @@ export const lightMMTheme = {
     ...DefaultTheme.colors,
     primary: '#9E8CCC', // Main primary colors
     secondary: '#F68D43', // Main secondary color
-    background: '#F8F4E9', // Default background color
+    background: '#FCFAF6', // Default background color
     secondaryContainer: '#FFFFFF',
     text: {
       primary: '#153634', // Primary text color

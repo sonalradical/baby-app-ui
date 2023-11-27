@@ -189,8 +189,8 @@ export default function OTPView({ navigation, route }) {
                     {
                         isResendVisible
                             ? (
-                                <View style={{ marginTop: MMConstants.marginLarge }}>
-                                    <Text style={[theme.fonts.default, { alignSelf: 'center' }]}>Didn’t get the OTP?</Text>
+                                <View style={{ marginTop: MMConstants.marginLarge, flexDirection: 'row', alignSelf: 'center' }}>
+                                    <Text style={[theme.fonts.default, { marginTop: MMConstants.marginMedium }]}>Didn’t get the OTP ?</Text>
                                     <MMTransparentButton label="Resend OTP" textColor={theme.colors.primary} onPress={() => onResendOTP()} />
                                 </View>
                             )
