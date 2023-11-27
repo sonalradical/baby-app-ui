@@ -17,8 +17,8 @@ const fontConfig = {
   headlineMedium: {
     fontSize: 20, // Secondary headings
     fontWeight: 600, // Bold style for emphasis
-    color: '#153634',
-    fontFamily: 'TangerineRegular',
+    color: '#000',
+    fontFamily: 'WulkanDisplayMedium',
   },
   displayMedium: {
     fontSize: 20, // Secondary headings
@@ -57,7 +57,7 @@ const fontConfig = {
     color: '#000',
   },
   headlineLarge: {
-    fontFamily: 'TangerineRegular',
+    fontFamily: 'WulkanDisplayMedium',
     fontWeight: 600,
     fontSize: 28, // Secondary headings
     color: '#000',

@@ -256,7 +256,7 @@ export default function AddEditBaby({ route }) {
     const renderView = () => {
         return (
             <View style={{ padding: MMConstants.paddingLarge }}>
-                <MMPageTitle title='Baby Profile' />
+                <MMPageTitle title='Baby profile' />
                 <View style={{ alignItems: 'center', marginBottom: MMConstants.marginMedium }}>
                 </View>
                 <MMProfileAvatar image={imageSource}

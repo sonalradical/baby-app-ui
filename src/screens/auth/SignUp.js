@@ -134,7 +134,10 @@ export default function SignUp({ navigation, route }) {
     const renderView = () => {
         return (
             <View style={{ padding: MMConstants.paddingLarge }}>
-                <MMAuthHeader title='Your Profile' />
+                <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
+                <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingMedium }]} >To start things off, kindly share some
+                    details about yourself. You can add more
+                    information later.</Text>
                 <MMInput
                     label='Phone Number *'
                     maxLength={10}
