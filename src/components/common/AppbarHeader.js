@@ -35,7 +35,6 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 									{babyDetail.isBorn === 'Yes' ? `${birthRelativeTime} of joy` : null}</Text>
 							</View>
 						}
-					// Update with this style will solve the issue
 					/>
 				</>
 				: <>
