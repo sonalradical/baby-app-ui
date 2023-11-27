@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
-const MMPageTitle = ({ title, optionalStyle }) => {
+const MMPageTitle = ({ title, optionalStyle, textAlign = 'center', paddingBottom = 10 }) => {
     const theme = useTheme();
 
     return (
-        <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: 10, ...optionalStyle }]}>{title}</Text>
+        <Text style={[theme.fonts.headlineMedium, { textAlign: textAlign, paddingBottom: paddingBottom, ...optionalStyle }]}>{title}</Text>
     );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Keyboard } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -27,6 +28,7 @@ import MMRadioButton from '../../components/common/RadioButton';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
+    const theme = useTheme();
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
@@ -256,9 +258,11 @@ export default function AddEditBaby({ route }) {
     const renderView = () => {
         return (
             <View style={{ padding: MMConstants.paddingLarge }}>
-                <MMPageTitle title='Baby profile' />
-                <View style={{ alignItems: 'center', marginBottom: MMConstants.marginMedium }}>
-                </View>
+                <MMPageTitle title='Baby profile' textAlign='left' paddingBottom={0} />
+                <Text style={[theme.fonts.labelMedium, { paddingBottom: 20 }]} >To begin, please share some basic
+                    information about your little one.
+                    Don’t worry, you can add more
+                    details and edit later.</Text>
                 <MMProfileAvatar image={imageSource}
                     source={{ uri: imageSource ? imageSource : null }}
                     label='Upload Baby photo'
