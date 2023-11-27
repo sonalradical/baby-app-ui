@@ -7,21 +7,22 @@ const defaultSetting = {
 	alignItems: 'flex-start',
 }
 
-const MMFlexView = ({ alignItems, children, ...props }) => {
+const MMFlexView = ({ alignItems, paddingTop = 0, children, ...props }) => {
 	return (
-		<View style={flexViewStyle(alignItems)} {...props}>
+		<View style={flexViewStyle(alignItems, paddingTop)} {...props}>
 			{children}
 		</View>
 	)
 };
 
-const flexViewStyle = function (alignItems) {
+const flexViewStyle = function (alignItems, paddingTop) {
 	const alignItemsValue = (_.isNil(alignItems) ? defaultSetting.alignItems : alignItems);
 
 	return {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: alignItemsValue,
+		paddingTop: paddingTop
 	}
 };
 

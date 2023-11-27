@@ -12,6 +12,7 @@ export default function FooterTab({ navigation, state, descriptors, insets }) {
             borderTopLeftRadius: 40,
             borderTopRightRadius: 40,
             overflow: 'hidden',
+            elevation: 5
         }}>
             <BottomNavigation.Bar
                 style={{ backgroundColor: theme.colors.secondaryContainer }}

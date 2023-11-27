@@ -34,6 +34,8 @@ export default function InitialSetup({ route, navigation }) {
         birthingParent: '',
         situation: null,
         dueDate: undefined,
+        babyAge: '',
+        numberOfBaby: '',
         showDueDate: false,
         errors: {},
     };
@@ -216,7 +218,25 @@ export default function InitialSetup({ route, navigation }) {
                                             }}
                                         />
                                     }
-                                </View> : <MMButton label='+  Add New Baby' onPress={() => onClickButton()} />
+                                </View> :
+                                <>{state.situation == MMEnums.situation.mumToMultiple ?
+                                    <MMInput
+                                        label='3. How many bubs do you have?'
+                                        maxLength={50}
+                                        value={state.numberOfBaby}
+                                        onChangeText={(value) => onInputChange('numberOfBaby', value)}
+                                        placeholder="Enter How Many Baby You have"
+                                        errorText={state.errors.numberOfBaby}
+                                    /> :
+                                    <MMInput
+                                        label='3. How old is your bub?'
+                                        maxLength={20}
+                                        value={state.babyAge}
+                                        onChangeText={(value) => onInputChange('babyAge', value)}
+                                        placeholder="Enter Your Bub Age"
+                                        errorText={state.errors.babyAge}
+                                    />}
+                                    <MMButton label='+  Add New Baby' onPress={() => onClickButton()} /></>
                             : null
                     }
                 </View>

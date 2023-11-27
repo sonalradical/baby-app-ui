@@ -32,7 +32,10 @@ const MMEnums = {
         text: 'text'
     },
     situation: {
-        currentlyPregnant: 'currentlyPregnant'
+        currentlyPregnant: 'currentlyPregnant',
+        justGivenBirth: 'justGivenBirth',
+        toddlerMum: 'toddlerMum',
+        mumToMultiple: 'mumToMultiple'
     },
 };
 

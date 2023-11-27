@@ -6,11 +6,11 @@ import { Text, TextInput, useTheme } from 'react-native-paper';
 import MMConstants from '../../helpers/Constants';
 import MMFormErrorText from './FormErrorText';
 
-const MMInput = ({ label, description, errorText, leftIcon, rightIcon, onPress, mode = 'outlined', ...props }) => {
+const MMInput = ({ label, description, errorText, leftIcon, rightIcon, onPress, containerWidth = '100%', mode = 'outlined', ...props }) => {
     const theme = useTheme();
 
     return (
-        <View style={styles(theme).container}>
+        <View style={{ width: containerWidth }}>
             {label ? <Text style={theme.fonts.titleMedium}>{label}</Text> : null}
             <TextInput
                 style={styles(theme).input}
@@ -40,9 +40,6 @@ const MMInput = ({ label, description, errorText, leftIcon, rightIcon, onPress, 
 };
 
 const styles = (theme) => StyleSheet.create({
-    container: {
-        width: '100%',
-    },
     input: {
         height: 42,
         backgroundColor: theme.colors.secondaryContainer,

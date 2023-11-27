@@ -65,14 +65,12 @@ export default function MilestoneList({ navigation, route }) {
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
-                <View style={[styles(theme).imageView, item.status === 'complete' ? { opacity: 0.5 } : null]}>
-                    <Image
-                        textAlign="center"
-                        resizeMode="contain"
-                        source={milestoneImage}
-                        style={styles(theme).image}
-                    />
-                </View>
+                <Image
+                    textAlign="center"
+                    resizeMode="contain"
+                    source={milestoneImage}
+                    style={styles(theme).image}
+                />
                 <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={1} ellipsizeMode='tail'>
                     {item.title}</Text>
             </TouchableOpacity>
@@ -83,7 +81,6 @@ export default function MilestoneList({ navigation, route }) {
         return (
             <FlatList
                 data={milestones}
-                columnWrapperStyle={{ alignContent: 'center' }}
                 ListHeaderComponent={<MMPageTitle title='My First' />}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
@@ -112,16 +109,8 @@ const styles = (theme) => StyleSheet.create({
         marginTop: MMConstants.marginSmall
     },
     image: {
-        width: Dimensions.get('window').width / 6,
-        height: Dimensions.get('window').height / 12,
+        width: Dimensions.get('window').width / 5,
+        height: Dimensions.get('window').height / 10,
         borderRadius: 50,
     },
-    imageView: {
-        borderRadius: 50,
-        backgroundColor: theme.colors.secondaryContainer,
-        width: Dimensions.get('window').width / 6 + 10,
-        height: Dimensions.get('window').height / 12 + 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
 });

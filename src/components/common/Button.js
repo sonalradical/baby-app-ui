@@ -12,28 +12,25 @@ const defaultSetting = {
     width: '100%',
 }
 
-function MMButton(props) {
+function MMButton({ label, bgColor, width, onPress, style, icon = null, marginVertical = MMConstants.marginMedium, borderRadius, ...props }) {
     const theme = useTheme();
-    const {
-        label, bgColor, width, onPress, style
-    } = props;
     const backgroundColor = bgColor || theme.colors.primary;
 
     return (
-        <Button mode="contained" onPress={onPress} style={[buttonStyle(width), { ...style }]} backgroundColor={backgroundColor}>
+        <Button mode="contained" onPress={onPress} icon={icon}
+            style={[buttonStyle(width, borderRadius, marginVertical), { ...style }]} backgroundColor={backgroundColor} {...props}>
             <Text style={{ color: theme.colors.secondaryContainer }}>{label}</Text>
         </Button>
     );
 }
 
-const buttonStyle = function (width) {
+const buttonStyle = function (width, borderRadius = 10, marginVertical) {
     const widthValue = (_.isNil(width) ? defaultSetting.width : width);
 
     return {
         width: widthValue,
-        borderRadius: 10,
-        marginVertical: MMConstants.marginMedium,
-        paddingVertical: 2,
+        borderRadius: borderRadius,
+        marginVertical: marginVertical,
         alignSelf: 'center'
     }
 };

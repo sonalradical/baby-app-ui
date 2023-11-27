@@ -19,8 +19,6 @@ const MMInputMultiline = ({ name, label, placeholder, maxLength, mode, errorText
 				keyboardType='default'
 				errorText={errorText}
 				mode={mode}
-				outlineColor={theme.colors.outline}
-				textBreakStrategy='simple'
 				label=''
 				{...props}
 				style={styles(theme).textMultiline}
@@ -34,6 +32,7 @@ const styles = (theme) => StyleSheet.create({
 	container: {
 		width: '100%',
 		height: Dimensions.get('window').height / 3,
+		borderRadius: 20
 	},
 	textMultiline: {
 		backgroundColor: theme.colors.secondaryContainer,

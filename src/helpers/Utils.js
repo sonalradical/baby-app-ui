@@ -45,7 +45,7 @@ function displayUtcTime(dateTime) {
 }
 
 function displayFromNow(date) {
-    return moment(date).fromNow();
+    return moment(date).fromNow(true);
 }
 
 function displayDateForPostApi(date) {

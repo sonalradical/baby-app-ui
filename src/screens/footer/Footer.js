@@ -2,6 +2,7 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import MMIcon from '../../components/common/Icon';
 import FooterTab from './FooterTab';
@@ -26,9 +27,9 @@ export default function Footer() {
                 name="Home"
                 component={Home}
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Chapters',
                     tabBarIcon: ({ color, size }) => {
-                        return <Icon name="home" size={size} color={color} />;
+                        return <Ionicons name="bookmarks-outline" size={size} color={color} />;
                     },
                 }}
             />
