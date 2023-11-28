@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, View } from 'react-native';
+import { Card, Text, useTheme } from 'react-native-paper';
 import * as _ from 'lodash';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,10 +12,9 @@ import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
-import ChapterList from '../chapter/ChapterList';
 import MMSurface from '../../components/common/Surface';
-import { Card, Text, useTheme } from 'react-native-paper';
 import MMScrollView from '../../components/common/ScrollView';
+import ChapterList from '../chapter/ChapterList';
 
 export default function Home() {
     const theme = useTheme();
