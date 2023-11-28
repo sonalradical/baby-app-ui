@@ -268,7 +268,11 @@ export default function ChapterQuiz({ navigation, route }) {
                 padding: MMConstants.paddingMedium,
                 paddingLeft: MMConstants.paddingLarge,
                 backgroundColor: theme.colors.primary,
-                elevation: 5
+                elevation: 20,
+                shadowColor: theme.colors.shadow,
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                shadowOffset: { width: -2, height: 4 }
             }}>
                 <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
                 <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{chapter.title}</Text>

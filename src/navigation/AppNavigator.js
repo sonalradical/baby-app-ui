@@ -112,6 +112,10 @@ function AppStackNavigator(userDetail) {
                     }}
                 />
                 <AppStack.Screen
+                    name="SignUp"
+                    component={SignUp}
+                />
+                <AppStack.Screen
                     name="Footer"
                     component={Footer}
                 />

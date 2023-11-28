@@ -64,7 +64,11 @@ const styles = (theme) => StyleSheet.create({
 		backgroundColor: theme.colors.secondaryContainer,
 		borderBottomRightRadius: 20,
 		borderBottomLeftRadius: 20,
-		elevation: 5
+		elevation: 10,
+		shadowColor: '#52006A',
+		shadowOpacity: 0.2,
+		shadowRadius: 4,
+		shadowOffset: { width: -2, height: 4 },
 	},
 	addButton: {
 		position: 'absolute',

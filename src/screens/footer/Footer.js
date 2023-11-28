@@ -18,7 +18,13 @@ const Tab = createBottomTabNavigator();
 export default function Footer() {
     const theme = useTheme();
     return (
-        <View style={{ flex: 1, elevation: 5, backgroundColor: theme.colors.background }}>
+        <View style={{
+            flex: 1, backgroundColor: theme.colors.background, elevation: 20,
+            shadowColor: theme.colors.shadow,
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+            shadowOffset: { width: -2, height: 4 }
+        }}>
             <Tab.Navigator
                 screenOptions={{
                     headerShown: false,

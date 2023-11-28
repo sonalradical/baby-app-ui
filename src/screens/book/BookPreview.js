@@ -78,7 +78,7 @@ export default function BookPreview({ route, navigation }) {
 
     const renderTemplatePage = (template, pageDetails) => {
         const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
-            pageDetail.source = MMUtils.getImagePath(pageDetail.value)
+            pageDetail.source = MMUtils.getImagePath(pageDetail.value);
             return pageDetail;
         });
         return (
