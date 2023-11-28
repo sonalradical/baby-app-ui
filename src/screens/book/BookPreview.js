@@ -122,7 +122,7 @@ export default function BookPreview({ route, navigation }) {
                     <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
                     {isTemplate ?
                         <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
-                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: 5 }} /> : null}
+                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: MMConstants.marginSmall }} /> : null}
                     <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
                         <Text>Page {index + 1}</Text>
                     </View>

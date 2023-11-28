@@ -43,7 +43,7 @@ export default function Profile({ route }) {
             <MMSurface style={{ borderRadius: 20 }} padding={[10, 10, 10, 20]}>
                 <View style={{ flexDirection: 'row' }}>
                     <Avatar.Text label={firstLetter} />
-                    <View style={{ padding: 10 }}>
+                    <View style={{ padding: MMConstants.paddingLarge }}>
                         <Text style={[theme.fonts.headlineMedium]}> {userDetail.name}</Text>
                         <Text style={theme.fonts.labelSmall}> {userDetail.gender}</Text>
                     </View>

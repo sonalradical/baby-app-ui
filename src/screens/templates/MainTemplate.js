@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import MMApiService from '../../services/ApiService';
 import MMUtils from '../../helpers/Utils';
-import MMEnums from '../../helpers/Enums';
+import MMConstants from '../../helpers/Constants';
 import MMImagePickerModal from '../../components/common/imagePickerModal';
 import MMContentContainer from '../../components/common/ContentContainer';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -184,7 +184,7 @@ export default function MainTemplate({ navigation, route }) {
                 <View style={[styles(theme).container]}>
                     <CommonTemplate onPickImage={onPickImage} templateData={templateData} templateName={templateName} />
                 </View>
-                <View style={{ paddingTop: 10 }}>
+                <View style={{ paddingTop: MMConstants.paddingLarge }}>
                     {
                         pageId ?
                             <MMFlexView >
