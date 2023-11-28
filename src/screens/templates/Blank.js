@@ -10,23 +10,25 @@ import MMIcon from '../../components/common/Icon';
 const Blank = (props) => {
     const theme = useTheme();
     const {
-        onPickImage, templateData
+        onPickImage, templateData, isDisable = false
     } = props;
 
     return (
-        <>
-            <TouchableOpacity style={[{ borderRightWidth: 1, borderLeftColor: theme.colors.outline }]}
-                onPress={() => onPickImage('p1', 'img')}>
-                {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
-                    style={styles(theme).image} /> :
-                    <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
-            </TouchableOpacity>
-        </>
+        <TouchableOpacity style={styles(theme).container}
+            onPress={() => onPickImage('p1', 'img')} disabled={isDisable}>
+            {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
+                style={styles(theme).image} /> :
+                <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
+        </TouchableOpacity>
     );
 };
 
 const styles = (theme) => StyleSheet.create({
-
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+    },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
         borderRadius: 50,

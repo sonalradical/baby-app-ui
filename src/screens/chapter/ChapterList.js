@@ -21,20 +21,20 @@ import MMPageTitle from '../../components/common/PageTitle';
 export default function ChapterList() {
     const theme = useTheme();
     const navigation = useNavigation();
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const reloadChapterList = useSelector((state) => state.AppReducer.reloadChapterList);
     const [isLoading, setLoading] = useState(true);
     const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {
         loadChapterList();
-    }, [selectedBabyId, reloadChapterList]);
+    }, [selectedBaby, reloadChapterList]);
 
     const loadChapterList = async () => {
         setLoading(true);
-        if (selectedBabyId || reloadChapterList) {
+        if (selectedBaby || reloadChapterList) {
             try {
-                const response = await MMApiService.getTypeList(selectedBabyId, 'chapter');
+                const response = await MMApiService.getTypeList(selectedBaby._id, 'chapter');
                 if (response.data) {
                     setChapterList(response.data.chapterDetail);
                 }
@@ -62,7 +62,7 @@ export default function ChapterList() {
                     const chapterImage = MMConstants.chapters[chapter.icon];
                     return (
                         <Card style={styles(theme).whiteBg} key={chapter._id}
-                            onPress={() => navigation.navigate('ChapterQuiz', { babyId: selectedBabyId, chapterId: chapter._id, title: chapter.title })}>
+                            onPress={() => navigation.navigate('ChapterQuiz', { babyId: selectedBaby._id, chapterId: chapter._id, title: chapter.title })}>
                             <View style={{ flexDirection: 'row', padding: MMConstants.paddingMedium, justifyContent: 'space-between' }}>
                                 <Image
                                     textAlign="center"

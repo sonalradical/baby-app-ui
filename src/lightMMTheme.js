@@ -46,6 +46,12 @@ const fontConfig = {
     color: '#000',
     fontFamily: 'MaisonNeue-Bold',
   },
+  titleLarge: {
+    fontWeight: 500, // Bold style for emphasis
+    color: '#FFF',
+    lineHeight: 36,
+    fontFamily: 'TangerineRegular',
+  },
   titleMedium: {
     fontWeight: 500,
     color: '#153634',
@@ -54,7 +60,7 @@ const fontConfig = {
     fontFamily: 'TangerineRegular',
     fontWeight: 600,
     fontSize: 28, // Secondary headings
-    color: '#153634',
+    color: '#000',
   }
 };
 

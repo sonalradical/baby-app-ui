@@ -6,36 +6,32 @@ import { useSelector } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 import MMSpinner from '../../components/common/Spinner';
-import MMPageTitle from '../../components/common/PageTitle';
-import { Avatar, Button, Divider, List, Menu, Text, useTheme } from 'react-native-paper';
-import { Dimensions, FlatList, Image, Keyboard, StyleSheet, View } from 'react-native';
+import { Avatar, List, Text, useTheme } from 'react-native-paper';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import Icon from 'react-native-vector-icons/Feather';
-import MMEnums from '../../helpers/Enums';
+import CommonTemplate from '../../components/common/CommonTemplate';
 
 export default function BookPreview({ route, navigation }) {
     const theme = useTheme();
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const reloadBookPage = useSelector((state) => state.AppReducer.reloadBookPage)
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isLoading, setLoading] = useState(true);
-    const [babyDetail, setBabyDetail] = useState();
     const [bookData, setBookData] = useState();
 
     useEffect(() => {
-        if (selectedBabyId || reloadBookPage) {
-            loadBabyProfileDetail();
+        if (selectedBaby || reloadBookPage) {
             loadBookPreview();
         }
-    }, [selectedBabyId, reloadBookPage]);
+    }, [selectedBaby, reloadBookPage]);
 
     const loadBookPreview = async () => {
         setLoading(true);
         try {
-            const response = await MMApiService.getBookPreview(selectedBabyId);
+            const response = await MMApiService.getBookPreview(selectedBaby._id);
             if (response.data) {
                 setBookData(response.data);
             }
@@ -48,17 +44,8 @@ export default function BookPreview({ route, navigation }) {
         setLoading(false);
     };
 
-    const loadBabyProfileDetail = async () => {
-        setLoading(true);
-        const response = await MMApiService.getBabyById(selectedBabyId);
-        if (response.data) {
-            setBabyDetail(response.data);
-        }
-        setLoading(false);
-    }
-
     const onPressAdd = (currentPosition) => {
-        let nextItemPosition = null;
+        let nextItemPosition = currentPosition + 10;
         const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
         if (currentIndex < bookData.length - 1) {
             const nextItem = bookData[currentIndex + 1];
@@ -66,6 +53,13 @@ export default function BookPreview({ route, navigation }) {
         }
         const pagePosition = (currentPosition + nextItemPosition) / 2;
         navigation.navigate('TemplateList', { position: pagePosition })
+    };
+
+    const onPressEdit = (bookData, template) => {
+        navigation.navigate('MainTemplate', {
+            position: bookData.position,
+            templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id
+        })
     };
 
     const renderQuestionAnswerList = (item, index) => {
@@ -82,17 +76,13 @@ export default function BookPreview({ route, navigation }) {
         );
     };
 
-    const renderPage = (templateId, pageDetails) => {
-        let templateName = null;
-        const template = _.find(lookupData.template, { '_id': templateId });
-        templateName = template.code;
-        const ComponentName = MMEnums.Components[templateName]
+    const renderTemplatePage = (template, pageDetails) => {
         const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
             pageDetail.source = MMUtils.getImagePath(pageDetail.value)
             return pageDetail;
         });
         return (
-            <ComponentName borderWidth={0} onPickImage={null} templateData={customPageDetails} />
+            <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true} templateName={template.code} />
         )
     };
 
@@ -100,46 +90,34 @@ export default function BookPreview({ route, navigation }) {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
         const chapterImage = !isTemplate && item?.icon ? MMConstants.chapters[item.icon] : null;
+        const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
         return (
             <>
                 <MMSurface key={item._id} margin={[0, 0, 0, 0]} padding={[0, 0, 0, 0]}>
-                    {!isTemplate ? (
-                        <>
-                            <View style={[styles(theme).title, { backgroundColor: item.color }]}>
-                                <View style={styles(theme).imageView}>
-                                    <Image
-                                        textAlign="center"
-                                        resizeMode="contain"
-                                        source={chapterImage}
-                                        style={styles(theme).image}
-                                    />
+                    {isTemplate ?
+                        renderTemplatePage(template, item.pageDetails) :
+                        (
+                            <>
+                                <View style={[styles(theme).title, { backgroundColor: item.color }]}>
+                                    <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
+                                    <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{item.title}</Text>
                                 </View>
-                                <MMPageTitle title={item.title}
-                                    optionalStyle={{
-                                        marginTop: MMConstants.marginLarge,
-                                        paddingHorizontal: MMConstants.paddingLarge,
-                                        color: theme.colors.secondaryContainer,
-                                        marginLeft: 50
-                                    }} />
-                            </View>
-                            {_.map(item.pageDetails, (i, index) => {
-                                return renderQuestionAnswerList(i, index);
-                            })}
-                        </>
-                    ) :
-                        renderPage(item.templateId, item.pageDetails)
+                                {_.map(item.pageDetails, (i, index) => {
+                                    return renderQuestionAnswerList(i, index);
+                                })}
+                            </>
+                        )
                     }
                 </MMSurface>
                 <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium }}>
                     <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
                     {isTemplate ?
                         <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
-                            onPress={() => onPressAdd(item.position)} style={{ marginLeft: 15, marginTop: 5 }} /> : null}
+                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: 5 }} /> : null}
                     <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
                         <Text>Page {index + 1}</Text>
                     </View>
                 </View>
-
             </>
         );
     };
@@ -148,7 +126,6 @@ export default function BookPreview({ route, navigation }) {
         return (
             <FlatList
                 data={bookData}
-                //ListHeaderComponent={renderBabyProfile}
                 renderItem={({ item, index }) => {
                     return renderBookData(item, index);
                 }}
@@ -159,23 +136,6 @@ export default function BookPreview({ route, navigation }) {
                 keyboardShouldPersistTaps={'handled'}
                 enableEmptySections={true}
             />
-        );
-    };
-
-    const renderBabyProfile = () => {
-        if (!babyDetail || babyDetail.length === 0) return null;
-        const birthDate = MMUtils.displayDate(babyDetail.birthDate)
-        const babyImage = babyDetail.picture ? MMUtils.getImagePath(babyDetail.picture) : require('../../assets/images/parenthood.jpg')
-
-        return (
-            <MMSurface>
-                <MMPageTitle title='Memory Book' />
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={theme.fonts.titleMedium}>{birthDate}</Text>
-                    <Avatar.Image size={150} source={{ uri: babyImage }} style={{ marginTop: MMConstants.marginMedium }} />
-                    <Text style={[theme.fonts.headlineMedium, { marginTop: MMConstants.marginMedium }]}>{babyDetail.name}</Text>
-                </View>
-            </MMSurface>
         );
     };
 
@@ -194,20 +154,6 @@ BookPreview.propTypes = {
 const styles = (theme) => StyleSheet.create({
     title: {
         flexDirection: 'row',
-        paddingLeft: 10,
-    },
-    image: {
-        width: Dimensions.get('window').width / 8,
-        height: Dimensions.get('window').height / 16,
-        borderRadius: 50,
-    },
-    imageView: {
-        borderRadius: 50,
-        backgroundColor: theme.colors.secondaryContainer,
-        width: Dimensions.get('window').width / 8 + 8,
-        height: Dimensions.get('window').height / 16 + 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: MMConstants.marginSmall,
+        padding: MMConstants.paddingLarge
     }
 });

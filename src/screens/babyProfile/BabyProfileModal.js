@@ -34,7 +34,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	async function Init() {
 		try {
 			setLoding(true);
-			console.log('Loading baby profile list...');
 			const response = await MMApiService.babyList();
 			if (response.data) {
 				const babyProfiles = response.data;
@@ -75,8 +74,8 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const onSelectProfile = (babyDetail) => {
 		setIsModalOpen(false);
 		setSelectedBabyDetail(babyDetail);
-		dispatch(setBaby(babyDetail._id));
-		MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, babyDetail._id);
+		MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(babyDetail));
+		dispatch(setBaby(babyDetail));
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 

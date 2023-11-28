@@ -183,6 +183,15 @@ async function savePage(data) {
     return result;
 }
 
+async function deletePage(pageId) {
+    const config = {
+        url: `page/delete/${pageId}`,
+        method: 'delete'
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#end
 //------------------------------------------------------------------ Image upload API
 
@@ -243,6 +252,7 @@ export default {
     getQuiz,
     saveQuiz,
     getBookPreview,
+    deletePage,
     savePage,
     getPagePreSignedUrl,
     getPreSignedUrl,

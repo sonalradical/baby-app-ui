@@ -13,7 +13,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import ChapterList from '../chapter/ChapterList';
 
 export default function Home() {
-    const selectedBabyId = useSelector((state) => state.AppReducer.baby);
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,17 +24,17 @@ export default function Home() {
     }, []);
 
     useEffect(() => { //  when there is no selectedBabyId set 1st baby
-        if (_.isEmpty(selectedBabyId)) {
+        if (_.isEmpty(selectedBaby)) {
             Init();
         }
-    }, [selectedBabyId]);
+    }, [selectedBaby]);
 
     async function Init() {
         const response = await MMApiService.babyList();
         if (response.data) {
             const babyProfiles = response.data;
-            MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, babyProfiles[0]._id);
-            dispatch(setBaby(babyProfiles[0]._id));
+            MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(babyProfiles[0]));
+            dispatch(setBaby(babyProfiles[0]));
         }
     }
 
