@@ -5,9 +5,7 @@ import { BackHandler, View } from 'react-native';
 import { Appbar, Avatar, Button, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
-import MMActionButtons from '../../components/common/ActionButtons';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMIcon from '../../components/common/Icon';
 import MMInputMultiline from '../../components/common/InputMultiline';
 import MMSpinner from '../../components/common/Spinner';
 

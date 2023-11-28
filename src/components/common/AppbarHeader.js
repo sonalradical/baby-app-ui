@@ -4,6 +4,7 @@ import { Appbar, Avatar, Text, useTheme } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import _ from 'lodash';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
@@ -12,7 +13,9 @@ import MMIcon from './Icon';
 const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 	const navigation = useNavigation();
 	const theme = useTheme();
-	const birthRelativeTime = babyDetail?.birthDate ? MMUtils.displayFromNow(babyDetail.birthDate) : null;
+	const relativeTime = babyDetail?.birthDate ? MMUtils.displayFromNow(babyDetail.birthDate) : null;
+	const [number, time] = relativeTime ? relativeTime.split(' ') : [0, ''];
+	const birthRelativeNumber = MMUtils.numberToWords(_.parseInt(number));
 
 	return (
 		<Appbar.Header style={styles(theme).appBarHeader}>
@@ -32,7 +35,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 								<Text style={[theme.fonts.headlineMedium, { alignSelf: 'center' }]}>
 									{babyDetail.isBorn === 'Yes' ? babyDetail.name : 'Mini Baby'}</Text>
 								<Text style={[theme.fonts.labelMedium, { alignSelf: 'center' }]}>
-									{babyDetail.isBorn === 'Yes' ? `${birthRelativeTime} of joy` : null}</Text>
+									{babyDetail.isBorn === 'Yes' ? `${_.startCase(birthRelativeNumber)} ${_.startCase(time)} of joy` : null}</Text>
 							</View>
 						}
 					/>

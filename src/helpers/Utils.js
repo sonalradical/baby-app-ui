@@ -52,6 +52,14 @@ function displayDateForPostApi(date) {
     return moment(date).format('yyyy-MM-DD');
 }
 
+function displayDateMonthYear(date) {
+    return moment(date).format('Do [of] MMM YYYY');
+}
+
+function getDuration(date) {
+    return moment.duration(moment(date).diff(getTodayDateTime()));
+}
+
 function getNewDate() {
     return new Date();
 }
@@ -183,6 +191,49 @@ function getImagePath(picture) {
     return `${MMConstants.AWS_S3_BASE_URL}/${picture}`
 }
 
+const convertBelow100 = (n) => {
+    const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+    const teens = ["", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    const tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+
+    if (n < 10) {
+        return ones[n];
+    } else if (10 <= n && n < 20) {
+        return teens[n - 10];
+    } else {
+        return tens[Math.floor(n / 10)] + " " + ones[n % 10];
+    }
+};
+
+const numberToWords = (num) => {
+    const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+
+    if (num === 0) {
+        return "zero";
+    }
+
+    let result = "";
+
+    if (num >= 1000) {
+        result += ones[Math.floor(num / 1000)] + " thousand ";
+        num %= 1000;
+    }
+
+    if (num >= 100) {
+        result += ones[Math.floor(num / 100)] + " hundred ";
+        num %= 100;
+        if (num > 0) {
+            result += "and ";
+        }
+    }
+
+    if (num > 0) {
+        result += convertBelow100(num);
+    }
+
+    return result.trim();
+};
+
 
 // #endregion
 
@@ -267,6 +318,8 @@ export default {
     displayTime,
     getTodayDateTime,
     getTodayUtcDateTime,
+    displayDateMonthYear,
+    getDuration,
     getNewDate,
     extractTimeSpan,
     displayConsoleLog,
@@ -292,5 +345,6 @@ export default {
     filterDataByQuery,
     uploadPicture,
     uploadPictureToS3,
-    getImagePath
+    getImagePath,
+    numberToWords
 };

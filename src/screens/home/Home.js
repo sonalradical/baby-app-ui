@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BackHandler } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, View } from 'react-native';
 import * as _ from 'lodash';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,10 +11,19 @@ import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import ChapterList from '../chapter/ChapterList';
+import MMSurface from '../../components/common/Surface';
+import { Card, Text, useTheme } from 'react-native-paper';
+import MMScrollView from '../../components/common/ScrollView';
 
 export default function Home() {
+    const theme = useTheme();
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const dispatch = useDispatch();
+    const [state, setState] = useState({
+        months: '',
+        weeks: '',
+        days: '',
+    });
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -22,6 +31,19 @@ export default function Home() {
         });
         return () => { backHandler.remove() };
     }, []);
+
+    useEffect(() => {
+        if (selectedBaby?.isBorn === 'No') {
+            // Calculate the duration between the current date and the due date
+            const duration = MMUtils.getDuration(selectedBaby.dueDate);
+
+            setState({
+                months: duration.months(),
+                weeks: duration.weeks(),
+                days: duration.days()
+            })
+        }
+    }, [selectedBaby]);
 
     useEffect(() => { //  when there is no selectedBabyId set 1st baby
         if (_.isEmpty(selectedBaby)) {
@@ -38,10 +60,43 @@ export default function Home() {
         }
     }
 
+    const renderCountDownBaner = () => {
+        const dueDate = MMUtils.displayDateMonthYear(selectedBaby.dueDate)
+        return (
+            <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
+                <MMSurface style={{ alignItems: 'center', borderRadius: 20 }} margin={[0, 0, 0, 0]}>
+                    <Text style={theme.fonts.headlineMedium}>Only</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        {state.months > 0 &&
+                            <Card style={{ backgroundColor: theme.colors.primary, padding: 10, margin: 10 }}>
+                                <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.months}</Text>
+                                <Text style={{ color: theme.colors.secondaryContainer }}>months</Text>
+                            </Card>}
+                        {state.weeks > 0 &&
+                            <Card style={{ backgroundColor: theme.colors.primary, padding: 10, margin: 10 }}>
+                                <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.weeks}</Text>
+                                <Text style={{ color: theme.colors.secondaryContainer }}>weeks</Text>
+                            </Card>}
+                        {state.days > 0 &&
+                            <Card style={{ backgroundColor: theme.colors.primary, padding: 10, paddingHorizontal: 20, margin: 10 }}>
+                                <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.days}</Text>
+                                <Text style={{ color: theme.colors.secondaryContainer }}>days</Text>
+                            </Card>}
+                    </View>
+                    <Text style={theme.fonts.headlineMedium}>to arrive</Text>
+                    <Text> Due date {dueDate}</Text>
+                </MMSurface>
+            </View>
+        );
+    };
+
     return (
         <>
             <MMContentContainer>
-                <ChapterList />
+                <MMScrollView>
+                    {selectedBaby?.isBorn === 'No' ? renderCountDownBaner() : null}
+                    <ChapterList />
+                </MMScrollView>
             </MMContentContainer>
         </>
     );
