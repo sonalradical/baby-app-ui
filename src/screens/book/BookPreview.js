@@ -13,6 +13,7 @@ import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import Icon from 'react-native-vector-icons/Feather';
 import CommonTemplate from '../../components/common/CommonTemplate';
+import MMContentContainer from '../../components/common/ContentContainer';
 
 export default function BookPreview({ route, navigation }) {
     const theme = useTheme();
@@ -20,7 +21,7 @@ export default function BookPreview({ route, navigation }) {
     const reloadBookPage = useSelector((state) => state.AppReducer.reloadBookPage)
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isLoading, setLoading] = useState(true);
-    const [bookData, setBookData] = useState();
+    const [bookData, setBookData] = useState([]);
 
     useEffect(() => {
         if (selectedBaby || reloadBookPage) {
@@ -86,6 +87,14 @@ export default function BookPreview({ route, navigation }) {
         )
     };
 
+    const renderNoData = () => {
+        return (
+            <MMSurface>
+                <Text>No data found ! please add some chapters </Text>
+            </MMSurface>
+        )
+    }
+
     const renderBookData = (item, index) => {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
@@ -140,9 +149,14 @@ export default function BookPreview({ route, navigation }) {
     };
 
     return (
-        <View style={{ backgroundColor: theme.colors.background }}>
-            {isLoading ? <MMSpinner /> : renderView()}
-        </View>
+        <>
+            <MMContentContainer>
+                {!bookData || bookData.length === 0 ? renderNoData() : null}
+            </MMContentContainer>
+            <View style={{ backgroundColor: theme.colors.background }}>
+                {isLoading ? <MMSpinner /> : renderView()}
+            </View>
+        </>
     );
 }
 
