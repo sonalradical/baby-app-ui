@@ -171,7 +171,6 @@ export default function MilestoneQuiz({ navigation, route }) {
         if (!questions || questions.length === 0) return null;
         return (
             <>
-                <MMPageTitle title={questions[0].question} />
                 <View style={{ padding: MMConstants.paddingLarge }}>
                     <MMInputMultiline
                         value={state.description}
@@ -226,7 +225,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                                     style={{ height: Dimensions.get('window').height / 4, width: '100%' }} />
                             </TouchableOpacity> : null}
                     </>
-                    <MMFlexView>
+                    <MMFlexView paddingTop={20}>
                         <MMOutlineButton label='Cancel' width='45%' onPress={() => navigation.goBack()} />
                         <MMButton label='Save' width='45%' onPress={() => onSubmit()} />
                     </MMFlexView>
@@ -236,9 +235,22 @@ export default function MilestoneQuiz({ navigation, route }) {
         );
     };
 
+    const renderScreenHeader = () => {
+        if (!questions || questions.length === 0) return null;
+        return (
+            <View style={{
+                padding: MMConstants.paddingMedium,
+                backgroundColor: theme.colors.primary
+            }}>
+                <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{questions[0].question}</Text>
+            </View>
+        );
+    };
+
 
     return (
         <>
+            {renderScreenHeader()}
             <MMContentContainer>
                 <MMScrollView>
                     {isLoading ? <MMSpinner /> : renderView()}

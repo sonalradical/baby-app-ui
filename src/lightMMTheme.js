@@ -6,7 +6,7 @@ const fontConfig = {
     fontFamily: 'MaisonNeue-Book',
     letterSpacing: 0.05,
     fontSize: 15,
-    color: '#153634',
+    color: '#000',
   },
   displayLarge: {
     fontSize: 50, // Large headings
@@ -17,8 +17,8 @@ const fontConfig = {
   headlineMedium: {
     fontSize: 20, // Secondary headings
     fontWeight: 600, // Bold style for emphasis
-    color: '#153634',
-    fontFamily: 'TangerineRegular',
+    color: '#000',
+    fontFamily: 'WulkanDisplayMedium',
   },
   displayMedium: {
     fontSize: 20, // Secondary headings
@@ -54,10 +54,10 @@ const fontConfig = {
   },
   titleMedium: {
     fontWeight: 500,
-    color: '#153634',
+    color: '#000',
   },
   headlineLarge: {
-    fontFamily: 'TangerineRegular',
+    fontFamily: 'WulkanDisplayMedium',
     fontWeight: 600,
     fontSize: 28, // Secondary headings
     color: '#000',
@@ -71,7 +71,7 @@ export const lightMMTheme = {
     ...DefaultTheme.colors,
     primary: '#9E8CCC', // Main primary colors
     secondary: '#F68D43', // Main secondary color
-    background: '#F8F4E9', // Default background color
+    background: '#FCFAF6', // Default background color
     secondaryContainer: '#FFFFFF',
     text: {
       primary: '#153634', // Primary text color

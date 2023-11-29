@@ -8,9 +8,6 @@ const MMConstants = {
 
     otpTimeOut: 60000,
 
-
-    //AWS Base url
-    AWS_S3_BASE_URL: 'https://mm-uat.s3.ap-southeast-2.amazonaws.com',
     chapters: {
         pregnancy: require('../assets/images/chapter/pregnancy.png'),
         adoption: require('../assets/images/chapter/adoption.png'),

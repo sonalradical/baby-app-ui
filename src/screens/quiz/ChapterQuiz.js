@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, View } from 'react-native';
-import { Appbar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import { BackHandler, ScrollView, View } from 'react-native';
+import { Appbar, Avatar, Button, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
-import MMActionButtons from '../../components/common/ActionButtons';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMIcon from '../../components/common/Icon';
 import MMInputMultiline from '../../components/common/InputMultiline';
 import MMSpinner from '../../components/common/Spinner';
 
@@ -18,9 +16,12 @@ import MMUtils from '../../helpers/Utils';
 import { reloadChapterList } from '../../redux/Slice/AppSlice';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
+import { MMButton } from '../../components/common/Button';
+import MMFlexView from '../../components/common/FlexView';
+import MMScrollView from '../../components/common/ScrollView';
 
 export default function ChapterQuiz({ navigation, route }) {
-    const { babyId, chapterId, title } = route.params;
+    const { babyId, chapterId, chapter, chapterImage } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
     const [isLoading, setLoading] = useState(true);
@@ -40,9 +41,18 @@ export default function ChapterQuiz({ navigation, route }) {
             try {
                 const response = await MMApiService.getQuiz(babyId, chapterId);
                 if (response.data) {
-                    setQuestionList(response.data.questionList);
-                    setAnswerList(response.data.answerList);
-                    const indexOfNextUnansweredQuestion = findNextUnansweredQuestion(response.data.questionList, response.data.answerList);
+                    const { questionList: questionsList, answerList: answersList } = response.data;
+                    answersList.forEach(answer => {
+                        const questions = _.find(questionsList, { questionId: answer.questionId });
+                        if (questions) {
+                            const newOptions = _.difference(answer.answer, questions.options);
+                            questions.options = questions.options.concat(newOptions);
+                        }
+                    });
+                    setQuestionList(questionsList);
+                    setAnswerList(answersList);
+
+                    const indexOfNextUnansweredQuestion = findNextUnansweredQuestion(questionsList, answersList);
                     setSelectedQuestion(indexOfNextUnansweredQuestion);
                 }
             } catch (error) {
@@ -177,7 +187,7 @@ export default function ChapterQuiz({ navigation, route }) {
                     {currentQuestionType === MMEnums.questionType.radio && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             {questionList[selectedQuestion].options.map((option, index) => (
-                                <View style={{ flexDirection: 'row' }} key={index}>
+                                <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
                                     <RadioButton.Android
                                         value={option}
                                         status={selectedAnswer.length > 0 && selectedAnswer[0] === option ? 'checked' : 'unchecked'}
@@ -192,7 +202,7 @@ export default function ChapterQuiz({ navigation, route }) {
                     {currentQuestionType === MMEnums.questionType.checkbox && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             {questionList[selectedQuestion].options.map((option, index) => (
-                                <View style={{ flexDirection: 'row' }} key={index}>
+                                <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
                                     <Checkbox.Android
                                         status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
                                         onPress={() => onCheckboxChange(option)}
@@ -201,10 +211,17 @@ export default function ChapterQuiz({ navigation, route }) {
                                     <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
                                 </View>
                             ))}
-                            <MMInput placeholder='Add Option' value={newOption}
-                                onChangeText={(text) => setNewOption(text)}
-                                rightIcon={'plus'}
-                                onPress={onAddOption} />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
+                                <MMInput placeholder='Add something different' value={newOption}
+                                    onChangeText={(text) => setNewOption(text)}
+                                    containerWidth={'75%'}
+                                />
+                                <MMButton label={'Add'}
+                                    width={'22%'}
+                                    marginVertical={0}
+                                    onPress={onAddOption}
+                                    borderRadius={10} />
+                            </View>
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.text && (
@@ -224,38 +241,52 @@ export default function ChapterQuiz({ navigation, route }) {
 
     const renderActionButtons = () => {
         return (
-            <MMActionButtons>
-                <MMIcon
-                    iconName='arrow-circle-o-left'
-                    iconSize={30}
-                    iconColor={selectedQuestion === 0 ? theme.colors.outline : theme.colors.primary}
+            <MMFlexView>
+                <MMButton
+                    label="Previous"
                     onPress={onPreviousClick}
                     disabled={selectedQuestion === 0}
+                    width={'30%'}
+                    borderRadius={100}
+                    bgColor={selectedQuestion === 0 ? theme.colors.outline : null}
                 />
-                <Chip>{`${selectedQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
+                <View style={{ paddingTop: 20 }}>
+                    <Chip>{`${selectedQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
+                </View>
                 {selectedQuestion === questionList.length - 1 ?
-                    <MMIcon
-                        iconName='check-circle-o'
-                        iconSize={30}
-                        iconColor={theme.colors.primary}
+                    <MMButton
+                        label="Save"
                         onPress={onNextClick}
+                        width={'30%'}
+                        borderRadius={100}
                     /> :
-                    <MMIcon
-                        iconName='arrow-circle-o-right'
-                        iconSize={30}
-                        iconColor={theme.colors.primary}
+                    <MMButton
+                        label="Next"
                         onPress={onNextClick}
                         disabled={questionList ? selectedQuestion === questionList.length - 1 : false}
+                        width={'30%'}
+                        borderRadius={100}
                     />}
-            </MMActionButtons>
+            </MMFlexView>
         );
     };
 
     const renderScreenHeader = () => {
         return (
-            <Appbar.Header style={{ backgroundColor: theme.colors.primaryContainer }}>
-                <Appbar.Content title={title} titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
-            </Appbar.Header>
+            <View style={{
+                flexDirection: 'row',
+                padding: MMConstants.paddingMedium,
+                paddingLeft: MMConstants.paddingLarge,
+                backgroundColor: theme.colors.primary,
+                elevation: 20,
+                shadowColor: theme.colors.shadow,
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                shadowOffset: { width: -2, height: 4 }
+            }}>
+                <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
+                <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{chapter.title}</Text>
+            </View>
         );
     };
 
@@ -263,8 +294,10 @@ export default function ChapterQuiz({ navigation, route }) {
         <>
             {renderScreenHeader()}
             <MMContentContainer>
-                {isLoading ? <MMSpinner /> : renderView()}
-            </MMContentContainer >
+                <MMScrollView>
+                    {isLoading ? <MMSpinner /> : renderView()}
+                </MMScrollView>
+            </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}
             </View>

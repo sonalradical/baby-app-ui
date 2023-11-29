@@ -98,10 +98,22 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="TemplateList"
                     component={TemplateList}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
                 />
                 <AppStack.Screen
                     name="MainTemplate"
                     component={MainTemplate}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
+                />
+                <AppStack.Screen
+                    name="SignUp"
+                    component={SignUp}
                 />
                 <AppStack.Screen
                     name="Footer"

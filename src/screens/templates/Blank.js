@@ -27,7 +27,7 @@ const styles = (theme) => StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
+        flex: 1
     },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
@@ -35,7 +35,7 @@ const styles = (theme) => StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: Dimensions.get('window').height / 2,
+        height: Dimensions.get('window').height / 2 - 48,
         resizeMode: 'cover',
     },
 });

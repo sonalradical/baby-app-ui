@@ -34,6 +34,8 @@ export default function InitialSetup({ route, navigation }) {
         birthingParent: '',
         situation: null,
         dueDate: undefined,
+        babyAge: '',
+        numberOfBaby: '',
         showDueDate: false,
         errors: {},
     };
@@ -72,6 +74,17 @@ export default function InitialSetup({ route, navigation }) {
         setState({
             ...state,
             showDueDate: true
+        });
+    };
+
+    const onInputChange = (field, value) => {
+        setState({
+            ...state,
+            [field]: value,
+            errors: {
+                ...state.errors,
+                [field]: '',
+            },
         });
     };
 
@@ -133,7 +146,7 @@ export default function InitialSetup({ route, navigation }) {
         return (
             <>
                 <View style={{ padding: MMConstants.paddingLarge }}>
-                    <MMPageTitle title='TELL US A BIT ABOUT YOURSELF' />
+                    <MMPageTitle title='Tell us a bit about yourself' />
                     <View>
                         <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -216,7 +229,25 @@ export default function InitialSetup({ route, navigation }) {
                                             }}
                                         />
                                     }
-                                </View> : <MMButton label='+  Add New Baby' onPress={() => onClickButton()} />
+                                </View> :
+                                <>{state.situation == MMEnums.situation.mumToMultiple ?
+                                    <MMInput
+                                        label='3. How many bubs do you have?'
+                                        maxLength={50}
+                                        value={state.numberOfBaby}
+                                        onChangeText={(value) => onInputChange('numberOfBaby', value)}
+                                        placeholder="Enter How Many Baby You have"
+                                        errorText={state.errors.numberOfBaby}
+                                    /> :
+                                    <MMInput
+                                        label='3. How old is your bub?'
+                                        maxLength={20}
+                                        value={state.babyAge}
+                                        onChangeText={(value) => onInputChange('babyAge', value)}
+                                        placeholder="Enter Your Bub Age"
+                                        errorText={state.errors.babyAge}
+                                    />}
+                                    <MMButton label='+  Add New Baby' onPress={() => onClickButton()} /></>
                             : null
                     }
                 </View>
