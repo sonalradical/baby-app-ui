@@ -27,6 +27,7 @@ const styles = (theme) => StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
+        flex: 1
     },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,

@@ -48,7 +48,7 @@ export default function MainTemplate({ navigation, route }) {
     const onImageChange = async (imageData) => {
         if (selectedName && selectedType) {
             const photo = imageData.assets[0];
-            setImageSize({ height: imageData.height, width: imageData.width })
+            setImageSize({ height: photo.height, width: photo.width })
             let storageFileKeys = [];
             try {
                 setOverlayLoading(true);
