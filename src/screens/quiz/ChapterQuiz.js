@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, View } from 'react-native';
+import { BackHandler, ScrollView, View } from 'react-native';
 import { Appbar, Avatar, Button, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
@@ -18,6 +18,7 @@ import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
+import MMScrollView from '../../components/common/ScrollView';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
@@ -293,8 +294,10 @@ export default function ChapterQuiz({ navigation, route }) {
         <>
             {renderScreenHeader()}
             <MMContentContainer>
-                {isLoading ? <MMSpinner /> : renderView()}
-            </MMContentContainer >
+                <MMScrollView>
+                    {isLoading ? <MMSpinner /> : renderView()}
+                </MMScrollView>
+            </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}
             </View>

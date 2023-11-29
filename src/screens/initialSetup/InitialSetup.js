@@ -77,6 +77,17 @@ export default function InitialSetup({ route, navigation }) {
         });
     };
 
+    const onInputChange = (field, value) => {
+        setState({
+            ...state,
+            [field]: value,
+            errors: {
+                ...state.errors,
+                [field]: '',
+            },
+        });
+    };
+
     const onClickButton = () => {
         if (isOverlayLoading) {
             return;
