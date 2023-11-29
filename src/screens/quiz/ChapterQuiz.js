@@ -40,9 +40,18 @@ export default function ChapterQuiz({ navigation, route }) {
             try {
                 const response = await MMApiService.getQuiz(babyId, chapterId);
                 if (response.data) {
-                    setQuestionList(response.data.questionList);
-                    setAnswerList(response.data.answerList);
-                    const indexOfNextUnansweredQuestion = findNextUnansweredQuestion(response.data.questionList, response.data.answerList);
+                    const { questionList: questionsList, answerList: answersList } = response.data;
+                    answersList.forEach(answer => {
+                        const questions = _.find(questionsList, { questionId: answer.questionId });
+                        if (questions) {
+                            const newOptions = _.difference(answer.answer, questions.options);
+                            questions.options = questions.options.concat(newOptions);
+                        }
+                    });
+                    setQuestionList(questionsList);
+                    setAnswerList(answersList);
+
+                    const indexOfNextUnansweredQuestion = findNextUnansweredQuestion(questionsList, answersList);
                     setSelectedQuestion(indexOfNextUnansweredQuestion);
                 }
             } catch (error) {

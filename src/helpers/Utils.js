@@ -10,6 +10,7 @@ import base64 from 'react-native-base64';
 
 import MMConstants from './Constants';
 import MMEnums from './Enums';
+import MMConfig from './Config';
 import { HttpStatusCode } from 'axios';
 
 // ------------------------------------------------------------------- Device Functions
@@ -188,7 +189,7 @@ function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
 };
 
 function getImagePath(picture) {
-    return `${MMConstants.AWS_S3_BASE_URL}/${picture}`
+    return `${MMConfig().AWS_S3_BASE_URL}/${picture}`
 }
 
 const convertBelow100 = (n) => {
