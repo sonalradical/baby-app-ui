@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, View } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
 import * as _ from 'lodash';
@@ -16,8 +16,10 @@ import MMSurface from '../../components/common/Surface';
 import MMScrollView from '../../components/common/ScrollView';
 import ChapterList from '../chapter/ChapterList';
 
-export default function Home() {
+export default function Home({ updateFooterVisibility }) {
     const theme = useTheme();
+    const scrollViewRef = useRef(null);
+    const [isScrollingUp, setIsScrollingUp] = useState(true);
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const dispatch = useDispatch();
     const [state, setState] = useState({
@@ -25,13 +27,6 @@ export default function Home() {
         weeks: '',
         days: '',
     });
-
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            BackHandler.exitApp();
-        });
-        return () => { backHandler.remove() };
-    }, []);
 
     useEffect(() => {
         if (selectedBaby?.isBorn === 'No') {
@@ -60,6 +55,17 @@ export default function Home() {
             dispatch(setBaby(babyProfiles[0]));
         }
     }
+
+    const handleScroll = (offsetY) => {
+        const currentOffset = offsetY;
+        const previousOffset = scrollViewRef.current ? scrollViewRef.current : 0;
+        setIsScrollingUp(currentOffset <= previousOffset);
+        scrollViewRef.current = currentOffset;
+    };
+
+    const handleScrollEndDrag = () => {
+        updateFooterVisibility(isScrollingUp);
+    };
 
     const renderCountDownBaner = () => {
         const dueDate = MMUtils.displayDateMonthYear(selectedBaby.dueDate)
@@ -103,7 +109,9 @@ export default function Home() {
     return (
         <>
             <MMContentContainer>
-                <MMScrollView>
+                <MMScrollView
+                    onScroll={(event) => handleScroll(event.nativeEvent.contentOffset.y)}
+                    onScrollEndDrag={handleScrollEndDrag}>
                     {selectedBaby?.isBorn === 'No' ? renderCountDownBaner() : null}
                     <ChapterList />
                 </MMScrollView>

@@ -33,7 +33,6 @@ const Row2 = (props) => {
 };
 
 const styles = (theme) => StyleSheet.create({
-
     row: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -49,6 +48,7 @@ const styles = (theme) => StyleSheet.create({
         width: '100%',
         height: Dimensions.get('window').height / 4,
         resizeMode: 'cover',
+        flex: 1
     },
 });
 

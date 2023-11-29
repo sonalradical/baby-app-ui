@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
@@ -15,13 +16,16 @@ import Icon from 'react-native-vector-icons/Feather';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
 
-export default function BookPreview({ route, navigation }) {
+export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
+    const navigation = useNavigation();
+    const flatListRef = useRef(null);
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const reloadBookPage = useSelector((state) => state.AppReducer.reloadBookPage)
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isLoading, setLoading] = useState(true);
     const [bookData, setBookData] = useState([]);
+    const [isScrollingUp, setIsScrollingUp] = useState(true);
 
     useEffect(() => {
         if (selectedBaby || reloadBookPage) {
@@ -43,6 +47,17 @@ export default function BookPreview({ route, navigation }) {
             }
         }
         setLoading(false);
+    };
+
+    const handleScroll = (event) => {
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        const previousOffset = flatListRef.current ? flatListRef.current : 0;
+        setIsScrollingUp(currentOffset <= previousOffset);
+        flatListRef.current = currentOffset;
+    };
+
+    const handleScrollEndDrag = () => {
+        updateFooterVisibility(isScrollingUp);
     };
 
     const onPressAdd = (currentPosition) => {
@@ -118,7 +133,7 @@ export default function BookPreview({ route, navigation }) {
                         )
                     }
                 </MMSurface>
-                <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium }}>
+                <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium, marginBottom: bookData.length === index + 1 ? 10 : 0 }}>
                     <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
                     {isTemplate ?
                         <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
@@ -141,6 +156,8 @@ export default function BookPreview({ route, navigation }) {
                 keyExtractor={(item, index) => {
                     return item._id;
                 }}
+                onScroll={handleScroll}
+                onScrollEndDrag={handleScrollEndDrag}
                 onMomentumScrollBegin={Keyboard.dismiss}
                 keyboardShouldPersistTaps={'handled'}
                 enableEmptySections={true}

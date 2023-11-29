@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
@@ -13,17 +13,32 @@ import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSpinner from '../../components/common/Spinner';
 import MMPageTitle from '../../components/common/PageTitle';
+import { useNavigation } from '@react-navigation/native';
 
-export default function MilestoneList({ navigation, route }) {
+export default function MilestoneList({ route, updateFooterVisibility }) {
+    const navigation = useNavigation();
     const { milestoneId } = route.params || '';
     const theme = useTheme();
+    const flatListRef = useRef(null);
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const [isLoading, setLoading] = useState(true);
     const [milestones, setMilestones] = useState([]);
+    const [isScrollingUp, setIsScrollingUp] = useState(true);
 
     useEffect(() => {
         loadMilestoneList();
     }, [selectedBaby]);
+
+    const handleScroll = (event) => {
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        const previousOffset = flatListRef.current ? flatListRef.current : 0;
+        setIsScrollingUp(currentOffset <= previousOffset);
+        flatListRef.current = currentOffset;
+    };
+
+    const handleScrollEndDrag = () => {
+        updateFooterVisibility(isScrollingUp);
+    };
 
     const loadMilestoneList = async () => {
         setLoading(true);
@@ -80,11 +95,14 @@ export default function MilestoneList({ navigation, route }) {
     const renderView = () => {
         return (
             <FlatList
+                ref={flatListRef}
                 data={milestones}
                 ListHeaderComponent={<MMPageTitle title='My First' />}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
                 numColumns={3}
+                onScroll={handleScroll}
+                onScrollEndDrag={handleScrollEndDrag}
             />
         );
     };

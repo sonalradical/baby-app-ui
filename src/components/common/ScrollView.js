@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import MMUtils from '../../helpers/Utils';
 
-const MMScrollView = ({ align = 'top', scrollEnabled = true, children }) => {
+const MMScrollView = ({ align = 'top', scrollEnabled = true, children, ...props }) => {
 	// do not change this :)
 	let justifyContent = 'center';
 	if (align === 'top') {
@@ -23,6 +23,7 @@ const MMScrollView = ({ align = 'top', scrollEnabled = true, children }) => {
 			scrollEnabled={scrollEnabled}
 			contentContainerStyle={containerStyle(justifyContent)}
 			keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+			{...props}
 		>
 			<View style={viewStyle(justifyContent)}>
 				{children}
