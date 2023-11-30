@@ -28,6 +28,13 @@ export default function Home({ updateFooterVisibility }) {
         days: '',
     });
 
+    // useEffect(() => {
+    //     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+    //         BackHandler.exitApp();
+    //     });
+    //     return () => { backHandler.remove() };
+    // }, []);
+
     useEffect(() => {
         if (selectedBaby?.isBorn === 'No') {
             // Calculate the duration between the current date and the due date
