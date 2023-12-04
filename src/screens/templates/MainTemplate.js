@@ -29,11 +29,6 @@ export default function MainTemplate({ navigation, route }) {
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [selectedName, setSelectedName] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
-    const [imageSize, setImageSize] = useState({
-        height: 0,
-        width: 0
-    })
-
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
@@ -48,7 +43,6 @@ export default function MainTemplate({ navigation, route }) {
     const onImageChange = async (imageData) => {
         if (selectedName && selectedType) {
             const photo = imageData.assets[0];
-            setImageSize({ height: photo.height, width: photo.width })
             let storageFileKeys = [];
             try {
                 setOverlayLoading(true);
@@ -79,13 +73,15 @@ export default function MainTemplate({ navigation, route }) {
                                                     ...newData[existingItemIndex],
                                                     type: selectedType,
                                                     value: responseData.storageFileKey,
-                                                    source: photo.uri
+                                                    source: photo.uri,
+                                                    height: photo.height,
+                                                    width: photo.width
                                                 };
                                             } else {
                                                 // Create a new item if it doesn't exist
                                                 newData.push({
                                                     name: selectedName, type: selectedType, value: responseData.storageFileKey,
-                                                    source: photo.uri
+                                                    source: photo.uri, height: photo.height, width: photo.width
                                                 });
                                             }
                                             return newData;

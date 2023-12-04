@@ -87,7 +87,7 @@ export default function ChapterQuiz({ navigation, route }) {
             return !answers.some((answer) => answer.questionId === question.questionId);
         });
 
-        return index ?? 0;
+        return index ?? index == '-1' ? 0 : index;
     };
 
     const onAnswerChange = (value) => {
@@ -109,6 +109,7 @@ export default function ChapterQuiz({ navigation, route }) {
         setSelectedAnswer([]);
         setLoading(false);
         if (selectedQuestion > 0) {
+            dispatch(reloadChapterList({ reloadChapterList: true }))
             setSelectedQuestion(selectedQuestion - 1);
         };
     }
@@ -119,8 +120,8 @@ export default function ChapterQuiz({ navigation, route }) {
         }
         setSelectedAnswer([]);
         setLoading(false);
+        dispatch(reloadChapterList({ reloadChapterList: true }))
         if (selectedQuestion === questionList.length - 1) {
-            dispatch(reloadChapterList({ reloadChapterList: true }))
             navigation.navigate('Home');
         } else {
             setSelectedQuestion(selectedQuestion + 1);
