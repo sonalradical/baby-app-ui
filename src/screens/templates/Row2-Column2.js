@@ -10,10 +10,8 @@ import MMIcon from '../../components/common/Icon';
 const Row2Column2 = (props) => {
     const theme = useTheme();
     const {
-        onPickImage, templateData, imageSize
+        onPickImage, templateData
     } = props;
-    const aspectRatio = imageSize ? imageSize.width / imageSize.height : null;
-    console.log(aspectRatio, 'aspectRatio')
 
     return (
         <>
@@ -23,7 +21,7 @@ const Row2Column2 = (props) => {
                     onPress={() => onPickImage('p1', 'img')}>
                     {templateData.some(item => item.name === 'p1') ? (
                         <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
-                            style={[styles(theme).image, { aspectRatio: aspectRatio }]} />
+                            style={styles(theme).image} />
                     ) : (
                         <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />
                     )}
@@ -70,8 +68,6 @@ const styles = (theme) => StyleSheet.create({
         flexDirection: 'row', // main axis
     },
     column: {
-        width: Dimensions.get('window').width / 3,
-        height: Dimensions.get('window').height / 4,
         flex: 1,
         justifyContent: 'center', // main axis
         alignItems: 'center', // cross axis
@@ -82,7 +78,7 @@ const styles = (theme) => StyleSheet.create({
         borderRadius: 50,
     },
     image: {
-        width: Dimensions.get('window').width / 3,
+        width: Dimensions.get('window').width / 2,
         height: Dimensions.get('window').height / 4,
         resizeMode: 'cover',
     },

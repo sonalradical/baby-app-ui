@@ -195,10 +195,18 @@ export default function MainTemplate({ navigation, route }) {
                                     width={'45%'}
                                 />
                             </MMFlexView> :
-                            <MMButton
-                                label="Save Page"
-                                onPress={() => onSavePage()}
-                            />
+                            <MMFlexView >
+                                <MMOutlineButton
+                                    label="Cancel"
+                                    onPress={() => navigation.goBack()}
+                                    width='45%'
+                                />
+                                <MMButton
+                                    label="Save Page"
+                                    onPress={() => onSavePage()}
+                                    width={'45%'}
+                                />
+                            </MMFlexView>
 
                     }
                 </View>
