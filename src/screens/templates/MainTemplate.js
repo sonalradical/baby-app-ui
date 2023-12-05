@@ -22,13 +22,14 @@ import CommonTemplate from '../../components/common/CommonTemplate';
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const { position, templateName, templateId, pageId, pageDetails } = route.params || '';
+    const { position, templateName, templateId, pageId, pageDetails, imageConfig } = route.params || '';
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [selectedName, setSelectedName] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedShape, setSelectedShape] = useState(null);
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
@@ -39,6 +40,21 @@ export default function MainTemplate({ navigation, route }) {
             setTemplateData(pageDetails);
         }
     }, [pageDetails, pageId]);
+
+    useEffect(() => {
+        if (imageConfig) {
+            const existingIndex = templateData.findIndex(item => item.name === imageConfig.name);
+            if (existingIndex !== -1) {
+                // If imageConfig.name already exists, update the existing record
+                const updatedTemplateData = [...templateData];
+                updatedTemplateData[existingIndex] = imageConfig;
+                setTemplateData(updatedTemplateData);
+            } else {
+                // If imageConfig.name does not exist, add a new record
+                setTemplateData([...templateData, imageConfig]);
+            }
+        }
+    }, [imageConfig]);
 
     const onImageChange = async (imageData) => {
         if (selectedName && selectedType) {
@@ -51,7 +67,7 @@ export default function MainTemplate({ navigation, route }) {
                 for (const pic of imageData.assets) {
                     picIndex++;
 
-                    await MMApiService.getPagePreSignedUrl(selectedBaby._id, photo.fileName)
+                    await MMApiService.getPreSignedUrl(photo.fileName)
                         .then(function (response) {
                             (async () => {
                                 const responseData = response.data;
@@ -63,35 +79,18 @@ export default function MainTemplate({ navigation, route }) {
                                     } else {
                                         setOverlayLoading(false);
                                         MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
-                                        setTemplateData((prevData) => {
-                                            const newData = [...prevData];
-                                            const existingItemIndex = newData.findIndex(item => item.name === selectedName);
-
-                                            if (existingItemIndex !== -1) {
-                                                // Update existing item with new image URI and dynamic type
-                                                newData[existingItemIndex] = {
-                                                    ...newData[existingItemIndex],
-                                                    type: selectedType,
-                                                    value: responseData.storageFileKey,
-                                                    source: photo.uri,
-                                                    height: photo.height,
-                                                    width: photo.width,
-                                                    x: 0,
-                                                    y: 0,
-                                                    scale: 1
-                                                };
-                                            } else {
-                                                // Create a new item if it doesn't exist
-                                                newData.push({
-                                                    name: selectedName, type: selectedType, value: responseData.storageFileKey,
-                                                    source: photo.uri, height: photo.height, width: photo.width, x: 0,
-                                                    y: 0,
-                                                    scale: 1
-                                                });
+                                        const newData = [];
+                                        // Create a new item if it doesn't exist
+                                        newData.push({
+                                            name: selectedName, type: selectedType, value: responseData.storageFileKey,
+                                            source: photo.uri, height: photo.height, width: photo.width, imageParam: {
+                                                x: 0,
+                                                y: 0,
+                                                scale: 1
                                             }
-                                            return newData;
                                         });
                                         storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
+                                        navigation.navigate('CommonShapes', { shapeName: selectedShape, templateData: newData, templateName: templateName });
                                     }
                                 } else {
                                     setOverlayLoading(false);
@@ -118,12 +117,12 @@ export default function MainTemplate({ navigation, route }) {
             }
             return storageFileKeys;
         }
-
     };
 
-    const onPickImage = (name, type) => {
+    const onPickImage = (name, type, shape) => {
         setSelectedName(name);
         setSelectedType(type);
+        setSelectedShape(shape);
         toggleModal();
     };
 
@@ -138,7 +137,9 @@ export default function MainTemplate({ navigation, route }) {
                 position,
                 pageDetails
             }
+            console.log(apiData, 'apidata')
             const response = await MMApiService.savePage(apiData);
+            console.log(response, 'response')
             if (response) {
                 dispatch(reloadBookPage({ reloadBookPage: true }));
                 navigation.navigate('Home');
