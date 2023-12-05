@@ -233,6 +233,8 @@ export default function ChapterQuiz({ navigation, route }) {
                                 onChangeText={(text) => onAnswerChange(text)}
                                 maxLength={2000}
                             />
+                            <Text style={{ textAlign: 'right' }}>
+                                {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} character out of 2000` : '0 character out of 2000'}</Text>
                         </View>
                     )}
                 </View>

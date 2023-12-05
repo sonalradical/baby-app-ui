@@ -75,13 +75,18 @@ export default function MainTemplate({ navigation, route }) {
                                                     value: responseData.storageFileKey,
                                                     source: photo.uri,
                                                     height: photo.height,
-                                                    width: photo.width
+                                                    width: photo.width,
+                                                    x: 0,
+                                                    y: 0,
+                                                    scale: 1
                                                 };
                                             } else {
                                                 // Create a new item if it doesn't exist
                                                 newData.push({
                                                     name: selectedName, type: selectedType, value: responseData.storageFileKey,
-                                                    source: photo.uri, height: photo.height, width: photo.width
+                                                    source: photo.uri, height: photo.height, width: photo.width, x: 0,
+                                                    y: 0,
+                                                    scale: 1
                                                 });
                                             }
                                             return newData;
@@ -173,17 +178,24 @@ export default function MainTemplate({ navigation, route }) {
         });
     };
 
+    const onSetTemplateData = (State) => {
+        setTemplateData(State);
+    };
+
     const renderView = () => {
         return (
             <>
                 <MMPageTitle title='Select Image' />
                 <View style={[styles(theme).container]}>
-                    <CommonTemplate onPickImage={onPickImage} templateData={templateData} templateName={templateName} />
+                    <CommonTemplate onPickImage={onPickImage}
+                        templateData={templateData}
+                        templateName={templateName}
+                        onSetTemplateData={onSetTemplateData} />
                 </View>
                 <View style={{ paddingTop: MMConstants.paddingLarge }}>
                     {
                         pageId ?
-                            <MMFlexView >
+                            <MMFlexView>
                                 <MMOutlineButton
                                     label="Delete"
                                     onPress={() => onConfirm()}
@@ -231,7 +243,7 @@ export default function MainTemplate({ navigation, route }) {
 
 const styles = (theme) => StyleSheet.create({
     container: {
-        height: Dimensions.get('window').width - 48,
+        height: 345,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
         borderWidth: 1,

@@ -41,7 +41,7 @@ const Column2Row = (props) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles(theme).column} onPress={() => onPickImage('p3', 'img')}>
-                    {templateData.some(item => item.name === 'p4') ? (
+                    {templateData.some(item => item.name === 'p3') ? (
                         <Image source={{ uri: templateData.find(item => item.name === 'p3').source }}
                             style={styles(theme).image} />
                     ) : (
@@ -69,13 +69,13 @@ const styles = (theme) => StyleSheet.create({
         borderRadius: 50,
     },
     image: {
-        width: Dimensions.get('window').width / 2,
-        height: Dimensions.get('window').height / 4,
+        width: 190,
+        height: 170,
         resizeMode: 'cover',
     },
     imageRow: {
         width: '100%',
-        height: Dimensions.get('window').height / 4,
+        height: 170,
         resizeMode: 'cover',
     }
 });
