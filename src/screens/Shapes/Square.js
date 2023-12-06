@@ -8,7 +8,6 @@ import MMConstants from '../../helpers/Constants';
 import MMContentContainer from '../../components/common/ContentContainer';
 import Svg, { Image as SvgImage } from 'react-native-svg';
 import { PinchGestureHandler, State } from 'react-native-gesture-handler';
-import MMFlexView from '../../components/common/FlexView';
 import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
 import MMActionButtons from '../../components/common/ActionButtons';
@@ -122,7 +121,7 @@ const Square = (props) => {
 
     const renderButtons = () => {
         return (
-            <MMActionButtons >
+            <MMActionButtons type='bottomFixed'>
                 <MMOutlineButton
                     label="Cancel"
                     onPress={() => navigation.goBack()}

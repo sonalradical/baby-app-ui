@@ -7,7 +7,7 @@ import Row2Column2 from '../../screens/templates/Row2-Column2';
 import RowColumn2 from '../../screens/templates/Row-Column2';
 
 const CommonTemplate = (props) => {
-    const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, onSetTemplateData } = props;
+    const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, onSetTemplateData, pageId } = props;
 
     const Components = {
         "Blank": Blank,
@@ -23,7 +23,9 @@ const CommonTemplate = (props) => {
             templateData={templateData}
             borderWidth={borderWidth}
             isDisable={isDisable}
-            onSetTemplateData={onSetTemplateData} />
+            onSetTemplateData={onSetTemplateData}
+            templateName={templateName}
+            pageId={pageId} />
     );
 };
 

@@ -7,11 +7,13 @@ import * as _ from 'lodash';
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
 import { Svg, Image as SvgImage } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 const Row2Column2 = (props) => {
     const theme = useTheme();
+    const navigation = useNavigation();
     const {
-        onPickImage, templateData, pageId } = props;
+        onPickImage, templateData, pageId, templateName, isDisable = false } = props;
 
     const calculateScaleFactor = (templateName) => {
         const template = templateData.find((item) => item.name === templateName);
@@ -36,7 +38,8 @@ const Row2Column2 = (props) => {
             {/* Row 1 */}
             <View style={styles(theme).row}>
                 <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 }]}
-                    onPress={() => onPickImage('p1', 'img', 'Square')}>
+                    onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p1')], templateName: templateName }) :
+                        () => onPickImage('p1', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p1') ? (
                         <Svg height={155}
                             width={190}>
@@ -55,7 +58,8 @@ const Row2Column2 = (props) => {
                     )}
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles(theme).column, { borderBottomWidth: 1, borderColor: theme.colors.outline }]} onPress={() => onPickImage('p2', 'img', 'Square')}>
+                <TouchableOpacity style={[styles(theme).column, { borderBottomWidth: 1, borderColor: theme.colors.outline }]} onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p2')], templateName: templateName }) :
+                    () => onPickImage('p2', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p2') ?
                         <Svg height={155}
                             width={190}>
@@ -77,7 +81,8 @@ const Row2Column2 = (props) => {
             {/* Row 2 */}
             <View style={styles(theme).row}>
                 <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderColor: theme.colors.outline }]}
-                    onPress={() => onPickImage('p3', 'img', 'Square')}>
+                    onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p3')], templateName: templateName }) :
+                        () => onPickImage('p3', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p3') ?
                         <Svg height={155}
                             width={190}>
@@ -96,7 +101,8 @@ const Row2Column2 = (props) => {
                         )}
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles(theme).column} onPress={() => onPickImage('p4', 'img', 'Square')}>
+                <TouchableOpacity style={styles(theme).column} onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p4')], templateName: templateName }) :
+                    () => onPickImage('p4', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p4') ?
                         <Svg height={155}
                             width={190}>
