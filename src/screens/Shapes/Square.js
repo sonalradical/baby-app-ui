@@ -24,19 +24,19 @@ const Square = (props) => {
     const baseScaleRef = useRef(1);
     const pinchRef = useRef(null);
 
-    const scaleFactor = templateData && templateData[0]?.width
+    const scaleFactor = templateData && templateData[0]?.imageParam.width
         ? _.min([
-            190 / templateData[0].width,
-            155 / templateData[0].height,
+            190 / templateData[0].imageParam.width,
+            155 / templateData[0].imageParam.height,
         ])
         : 1;
 
     useEffect(() => {
-        if (templateData[0]?.width) {
+        if (templateData[0]?.imageParam.width) {
             setPosition({ x: templateData[0].imageParam.x, y: templateData[0].imageParam.y });
             setScale(templateData[0].imageParam.scale);
         }
-    }, [templateData[0]?.width]);
+    }, [templateData[0]?.imageParam.width]);
 
     useEffect(() => {
         if (templateData) {
@@ -53,12 +53,12 @@ const Square = (props) => {
         const newScale = baseScaleRef.current * pinchScale;
 
         // Calculate the position adjustment based on the focal point and new scale
-        const focalXPercentage = (focalX - position.x) / (templateData[0].width * scaleFactor * scale);
-        const focalYPercentage = (focalY - position.y) / (templateData[0].height * scaleFactor * scale);
+        const focalXPercentage = (focalX - position.x) / (templateData[0].imageParam.width * scaleFactor * scale);
+        const focalYPercentage = (focalY - position.y) / (templateData[0].imageParam.height * scaleFactor * scale);
 
         // Calculate the new position
-        const newPosX = focalX - focalXPercentage * (templateData[0].width * scaleFactor * newScale);
-        const newPosY = focalY - focalYPercentage * (templateData[0].height * scaleFactor * newScale);
+        const newPosX = focalX - focalXPercentage * (templateData[0].imageParam.width * scaleFactor * newScale);
+        const newPosY = focalY - focalYPercentage * (templateData[0].imageParam.height * scaleFactor * newScale);
 
         // Update the scale and position
         setScale(newScale);
@@ -109,8 +109,8 @@ const Square = (props) => {
                                 clipPath="url(#clip)"
                                 x={`${((position.x / 190) * 100)}%`}
                                 y={`${((position.y / 155) * 100)}%`}
-                                width={templateData[0].width * scaleFactor * scale}
-                                height={templateData[0].height * scaleFactor * scale}
+                                width={templateData[0].imageParam.width * scaleFactor * scale}
+                                height={templateData[0].imageParam.height * scaleFactor * scale}
                                 {...panResponder.panHandlers}
                             />
                         </Svg>

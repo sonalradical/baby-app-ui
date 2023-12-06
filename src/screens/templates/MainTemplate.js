@@ -83,7 +83,9 @@ export default function MainTemplate({ navigation, route }) {
                                         // Create a new item if it doesn't exist
                                         newData.push({
                                             name: selectedName, type: selectedType, value: responseData.storageFileKey,
-                                            source: photo.uri, height: photo.height, width: photo.width, imageParam: {
+                                            source: photo.uri, imageParam: {
+                                                height: photo.height,
+                                                width: photo.width,
                                                 x: 0,
                                                 y: 0,
                                                 scale: 1
@@ -191,7 +193,8 @@ export default function MainTemplate({ navigation, route }) {
                     <CommonTemplate onPickImage={onPickImage}
                         templateData={templateData}
                         templateName={templateName}
-                        onSetTemplateData={onSetTemplateData} />
+                        onSetTemplateData={onSetTemplateData}
+                        pageId={pageId} />
                 </View>
                 <View style={{ paddingTop: MMConstants.paddingLarge }}>
                     {

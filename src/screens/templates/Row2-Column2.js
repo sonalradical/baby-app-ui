@@ -11,34 +11,25 @@ import { Svg, Image as SvgImage } from 'react-native-svg';
 const Row2Column2 = (props) => {
     const theme = useTheme();
     const {
-        onPickImage, templateData } = props;
-    console.log(templateData.find((item) => item.name === 'p1')?.imageParam?.x, 'templateData')
+        onPickImage, templateData, pageId } = props;
 
-    const scaleFactor1 = templateData && templateData.find((item) => item.name === 'p1')?.width
-        ? _.min([
-            190 / templateData.find((item) => item.name === 'p1').width,
-            155 / templateData.find((item) => item.name === 'p1').height,
-        ])
-        : 1;
+    const calculateScaleFactor = (templateName) => {
+        const template = templateData.find((item) => item.name === templateName);
 
-    const scaleFactor2 = templateData && templateData.find((item) => item.name === 'p2')?.width
-        ? _.min([
-            190 / templateData.find((item) => item.name === 'p2').width,
-            155 / templateData.find((item) => item.name === 'p2').height,
-        ])
-        : 1;
-    const scaleFactor3 = templateData && templateData.find((item) => item.name === 'p3')?.width
-        ? _.min([
-            190 / templateData.find((item) => item.name === 'p3').width,
-            155 / templateData.find((item) => item.name === 'p3').height,
-        ])
-        : 1;
-    const scaleFactor4 = templateData && templateData.find((item) => item.name === 'p4')?.width
-        ? _.min([
-            190 / templateData.find((item) => item.name === 'p4').width,
-            155 / templateData.find((item) => item.name === 'p4').height,
-        ])
-        : 1;
+        if (!template || !template.imageParam || !template.imageParam.width) {
+            return 1;
+        }
+
+        const widthScale = 190 / template.imageParam.width;
+        const heightScale = 155 / template.imageParam.height;
+
+        return _.min([widthScale, heightScale]);
+    };
+
+    const scaleFactor1 = calculateScaleFactor('p1');
+    const scaleFactor2 = calculateScaleFactor('p2');
+    const scaleFactor3 = calculateScaleFactor('p3');
+    const scaleFactor4 = calculateScaleFactor('p4');
 
     return (
         <>
@@ -55,8 +46,8 @@ const Row2Column2 = (props) => {
                                 clipPath="url(#clip)"
                                 x={(templateData.find(item => item.name === 'p1').imageParam?.x)}
                                 y={(templateData.find(item => item.name === 'p1').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p1').width * scaleFactor1 * templateData.find(item => item.name === 'p1').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p1').height * scaleFactor1 * templateData.find(item => item.name === 'p1').imageParam?.scale}
+                                width={templateData.find((item) => item.name === 'p1').imageParam?.width * scaleFactor1 * templateData.find(item => item.name === 'p1').imageParam?.scale}
+                                height={templateData.find((item) => item.name === 'p1').imageParam?.height * scaleFactor1 * templateData.find(item => item.name === 'p1').imageParam?.scale}
                             />
                         </Svg>
                     ) : (
@@ -74,8 +65,8 @@ const Row2Column2 = (props) => {
                                 clipPath="url(#clip)"
                                 x={(templateData.find(item => item.name === 'p2').imageParam?.x)}
                                 y={(templateData.find(item => item.name === 'p2').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p2').width * scaleFactor2 * templateData.find(item => item.name === 'p2').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p2').height * scaleFactor2 * templateData.find(item => item.name === 'p2').imageParam?.scale}
+                                width={templateData.find((item) => item.name === 'p2').imageParam?.width * scaleFactor2 * templateData.find(item => item.name === 'p2').imageParam?.scale}
+                                height={templateData.find((item) => item.name === 'p2').imageParam?.height * scaleFactor2 * templateData.find(item => item.name === 'p2').imageParam?.scale}
                             />
                         </Svg> : (
                             <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />
@@ -96,8 +87,8 @@ const Row2Column2 = (props) => {
                                 clipPath="url(#clip)"
                                 x={(templateData.find(item => item.name === 'p3').imageParam?.x)}
                                 y={(templateData.find(item => item.name === 'p3').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p3').width * scaleFactor3 * templateData.find(item => item.name === 'p3').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p3').height * scaleFactor3 * templateData.find(item => item.name === 'p3').imageParam?.scale}
+                                width={templateData.find((item) => item.name === 'p3').imageParam?.width * scaleFactor3 * templateData.find(item => item.name === 'p3').imageParam?.scale}
+                                height={templateData.find((item) => item.name === 'p3').imageParam?.height * scaleFactor3 * templateData.find(item => item.name === 'p3').imageParam?.scale}
                             />
                         </Svg>
                         : (
@@ -115,8 +106,8 @@ const Row2Column2 = (props) => {
                                 clipPath="url(#clip)"
                                 x={(templateData.find(item => item.name === 'p4').imageParam?.x)}
                                 y={(templateData.find(item => item.name === 'p4').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p4').width * scaleFactor4 * templateData.find(item => item.name === 'p4').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p4').height * scaleFactor4 * templateData.find(item => item.name === 'p4').imageParam?.scale}
+                                width={templateData.find((item) => item.name === 'p4').imageParam?.width * scaleFactor4 * templateData.find(item => item.name === 'p4').imageParam?.scale}
+                                height={templateData.find((item) => item.name === 'p4').imageParam?.height * scaleFactor4 * templateData.find(item => item.name === 'p4').imageParam?.scale}
                             />
                         </Svg> : (
                             <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />

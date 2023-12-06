@@ -2,7 +2,7 @@ import React from 'react';
 import Square from './Square';
 
 export default function CommonShapes({ navigation, route }) {
-    const { shapeName, templateData, onSetTemplateData, templateName } = route.params;
+    const { shapeName, templateData, templateName } = route.params;
 
     const Components = {
         "Square": Square
@@ -12,7 +12,6 @@ export default function CommonShapes({ navigation, route }) {
     return (
         <TemplateComponents
             templateData={templateData}
-            onSetTemplateData={onSetTemplateData}
             templateName={templateName} />
     );
 };
