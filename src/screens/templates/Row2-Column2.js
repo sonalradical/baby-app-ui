@@ -33,102 +33,52 @@ const Row2Column2 = (props) => {
     const scaleFactor3 = calculateScaleFactor('p3');
     const scaleFactor4 = calculateScaleFactor('p4');
 
+    const renderImage = (name, scaleFactor, templateName) => {
+        const template = templateData.find(item => item.name === name);
+
+        if (template) {
+            return (
+                <Svg height={155} width={190}>
+                    <SvgImage
+                        href={template.source}
+                        preserveAspectRatio="xMidYMid slice"
+                        clipPath="url(#clip)"
+                        x={template.imageParam?.x}
+                        y={template.imageParam?.y}
+                        width={template.imageParam?.width * scaleFactor * template.imageParam?.scale}
+                        height={template.imageParam?.height * scaleFactor * template.imageParam?.scale}
+                    />
+                </Svg>
+            );
+        } else {
+            return <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />;
+        }
+    };
+
+    const renderImageBox = (name, scaleFactor, pageId, extraStyle = {}) => {
+        const onPressHandler = pageId
+            ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: templateData.find(item => item.name === name), templateName })
+            : () => onPickImage(name, 'img', 'Square');
+
+        return (
+            <TouchableOpacity style={[styles(theme).column, extraStyle]} onPress={onPressHandler} disabled={isDisable}>
+                {renderImage(name, scaleFactor, templateName)}
+            </TouchableOpacity>
+        );
+    };
+
     return (
         <>
             {/* Row 1 */}
             <View style={styles(theme).row}>
-                <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 }]}
-                    onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: templateData.find(item => item.name === 'p1'), templateName: templateName }) :
-                        () => onPickImage('p1', 'img', 'Square')} disabled={isDisable}>
-                    {templateData.some(item => item.name === 'p1') ? (
-                        <Svg height={155}
-                            width={190}>
-                            <SvgImage
-                                href={templateData.find(item => item.name === 'p1').source}
-                                preserveAspectRatio="xMidYMid slice"
-                                clipPath="url(#clip)"
-                                x={(templateData.find(item => item.name === 'p1').imageParam?.x)}
-                                y={(templateData.find(item => item.name === 'p1').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p1').imageParam?.width * scaleFactor1 * templateData.find(item => item.name === 'p1').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p1').imageParam?.height * scaleFactor1 * templateData.find(item => item.name === 'p1').imageParam?.scale}
-                            />
-                        </Svg>
-                    ) : (
-                        <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />
-                    )}
-                </TouchableOpacity>
-
-                <TouchableOpacity style={[styles(theme).column, { borderBottomWidth: 1, borderColor: theme.colors.outline }]}
-                    onPress={pageId ? () => navigation.navigate('CommonShapes', {
-                        shapeName: 'Square', templateData: templateData.find(item => item.name === 'p2'),
-                        templateName: templateName
-                    }) :
-                        () => onPickImage('p2', 'img', 'Square')} disabled={isDisable}>
-                    {templateData.some(item => item.name === 'p2') ?
-                        <Svg height={155}
-                            width={190}>
-                            <SvgImage
-                                href={templateData.find(item => item.name === 'p2').source}
-                                preserveAspectRatio="xMidYMid slice"
-                                clipPath="url(#clip)"
-                                x={(templateData.find(item => item.name === 'p2').imageParam?.x)}
-                                y={(templateData.find(item => item.name === 'p2').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p2').imageParam?.width * scaleFactor2 * templateData.find(item => item.name === 'p2').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p2').imageParam?.height * scaleFactor2 * templateData.find(item => item.name === 'p2').imageParam?.scale}
-                            />
-                        </Svg> : (
-                            <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />
-                        )}
-                </TouchableOpacity>
+                {renderImageBox('p1', scaleFactor1, pageId, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 })}
+                {renderImageBox('p2', scaleFactor2, pageId, { borderBottomWidth: 1, borderColor: theme.colors.outline })}
             </View>
 
             {/* Row 2 */}
             <View style={styles(theme).row}>
-                <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderColor: theme.colors.outline }]}
-                    onPress={pageId ? () => navigation.navigate('CommonShapes', {
-                        shapeName: 'Square', templateData: templateData.find(item => item.name === 'p3'),
-                        templateName: templateName
-                    }) :
-                        () => onPickImage('p3', 'img', 'Square')} disabled={isDisable}>
-                    {templateData.some(item => item.name === 'p3') ?
-                        <Svg height={155}
-                            width={190}>
-                            <SvgImage
-                                href={templateData.find(item => item.name === 'p3').source}
-                                preserveAspectRatio="xMidYMid slice"
-                                clipPath="url(#clip)"
-                                x={(templateData.find(item => item.name === 'p3').imageParam?.x)}
-                                y={(templateData.find(item => item.name === 'p3').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p3').imageParam?.width * scaleFactor3 * templateData.find(item => item.name === 'p3').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p3').imageParam?.height * scaleFactor3 * templateData.find(item => item.name === 'p3').imageParam?.scale}
-                            />
-                        </Svg>
-                        : (
-                            <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />
-                        )}
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles(theme).column} onPress={pageId ? () => navigation.navigate('CommonShapes', {
-                    shapeName: 'Square',
-                    templateData: templateData.find(item => item.name === 'p4'), templateName: templateName
-                }) :
-                    () => onPickImage('p4', 'img', 'Square')} disabled={isDisable}>
-                    {templateData.some(item => item.name === 'p4') ?
-                        <Svg height={155}
-                            width={190}>
-                            <SvgImage
-                                href={templateData.find(item => item.name === 'p4').source}
-                                preserveAspectRatio="xMidYMid slice"
-                                clipPath="url(#clip)"
-                                x={(templateData.find(item => item.name === 'p4').imageParam?.x)}
-                                y={(templateData.find(item => item.name === 'p4').imageParam?.y)}
-                                width={templateData.find((item) => item.name === 'p4').imageParam?.width * scaleFactor4 * templateData.find(item => item.name === 'p4').imageParam?.scale}
-                                height={templateData.find((item) => item.name === 'p4').imageParam?.height * scaleFactor4 * templateData.find(item => item.name === 'p4').imageParam?.scale}
-                            />
-                        </Svg> : (
-                            <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />
-                        )}
-                </TouchableOpacity>
+                {renderImageBox('p3', scaleFactor3, pageId, { borderRightWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p4', scaleFactor4, pageId)}
             </View>
         </>
     );
