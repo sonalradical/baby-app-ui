@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Animated, PanResponder } from 'react-native';
+import { StyleSheet, View, Animated, PanResponder, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
@@ -11,6 +11,7 @@ import { PinchGestureHandler, State } from 'react-native-gesture-handler';
 import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
 import MMActionButtons from '../../components/common/ActionButtons';
+import MMIcon from '../../components/common/Icon';
 
 const Square = (props) => {
     const theme = useTheme();
@@ -26,8 +27,8 @@ const Square = (props) => {
 
     const scaleFactor = templateData && templateData?.imageParam?.width
         ? _.min([
-            190 / templateData.imageParam.width,
-            155 / templateData.imageParam.height,
+            (Dimensions.get('window').width - 20) / templateData.imageParam.width,
+            Dimensions.get('window').width / templateData.imageParam.height,
         ])
         : 1;
 
@@ -92,39 +93,43 @@ const Square = (props) => {
 
     const renderView = () => {
         return (
-            <View style={[styles(theme).container]}>
-                <PinchGestureHandler
-                    ref={pinchRef}
-                    onGestureEvent={handlePinch}
-                    onHandlerStateChange={event => {
-                        if (event.nativeEvent.oldState === State.ACTIVE) {
-                            handlePinchEnd();
-                        }
-                    }}
-                >
-                    <Animated.View>
-                        <Svg
-                            height={155}
-                            width={190}
-                            style={styles(theme).row}>
-                            <SvgImage
-                                href={templateData.source}
-                                preserveAspectRatio="xMidYMid slice"
-                                clipPath="url(#clip)"
-                                x={`${((position.x / 190) * 100)}%`}
-                                y={`${((position.y / 155) * 100)}%`}
-                                width={templateData.imageParam.width * scaleFactor * scale}
-                                height={templateData.imageParam.height * scaleFactor * scale}
-                                {...panResponder.panHandlers}
-                            />
-                        </Svg>
-                    </Animated.View>
-                </PinchGestureHandler>
-            </View>
+            <>
+                <View style={[styles(theme).container]}>
+                    <PinchGestureHandler
+                        ref={pinchRef}
+                        onGestureEvent={handlePinch}
+                        onHandlerStateChange={event => {
+                            if (event.nativeEvent.oldState === State.ACTIVE) {
+                                handlePinchEnd();
+                            }
+                        }}
+                    >
+                        <Animated.View>
+                            <Svg
+                                height={Dimensions.get('window').width}
+                                width={Dimensions.get('window').width - 20}
+                                style={styles(theme).row}>
+                                <SvgImage
+                                    href={templateData.source}
+                                    preserveAspectRatio="xMidYMid slice"
+                                    clipPath="url(#clip)"
+                                    x={`${((position.x / (Dimensions.get('window').width - 20)) * 100)}%`}
+                                    y={`${((position.y / Dimensions.get('window').width) * 100)}%`}
+                                    width={templateData.imageParam.width * scaleFactor * scale}
+                                    height={templateData.imageParam.height * scaleFactor * scale}
+                                    {...panResponder.panHandlers}
+                                />
+                            </Svg>
+                        </Animated.View>
+                    </PinchGestureHandler>
+                </View>
+                <MMIcon iconName='edit' iconSize={30} style={{ paddingTop: MMConstants.paddingMedium, top: 100, alignSelf: 'center' }} />
+            </>
         )
     }
 
     const renderButtons = () => {
+        console.log(imageConfig, 'imageConfig')
         return (
             <MMActionButtons type='bottomFixed'>
                 <MMOutlineButton
@@ -156,13 +161,11 @@ const Square = (props) => {
 
 const styles = (theme) => StyleSheet.create({
     container: {
-        height: 155,
-        width: 190,
+        height: Dimensions.get('window').width,
+        width: Dimensions.get('window').width - 20,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
         borderWidth: 1,
-        alignSelf: 'center',
-        top: 50
     },
     row: {
         justifyContent: 'center',
@@ -173,16 +176,6 @@ const styles = (theme) => StyleSheet.create({
         padding: MMConstants.paddingLarge,
         borderRadius: 50,
     },
-    image: {
-        width: 190,
-        height: 170,
-        resizeMode: 'cover',
-    },
-    imageRow: {
-        width: '100%',
-        height: 170,
-        resizeMode: 'cover',
-    }
 });
 
 export default Square;

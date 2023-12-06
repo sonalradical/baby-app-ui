@@ -8,6 +8,7 @@ import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
 import { Svg, Image as SvgImage } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
+import MMSpinner from '../../components/common/Spinner';
 
 const Row2Column2 = (props) => {
     const theme = useTheme();
@@ -23,7 +24,7 @@ const Row2Column2 = (props) => {
         }
 
         const widthScale = 190 / template.imageParam.width;
-        const heightScale = 155 / template.imageParam.height;
+        const heightScale = 165 / template.imageParam.height;
 
         return _.min([widthScale, heightScale]);
     };
@@ -33,21 +34,22 @@ const Row2Column2 = (props) => {
     const scaleFactor3 = calculateScaleFactor('p3');
     const scaleFactor4 = calculateScaleFactor('p4');
 
-    const renderImage = (name, scaleFactor, templateName) => {
+    const renderImage = (name, scaleFactor) => {
         const template = templateData.find(item => item.name === name);
 
         if (template) {
             return (
-                <Svg height={155} width={190}>
-                    <SvgImage
-                        href={template.source}
-                        preserveAspectRatio="xMidYMid slice"
-                        clipPath="url(#clip)"
-                        x={template.imageParam?.x}
-                        y={template.imageParam?.y}
-                        width={template.imageParam?.width * scaleFactor * template.imageParam?.scale}
-                        height={template.imageParam?.height * scaleFactor * template.imageParam?.scale}
-                    />
+                <Svg height={165} width={190}>
+                    {template.source ?
+                        <SvgImage
+                            href={template?.source}
+                            preserveAspectRatio="xMidYMid slice"
+                            clipPath="url(#clip)"
+                            x={template.imageParam?.x / 2}
+                            y={template.imageParam?.y / 2}
+                            width={template.imageParam?.width * scaleFactor * template.imageParam?.scale}
+                            height={template.imageParam?.height * scaleFactor * template.imageParam?.scale}
+                        /> : <MMSpinner />}
                 </Svg>
             );
         } else {
@@ -62,7 +64,7 @@ const Row2Column2 = (props) => {
 
         return (
             <TouchableOpacity style={[styles(theme).column, extraStyle]} onPress={onPressHandler} disabled={isDisable}>
-                {renderImage(name, scaleFactor, templateName)}
+                {renderImage(name, scaleFactor)}
             </TouchableOpacity>
         );
     };
@@ -93,7 +95,6 @@ const styles = (theme) => StyleSheet.create({
         flex: 1,
         justifyContent: 'center', // main axis
         alignItems: 'center', // cross axis
-        padding: 16,
     },
     imagePickerButton: {
         padding: MMConstants.paddingLarge,

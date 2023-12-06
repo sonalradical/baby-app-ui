@@ -18,6 +18,7 @@ import MMFlexView from '../../components/common/FlexView';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import CommonTemplate from '../../components/common/CommonTemplate';
+import MMActionButtons from '../../components/common/ActionButtons';
 
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
@@ -139,9 +140,7 @@ export default function MainTemplate({ navigation, route }) {
                 position,
                 pageDetails
             }
-            console.log(apiData, 'apidata')
             const response = await MMApiService.savePage(apiData);
-            console.log(response, 'response')
             if (response) {
                 dispatch(reloadBookPage({ reloadBookPage: true }));
                 navigation.navigate('Home');
@@ -185,46 +184,51 @@ export default function MainTemplate({ navigation, route }) {
         setTemplateData(State);
     };
 
+    const renderActionButtons = () => {
+        return (
+            <MMActionButtons type='bottomFixed'>
+                {
+                    pageId ?
+                        <>
+                            <MMOutlineButton
+                                label="Delete"
+                                onPress={() => onConfirm()}
+                                width='45%'
+                            />
+                            <MMButton
+                                label="Save"
+                                onPress={() => onSavePage()}
+                                width={'45%'}
+                            />
+                        </> :
+                        < >
+                            <MMOutlineButton
+                                label="Cancel"
+                                onPress={() => navigation.goBack()}
+                                width='45%'
+                            />
+                            <MMButton
+                                label="Save Page"
+                                onPress={() => onSavePage()}
+                                width={'45%'}
+                            />
+                        </>
+
+                }
+            </MMActionButtons>
+        )
+    }
+
     const renderView = () => {
         return (
             <>
-                <MMPageTitle title='Select Image' />
+                <MMPageTitle title='Select Image' paddingBottom={20} />
                 <View style={[styles(theme).container]}>
                     <CommonTemplate onPickImage={onPickImage}
                         templateData={templateData}
                         templateName={templateName}
                         onSetTemplateData={onSetTemplateData}
                         pageId={pageId} />
-                </View>
-                <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                    {
-                        pageId ?
-                            <MMFlexView>
-                                <MMOutlineButton
-                                    label="Delete"
-                                    onPress={() => onConfirm()}
-                                    width='45%'
-                                />
-                                <MMButton
-                                    label="Save"
-                                    onPress={() => onSavePage()}
-                                    width={'45%'}
-                                />
-                            </MMFlexView> :
-                            <MMFlexView >
-                                <MMOutlineButton
-                                    label="Cancel"
-                                    onPress={() => navigation.goBack()}
-                                    width='45%'
-                                />
-                                <MMButton
-                                    label="Save Page"
-                                    onPress={() => onSavePage()}
-                                    width={'45%'}
-                                />
-                            </MMFlexView>
-
-                    }
                 </View>
                 <MMImagePickerModal
                     visible={modalVisible}
@@ -236,10 +240,13 @@ export default function MainTemplate({ navigation, route }) {
     };
 
     return (
-        <MMContentContainer>
-            {renderView()}
-            <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        <>
+            <MMContentContainer>
+                {renderView()}
+                <MMOverlaySpinner visible={isOverlayLoading} />
+            </MMContentContainer>
+            {renderActionButtons()}
+        </>
     );
 }
 
@@ -247,7 +254,7 @@ export default function MainTemplate({ navigation, route }) {
 
 const styles = (theme) => StyleSheet.create({
     container: {
-        height: 345,
+        height: Dimensions.get('window').width,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
         borderWidth: 1,

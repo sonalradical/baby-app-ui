@@ -15,8 +15,6 @@ const MMImagePickerModal = (props) => {
     const handleImageSelect = (type) => {
         const options = {
             mediaType: type === 'camera' ? 'camera' : 'photo',
-            maxWidth: 300,
-            maxHeight: 550,
             quality: 1,
         };
 
