@@ -38,7 +38,7 @@ const Row2Column2 = (props) => {
             {/* Row 1 */}
             <View style={styles(theme).row}>
                 <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 }]}
-                    onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p1')], templateName: templateName }) :
+                    onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: templateData.find(item => item.name === 'p1'), templateName: templateName }) :
                         () => onPickImage('p1', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p1') ? (
                         <Svg height={155}
@@ -58,8 +58,12 @@ const Row2Column2 = (props) => {
                     )}
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles(theme).column, { borderBottomWidth: 1, borderColor: theme.colors.outline }]} onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p2')], templateName: templateName }) :
-                    () => onPickImage('p2', 'img', 'Square')} disabled={isDisable}>
+                <TouchableOpacity style={[styles(theme).column, { borderBottomWidth: 1, borderColor: theme.colors.outline }]}
+                    onPress={pageId ? () => navigation.navigate('CommonShapes', {
+                        shapeName: 'Square', templateData: templateData.find(item => item.name === 'p2'),
+                        templateName: templateName
+                    }) :
+                        () => onPickImage('p2', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p2') ?
                         <Svg height={155}
                             width={190}>
@@ -81,7 +85,10 @@ const Row2Column2 = (props) => {
             {/* Row 2 */}
             <View style={styles(theme).row}>
                 <TouchableOpacity style={[styles(theme).column, { borderRightWidth: 1, borderColor: theme.colors.outline }]}
-                    onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p3')], templateName: templateName }) :
+                    onPress={pageId ? () => navigation.navigate('CommonShapes', {
+                        shapeName: 'Square', templateData: templateData.find(item => item.name === 'p3'),
+                        templateName: templateName
+                    }) :
                         () => onPickImage('p3', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p3') ?
                         <Svg height={155}
@@ -101,7 +108,10 @@ const Row2Column2 = (props) => {
                         )}
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles(theme).column} onPress={pageId ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: [templateData.find(item => item.name === 'p4')], templateName: templateName }) :
+                <TouchableOpacity style={styles(theme).column} onPress={pageId ? () => navigation.navigate('CommonShapes', {
+                    shapeName: 'Square',
+                    templateData: templateData.find(item => item.name === 'p4'), templateName: templateName
+                }) :
                     () => onPickImage('p4', 'img', 'Square')} disabled={isDisable}>
                     {templateData.some(item => item.name === 'p4') ?
                         <Svg height={155}

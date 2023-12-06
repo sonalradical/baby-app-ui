@@ -79,9 +79,9 @@ export default function MainTemplate({ navigation, route }) {
                                     } else {
                                         setOverlayLoading(false);
                                         MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
-                                        const newData = [];
+                                        let newData;
                                         // Create a new item if it doesn't exist
-                                        newData.push({
+                                        newData = {
                                             name: selectedName, type: selectedType, value: responseData.storageFileKey,
                                             source: photo.uri, imageParam: {
                                                 height: photo.height,
@@ -90,7 +90,7 @@ export default function MainTemplate({ navigation, route }) {
                                                 y: 0,
                                                 scale: 1
                                             }
-                                        });
+                                        };
                                         storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
                                         navigation.navigate('CommonShapes', { shapeName: selectedShape, templateData: newData, templateName: templateName });
                                     }

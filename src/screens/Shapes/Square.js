@@ -19,31 +19,36 @@ const Square = (props) => {
 
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [scale, setScale] = useState(1);
+    const [imageConfig, setImageConfig] = useState(templateData);
 
     const baseScaleRef = useRef(1);
     const pinchRef = useRef(null);
 
-    const scaleFactor = templateData && templateData[0]?.imageParam.width
+    const scaleFactor = templateData && templateData?.imageParam?.width
         ? _.min([
-            190 / templateData[0].imageParam.width,
-            155 / templateData[0].imageParam.height,
+            190 / templateData.imageParam.width,
+            155 / templateData.imageParam.height,
         ])
         : 1;
 
     useEffect(() => {
-        if (templateData[0]?.imageParam.width) {
-            setPosition({ x: templateData[0].imageParam.x, y: templateData[0].imageParam.y });
-            setScale(templateData[0].imageParam.scale);
+        if (templateData?.imageParam?.width) {
+            setPosition({ x: templateData.imageParam.x, y: templateData.imageParam?.y });
+            setScale(templateData.imageParam.scale);
         }
-    }, [templateData[0]?.imageParam.width]);
+    }, [templateData?.imageParam?.width]);
 
     useEffect(() => {
         if (templateData) {
-            templateData.map((data, index) => {
-                data.imageParam.x = position.x,
-                    data.imageParam.y = position.y,
-                    data.imageParam.scale = scale
-            })
+            setImageConfig((prevTemplateData) => ({
+                ...prevTemplateData,
+                imageParam: {
+                    ...prevTemplateData.imageParam,
+                    x: position.x,
+                    y: position.y,
+                    scale: scale,
+                },
+            }));
         }
     }, [position, scale]);
 
@@ -52,12 +57,12 @@ const Square = (props) => {
         const newScale = baseScaleRef.current * pinchScale;
 
         // Calculate the position adjustment based on the focal point and new scale
-        const focalXPercentage = (focalX - position.x) / (templateData[0].imageParam.width * scaleFactor * scale);
-        const focalYPercentage = (focalY - position.y) / (templateData[0].imageParam.height * scaleFactor * scale);
+        const focalXPercentage = (focalX - position.x) / (templateData.imageParam.width * scaleFactor * scale);
+        const focalYPercentage = (focalY - position.y) / (templateData.imageParam.height * scaleFactor * scale);
 
         // Calculate the new position
-        const newPosX = focalX - focalXPercentage * (templateData[0].imageParam.width * scaleFactor * newScale);
-        const newPosY = focalY - focalYPercentage * (templateData[0].imageParam.height * scaleFactor * newScale);
+        const newPosX = focalX - focalXPercentage * (templateData.imageParam.width * scaleFactor * newScale);
+        const newPosY = focalY - focalYPercentage * (templateData.imageParam.height * scaleFactor * newScale);
 
         // Update the scale and position
         setScale(newScale);
@@ -103,13 +108,13 @@ const Square = (props) => {
                             width={190}
                             style={styles(theme).row}>
                             <SvgImage
-                                href={templateData[0].source}
+                                href={templateData.source}
                                 preserveAspectRatio="xMidYMid slice"
                                 clipPath="url(#clip)"
                                 x={`${((position.x / 190) * 100)}%`}
                                 y={`${((position.y / 155) * 100)}%`}
-                                width={templateData[0].imageParam.width * scaleFactor * scale}
-                                height={templateData[0].imageParam.height * scaleFactor * scale}
+                                width={templateData.imageParam.width * scaleFactor * scale}
+                                height={templateData.imageParam.height * scaleFactor * scale}
                                 {...panResponder.panHandlers}
                             />
                         </Svg>
@@ -131,7 +136,7 @@ const Square = (props) => {
                     label="Done"
                     onPress={() => navigation.navigate({
                         name: 'MainTemplate',
-                        params: { imageConfig: templateData[0], templateName: templateName },
+                        params: { imageConfig: imageConfig, templateName: templateName },
                         merge: true,
                     })}
                     width={'45%'}
