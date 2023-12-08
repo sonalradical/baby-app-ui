@@ -20,30 +20,24 @@ export default function Home({ updateFooterVisibility }) {
     const theme = useTheme();
     const scrollViewRef = useRef(null);
     const [isScrollingUp, setIsScrollingUp] = useState(true);
-    const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const dispatch = useDispatch();
+    const selectedBaby = useSelector((state) => state.AppReducer.baby);
+    const { userDetail } = useSelector((state) => state.AuthReducer.auth);
     const [state, setState] = useState({
         months: '',
         weeks: '',
         days: '',
     });
 
-    // useEffect(() => {
-    //     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-    //         BackHandler.exitApp();
-    //     });
-    //     return () => { backHandler.remove() };
-    // }, []);
-
     useEffect(() => {
         if (selectedBaby?.isBorn === 'No') {
             // Calculate the duration between the current date and the due date
-            const duration = MMUtils.getDuration(selectedBaby.dueDate);
+            const duration = MMUtils.getDuration(userDetail.dueDate);
 
             setState({
-                months: duration.months(),
-                weeks: duration.weeks(),
-                days: duration.days()
+                months: _.floor(duration.asMonths()),
+                weeks: _.floor(duration.asWeeks()) % 4,
+                days: _.floor(duration.asDays()) % 7
             })
         }
     }, [selectedBaby]);
@@ -74,8 +68,8 @@ export default function Home({ updateFooterVisibility }) {
         updateFooterVisibility(isScrollingUp);
     };
 
-    const renderCountDownBaner = () => {
-        const dueDate = MMUtils.displayDateMonthYear(selectedBaby.dueDate)
+    const renderCountDownBanner = () => {
+        const dueDate = MMUtils.displayDateMonthYear(userDetail.dueDate)
         return (
             <View style={{ marginHorizontal: MMConstants.marginLarge, marginVertical: MMConstants.marginMedium }}>
                 <MMSurface style={{ alignItems: 'center', borderRadius: 20 }} margin={[0, 0, 0, 0]}>
@@ -116,12 +110,15 @@ export default function Home({ updateFooterVisibility }) {
     return (
         <>
             <MMContentContainer>
-                <MMScrollView
+                {selectedBaby?.isBorn === 'Yes' ? <MMScrollView
                     onScroll={(event) => handleScroll(event.nativeEvent.contentOffset.y)}
                     onScrollEndDrag={handleScrollEndDrag}>
-                    {selectedBaby?.isBorn === 'No' ? renderCountDownBaner() : null}
                     <ChapterList />
-                </MMScrollView>
+                </MMScrollView> :
+                    <>
+                        {selectedBaby?.isBorn === 'No' ? renderCountDownBanner() : null}
+                        <ChapterList />
+                    </>}
             </MMContentContainer>
         </>
     );
