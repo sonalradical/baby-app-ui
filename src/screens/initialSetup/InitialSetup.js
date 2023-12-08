@@ -131,7 +131,7 @@ export default function InitialSetup({ route, navigation }) {
                     birthingParent: state.birthingParent,
                     situation: state.situation,
                     dueDate: state.dueDate,
-                    childCount: state.numberOfBaby ? _.parseInt(state.numberOfBaby) : 1
+                    childCount: state.numberOfBaby ? _.parseInt(state.numberOfBaby) : 1,
                 };
                 await MMApiService.updateInItProfile(apiData)
                     .then(function (response) {
