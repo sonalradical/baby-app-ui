@@ -122,7 +122,7 @@ MilestoneList.propTypes = {
 const styles = (theme) => StyleSheet.create({
     milestone: {
         color: theme.colors.text.primary,
-        width: 80,
+        width: 82,
         textAlign: 'center',
         marginTop: MMConstants.marginSmall
     },
