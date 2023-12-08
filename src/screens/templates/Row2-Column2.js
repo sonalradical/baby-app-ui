@@ -23,8 +23,8 @@ const Row2Column2 = (props) => {
             return 1;
         }
 
-        const widthScale = 190 / template.imageParam.width;
-        const heightScale = 165 / template.imageParam.height;
+        const widthScale = (Dimensions.get('window').width / 2) / template.imageParam.width;
+        const heightScale = (Dimensions.get('window').width / 2) / template.imageParam.height;
 
         return _.min([widthScale, heightScale]);
     };
@@ -39,7 +39,7 @@ const Row2Column2 = (props) => {
 
         if (template) {
             return (
-                <Svg height={165} width={190}>
+                <Svg height={Dimensions.get('window').width / 2} width={Dimensions.get('window').width / 2}>
                     {template.source ?
                         <SvgImage
                             href={template?.source}

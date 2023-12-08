@@ -143,7 +143,10 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						)}
 						{_.isEmpty(babyList) ?
 							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>No Babies Found Please Add New Baby</Text> : null}
-						<MMTransparentButton label='Add New Baby' icon='plus' onPress={() => onAddBaby()} />
+						<View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+							<MMIcon iconName={'plus'} iconSize={24} iconColor={theme.colors.primary} />
+							<MMTransparentButton label='Add New Baby' onPress={() => onAddBaby()} style={{ alignSelf: 'center', paddingLeft: MMConstants.paddingMedium }} />
+						</View>
 					</View>
 				</View>
 			</Modal>
