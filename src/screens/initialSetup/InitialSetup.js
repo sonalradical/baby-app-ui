@@ -88,6 +88,30 @@ export default function InitialSetup({ route, navigation }) {
         });
     };
 
+    const onAddBabyCount = (text) => {
+        const sanitizedText = text.replace(/\s/g, '');
+        if (_.isInteger(_.toNumber(sanitizedText)) && _.toNumber(sanitizedText) > 0) {
+            setState({
+                ...state,
+                numberOfBaby: sanitizedText,
+                errors: {
+                    ...state.errors,
+                    numberOfBaby: '',
+                },
+            });
+        }
+        else {
+            setState({
+                ...state,
+                numberOfBaby: '',
+                errors: {
+                    ...state.errors,
+                    numberOfBaby: '',
+                },
+            });
+        }
+    };
+
     const onClickButton = () => {
         if (isOverlayLoading) {
             return;
@@ -107,9 +131,8 @@ export default function InitialSetup({ route, navigation }) {
                     birthingParent: state.birthingParent,
                     situation: state.situation,
                     dueDate: state.dueDate,
-                    childCount: 1
+                    childCount: state.numberOfBaby ? _.parseInt(state.numberOfBaby) : 1
                 };
-
                 await MMApiService.updateInItProfile(apiData)
                     .then(function (response) {
                         if (response) {
@@ -235,9 +258,11 @@ export default function InitialSetup({ route, navigation }) {
                                         label='3. How many bubs do you have?'
                                         maxLength={50}
                                         value={state.numberOfBaby}
-                                        onChangeText={(value) => onInputChange('numberOfBaby', value)}
+                                        onChangeText={onAddBabyCount}
                                         placeholder="Enter How Many Baby You have"
                                         errorText={state.errors.numberOfBaby}
+                                        keyboardType="numeric"
+
                                     /> :
                                     <MMInput
                                         label='3. How old is your bub?'
