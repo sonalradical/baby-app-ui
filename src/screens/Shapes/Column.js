@@ -145,7 +145,6 @@ const Column = (props) => {
     }
 
     const renderButtons = () => {
-        console.log(imageConfig, 'imageConfig')
         return (
             <MMActionButtons type='bottomFixed'>
                 <MMOutlineButton
@@ -181,8 +180,7 @@ const styles = (theme) => StyleSheet.create({
         width: Dimensions.get('window').width / 2,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
-        borderWidth: 1,
-        alignSelf: 'center'
+        borderWidth: 1
     },
 });
 

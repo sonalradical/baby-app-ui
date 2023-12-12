@@ -81,7 +81,7 @@ export default function Home({ updateFooterVisibility }) {
                                 margin: MMConstants.marginMedium
                             }}>
                                 <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.months}</Text>
-                                <Text style={{ color: theme.colors.secondaryContainer }}>months</Text>
+                                <Text style={{ color: theme.colors.secondaryContainer }}>{state.months === 1 ? 'month' : 'months'}</Text>
                             </Card>}
                         {state.weeks > 0 &&
                             <Card style={{
@@ -89,7 +89,7 @@ export default function Home({ updateFooterVisibility }) {
                                 margin: MMConstants.marginMedium
                             }}>
                                 <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.weeks}</Text>
-                                <Text style={{ color: theme.colors.secondaryContainer }}>weeks</Text>
+                                <Text style={{ color: theme.colors.secondaryContainer }}>{state.weeks === 1 ? 'week' : 'weeks'}</Text>
                             </Card>}
                         {state.days > 0 &&
                             <Card style={{
@@ -97,7 +97,7 @@ export default function Home({ updateFooterVisibility }) {
                                 paddingHorizontal: 20, margin: MMConstants.marginMedium
                             }}>
                                 <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.days}</Text>
-                                <Text style={{ color: theme.colors.secondaryContainer }}>days</Text>
+                                <Text style={{ color: theme.colors.secondaryContainer }}>{state.days === 1 ? 'day' : 'days'}</Text>
                             </Card>}
                     </View>
                     <Text style={theme.fonts.headlineMedium}>to arrive</Text>
