@@ -180,7 +180,8 @@ const styles = (theme) => StyleSheet.create({
         width: Dimensions.get('window').width / 2,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
-        borderWidth: 1
+        borderWidth: 1,
+        alignSelf: 'center'
     },
 });
 
