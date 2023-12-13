@@ -54,40 +54,39 @@ export default function MainTemplate({ navigation, route }) {
                             (async () => {
                                 const responseData = response.data;
                                 if (responseData) {
+                                    const imageDetails = [...templateData];
+                                    const boxName = pageId ? key : selectedName;
+                                    const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
+                                    if (existingItemIndex !== -1) {
+                                        // Update existing item with new image URI and dynamic type
+                                        imageDetails[existingItemIndex] = {
+                                            ...imageDetails[existingItemIndex],
+                                            value: responseData.storageFileKey,
+                                            source: photo.uri, imageParam: {
+                                                height: containerSize.height,
+                                                width: containerSize.width,
+                                            }
+                                        };
+                                    } else {
+                                        // Create a new item if it doesn't exist
+                                        imageDetails.push({
+                                            name: selectedName, type: selectedType,
+                                            value: responseData.storageFileKey,
+                                            source: photo.uri, imageParam: {
+                                                height: photo.height,
+                                                width: photo.width
+                                            }
+                                        });
+                                    }
+                                    setTemplateData(imageDetails);
                                     const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl, fileName);
                                     if (_.isNil(result)) {
-                                        setOverlayLoading(false);
                                         MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
                                     } else {
-                                        setOverlayLoading(false);
                                         MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
-                                        const newData = [...templateData];
-                                        const boxName = pageId ? key : selectedName;
-                                        const existingItemIndex = newData.findIndex(item => item.name === boxName);
-                                        if (existingItemIndex !== -1) {
-                                            // Update existing item with new image URI and dynamic type
-                                            newData[existingItemIndex] = {
-                                                ...newData[existingItemIndex],
-                                                value: responseData.storageFileKey,
-                                                source: photo.uri, imageParam: {
-                                                    height: containerSize.height,
-                                                    width: containerSize.width,
-                                                }
-                                            };
-                                        } else {
-                                            // Create a new item if it doesn't exist
-                                            newData.push({
-                                                name: selectedName, type: selectedType,
-                                                value: responseData.storageFileKey,
-                                                source: photo.uri, imageParam: {
-                                                    height: photo.height,
-                                                    width: photo.width
-                                                }
-                                            });
-                                        }
-                                        setTemplateData(newData)
                                         storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
                                     }
+                                    setOverlayLoading(false);
                                 } else {
                                     setOverlayLoading(false);
                                     MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
