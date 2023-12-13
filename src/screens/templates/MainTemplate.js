@@ -75,7 +75,6 @@ export default function MainTemplate({ navigation, route }) {
                                                 }
                                             };
                                         } else {
-                                            ('new')
                                             // Create a new item if it doesn't exist
                                             newData.push({
                                                 name: selectedName, type: selectedType,
