@@ -1,21 +1,38 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, Dimensions, View } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, Dimensions, View, Alert } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
-import { Svg, Image as SvgImage } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-import MMSpinner from '../../components/common/Spinner';
 
 const Row2Column2 = (props) => {
     const theme = useTheme();
-    const navigation = useNavigation();
     const {
-        onPickImage, templateData, pageId, isDisable = false } = props;
+        onPickImage, templateData, pageId, isDisable = false, onImageChange } = props;
 
+
+    const onEditPicture = (template) => {
+        ImagePicker.openCropper({
+            path: template?.source,
+            width: Dimensions.get('window').width / 2,
+            height: Dimensions.get('window').width / 2
+        })
+            .then((selectedImage) => {
+                onImageChange({
+                    uri: selectedImage.path,
+                    width: selectedImage.width,
+                    height: selectedImage.height,
+                    mime: selectedImage.mime,
+                }, template?.name, template?.type);
+            })
+            .catch((e) => {
+                console.log(e);
+                Alert.alert(e.message ? e.message : e);
+            });
+    }
 
     const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
@@ -33,14 +50,21 @@ const Row2Column2 = (props) => {
     };
 
     const renderImageBox = (name, pageId, extraStyle = {}) => {
-        const onPressHandler = pageId
-            ? () => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width / 2)
-            : () => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width / 2);
-
         return (
-            <TouchableOpacity style={[styles(theme).column, extraStyle]} onPress={onPressHandler} disabled={isDisable}>
-                {renderImage(name)}
-            </TouchableOpacity>
+            <>
+                {
+                    pageId ?
+                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
+                            onPress={() => onEditPicture(templateData.find(item => item.name === name))} disabled={isDisable}>
+                            {renderImage(name)}
+                        </TouchableOpacity> :
+                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
+                            onPress={() => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width / 2)}
+                            disabled={isDisable}>
+                            {renderImage(name)}
+                        </TouchableOpacity>
+                }
+            </>
         );
     };
 

@@ -16,7 +16,7 @@ import MMPageTitle from '../../components/common/PageTitle';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMActionButtons from '../../components/common/ActionButtons';
-import MMImageCrop from '../../components/common/imageCrop';
+import MMImageCrop from '../../components/common/ImageCrop';
 
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
@@ -62,7 +62,7 @@ export default function MainTemplate({ navigation, route }) {
                                         setOverlayLoading(false);
                                         MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
                                         const newData = [...templateData];
-                                        const boxName = selectedName ? selectedName : key;
+                                        const boxName = pageId ? key : selectedName;
                                         const existingItemIndex = newData.findIndex(item => item.name === boxName);
                                         if (existingItemIndex !== -1) {
                                             // Update existing item with new image URI and dynamic type
@@ -75,9 +75,11 @@ export default function MainTemplate({ navigation, route }) {
                                                 }
                                             };
                                         } else {
+                                            ('new')
                                             // Create a new item if it doesn't exist
                                             newData.push({
-                                                name: selectedName, type: selectedType, value: responseData.storageFileKey,
+                                                name: selectedName, type: selectedType,
+                                                value: responseData.storageFileKey,
                                                 source: photo.uri, imageParam: {
                                                     height: photo.height,
                                                     width: photo.width

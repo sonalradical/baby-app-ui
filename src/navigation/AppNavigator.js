@@ -33,7 +33,6 @@ import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
 import InitialSetup from '../screens/initialSetup/InitialSetup';
 import TemplateList from '../screens/templates/TemplateList';
 import MainTemplate from '../screens/templates/MainTemplate';
-import CommonShapes from '../screens/Shapes/CommonShapes';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -111,10 +110,6 @@ function AppStackNavigator(userDetail) {
                         headerShown: true,
                         header: (props) => <Header showHome={true} />,
                     }}
-                />
-                <AppStack.Screen
-                    name='CommonShapes'
-                    component={CommonShapes}
                 />
                 <AppStack.Screen
                     name="SignUp"

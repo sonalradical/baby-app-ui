@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, Dimensions, Alert } from 'react-na
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
-import ImageCropPicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
@@ -15,7 +15,7 @@ const Blank = (props) => {
     } = props;
 
     const onEditPicture = (template) => {
-        ImageCropPicker.openCropper({
+        ImagePicker.openCropper({
             path: template.source,
             width: Dimensions.get('window').width - 20,
             height: Dimensions.get('window').width
