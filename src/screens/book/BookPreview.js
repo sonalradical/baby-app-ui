@@ -64,20 +64,21 @@ export default function BookPreview({ updateFooterVisibility }) {
     };
 
     const onPressAdd = (currentPosition) => {
-        let nextItemPosition = currentPosition + 10;
+        let previousItemPosition = currentPosition - 10;
         const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
-        if (currentIndex < bookData.length - 1) {
-            const nextItem = bookData[currentIndex + 1];
-            nextItemPosition = nextItem.position;
+        if (currentIndex > 0) {
+            const perviousItem = bookData[currentIndex - 1];
+            previousItemPosition = perviousItem.position;
         }
-        const pagePosition = (currentPosition + nextItemPosition) / 2;
+        const pagePosition = (currentPosition + previousItemPosition) / 2;
         navigation.navigate('TemplateList', { position: pagePosition })
     };
 
     const onPressEdit = (bookData, template) => {
         navigation.navigate('MainTemplate', {
             position: bookData.position,
-            templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id
+            templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id,
+            headerText: bookData.headerText, footerText: bookData.footerText
         })
     };
 
@@ -95,14 +96,18 @@ export default function BookPreview({ updateFooterVisibility }) {
         );
     };
 
-    const renderTemplatePage = (template, pageDetails) => {
+    const renderTemplatePage = (template, pageDetails, headerText, footerText) => {
         const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
             pageDetail.source = MMUtils.getImagePath(pageDetail.value);
             return pageDetail;
         });
         return (
-            <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
-                templateName={template.code} />
+            <>
+                {headerText ? <Text style={{ textAlign: 'center', paddingVertical: MMConstants.paddingLarge }}>{headerText}</Text> : null}
+                <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
+                    templateName={template.code} />
+                {footerText ? <Text style={{ textAlign: 'center', paddingVertical: MMConstants.paddingLarge }}> {footerText}</Text> : null}
+            </>
         )
     };
 
@@ -121,9 +126,15 @@ export default function BookPreview({ updateFooterVisibility }) {
         const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
         return (
             <>
+                <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium }}>
+                    <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
+                    {isTemplate ?
+                        <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
+                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: MMConstants.marginSmall }} /> : null}
+                </View>
                 <MMSurface key={item._id} margin={[0, 0, 0, 0]} padding={[0, 0, 0, 0]}>
                     {isTemplate ?
-                        renderTemplatePage(template, item.pageDetails) :
+                        renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText) :
                         (
                             <>
                                 <View style={[styles(theme).title, { backgroundColor: item.color }]}>
@@ -138,10 +149,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                     }
                 </MMSurface>
                 <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium, marginBottom: bookData.length === index + 1 ? 10 : 0 }}>
-                    <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
-                    {isTemplate ?
-                        <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
-                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: MMConstants.marginSmall }} /> : null}
+
                     <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
                         <Text>Page {index + 1}</Text>
                     </View>
