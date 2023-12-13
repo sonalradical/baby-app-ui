@@ -33,85 +33,66 @@ export default function MainTemplate({ navigation, route }) {
         setModalVisible(!modalVisible);
     };
 
+    //Use for edit mode
     useEffect(() => {
         if (pageId && pageDetails) {
             setTemplateData(pageDetails);
         }
     }, [pageDetails, pageId]);
 
-    const onImageChange = async (imageData, key = '') => {
-        if (selectedName && selectedType || key) {
-            const photo = imageData;
-            let storageFileKeys = [];
-            try {
-                setOverlayLoading(true);
-                let picIndex = 0;
-                for (const pic of [imageData]) {
-                    picIndex++;
-                    const fileName = _.head(photo.uri.match(/[^\/]+$/));
-                    await MMApiService.getPreSignedUrl(fileName)
-                        .then(function (response) {
-                            (async () => {
-                                const responseData = response.data;
-                                if (responseData) {
-                                    const imageDetails = [...templateData];
-                                    const boxName = pageId ? key : selectedName;
-                                    const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
-                                    if (existingItemIndex !== -1) {
-                                        // Update existing item with new image URI and dynamic type
-                                        imageDetails[existingItemIndex] = {
-                                            ...imageDetails[existingItemIndex],
-                                            value: responseData.storageFileKey,
-                                            source: photo.uri, imageParam: {
-                                                height: containerSize.height,
-                                                width: containerSize.width,
-                                            }
-                                        };
-                                    } else {
-                                        // Create a new item if it doesn't exist
-                                        imageDetails.push({
-                                            name: selectedName, type: selectedType,
-                                            value: responseData.storageFileKey,
-                                            source: photo.uri, imageParam: {
-                                                height: photo.height,
-                                                width: photo.width
-                                            }
-                                        });
-                                    }
-                                    setTemplateData(imageDetails);
-                                    const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl, fileName);
-                                    if (_.isNil(result)) {
-                                        MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
-                                    } else {
-                                        MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
-                                        storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
-                                    }
-                                    setOverlayLoading(false);
-                                } else {
-                                    setOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
-                                }
-                            })();
-                        })
-                        .catch(function (error) {
-                            setOverlayLoading(false);
-                            setState({
-                                ...state,
-                                errors: MMUtils.apiErrorParamMessages(error)
-                            });
+    const onImageChange = async (photo, key = '') => {
+        let storageFileKeys = [];
+        try {
+            setOverlayLoading(true);
+            const fileName = _.head(photo.uri.match(/[^\/]+$/));
+            const response = await MMApiService.getPreSignedUrl(fileName);
+            const responseData = response.data;
+            if (responseData) {
+                const imageDetails = [...templateData];
 
-                            const serverError = MMUtils.apiErrorMessage(error);
-                            if (serverError) {
-                                MMUtils.showToastMessage(serverError);
-                            }
-                        });
+                //find selected box index
+                const boxName = pageId ? key : selectedName;
+                const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
+
+                // Update existing item with new image URI and dynamic type
+                if (existingItemIndex >= 0) {
+                    imageDetails[existingItemIndex] = {
+                        ...imageDetails[existingItemIndex],
+                        value: responseData.storageFileKey,
+                        source: photo.uri, imageParam: {
+                            height: containerSize.height,
+                            width: containerSize.width,
+                        }
+                    };
+                } else {
+                    // Create a new item if it doesn't exist
+                    imageDetails.push({
+                        name: selectedName, type: selectedType,
+                        value: responseData.storageFileKey,
+                        source: photo.uri, imageParam: {
+                            height: photo.height,
+                            width: photo.width
+                        }
+                    });
                 }
-            } catch (err) {
-                setOverlayLoading(false);
-                MMUtils.consoleError(err);
+
+                setTemplateData(imageDetails);
+                const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
+                if (_.isNil(result)) {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture completed.`);
+                }
+            } else {
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
             }
-            return storageFileKeys;
+            setOverlayLoading(false);
+        } catch (err) {
+            setOverlayLoading(false);
+            MMUtils.consoleError(err);
         }
+        return storageFileKeys;
+
     };
 
     const onPickImage = (name, type, width, height) => {
@@ -126,54 +107,33 @@ export default function MainTemplate({ navigation, route }) {
 
     const onSavePage = async () => {
         const pageDetails = _.map(templateData, _.partialRight(_.omit, 'source'));
-        try {
-            setOverlayLoading(true);
-            const apiData = {
-                id: pageId ? pageId : null,
-                babyId: selectedBaby._id,
-                templateId,
-                position,
-                pageDetails
-            }
-            const response = await MMApiService.savePage(apiData);
-            if (response) {
-                dispatch(reloadBookPage({ reloadBookPage: true }));
-                navigation.navigate('Home');
-            }
-        } catch (error) {
-            const serverError = MMUtils.apiErrorMessage(error);
-            if (serverError) {
-                MMUtils.showToastMessage(serverError);
-            }
-            setOverlayLoading(false);
+        setOverlayLoading(true);
+        const apiData = {
+            id: pageId ? pageId : null,
+            babyId: selectedBaby._id,
+            templateId,
+            position,
+            pageDetails
         }
-
+        const response = await MMApiService.savePage(apiData);
+        if (response) {
+            dispatch(reloadBookPage({ reloadBookPage: true }));
+            navigation.navigate('Home');
+        }
+        setOverlayLoading(false);
     };
 
-    async function onDeletePage() {
-        try {
-            setOverlayLoading(true);
-            const response = await MMApiService.deletePage(pageId);
-            if (response) {
-                setOverlayLoading(false);
-                dispatch(reloadBookPage({ reloadBookPage: true }));
-                navigation.navigate('Home');
-            }
-        } catch (error) {
-            const serverError = MMUtils.apiErrorMessage(error);
-            if (serverError) {
-                MMUtils.showToastMessage(serverError);
-            }
+    const onDeletePage = async () => {
+
+        setOverlayLoading(true);
+        const response = await MMApiService.deletePage(pageId);
+        if (response) {
             setOverlayLoading(false);
+            dispatch(reloadBookPage({ reloadBookPage: true }));
+            navigation.navigate('Home');
         }
+        setOverlayLoading(false);
     }
-
-    const onConfirm = () => {
-        MMConfirmDialog({
-            message: "Are you sure you want to delete this page?",
-            onConfirm: onDeletePage
-        });
-    };
 
     const renderActionButtons = () => {
         return (
@@ -183,7 +143,10 @@ export default function MainTemplate({ navigation, route }) {
                         <>
                             <MMOutlineButton
                                 label="Delete"
-                                onPress={() => onConfirm()}
+                                onPress={() => MMConfirmDialog({
+                                    message: "Are you sure you want to delete this page?",
+                                    onConfirm: onDeletePage
+                                })}
                                 width='45%'
                             />
                             <MMButton

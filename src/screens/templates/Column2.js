@@ -1,45 +1,21 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import * as _ from 'lodash';
-import ImagePicker from 'react-native-image-crop-picker';
-
-import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
+import MMConstants from '../../helpers/Constants';
 
 const Column2 = (props) => {
     const theme = useTheme();
-    const { onPickImage, templateData, pageId = null, isDisable = false, onImageChange } = props;
-
-    const onEditPicture = (template) => {
-        ImagePicker.openCropper({
-            path: template?.source,
-            width: Dimensions.get('window').width / 2,
-            height: Dimensions.get('window').width
-        })
-            .then((selectedImage) => {
-                onImageChange({
-                    uri: selectedImage.path,
-                    width: selectedImage.width,
-                    height: selectedImage.height,
-                    mime: selectedImage.mime,
-                }, template?.name, template?.type);
-            })
-            .catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
-    }
-
+    const { templateData, pageId = null, isDisable = false, onPickImage, onImageChange, onEditPicture } = props;
+    const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
-
         if (template) {
             return (
-                <Image
-                    style={{ width: Dimensions.get('window').width / 2, height: Dimensions.get('window').width, resizeMode: 'contain' }}
-                    source={{ uri: template?.source }}
-                />
+                <Image style={{ width: deviceWidth / 2, height: deviceWidth, resizeMode: 'contain' }}
+                    source={{ uri: template?.source }} />
             );
         } else {
             return <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />;
@@ -51,11 +27,14 @@ const Column2 = (props) => {
             <>
                 {
                     pageId ?
-                        <TouchableOpacity style={[styles(theme).column, extraStyle]} onPress={() => onEditPicture(templateData.find(item => item.name === name))} disabled={isDisable}>
+                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
+                            onPress={() => onEditPicture(name, deviceWidth / 2, deviceWidth)}
+                            disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity> :
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width)} disabled={isDisable}>
+                            onPress={() => onPickImage(name, 'img', deviceWidth / 2, deviceWidth)}
+                            disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity>
                 }
