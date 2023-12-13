@@ -151,14 +151,13 @@ function filterDataByQuery(data, query) {
 }
 
 
-function uploadPicture(picture, preSignedUrl) {
+function uploadPicture(picture, preSignedUrl, filetName = null) {
     const fileUri = isPlatformAndroid() ? picture.uri : picture.uri.replace('file:', '');
-    const fileName = picture.fileName
+    const fileName = picture.fileName ? picture.fileName : filetName
     return uploadPictureToS3(preSignedUrl, fileUri, fileName);
 };
 
 function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
-    console.log(preSignedUrl, 'preSignedUrl')
     let result = {};
 
     // only xhr style works; axios and S3 doesn't seem to like each other.

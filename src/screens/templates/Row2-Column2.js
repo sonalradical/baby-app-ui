@@ -14,57 +14,32 @@ const Row2Column2 = (props) => {
     const theme = useTheme();
     const navigation = useNavigation();
     const {
-        onPickImage, templateData, pageId, templateName, isDisable = false } = props;
+        onPickImage, templateData, pageId, isDisable = false } = props;
 
-    const calculateScaleFactor = (templateName) => {
-        const template = templateData.find((item) => item.name === templateName);
 
-        if (!template || !template.imageParam || !template.imageParam.width) {
-            return 1;
-        }
-
-        const widthScale = (Dimensions.get('window').width / 2) / template.imageParam.width;
-        const heightScale = (Dimensions.get('window').width / 2) / template.imageParam.height;
-
-        return _.min([widthScale, heightScale]);
-    };
-
-    const scaleFactor1 = calculateScaleFactor('p1');
-    const scaleFactor2 = calculateScaleFactor('p2');
-    const scaleFactor3 = calculateScaleFactor('p3');
-    const scaleFactor4 = calculateScaleFactor('p4');
-
-    const renderImage = (name, scaleFactor) => {
+    const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
 
         if (template) {
             return (
-                <Svg height={Dimensions.get('window').width / 2} width={Dimensions.get('window').width / 2}>
-                    {template.source ?
-                        <SvgImage
-                            href={template?.source}
-                            preserveAspectRatio="xMidYMid slice"
-                            clipPath="url(#clip)"
-                            x={template.imageParam?.x / 2}
-                            y={template.imageParam?.y / 2}
-                            width={template.imageParam?.width * scaleFactor * template.imageParam?.scale}
-                            height={template.imageParam?.height * scaleFactor * template.imageParam?.scale}
-                        /> : <MMSpinner />}
-                </Svg>
+                <Image
+                    style={{ width: Dimensions.get('window').width / 2, height: Dimensions.get('window').width / 2, resizeMode: 'contain' }}
+                    source={{ uri: template?.source }}
+                />
             );
         } else {
             return <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />;
         }
     };
 
-    const renderImageBox = (name, scaleFactor, pageId, extraStyle = {}) => {
+    const renderImageBox = (name, pageId, extraStyle = {}) => {
         const onPressHandler = pageId
-            ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: templateData.find(item => item.name === name), templateName })
-            : () => onPickImage(name, 'img', 'Square');
+            ? () => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width / 2)
+            : () => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width / 2);
 
         return (
             <TouchableOpacity style={[styles(theme).column, extraStyle]} onPress={onPressHandler} disabled={isDisable}>
-                {renderImage(name, scaleFactor)}
+                {renderImage(name)}
             </TouchableOpacity>
         );
     };
@@ -73,14 +48,14 @@ const Row2Column2 = (props) => {
         <>
             {/* Row 1 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p1', scaleFactor1, pageId, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 })}
-                {renderImageBox('p2', scaleFactor2, pageId, { borderBottomWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p1', pageId, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 })}
+                {renderImageBox('p2', pageId, { borderBottomWidth: 1, borderColor: theme.colors.outline })}
             </View>
 
             {/* Row 2 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p3', scaleFactor3, pageId, { borderRightWidth: 1, borderColor: theme.colors.outline })}
-                {renderImageBox('p4', scaleFactor4, pageId)}
+                {renderImageBox('p3', pageId, { borderRightWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p4', pageId)}
             </View>
         </>
     );

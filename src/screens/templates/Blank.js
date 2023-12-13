@@ -1,54 +1,47 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
-import { Svg, Image as SvgImage } from 'react-native-svg';
-import MMSpinner from '../../components/common/Spinner';
-import { useNavigation } from '@react-navigation/native';
 
 const Blank = (props) => {
     const theme = useTheme();
-    const navigation = useNavigation();
     const {
-        onPickImage, templateData, pageId, templateName, isDisable = false
+        onPickImage, templateData, pageId, isDisable = false, onImageChange
     } = props;
 
-    const calculateScaleFactor = (templateName) => {
-        const template = templateData.find((item) => item.name === templateName);
+    const onEditPicture = (template) => {
+        ImageCropPicker.openCropper({
+            path: template.source,
+            width: Dimensions.get('window').width - 20,
+            height: Dimensions.get('window').width
+        })
+            .then((selectedImage) => {
+                onImageChange({
+                    uri: selectedImage.path,
+                    width: selectedImage.width,
+                    height: selectedImage.height,
+                    mime: selectedImage.mime,
+                }, template?.name, template?.type);
+            })
+            .catch((e) => {
+                console.log(e);
+                Alert.alert(e.message ? e.message : e);
+            });
+    }
 
-        if (!template || !template.imageParam || !template.imageParam.width) {
-            return 1;
-        }
-
-        const widthScale = (Dimensions.get('window').width - 20) / template.imageParam.width;
-        const heightScale = Dimensions.get('window').width / template.imageParam.height;
-
-        return _.min([widthScale, heightScale]);
-    };
-
-    const scaleFactor = calculateScaleFactor('p1');
-
-    const renderImage = (name, scaleFactor) => {
+    const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
-
         if (template) {
             return (
-                <Svg height={Dimensions.get('window').width} width={Dimensions.get('window').width - 20}>
-                    {template.source ?
-                        <SvgImage
-                            href={template?.source}
-                            preserveAspectRatio="xMidYMid slice"
-                            clipPath="url(#clip)"
-                            x={template.imageParam?.x}
-                            y={template.imageParam?.y}
-                            width={template.imageParam?.width * scaleFactor * template.imageParam?.scale}
-                            height={template.imageParam?.height * scaleFactor * template.imageParam?.scale}
-                        /> : <MMSpinner />}
-                </Svg>
+                <Image
+                    style={{ width: Dimensions.get('window').width - 20, height: Dimensions.get('window').width, resizeMode: 'contain' }}
+                    source={{ uri: template?.source }}
+                />
             );
         } else {
             return <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />;
@@ -57,9 +50,9 @@ const Blank = (props) => {
 
     return (
         <TouchableOpacity style={styles(theme).container} onPress={pageId
-            ? () => navigation.navigate('CommonShapes', { shapeName: 'Square', templateData: templateData.find(item => item.name === 'p1'), templateName })
-            : () => onPickImage('p1', 'img', 'Square')} disabled={isDisable}>
-            {renderImage('p1', scaleFactor)}
+            ? () => onEditPicture(templateData.find(item => item.name === 'p1'))
+            : () => onPickImage('p1', 'img', Dimensions.get('window').width - 20, Dimensions.get('window').width)} disabled={isDisable}>
+            {renderImage('p1')}
         </TouchableOpacity>
     );
 };
