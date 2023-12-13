@@ -38,7 +38,10 @@ export default function BookPreview({ updateFooterVisibility }) {
         try {
             const response = await MMApiService.getBookPreview(selectedBaby._id);
             if (response.data) {
-                setBookData(response.data);
+                const filteredData = _.filter(response.data, (item) => {
+                    return item?.pageDetails?.[0]?.questionId?.questionType !== 'milestone';
+                });
+                setBookData(filteredData);
             }
         } catch (error) {
             const serverError = MMUtils.apiErrorMessage(error);
@@ -99,7 +102,7 @@ export default function BookPreview({ updateFooterVisibility }) {
         });
         return (
             <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
-                templateName={template.code} onSetTemplateData={null} />
+                templateName={template.code} />
         )
     };
 

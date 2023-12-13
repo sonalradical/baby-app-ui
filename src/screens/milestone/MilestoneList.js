@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
@@ -78,7 +78,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
-            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
+            <TouchableOpacity style={{ flexDirection: 'column', marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
                 <Image
                     textAlign="center"
@@ -86,7 +86,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
                     source={milestoneImage}
                     style={styles(theme).image}
                 />
-                <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={1} ellipsizeMode='tail'>
+                <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={2} ellipsizeMode='tail'>
                     {item.title}</Text>
             </TouchableOpacity>
         );
@@ -98,9 +98,10 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
                 ref={flatListRef}
                 data={milestones}
                 ListHeaderComponent={<MMPageTitle title='My First' />}
+                columnWrapperStyle={{ justifyContent: 'space-around' }}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
-                numColumns={3}
+                numColumns={2}
                 onScroll={handleScroll}
                 onScrollEndDrag={handleScrollEndDrag}
             />
@@ -122,7 +123,6 @@ MilestoneList.propTypes = {
 const styles = (theme) => StyleSheet.create({
     milestone: {
         color: theme.colors.text.primary,
-        width: 80,
         textAlign: 'center',
         marginTop: MMConstants.marginSmall
     },
@@ -130,5 +130,6 @@ const styles = (theme) => StyleSheet.create({
         width: Dimensions.get('window').width / 5,
         height: Dimensions.get('window').height / 10,
         borderRadius: 50,
+        alignSelf: 'center'
     },
 });

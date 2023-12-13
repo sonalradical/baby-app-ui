@@ -1,39 +1,62 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import * as _ from 'lodash';
-
-import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
+import MMConstants from '../../helpers/Constants';
 
 const Column2 = (props) => {
     const theme = useTheme();
-    const { onPickImage, borderWidth = 1, templateData, isDisable = false } = props;
+    const { templateData, pageId = null, isDisable = false, onPickImage, onEditPicture } = props;
+    const deviceWidth = Dimensions.get('window').width;
+
+    const renderImage = (name) => {
+        const template = templateData.find(item => item.name === name);
+        if (template) {
+            return (
+                <Image style={{ width: deviceWidth / 2, height: deviceWidth, resizeMode: 'contain' }}
+                    source={{ uri: template?.source }} />
+            );
+        } else {
+            return <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />;
+        }
+    };
+
+    const renderImageBox = (name, extraStyle = {}) => {
+        return (
+            <>
+                {
+                    pageId ?
+                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
+                            onPress={() => onEditPicture(name, deviceWidth / 2, deviceWidth)}
+                            disabled={isDisable}>
+                            {renderImage(name)}
+                        </TouchableOpacity> :
+                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
+                            onPress={() => onPickImage(name, 'img', deviceWidth / 2, deviceWidth)}
+                            disabled={isDisable}>
+                            {renderImage(name)}
+                        </TouchableOpacity>
+                }
+            </>
+        );
+    };
 
     return (
-        <View style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            flex: 1
-        }}>
-            <TouchableOpacity style={[styles(theme).column, { borderRightWidth: borderWidth, borderColor: theme.colors.outline }]}
-                onPress={() => onPickImage('p1', 'img')} disabled={isDisable}>
-                {templateData.some(item => item.name === 'p1') ? <Image source={{ uri: templateData.find(item => item.name === 'p1').source }}
-                    style={styles(theme).image} /> :
-                    <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles(theme).column} onPress={() => onPickImage('p2', 'img')} disabled={isDisable}>
-                {templateData.some(item => item.name === 'p2') ? <Image source={{ uri: templateData.find(item => item.name === 'p2').source }}
-                    style={styles(theme).image} /> :
-                    <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />}
-            </TouchableOpacity>
-        </View>
+        <>
+            <View style={styles(theme).row}>
+                {renderImageBox('p1', { borderRightWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p2')}
+            </View>
+        </>
     );
 };
 
 const styles = (theme) => StyleSheet.create({
+    row: {
+        flex: 1,
+        flexDirection: 'row', // main axis
+    },
     column: {
         flex: 1,
         alignItems: 'center',
@@ -43,12 +66,7 @@ const styles = (theme) => StyleSheet.create({
     imagePickerButton: {
         padding: MMConstants.paddingLarge,
         borderRadius: 50
-    },
-    image: {
-        width: '100%',
-        height: 345,
-        resizeMode: 'cover'
-    },
+    }
 });
 
 export default Column2;

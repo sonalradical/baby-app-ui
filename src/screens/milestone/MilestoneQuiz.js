@@ -15,7 +15,7 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import MMIcon from '../../components/common/Icon';
-import MMImagePickerModal from '../../components/common/imagePickerModal';
+import MMImagePickerModal from '../../components/common/ImagePickerModal';
 import MMInputMultiline from '../../components/common/InputMultiline';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMFlexView from '../../components/common/FlexView';

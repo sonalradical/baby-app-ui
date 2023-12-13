@@ -327,7 +327,7 @@ export default function AddEditBaby({ route }) {
                 />
                 <MMRadioButton
                     label='Gender *'
-                    options={lookupData.gender}
+                    options={lookupData.babyGender}
                     selectedValue={state.gender}
                     onValueChange={onGenderSelect}
                     errorText={state.errors.gender}

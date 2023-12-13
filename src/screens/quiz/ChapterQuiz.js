@@ -234,7 +234,7 @@ export default function ChapterQuiz({ navigation, route }) {
                                 maxLength={2000}
                             />
                             <Text style={{ textAlign: 'right' }}>
-                                {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} character out of 2000` : '0 character out of 2000'}</Text>
+                                {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} / 2000` : '0 / 2000'}</Text>
                         </View>
                     )}
                 </View>

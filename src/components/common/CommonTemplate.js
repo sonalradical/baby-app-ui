@@ -1,13 +1,15 @@
 import React from 'react';
+import MMUtils from '../../helpers/Utils';
 
 import Blank from '../../screens/templates/Blank';
 import Column2 from '../../screens/templates/Column2';
 import Row2 from '../../screens/templates/Row2';
 import Row2Column2 from '../../screens/templates/Row2-Column2';
 import RowColumn2 from '../../screens/templates/Row-Column2';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const CommonTemplate = (props) => {
-    const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, onSetTemplateData } = props;
+    const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, pageId, ImageProps, onImageChange } = props;
 
     const Components = {
         "Blank": Blank,
@@ -18,12 +20,32 @@ const CommonTemplate = (props) => {
     }
     const TemplateComponents = Components[templateName];
 
+
+    const onEditPicture = (name, width, height) => {
+        const template = templateData.find(item => item.name === name);
+        ImagePicker.openCropper({
+            path: template?.source,
+            width: width,
+            height: height
+        }).then((selectedImage) => {
+            onImageChange({
+                uri: selectedImage.path,
+                width: selectedImage.width,
+                height: selectedImage.height,
+                mime: selectedImage.mime,
+            }, template?.name, template?.type);
+        }).catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
+    }
+
     return (
         <TemplateComponents onPickImage={onPickImage}
             templateData={templateData}
             borderWidth={borderWidth}
             isDisable={isDisable}
-            onSetTemplateData={onSetTemplateData} />
+            pageId={pageId}
+            ImageProps={ImageProps}
+            onEditPicture={onEditPicture}
+            onImageChange={onImageChange} />
     );
 };
 

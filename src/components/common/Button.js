@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import MMConstants from '../../helpers/Constants';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 
 //import MMIcon from './icon';
 
@@ -44,10 +44,10 @@ MMButton.propTypes = {
 
 function MMTransparentButton(props) {
     const theme = useTheme();
-    const { label, style } = props;
+    const { label, style, onPress } = props;
 
     return (
-        <TouchableOpacity {...props}>
+        <TouchableOpacity {...props} onPress={onPress}>
             <Text style={{ color: theme.colors.primary }}>{label}</Text>
         </TouchableOpacity>
     );

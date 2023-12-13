@@ -202,12 +202,9 @@ export default function SignUp({ navigation, route }) {
                     label="Sign Up"
                     onPress={() => onSubmit()}
                 />
-                <View style={{ alignItems: 'center' }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>Already have an account?</Text>
-                        <MMTransparentButton variant="none" transparent label='SIGN IN'
-                            style={{ paddingTop: 0 }} onPress={() => navigation.navigate('Login')} />
-                    </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <Text style={[theme.fonts.default]}>Already have an account? </Text>
+                    <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
                 </View>
             </View>
         );
