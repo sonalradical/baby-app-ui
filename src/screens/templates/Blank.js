@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
 import ImagePicker from 'react-native-image-crop-picker';
 
+import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
 
@@ -28,10 +29,7 @@ const Blank = (props) => {
                     mime: selectedImage.mime,
                 }, template?.name, template?.type);
             })
-            .catch((e) => {
-                console.log(e);
-                Alert.alert(e.message ? e.message : e);
-            });
+            .catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
     }
 
     const renderImage = (name) => {
