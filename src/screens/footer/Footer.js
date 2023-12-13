@@ -18,10 +18,22 @@ const Tab = createBottomTabNavigator();
 export default function Footer() {
     const theme = useTheme();
     const [isFooterVisible, setIsFooterVisible] = useState(true);
+    const [scaleAnim] = useState(new Animated.Value(0))
 
     const updateFooterVisibility = (isVisible) => {
         setIsFooterVisible(isVisible);
     };
+
+    React.useEffect(() => {
+        Animated.spring(
+            scaleAnim,
+            {
+                toValue: 1,
+                friction: 3,
+                useNativeDriver: true
+            }
+        ).start();
+    }, [])
 
     return (
         <View style={{
@@ -37,7 +49,7 @@ export default function Footer() {
                     headerShown: false,
                 }}
                 tabBar={({ navigation, state, descriptors, insets }) => {
-                    return isFooterVisible && < Animated.View style={{ opacity: isFooterVisible ? 1 : 0 }}>
+                    return isFooterVisible && < Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
                         <FooterTab navigation={navigation} state={state} descriptors={descriptors} insets={insets} />
                     </Animated.View>
                 }}

@@ -29,11 +29,6 @@ export default function MainTemplate({ navigation, route }) {
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [selectedName, setSelectedName] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
-    const [imageSize, setImageSize] = useState({
-        height: 0,
-        width: 0
-    })
-
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
@@ -48,7 +43,6 @@ export default function MainTemplate({ navigation, route }) {
     const onImageChange = async (imageData) => {
         if (selectedName && selectedType) {
             const photo = imageData.assets[0];
-            setImageSize({ height: photo.height, width: photo.width })
             let storageFileKeys = [];
             try {
                 setOverlayLoading(true);
@@ -79,13 +73,20 @@ export default function MainTemplate({ navigation, route }) {
                                                     ...newData[existingItemIndex],
                                                     type: selectedType,
                                                     value: responseData.storageFileKey,
-                                                    source: photo.uri
+                                                    source: photo.uri,
+                                                    height: photo.height,
+                                                    width: photo.width,
+                                                    x: 0,
+                                                    y: 0,
+                                                    scale: 1
                                                 };
                                             } else {
                                                 // Create a new item if it doesn't exist
                                                 newData.push({
                                                     name: selectedName, type: selectedType, value: responseData.storageFileKey,
-                                                    source: photo.uri
+                                                    source: photo.uri, height: photo.height, width: photo.width, x: 0,
+                                                    y: 0,
+                                                    scale: 1
                                                 });
                                             }
                                             return newData;
@@ -177,17 +178,24 @@ export default function MainTemplate({ navigation, route }) {
         });
     };
 
+    const onSetTemplateData = (State) => {
+        setTemplateData(State);
+    };
+
     const renderView = () => {
         return (
             <>
                 <MMPageTitle title='Select Image' />
                 <View style={[styles(theme).container]}>
-                    <CommonTemplate onPickImage={onPickImage} templateData={templateData} templateName={templateName} />
+                    <CommonTemplate onPickImage={onPickImage}
+                        templateData={templateData}
+                        templateName={templateName}
+                        onSetTemplateData={onSetTemplateData} />
                 </View>
                 <View style={{ paddingTop: MMConstants.paddingLarge }}>
                     {
                         pageId ?
-                            <MMFlexView >
+                            <MMFlexView>
                                 <MMOutlineButton
                                     label="Delete"
                                     onPress={() => onConfirm()}
@@ -199,10 +207,18 @@ export default function MainTemplate({ navigation, route }) {
                                     width={'45%'}
                                 />
                             </MMFlexView> :
-                            <MMButton
-                                label="Save Page"
-                                onPress={() => onSavePage()}
-                            />
+                            <MMFlexView >
+                                <MMOutlineButton
+                                    label="Cancel"
+                                    onPress={() => navigation.goBack()}
+                                    width='45%'
+                                />
+                                <MMButton
+                                    label="Save Page"
+                                    onPress={() => onSavePage()}
+                                    width={'45%'}
+                                />
+                            </MMFlexView>
 
                     }
                 </View>
@@ -227,7 +243,7 @@ export default function MainTemplate({ navigation, route }) {
 
 const styles = (theme) => StyleSheet.create({
     container: {
-        height: Dimensions.get('window').width - 48,
+        height: 345,
         borderColor: theme.colors.outline,
         borderStyle: 'dashed',
         borderWidth: 1,

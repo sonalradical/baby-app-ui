@@ -79,7 +79,7 @@ const styles = (theme) => StyleSheet.create({
     },
     image: {
         width: Dimensions.get('window').width / 2,
-        height: Dimensions.get('window').height / 4,
+        height: Dimensions.get('window').height / 5,
         resizeMode: 'cover',
     },
 });

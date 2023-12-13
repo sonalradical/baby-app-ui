@@ -46,7 +46,7 @@ const styles = (theme) => StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: Dimensions.get('window').width - 48,
+        height: 345,
         resizeMode: 'cover'
     },
 });

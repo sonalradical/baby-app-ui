@@ -98,7 +98,8 @@ export default function BookPreview({ updateFooterVisibility }) {
             return pageDetail;
         });
         return (
-            <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true} templateName={template.code} />
+            <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
+                templateName={template.code} onSetTemplateData={null} />
         )
     };
 

@@ -166,11 +166,8 @@ export default function Login({ navigation }) {
                         onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
                     />
 
-                    <MMButton
-                        label="Login"
-                        onPress={() => onLoginWithPassword()}
-                    />
-                    <View style={{ alignItems: 'center' }}>
+                    <MMButton label="Login" onPress={() => onLoginWithPassword()} />
+                    <View style={{ alignItems: 'center', padding: MMConstants.paddingLarge }}>
                         <Text style={theme.fonts.default}>Or</Text>
                     </View>
                     <MMOutlineButton
@@ -180,15 +177,15 @@ export default function Login({ navigation }) {
                         width={'70%'}
                     ></MMOutlineButton>
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={[theme.fonts.default]}>By continuing you agree to our </Text>
-                    <Text style={[theme.fonts.default]}>
+                <View style={{ alignItems: 'center', flexDirection: 'column' }}>
+                    <Text style={[theme.fonts.default, { marginVertical: MMConstants.marginMedium }]}>By continuing you agree to our </Text>
+                    <Text style={[theme.fonts.default, { marginBottom: MMConstants.marginMedium }]}>
                         <Text style={{ color: theme.colors.primary }}> Terms of Services</Text> and
-                        <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text></Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[theme.fonts.default, { paddingTop: 20 }]}>Need an account ?</Text>
-                        <MMTransparentButton variant="none" transparent label='SIGN UP'
-                            style={{ paddingTop: MMConstants.paddingLarge }} onPress={() => navigation.navigate('SignUp')} />
+                        <Text style={{ color: theme.colors.primary }}> Privacy Policy</Text>
+                    </Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                        <Text style={[theme.fonts.default]}>Need an account ? </Text>
+                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate('SignUp')} />
                     </View>
                 </View>
             </MMSurface >
