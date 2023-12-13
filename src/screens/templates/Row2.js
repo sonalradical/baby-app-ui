@@ -3,40 +3,20 @@ import { View, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-nat
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
-import ImagePicker from 'react-native-image-crop-picker';
-
-import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
 
 const Row2 = (props) => {
     const theme = useTheme();
-    const { onPickImage, templateData, pageId, isDisable = false, onImageChange } = props;
-
-    const onEditPicture = (template) => {
-        ImagePicker.openCropper({
-            path: template?.source,
-            width: Dimensions.get('window').width - 20,
-            height: Dimensions.get('window').width / 2
-        })
-            .then((selectedImage) => {
-                onImageChange({
-                    uri: selectedImage.path,
-                    width: selectedImage.width,
-                    height: selectedImage.height,
-                    mime: selectedImage.mime,
-                }, template?.name, template?.type);
-            })
-            .catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
-    }
+    const { templateData, pageId = null, isDisable = false, onPickImage, onEditPicture } = props;
+    const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
-
         if (template) {
             return (
                 <Image
-                    style={{ width: Dimensions.get('window').width - 20, height: Dimensions.get('window').width / 2, resizeMode: 'contain' }}
+                    style={{ width: deviceWidth - 20, height: deviceWidth / 2, resizeMode: 'contain' }}
                     source={{ uri: template?.source }}
                 />
             );
@@ -50,11 +30,11 @@ const Row2 = (props) => {
             <>
                 {pageId ?
                     <TouchableOpacity style={[styles(theme).row, extraStyle]}
-                        onPress={() => onEditPicture(templateData.find(item => item.name === name))} disabled={isDisable}>
+                        onPress={() => onEditPicture(name, deviceWidth - 20, deviceWidth / 2)} disabled={isDisable}>
                         {renderImage(name)}
                     </TouchableOpacity> :
                     <TouchableOpacity style={[styles(theme).row, extraStyle]}
-                        onPress={() => onPickImage(name, 'img', Dimensions.get('window').width - 20, Dimensions.get('window').width / 2)}
+                        onPress={() => onPickImage(name, 'img', deviceWidth - 20, deviceWidth / 2)}
                         disabled={isDisable}>
                         {renderImage(name)}
                     </TouchableOpacity>

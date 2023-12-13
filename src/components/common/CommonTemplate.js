@@ -1,4 +1,5 @@
 import React from 'react';
+import MMUtils from '../../helpers/Utils';
 
 import Blank from '../../screens/templates/Blank';
 import Column2 from '../../screens/templates/Column2';

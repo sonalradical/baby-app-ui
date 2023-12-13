@@ -12,25 +12,8 @@ import MMIcon from '../../components/common/Icon';
 const Row2Column2 = (props) => {
     const theme = useTheme();
     const {
-        onPickImage, templateData, pageId, isDisable = false, onImageChange } = props;
-
-
-    const onEditPicture = (template) => {
-        ImagePicker.openCropper({
-            path: template?.source,
-            width: Dimensions.get('window').width / 2,
-            height: Dimensions.get('window').width / 2
-        })
-            .then((selectedImage) => {
-                onImageChange({
-                    uri: selectedImage.path,
-                    width: selectedImage.width,
-                    height: selectedImage.height,
-                    mime: selectedImage.mime,
-                }, template?.name, template?.type);
-            })
-            .catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
-    }
+        templateData, pageId, isDisable = false, onPickImage, onEditPicture } = props;
+    const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
@@ -38,7 +21,7 @@ const Row2Column2 = (props) => {
         if (template) {
             return (
                 <Image
-                    style={{ width: Dimensions.get('window').width / 2, height: Dimensions.get('window').width / 2, resizeMode: 'contain' }}
+                    style={{ width: deviceWidth / 2, height: deviceWidth / 2, resizeMode: 'contain' }}
                     source={{ uri: template?.source }}
                 />
             );
@@ -47,17 +30,17 @@ const Row2Column2 = (props) => {
         }
     };
 
-    const renderImageBox = (name, pageId, extraStyle = {}) => {
+    const renderImageBox = (name, extraStyle = {}) => {
         return (
             <>
                 {
                     pageId ?
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onEditPicture(templateData.find(item => item.name === name))} disabled={isDisable}>
+                            onPress={() => onEditPicture(name, deviceWidth / 2, deviceWidth / 2)} disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity> :
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onPickImage(name, 'img', Dimensions.get('window').width / 2, Dimensions.get('window').width / 2)}
+                            onPress={() => onPickImage(name, 'img', deviceWidth / 2, deviceWidth / 2)}
                             disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity>
@@ -70,14 +53,14 @@ const Row2Column2 = (props) => {
         <>
             {/* Row 1 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p1', pageId, { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 })}
-                {renderImageBox('p2', pageId, { borderBottomWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p1', { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 })}
+                {renderImageBox('p2', { borderBottomWidth: 1, borderColor: theme.colors.outline })}
             </View>
 
             {/* Row 2 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p3', pageId, { borderRightWidth: 1, borderColor: theme.colors.outline })}
-                {renderImageBox('p4', pageId)}
+                {renderImageBox('p3', { borderRightWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p4')}
             </View>
         </>
     );

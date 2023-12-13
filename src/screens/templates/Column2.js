@@ -7,7 +7,7 @@ import MMConstants from '../../helpers/Constants';
 
 const Column2 = (props) => {
     const theme = useTheme();
-    const { templateData, pageId = null, isDisable = false, onPickImage, onImageChange, onEditPicture } = props;
+    const { templateData, pageId = null, isDisable = false, onPickImage, onEditPicture } = props;
     const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
