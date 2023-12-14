@@ -54,53 +54,53 @@ export default function MainTemplate({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const fileName = _.head(photo.uri.match(/[^\/]+$/));
-            //const response = await MMApiService.getPreSignedUrl(fileName);
-            // const responseData = response.data;
-            // if (responseData) {
-            const imageDetails = [...templateData];
+            const response = await MMApiService.getPreSignedUrl(fileName);
+            const responseData = response.data;
+            if (responseData) {
+                const imageDetails = [...templateData];
 
-            //find selected box index
-            const boxName = pageId ? key : selectedName;
-            const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
+                //find selected box index
+                const boxName = pageId ? key : selectedName;
+                const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
 
-            // Update existing item with new image URI and dynamic type
-            if (existingItemIndex >= 0) {
-                imageDetails[existingItemIndex] = {
-                    ...imageDetails[existingItemIndex],
-                    // value: responseData.storageFileKey,
-                    source: photo.uri, imageParam: {
-                        height: containerSize.height,
-                        width: containerSize.width,
-                    }
-                };
+                // Update existing item with new image URI and dynamic type
+                if (existingItemIndex >= 0) {
+                    imageDetails[existingItemIndex] = {
+                        ...imageDetails[existingItemIndex],
+                        value: responseData.storageFileKey,
+                        source: photo.uri, imageParam: {
+                            height: containerSize.height,
+                            width: containerSize.width,
+                        }
+                    };
+                } else {
+                    // Create a new item if it doesn't exist
+                    imageDetails.push({
+                        name: selectedName, type: selectedType,
+                        value: responseData.storageFileKey,
+                        source: photo.uri, imageParam: {
+                            height: photo.height,
+                            width: photo.width
+                        }
+                    });
+                }
+
+                setTemplateData(imageDetails);
+                const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
+                if (_.isNil(result)) {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture completed.`);
+                }
             } else {
-                // Create a new item if it doesn't exist
-                imageDetails.push({
-                    name: selectedName, type: selectedType,
-                    // value: responseData.storageFileKey,
-                    source: photo.uri, imageParam: {
-                        height: photo.height,
-                        width: photo.width
-                    }
-                });
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
             }
-
-            setTemplateData(imageDetails);
-            //         const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
-            //         if (_.isNil(result)) {
-            //             MMUtils.showToastMessage(`Uploading picture failed...`);
-            //         } else {
-            //             MMUtils.showToastMessage(`Uploading picture completed.`);
-            //         }
-            //     } else {
-            //         MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
-            //     }
             setOverlayLoading(false);
         } catch (err) {
             setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
-        // return storageFileKeys;
+        return storageFileKeys;
 
     };
 
