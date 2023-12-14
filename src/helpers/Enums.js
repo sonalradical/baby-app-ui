@@ -31,6 +31,7 @@ const MMEnums = {
         checkbox: 'checkbox',
         text: 'text',
         textArea: 'textArea',
+        textImage: 'textImage'
     },
     situation: {
         currentlyPregnant: 'currentlyPregnant',

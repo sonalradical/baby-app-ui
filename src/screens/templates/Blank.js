@@ -16,7 +16,12 @@ const Blank = (props) => {
         if (template) {
             return (
                 <Image
-                    style={{ width: deviceWidth - 20, height: deviceWidth, resizeMode: 'contain' }}
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain'
+                    }}
                     source={{ uri: template?.source }}
                 />
             );

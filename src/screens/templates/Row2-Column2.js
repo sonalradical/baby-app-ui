@@ -12,7 +12,7 @@ import MMIcon from '../../components/common/Icon';
 const Row2Column2 = (props) => {
     const theme = useTheme();
     const {
-        templateData, pageId, isDisable = false, onPickImage, onEditPicture } = props;
+        templateData, pageId, isDisable = false, onPickImage, onEditPicture, borderWidth = 1 } = props;
     const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
@@ -21,7 +21,12 @@ const Row2Column2 = (props) => {
         if (template) {
             return (
                 <Image
-                    style={{ width: deviceWidth / 2, height: deviceWidth / 2, resizeMode: 'contain' }}
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain'
+                    }}
                     source={{ uri: template?.source }}
                 />
             );
@@ -53,13 +58,13 @@ const Row2Column2 = (props) => {
         <>
             {/* Row 1 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p1', { borderRightWidth: 1, borderColor: theme.colors.outline, borderBottomWidth: 1 })}
-                {renderImageBox('p2', { borderBottomWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p1', { borderRightWidth: borderWidth, borderColor: theme.colors.outline, borderBottomWidth: borderWidth })}
+                {renderImageBox('p2', { borderBottomWidth: borderWidth, borderColor: theme.colors.outline })}
             </View>
 
             {/* Row 2 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p3', { borderRightWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p3', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
                 {renderImageBox('p4')}
             </View>
         </>

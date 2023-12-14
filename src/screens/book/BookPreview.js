@@ -10,7 +10,7 @@ import MMApiService from '../../services/ApiService';
 import MMSurface from '../../components/common/Surface';
 import MMSpinner from '../../components/common/Spinner';
 import { Avatar, List, Text, useTheme } from 'react-native-paper';
-import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
+import { Dimensions, FlatList, Keyboard, StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
 import MMConstants from '../../helpers/Constants';
 import Icon from 'react-native-vector-icons/Feather';
 import CommonTemplate from '../../components/common/CommonTemplate';
@@ -89,9 +89,9 @@ export default function BookPreview({ updateFooterVisibility }) {
                 title={item.questionId.question}
                 titleNumberOfLines={2}
                 titleStyle={theme.fonts.titleMedium}
-                description={`Answer: ${item.questionId.questionType != 'milestone' ? item.answer : null}`}
+                description={`${item.questionId.questionType != 'milestone' ? item.answer : null}`}
                 descriptionNumberOfLines={20}
-                descriptionStyle={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge, lineHeight: 25 }]}
+                descriptionStyle={[theme.fonts.default, { lineHeight: 25 }]}
             />
         );
     };
@@ -102,12 +102,12 @@ export default function BookPreview({ updateFooterVisibility }) {
             return pageDetail;
         });
         return (
-            <>
-                {headerText ? <Text style={{ textAlign: 'center', paddingVertical: MMConstants.paddingLarge }}>{headerText}</Text> : null}
+            <View style={{ height: 300, paddingLeft: 20 }}>
+                {headerText ? <Text style={{ textAlign: 'center', paddingBottom: MMConstants.paddingLarge }}>{headerText}</Text> : null}
                 <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
                     templateName={template.code} />
-                {footerText ? <Text style={{ textAlign: 'center', paddingVertical: MMConstants.paddingLarge }}> {footerText}</Text> : null}
-            </>
+                {footerText ? <Text style={{ textAlign: 'center', paddingTop: MMConstants.paddingLarge }}> {footerText}</Text> : null}
+            </View>
         )
     };
 
@@ -119,41 +119,31 @@ export default function BookPreview({ updateFooterVisibility }) {
         )
     }
 
-    const renderBookData = (item, index) => {
+    const renderBookData = (item) => {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
-        const chapterImage = !isTemplate && item?.icon ? MMConstants.chapters[item.icon] : null;
         const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
         return (
             <>
-                <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium }}>
-                    <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
-                    {isTemplate ?
-                        <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
-                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: MMConstants.marginSmall }} /> : null}
+                <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
+                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
                 </View>
-                <MMSurface key={item._id} margin={[0, 0, 0, 0]} padding={[0, 0, 0, 0]}>
-                    {isTemplate ?
-                        renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText) :
-                        (
-                            <>
-                                <View style={[styles(theme).title, { backgroundColor: item.color }]}>
-                                    <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
-                                    <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{item.title}</Text>
+                <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
+                    <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
+                        {isTemplate ?
+                            <TouchableOpacity onPress={() => onPressEdit(item, template)} style={{ paddingVertical: 30 }}>
+                                {renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText)}
+                            </TouchableOpacity> :
+                            (
+                                <View style={{ paddingVertical: 30 }}>
+                                    {_.map(item.pageDetails, (i, index) => {
+                                        return renderQuestionAnswerList(i, index);
+                                    })}
                                 </View>
-                                {_.map(item.pageDetails, (i, index) => {
-                                    return renderQuestionAnswerList(i, index);
-                                })}
-                            </>
-                        )
-                    }
-                </MMSurface>
-                <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium, marginBottom: bookData.length === index + 1 ? 10 : 0 }}>
-
-                    <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
-                        <Text>Page {index + 1}</Text>
+                            )
+                        }
                     </View>
-                </View>
+                </MMSurface>
             </>
         );
     };

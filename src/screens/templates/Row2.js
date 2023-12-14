@@ -8,7 +8,7 @@ import MMIcon from '../../components/common/Icon';
 
 const Row2 = (props) => {
     const theme = useTheme();
-    const { templateData, pageId = null, isDisable = false, onPickImage, onEditPicture } = props;
+    const { templateData, pageId = null, isDisable = false, onPickImage, onEditPicture, borderWidth = 1 } = props;
     const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
@@ -16,7 +16,12 @@ const Row2 = (props) => {
         if (template) {
             return (
                 <Image
-                    style={{ width: deviceWidth - 20, height: deviceWidth / 2, resizeMode: 'contain' }}
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain'
+                    }}
                     source={{ uri: template?.source }}
                 />
             );
@@ -45,7 +50,7 @@ const Row2 = (props) => {
 
     return (
         <View style={styles(theme).column}>
-            {renderImageBox('p1', { borderBottomWidth: 1, borderBottomColor: theme.colors.outline })}
+            {renderImageBox('p1', { borderBottomWidth: borderWidth, borderBottomColor: theme.colors.outline })}
             {renderImageBox('p2')}
         </View>
     );
