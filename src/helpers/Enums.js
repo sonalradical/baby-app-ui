@@ -29,7 +29,8 @@ const MMEnums = {
     questionType: {
         radio: 'radio',
         checkbox: 'checkbox',
-        text: 'text'
+        text: 'text',
+        textArea: 'textArea',
     },
     situation: {
         currentlyPregnant: 'currentlyPregnant',
