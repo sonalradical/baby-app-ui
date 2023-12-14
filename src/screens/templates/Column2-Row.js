@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
 
-const RowColumn2 = (props) => {
+const Column2Row = (props) => {
     const theme = useTheme();
     const {
         templateData, pageId, isDisable = false, onPickImage, onEditPicture, borderWidth = 1 } = props;
@@ -74,16 +74,18 @@ const RowColumn2 = (props) => {
 
     return (
         <>
-            {/* Row 1 */}
-            <View style={styles(theme).row}>
-                {renderImageRowBox('p1', { borderColor: theme.colors.outline, borderBottomWidth: borderWidth })}
-            </View>
-
             {/* Row 2 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p2', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
-                {renderImageBox('p3')}
+                {renderImageBox('p1', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
+                {renderImageBox('p2')}
             </View>
+
+            {/* Row 1 */}
+            <View style={styles(theme).row}>
+                {renderImageRowBox('p3', { borderColor: theme.colors.outline, borderTopWidth: borderWidth })}
+            </View>
+
+
         </>
     );
 };
@@ -104,4 +106,4 @@ const styles = (theme) => StyleSheet.create({
     },
 });
 
-export default RowColumn2;
+export default Column2Row;

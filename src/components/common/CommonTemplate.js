@@ -1,12 +1,13 @@
 import React from 'react';
 import MMUtils from '../../helpers/Utils';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import Blank from '../../screens/templates/Blank';
 import Column2 from '../../screens/templates/Column2';
 import Row2 from '../../screens/templates/Row2';
 import Row2Column2 from '../../screens/templates/Row2-Column2';
 import RowColumn2 from '../../screens/templates/Row-Column2';
-import ImagePicker from 'react-native-image-crop-picker';
+import Column2Row from '../../screens/templates/Column2-Row';
 
 const CommonTemplate = (props) => {
     const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, pageId, ImageProps, onImageChange } = props;
@@ -16,7 +17,8 @@ const CommonTemplate = (props) => {
         "Column2": Column2,
         "Row2": Row2,
         "Row2-Column2": Row2Column2,
-        "Row-Column2": RowColumn2
+        "Row-Column2": RowColumn2,
+        "Column2-Row": Column2Row
     }
     const TemplateComponents = Components[templateName];
 
