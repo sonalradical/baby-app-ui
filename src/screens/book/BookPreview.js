@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
-import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
-import MMSurface from '../../components/common/Surface';
-import MMSpinner from '../../components/common/Spinner';
-import { Avatar, List, Text, useTheme } from 'react-native-paper';
-import { Dimensions, FlatList, Keyboard, StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
-import MMConstants from '../../helpers/Constants';
+import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { List, Text, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMRoundBackground from '../../components/common/RoundBackground';
+import MMSpinner from '../../components/common/Spinner';
+import MMSurface from '../../components/common/Surface';
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
+import Parents from './Parents';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
@@ -83,15 +85,37 @@ export default function BookPreview({ updateFooterVisibility }) {
     };
 
     const renderQuestionAnswerList = (item, index) => {
+        const { questionId, answer } = item;
+        const { question, questionType, options } = questionId;
+
         return (
             <List.Item
                 key={index}
-                title={item.questionId.question}
-                titleNumberOfLines={2}
+                title={question}
+                titleNumberOfLines={5}
                 titleStyle={theme.fonts.titleMedium}
-                description={`${item.questionId.questionType != 'milestone' ? item.answer : null}`}
-                descriptionNumberOfLines={20}
-                descriptionStyle={[theme.fonts.default, { lineHeight: 25 }]}
+                description={
+                    questionType === 'radio'
+                        ? options.map((option, optionIndex) => (
+                            <React.Fragment key={option}>
+                                {answer && answer[0] === option && <MMRoundBackground text={option} />}
+                                {!answer || (answer && answer[0] !== option) && (
+                                    <React.Fragment key={option}>
+                                        <Text>{option}</Text>
+                                        {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
+                                    </React.Fragment>
+                                )}
+                            </React.Fragment>
+                        ))
+                        : questionType === 'checkbox'
+                            ? answer && answer.length > 0 && answer.join(', ')
+                            : answer || null
+                }
+                descriptionNumberOfLines={2000}
+                descriptionStyle={[
+                    questionType === 'radio' ? { paddingTop: 20, lineHeight: 25 } : theme.fonts.default,
+                    { lineHeight: 25 },
+                ]}
             />
         );
     };
@@ -103,10 +127,14 @@ export default function BookPreview({ updateFooterVisibility }) {
         });
         return (
             <View style={{ height: 300, paddingLeft: 20 }}>
-                {headerText ? <Text style={{ textAlign: 'center', paddingBottom: MMConstants.paddingLarge }}>{headerText}</Text> : null}
+                {headerText ?
+                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>{headerText}</Text>
+                    : null}
                 <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
                     templateName={template.code} />
-                {footerText ? <Text style={{ textAlign: 'center', paddingTop: MMConstants.paddingLarge }}> {footerText}</Text> : null}
+                {footerText ?
+                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingTop: MMConstants.paddingLarge }]}> {footerText}</Text>
+                    : null}
             </View>
         )
     };
@@ -136,9 +164,13 @@ export default function BookPreview({ updateFooterVisibility }) {
                             </TouchableOpacity> :
                             (
                                 <View style={{ paddingVertical: 30 }}>
-                                    {_.map(item.pageDetails, (i, index) => {
-                                        return renderQuestionAnswerList(i, index);
-                                    })}
+                                    {item.type === 'parents' ? (
+                                        <Parents pageDetails={item.pageDetails} title={item.title} />
+                                    ) : (
+                                        _.map(item.pageDetails, (i, index) => {
+                                            return renderQuestionAnswerList(i, index);
+                                        })
+                                    )}
                                 </View>
                             )
                         }
