@@ -7,14 +7,15 @@ const Parents = ({ pageDetails, title = null }) => {
 
     const renderPageDetails = (item, index) => {
         const { questionId, answer } = item;
-        const { question } = questionId;
+        const { question } = questionId || '';
 
         return (
             <List.Item
                 key={index}
+                style={{ flex: 1 }}
                 title={question}
                 titleNumberOfLines={5}
-                titleStyle={theme.fonts.titleMedium}
+                titleStyle={theme.fonts.titleSmall}
                 description={answer}
                 descriptionNumberOfLines={2000}
                 descriptionStyle={[theme.fonts.default, { lineHeight: 25 }]}
@@ -26,7 +27,6 @@ const Parents = ({ pageDetails, title = null }) => {
         <FlatList
             data={pageDetails}
             ListHeaderComponent={<Text style={[theme.fonts.headlineMedium, { textAlign: 'center' }]}>{title}</Text>}
-            columnWrapperStyle={{ justifyContent: 'space-around' }}
             renderItem={({ item, index }) => {
                 return renderPageDetails(item, index);
             }}
