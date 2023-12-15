@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Dimensions } from 'react-native';
 import { List, Text, useTheme } from 'react-native-paper';
 
 const Parents = ({ pageDetails, title = null }) => {
@@ -27,6 +27,7 @@ const Parents = ({ pageDetails, title = null }) => {
         <FlatList
             data={pageDetails}
             ListHeaderComponent={<Text style={[theme.fonts.headlineMedium, { textAlign: 'center' }]}>{title}</Text>}
+            columnWrapperStyle={{ width: Dimensions.get('window').width - 50 }}
             renderItem={({ item, index }) => {
                 return renderPageDetails(item, index);
             }}
