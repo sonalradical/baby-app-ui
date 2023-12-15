@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, ScrollView, View } from 'react-native';
-import { Appbar, Avatar, Button, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import { BackHandler, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
 import MMContentContainer from '../../components/common/ContentContainer';
@@ -19,6 +19,8 @@ import MMInput from '../../components/common/Input';
 import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
 import MMScrollView from '../../components/common/ScrollView';
+import MMIcon from '../../components/common/Icon';
+import MMImagePickerModal from '../../components/common/ImagePickerModal';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
@@ -30,6 +32,7 @@ export default function ChapterQuiz({ navigation, route }) {
     const [questionList, setQuestionList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
     const [newOption, setNewOption] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         loadQuiz();
@@ -100,6 +103,39 @@ export default function ChapterQuiz({ navigation, route }) {
         } else {
             setSelectedAnswer([...selectedAnswer, option]); // Use spread operator to create a new array
         }
+    };
+
+    const setImageUri = async (imageData) => {
+        const photo = imageData.assets[0];
+        console.log(photo, 'photo')
+        try {
+            setLoading(true);
+            const response = await MMApiService.getPreSignedUrl(photo.fileName);
+            const responseData = response.data;
+            if (responseData) {
+                // setState({
+                //     ...state,
+                //     picture: responseData.storageFileKey
+                // })
+                setImageSource(photo.uri);
+                const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl);
+                if (_.isNil(result)) {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture completed.`);
+                }
+            } else {
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
+            }
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            MMUtils.consoleError(err);
+        }
+    };
+
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
     };
 
     const onPreviousClick = async () => {
@@ -237,7 +273,44 @@ export default function ChapterQuiz({ navigation, route }) {
                                 {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} / 2000` : '0 / 2000'}</Text>
                         </View>
                     )}
+                    {currentQuestionType === MMEnums.questionType.text && (
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                            <MMInput
+                                placeholder="Your answer..."
+                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                onChangeText={(text) => onAnswerChange(text)}
+                                maxLength={30}
+                            />
+                        </View>
+                    )}
+                    {currentQuestionType === MMEnums.questionType.textImage && (
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                            <MMInput
+                                placeholder="Your answer..."
+                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                onChangeText={(text) => onAnswerChange(text)}
+                                maxLength={30}
+                            />
+                            {/* <>
+                                {!imageSource ?
+                                    <View style={styles(theme).imagePickerSquare}>
+                                        <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
+                                        <Text style={theme.fonts.default} >Upload Photo</Text>
+                                    </View> : null
+                                }
+                                {imageSource ?
+                                    <TouchableOpacity onPress={toggleModal}>
+                                        <Image source={{ uri: imageSource }}
+                                            style={{ height: Dimensions.get('window').width, width: '100%' }} />
+                                    </TouchableOpacity> : null}
+                            </> */}
+                        </View>
+                    )}
                 </View>
+                <MMImagePickerModal
+                    visible={isModalVisible}
+                    toggleModal={toggleModal}
+                    onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>
         );
     };
@@ -312,3 +385,18 @@ ChapterQuiz.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
+
+const styles = (theme) => StyleSheet.create({
+    imagePickerSquare: {
+        width: '100%',
+        height: Dimensions.get('window').width,
+        backgroundColor: theme.colors.secondaryContainer,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 10,
+        marginTop: MMConstants.marginSmall,
+        borderColor: theme.colors.outline,
+        borderStyle: 'dashed'
+    },
+});
