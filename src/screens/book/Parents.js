@@ -26,6 +26,7 @@ const Parents = ({ pageDetails, title = null }) => {
         <FlatList
             data={pageDetails}
             ListHeaderComponent={<Text style={[theme.fonts.headlineMedium, { textAlign: 'center' }]}>{title}</Text>}
+            columnWrapperStyle={{ justifyContent: 'space-around' }}
             renderItem={({ item, index }) => {
                 return renderPageDetails(item, index);
             }}
