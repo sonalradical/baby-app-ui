@@ -33,6 +33,7 @@ import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
 import InitialSetup from '../screens/initialSetup/InitialSetup';
 import TemplateList from '../screens/templates/TemplateList';
 import MainTemplate from '../screens/templates/MainTemplate';
+import BookSelection from '../screens/orders/BookSelection';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -118,6 +119,10 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="Footer"
                     component={Footer}
+                />
+                <AppStack.Screen
+                    name="BookSelection"
+                    component={BookSelection}
                 />
                 <AppStack.Screen
                     name="Logout"

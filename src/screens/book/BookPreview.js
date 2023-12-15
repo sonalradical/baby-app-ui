@@ -150,7 +150,7 @@ export default function BookPreview({ updateFooterVisibility }) {
     const renderBookData = (item) => {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
-        const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
+        const template = isTemplate ? _.find(lookupData.templates, { '_id': item?.templateId }) : null;
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>

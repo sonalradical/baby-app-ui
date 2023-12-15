@@ -4,6 +4,7 @@ import { Card, Text, useTheme } from 'react-native-paper';
 import * as _ from 'lodash';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { setBaby } from '../../redux/Slice/AppSlice';
 
@@ -14,10 +15,14 @@ import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 import MMScrollView from '../../components/common/ScrollView';
+
 import ChapterList from '../chapter/ChapterList';
+import CountDownBanner from '../banners/CountDownBanner';
+import OrderNowBanner from '../banners/OrderNowBanner';
 
 export default function Home({ updateFooterVisibility }) {
     const theme = useTheme();
+    const navigation = useNavigation()
     const scrollViewRef = useRef(null);
     const [isScrollingUp, setIsScrollingUp] = useState(true);
     const dispatch = useDispatch();
@@ -113,10 +118,11 @@ export default function Home({ updateFooterVisibility }) {
                 {selectedBaby?.isBorn === 'Yes' ? <MMScrollView
                     onScroll={(event) => handleScroll(event.nativeEvent.contentOffset.y)}
                     onScrollEndDrag={handleScrollEndDrag}>
+                    <OrderNowBanner onPress={() => navigation.navigate('BookSelection')} />
                     <ChapterList />
                 </MMScrollView> :
                     <>
-                        {selectedBaby?.isBorn === 'No' ? renderCountDownBanner() : null}
+                        {renderCountDownBanner()}
                         <ChapterList />
                     </>}
             </MMContentContainer>

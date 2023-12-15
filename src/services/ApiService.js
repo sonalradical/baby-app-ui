@@ -193,6 +193,19 @@ async function deletePage(pageId) {
 }
 
 //#end
+
+//------------------------------------------------------------------ Product API
+
+async function getProductList() {
+    const config = {
+        url: `product/list`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
@@ -254,6 +267,7 @@ export default {
     getBookPreview,
     deletePage,
     savePage,
+    getProductList,
     getPagePreSignedUrl,
     getPreSignedUrl,
     getFile,
