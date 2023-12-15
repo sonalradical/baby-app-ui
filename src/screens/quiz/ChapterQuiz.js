@@ -13,11 +13,9 @@ import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 
-import { reloadChapterList } from '../../redux/Slice/AppSlice';
-import MMApiService from '../../services/ApiService';
-import MMInput from '../../components/common/Input';
 import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
+import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
@@ -261,7 +259,7 @@ export default function ChapterQuiz({ navigation, route }) {
                             </View>
                         </View>
                     )}
-                    {currentQuestionType === MMEnums.questionType.text && (
+                    {currentQuestionType === MMEnums.questionType.textArea && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             <MMInputMultiline
                                 placeholder="Your answer..."

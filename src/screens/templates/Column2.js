@@ -7,14 +7,19 @@ import MMConstants from '../../helpers/Constants';
 
 const Column2 = (props) => {
     const theme = useTheme();
-    const { templateData, pageId = null, isDisable = false, onPickImage, onEditPicture } = props;
+    const { templateData, pageId = null, isDisable = false, borderWidth = 1, onPickImage, onEditPicture } = props;
     const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
         if (template) {
             return (
-                <Image style={{ width: deviceWidth / 2, height: deviceWidth, resizeMode: 'contain' }}
+                <Image style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                    resizeMode: 'contain'
+                }}
                     source={{ uri: template?.source }} />
             );
         } else {
@@ -45,7 +50,7 @@ const Column2 = (props) => {
     return (
         <>
             <View style={styles(theme).row}>
-                {renderImageBox('p1', { borderRightWidth: 1, borderColor: theme.colors.outline })}
+                {renderImageBox('p1', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
                 {renderImageBox('p2')}
             </View>
         </>
