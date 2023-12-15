@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import { List, Text, useTheme } from 'react-native-paper';
 
 const Parents = ({ pageDetails, title = null }) => {
@@ -35,8 +35,5 @@ const Parents = ({ pageDetails, title = null }) => {
         />
     );
 };
-
-const styles = StyleSheet.create({
-});
 
 export default Parents;
