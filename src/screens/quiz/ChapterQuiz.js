@@ -12,6 +12,7 @@ import MMSpinner from '../../components/common/Spinner';
 import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
 
 import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
@@ -19,6 +20,7 @@ import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import { reloadChapterList } from '../../redux/Slice/AppSlice';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
