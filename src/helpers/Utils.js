@@ -247,6 +247,13 @@ function validateEmail(emailAddress) {
     return false;
 }
 
+function formatCurrency(value) {
+    return value.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+};
+
 function apiErrorParamMessages(error) {
     const errors = error?.response?.data?.errors;
     if (errors) {
@@ -331,6 +338,7 @@ export default {
     apiErrorMessage,
     consoleError,
     validateEmail,
+    formatCurrency,
     formatString,
     getItemFromStorage,
     setItemToStorage,

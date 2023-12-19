@@ -6,6 +6,15 @@ const initialState = {
 	reloadChapterList: false,
 	reloadPage: false,
 	reloadBookPage: false,
+	bookDetail: {
+		productId: '',
+		bookTitle: '',
+		bookSubTitle: '',
+		quantity: 1,
+		totalPrice: ''
+	},
+	accountId: '',
+	paymentId: ''
 };
 
 // slice
@@ -27,8 +36,19 @@ const AppReducer = createSlice({
 		},
 		reloadBookPage: (state, action) => {
 			state.reloadBookPage = action.payload;
-		}
-
+		},
+		setBookDetail: (state, action) => {
+			return {
+				...state,
+				bookDetail: { ...state.bookDetail, ...action.payload }
+			}
+		},
+		setAccountId: (state, action) => {
+			state.accountId = action.payload;
+		},
+		setPaymentId: (state, action) => {
+			state.paymentId = action.payload;
+		},
 	},
 });
 
@@ -39,5 +59,8 @@ export const {
 	setHeader,
 	reloadChapterList,
 	reloadPage,
-	reloadBookPage
+	reloadBookPage,
+	setBookDetail,
+	setAccountId,
+	setPaymentId
 } = AppReducer.actions;

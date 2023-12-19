@@ -118,7 +118,7 @@ export default function Home({ updateFooterVisibility }) {
                 {selectedBaby?.isBorn === 'Yes' ? <MMScrollView
                     onScroll={(event) => handleScroll(event.nativeEvent.contentOffset.y)}
                     onScrollEndDrag={handleScrollEndDrag}>
-                    <OrderNowBanner onPress={() => navigation.navigate('BookSelection')} />
+                    <OrderNowBanner onPress={() => navigation.navigate('Order')} />
                     <ChapterList />
                 </MMScrollView> :
                     <>
