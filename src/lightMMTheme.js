@@ -31,7 +31,7 @@ const fontConfig = {
   labelLarge: {
     fontSize: 22, // Secondary headings
     fontWeight: 600, // Bold style for emphasis
-    color: '#153634',
+    color: '#000',
     lineHeight: 22,
     fontFamily: 'MaisonNeue-Bold',
   },

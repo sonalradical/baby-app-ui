@@ -143,6 +143,24 @@ async function saveAddress(data) {
     return result;
 }
 
+async function getAddressById(addressId) {
+    const config = {
+        url: `address/get/${addressId}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function getAddressList() {
+    const config = {
+        url: `address/list`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#end
 
 //------------------------------------------------------------------ Quiz API
@@ -277,6 +295,8 @@ export default {
     deleteBaby,
     getTypeList,
     saveAddress,
+    getAddressById,
+    getAddressList,
     getQuiz,
     saveQuiz,
     getBookPreview,

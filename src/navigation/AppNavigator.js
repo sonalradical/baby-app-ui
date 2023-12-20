@@ -142,8 +142,6 @@ function AppStackNavigator(userDetail) {
                     name="Logout"
                     component={Logout}
                 />
-
-
             </AppStack.Navigator>
         </NavigationContainer>
     );

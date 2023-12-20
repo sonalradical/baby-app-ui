@@ -22,7 +22,7 @@ export default function Order() {
     const [validStep, setValidStep] = useState(0);
     const [clickStep, setclickstep] = useState(0);
     const bookDetail = useSelector((state) => state.AppReducer.bookDetail);
-    const accountId = useSelector((state) => state.AppReducer.accountId);
+    const { addressId } = useSelector((state) => state.AppReducer.addressId);
     const paymentId = useSelector((state) => state.AppReducer.paymentId);
 
     const onStepPress = (step) => {
@@ -34,10 +34,10 @@ export default function Order() {
 
     const onValidField = () => {
         const hasBookTitle = !_.isEmpty(bookDetail.bookTitle);
-        const hasAccountId = !_.isEmpty(accountId);
+        const hasAddressId = !_.isEmpty(addressId);
         const hasPaymentId = !_.isEmpty(paymentId);
 
-        const steps = [hasBookTitle, hasAccountId, hasPaymentId];
+        const steps = [hasBookTitle, hasAddressId, hasPaymentId];
 
         const maxValidStep = steps.lastIndexOf(true) + 1;
 
@@ -46,14 +46,14 @@ export default function Order() {
 
     useEffect(() => {
         onValidField();
-    }, [bookDetail, accountId, paymentId]);
+    }, [bookDetail, addressId, paymentId]);
 
     const getStepContent = (step) => {
         switch (step) {
             case 0:
                 return <BookSelection validStep={validStep} clickStep={clickStep} />;
             case 1:
-                return <Address validStep={validStep} />;
+                return <Address validStep={validStep} clickStep={clickStep} />;
             case 2:
                 return <Payment validStep={validStep} />;
             default:
@@ -67,7 +67,7 @@ export default function Order() {
                 <Surface style={styles(theme).surfaceStyle}>
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                         <Text style={theme.fonts.labelLarge}>My Order</Text>
-                        <Text style={theme.fonts.default} numberOfLines={2}>Birthday</Text>
+                        <Text style={theme.fonts.default} numberOfLines={2}>{bookDetail.bookTitle ? bookDetail.bookTitle : null}</Text>
                     </View>
                     <Card style={{ backgroundColor: theme.colors.primary, padding: 10, width: '70%', borderRadius: 10 }}>
                         <View style={{

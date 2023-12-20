@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Chip, Text, useTheme } from 'react-native-paper';
 
@@ -13,13 +13,15 @@ import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMPlacesAutocomplete from './PlacesAutocomplete';
-import { MMButton } from '../../components/common/Button';
+import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import { validateAll } from 'indicative/validator';
+import MMFlexView from '../../components/common/FlexView';
 
-export default function AddAddress({ navigation }) {
+export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
+    const { addressId } = route.params;
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const initState = {
         latitude: 0.0,
@@ -34,7 +36,42 @@ export default function AddAddress({ navigation }) {
         errors: {},
     };
     const [state, setState] = useState(initState);
-    const [selectedLabel, setSelectedLabel] = useState('');
+
+    useEffect(() => {
+        if (addressId) {
+            loadAddressById();
+        }
+    }, [addressId]);
+
+    const loadAddressById = async () => {
+        try {
+            setOverlayLoading(true);
+            const response = await MMApiService.getAddressById(addressId);
+            console.log(response, 'response')
+            if (response.data) {
+                const addressDetail = response.data
+                setState({
+                    ...state,
+                    addressLine1: addressDetail.addressLine1,
+                    addressLine2: addressDetail.addressLine2,
+                    addressType: addressDetail.addressType,
+                    country: addressDetail.country,
+                    latitude: addressDetail.latitude,
+                    longitude: addressDetail.longitude,
+                    postcode: addressDetail.postcode,
+                    state: addressDetail.state,
+                    suburb: addressDetail.suburb
+                })
+            }
+            setOverlayLoading(false);
+        } catch (error) {
+            const serverError = MMUtils.apiErrorMessage(error);
+            if (serverError) {
+                MMUtils.showToastMessage(serverError);
+            }
+            setOverlayLoading(false);
+        }
+    };
 
     const onAutoSuggestChange = (data) => {
         setState({
@@ -51,7 +88,6 @@ export default function AddAddress({ navigation }) {
     }
 
     const onInputChange = (field, value) => {
-        console.log(field, value, 'field, value')
         setState({
             ...state,
             [field]: value,
@@ -82,6 +118,7 @@ export default function AddAddress({ navigation }) {
                 setOverlayLoading(true);
                 try {
                     const apiData = {
+                        addressId: addressId ? addressId : '',
                         addressLine1: state.addressLine1,
                         addressLine2: state.addressLine2,
                         addressType: state.addressType,
@@ -129,18 +166,31 @@ export default function AddAddress({ navigation }) {
                         mode='outlined'
                         onPress={() => onInputChange('addressType', 'home')}
                         selected={state.addressType == 'home'}
-                        style={styles(theme).chip}
+                        selectedColor={theme.colors.primary}
+                        style={[styles(theme).chip,
+                        {
+                            borderColor: state.addressType == 'home' ? theme.colors.primary : theme.colors.outline,
+                            borderWidth: state.addressType == 'home' ? 2 : 1
+                        }]}
                         textStyle={theme.fonts.default}> Home </Chip>
                     <Chip
                         mode='outlined'
                         onPress={() => onInputChange('addressType', 'work')}
-                        style={styles(theme).chip}
+                        style={[styles(theme).chip, {
+                            borderColor: state.addressType == 'work' ? theme.colors.primary : theme.colors.outline,
+                            borderWidth: state.addressType == 'work' ? 2 : 1
+                        }]}
+                        selectedColor={theme.colors.primary}
                         selected={state.addressType == 'work'}
                         textStyle={theme.fonts.default}> Work</Chip>
                     <Chip
                         mode='outlined'
                         onPress={() => onInputChange('addressType', 'other')}
-                        style={styles(theme).chip}
+                        selectedColor={theme.colors.primary}
+                        style={[styles(theme).chip, {
+                            borderColor: state.addressType == 'other' ? theme.colors.primary : theme.colors.outline,
+                            borderWidth: state.addressType == 'other' ? 2 : 1
+                        }]}
                         selected={state.addressType == 'other'}
                         textStyle={theme.fonts.default} >Other</Chip>
 
@@ -211,10 +261,30 @@ export default function AddAddress({ navigation }) {
                         maxLength={50}
                     />
                 </View>
-                <MMButton
+                {
+                    addressId ?
+                        <MMFlexView>
+                            <MMOutlineButton
+                                label="Delete"
+                                //onPress={() => onConfirm()}
+                                width='45%'
+                            />
+                            <MMButton
+                                label="Save"
+                                onPress={() => onSave()}
+                                width='45%'
+                            />
+                        </MMFlexView> :
+                        <MMButton
+                            label="Save"
+                            onPress={() => onSave()}
+                        />
+
+                }
+                {/* <MMButton
                     label="Save Address"
                     onPress={() => onSave()}
-                />
+                /> */}
             </View>
         );
     };
@@ -246,7 +316,7 @@ AddAddress.propTypes = {
 const styles = (theme) => StyleSheet.create({
     chip: {
         margin: 4,
-        height: 30,
+        height: 35,
         backgroundColor: theme.colors.secondaryContainer,
     }
 });
