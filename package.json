@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-community/datetimepicker": "^7.6.1",
+    "@react-native-community/geolocation": "^3.1.0",
     "@react-navigation/bottom-tabs": "^6.5.10",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/stack": "^6.3.18",
@@ -28,6 +29,7 @@
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-gesture-handler": "^2.13.1",
+    "react-native-google-places-autocomplete": "^2.5.6",
     "react-native-image-crop-picker": "^0.40.2",
     "react-native-image-picker": "^7.0.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

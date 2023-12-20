@@ -36,7 +36,7 @@ async function resendOTP(data) {
 
 async function userLoginWithPassword(authTokan) {
     const config = {
-        url: `auth/login/${authTokan}`,
+        url: `auth/login/${authTokan}/${'65780c81d2a96049f98a0809'}`,
         method: 'post'
     };
     const result = await axios(config);
@@ -124,6 +124,20 @@ async function getTypeList(babyId, type) {
     const config = {
         url: `chapter/list/${babyId}/${type}`,
         method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
+
+//------------------------------------------------------------------- Address APIs
+
+async function saveAddress(data) {
+    const config = {
+        url: `address/save`,
+        method: 'post',
+        data: data
     };
     const result = await axios(config);
     return result;
@@ -262,6 +276,7 @@ export default {
     saveBaby,
     deleteBaby,
     getTypeList,
+    saveAddress,
     getQuiz,
     saveQuiz,
     getBookPreview,

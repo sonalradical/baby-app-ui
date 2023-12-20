@@ -80,32 +80,38 @@ const BookSelection = ({ validStep, clickStep }) => {
                         </MMListView>
                     ))}
                 </RadioButton.Group>
-                <MMInput
-                    label='Book Title *'
-                    maxLength={50}
-                    value={bookDetail.bookTitle}
-                    onChangeText={(value) => onInputChange('bookTitle', value)}
-                    placeholder="Enter Book Title"
-                />
-                {(validStep === 0 && clickStep >= 0) && <MMFormErrorText errorText={'Please enter book title.'} />}
-                <MMInput
-                    label='Book Sub Title '
-                    maxLength={50}
-                    value={bookDetail.bookSubTitle}
-                    onChangeText={(value) => onInputChange('bookSubTitle', value)}
-                    placeholder="Enter Book Sub Title"
-                />
-                <View style={{ width: '48%' }}>
-                    <MMTextInputNumeric
-                        label={'Quantity'}
-                        minValue={1}
-                        maxValue={10}
-                        value={bookDetail.quantity}
-                        onChange={onChangeQuantity}
-                        reachMaxIncIconStyle={{ color: theme.colors.surfaceDisabled }}
-                        reachMinDecIconStyle={{ color: theme.colors.surfaceDisabled }}
-                        containerClass='containerSmall'
+                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                    <MMInput
+                        label='Book Title *'
+                        maxLength={50}
+                        value={bookDetail.bookTitle}
+                        onChangeText={(value) => onInputChange('bookTitle', value)}
+                        placeholder="Enter Book Title"
                     />
+                    {(validStep === 0 && clickStep >= 1) && <MMFormErrorText errorText={'Please enter book title.'} />}
+                </View>
+                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                    <MMInput
+                        label='Book Sub Title '
+                        maxLength={50}
+                        value={bookDetail.bookSubTitle}
+                        onChangeText={(value) => onInputChange('bookSubTitle', value)}
+                        placeholder="Enter Book Sub Title"
+                    />
+                </View>
+                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                    <View style={{ width: '48%' }}>
+                        <MMTextInputNumeric
+                            label={'Quantity'}
+                            minValue={1}
+                            maxValue={10}
+                            value={bookDetail.quantity}
+                            onChange={onChangeQuantity}
+                            reachMaxIncIconStyle={{ color: theme.colors.surfaceDisabled }}
+                            reachMinDecIconStyle={{ color: theme.colors.surfaceDisabled }}
+                            containerClass='containerSmall'
+                        />
+                    </View>
                 </View>
             </View>
         );

@@ -33,10 +33,9 @@ import MilestoneQuiz from '../screens/milestone/MilestoneQuiz';
 import InitialSetup from '../screens/initialSetup/InitialSetup';
 import TemplateList from '../screens/templates/TemplateList';
 import MainTemplate from '../screens/templates/MainTemplate';
-import BookSelection from '../screens/orders/BookSelection';
 import Order from '../screens/orders/Order';
 import Address from '../screens/orders/Address';
-import Payment from '../screens/orders/Payment';
+import AddAddress from '../screens/address/AddAddress';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -126,6 +125,18 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="Order"
                     component={Order}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
+                />
+                <AppStack.Screen
+                    name="AddAddress"
+                    component={AddAddress}
+                />
+                <AppStack.Screen
+                    name="Address"
+                    component={Address}
                 />
                 <AppStack.Screen
                     name="Logout"

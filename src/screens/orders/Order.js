@@ -150,7 +150,8 @@ const styles = (theme) => StyleSheet.create({
     },
     surfaceStyle: {
         borderRadius: 20,
-        margin: MMConstants.marginLarge,
+        marginHorizontal: MMConstants.marginLarge,
+        marginBottom: MMConstants.marginMedium,
         backgroundColor: theme.colors.secondaryContainer,
         flexDirection: 'row',
         justifyContent: 'space-between',
