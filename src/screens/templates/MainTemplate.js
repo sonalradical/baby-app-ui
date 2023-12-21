@@ -129,7 +129,7 @@ export default function MainTemplate({ navigation, route }) {
         const response = await MMApiService.savePage(apiData);
         if (response) {
             dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('Home');
+            navigation.navigate('BookPreview');
         }
         setOverlayLoading(false);
     };
@@ -141,7 +141,7 @@ export default function MainTemplate({ navigation, route }) {
         if (response) {
             setOverlayLoading(false);
             dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('Home');
+            navigation.navigate('BookPreview');
         }
         setOverlayLoading(false);
     }
@@ -185,7 +185,6 @@ export default function MainTemplate({ navigation, route }) {
                                 width={'45%'}
                             />
                         </>
-
                 }
             </MMActionButtons>
         )

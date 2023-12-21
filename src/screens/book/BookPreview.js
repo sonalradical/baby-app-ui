@@ -218,10 +218,3 @@ BookPreview.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
-
-const styles = (theme) => StyleSheet.create({
-    title: {
-        flexDirection: 'row',
-        padding: MMConstants.paddingLarge
-    }
-});

@@ -32,7 +32,7 @@ axios.interceptors.request.use(async (config) => {
 // Response interceptor
 axios.interceptors.response.use(async (response) => {
 
-    const { status, friendlyMassage, error } = response.data;
+    const { status, friendlyMassage } = response.data;
     switch (status) {
         case MMEnums.ServiceResult.Ok:
             if (friendlyMassage) {
@@ -46,7 +46,6 @@ axios.interceptors.response.use(async (response) => {
             MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
             MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
             dispatch(setLogout());
-            MMUtils.showToastMessage(error.message);
             break;
         default:
             MMUtils.showToastMessage(friendlyMassage);
