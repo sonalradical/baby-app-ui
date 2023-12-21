@@ -21,7 +21,7 @@ import MMFlexView from '../../components/common/FlexView';
 
 export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
-    const { addressId } = route.params;
+    const { addressId } = route.params || '';
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const initState = {
         latitude: 0.0,
@@ -275,10 +275,18 @@ export default function AddAddress({ navigation, route }) {
                                 width='45%'
                             />
                         </MMFlexView> :
-                        <MMButton
-                            label="Save"
-                            onPress={() => onSave()}
-                        />
+                        <MMFlexView>
+                            <MMOutlineButton
+                                label="Cancel"
+                                onPress={() => navigation.goBack()}
+                                width='45%'
+                            />
+                            <MMButton
+                                label="Save"
+                                onPress={() => onSave()}
+                                width='45%'
+                            />
+                        </MMFlexView>
 
                 }
                 {/* <MMButton

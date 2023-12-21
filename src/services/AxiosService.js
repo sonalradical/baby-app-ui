@@ -2,9 +2,11 @@ import axios from 'axios';
 import * as _ from 'lodash';
 
 import { store } from '../redux/Store/configureStores';
+import { setLogout } from '../redux/Slice/AuthSlice';
 
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
+import MMConfig from '../helpers/Config';
 
 // Defaults
 axios.defaults.baseURL = 'http://localhost:4000/';

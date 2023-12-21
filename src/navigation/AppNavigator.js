@@ -133,6 +133,10 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="AddAddress"
                     component={AddAddress}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
                 />
                 <AppStack.Screen
                     name="Address"

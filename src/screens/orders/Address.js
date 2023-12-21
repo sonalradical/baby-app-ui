@@ -57,7 +57,10 @@ export default function Address({ validStep, clickStep }) {
         const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2},` : ''}${item.suburb}, \n${item.state}, ${item.postcode}, ${item.country}`
         return (
             <TouchableOpacity onPress={() => onSelectAddress(item._id)} >
-                <MMSurface >
+                <MMSurface style={{
+                    borderWidth: item._id === addressId ? 2 : 0,
+                    borderColor: item._id === addressId ? theme.colors.primary : theme.colors.secondaryContainer
+                }}>
                     {isLoading ? <MMSpinner /> :
                         <>
                             <View style={{ flexDirection: 'row' }}>

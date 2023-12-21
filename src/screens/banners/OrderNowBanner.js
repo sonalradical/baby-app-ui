@@ -11,7 +11,7 @@ const OrderNowBanner = ({ onPress }) => {
     const theme = useTheme();
 
     return (
-        <View style={{ marginHorizontal: MMConstants.marginLarge, marginVertical: MMConstants.marginMedium }}>
+        <View style={{ marginVertical: MMConstants.marginMedium }}>
             <MMSurface style={{ alignItems: 'center', borderRadius: 20 }} margin={[0, 0, 0, 0]}>
                 <Text style={theme.fonts.headlineMedium}>Order your book now.</Text>
                 <MMButton mode="contained" label={'Order Now'} onPress={onPress} />

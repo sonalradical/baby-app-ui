@@ -70,7 +70,7 @@ export default function Home({ updateFooterVisibility }) {
     };
 
     const handleScrollEndDrag = () => {
-        updateFooterVisibility(isScrollingUp);
+        updateFooterVisibility(true);
     };
 
     const renderCountDownBanner = () => {

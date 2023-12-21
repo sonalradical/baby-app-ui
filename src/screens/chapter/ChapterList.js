@@ -100,11 +100,9 @@ export default function ChapterList() {
     };
 
     return (
-        <MMContentContainer>
-            <MMScrollView>
-                {isLoading ? <MMSpinner /> : renderView()}
-            </MMScrollView>
-        </MMContentContainer>
+        <MMScrollView>
+            {isLoading ? <MMSpinner /> : renderView()}
+        </MMScrollView>
     );
 }
 

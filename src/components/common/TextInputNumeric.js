@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { useTheme, Text } from 'react-native-paper';
 import NumericInput from 'react-native-numeric-input';
+import MMConstants from '../../helpers/Constants';
 
 const MMTextInputNumeric = ({ label, errorText, containerClass = 'container', ...props }) => {
 	const theme = useTheme();
 
 	return (
 		<View style={styles(theme)[containerClass]}>
-			{label ? <Text style={theme.fonts.titleMedium}>{label}</Text> : null}
+			{label ? <Text style={[theme.fonts.titleMedium, { paddingBottom: MMConstants.paddingMedium }]}>{label}</Text> : null}
 
 			<NumericInput
 				valueType='integer'

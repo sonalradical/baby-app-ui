@@ -54,7 +54,7 @@ export default function MainTemplate({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const fileName = _.head(photo.uri.match(/[^\/]+$/));
-            const response = await MMApiService.getPreSignedUrl(fileName);
+            const response = await MMApiService.getPagePreSignedUrl(selectedBaby._id, fileName);
             const responseData = response.data;
             if (responseData) {
                 const imageDetails = [...templateData];
@@ -202,19 +202,17 @@ export default function MainTemplate({ navigation, route }) {
                         pageId={pageId}
                         onImageChange={onImageChange} />
                 </View>
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                <View style={{ marginTop: MMConstants.marginLarge }}>
                     <MMInput
-                        label='Page Header Text'
-                        maxLength={30}
+                        maxLength={50}
                         value={pageText.headerText}
                         onChangeText={(value) => onInputChange('headerText', value)}
                         placeholder="Enter Page Header"
                     />
                 </View>
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                <View style={{ marginTop: MMConstants.marginSmall }}>
                     <MMInput
-                        label='Page Footer Text'
-                        maxLength={30}
+                        maxLength={50}
                         value={pageText.footerText}
                         onChangeText={(value) => onInputChange('footerText', value)}
                         placeholder="Enter Page Footer"

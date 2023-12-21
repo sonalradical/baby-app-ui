@@ -69,23 +69,23 @@ export default function Order() {
                         <Text style={theme.fonts.labelLarge}>My Order</Text>
                         <Text style={theme.fonts.default} numberOfLines={2}>{bookDetail.bookTitle ? bookDetail.bookTitle : null}</Text>
                     </View>
-                    <Card style={{ backgroundColor: theme.colors.primary, padding: 10, width: '70%', borderRadius: 10 }}>
+                    <Card style={{ backgroundColor: theme.colors.primary, padding: 5, width: '55%', borderRadius: 10 }}>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                         }}>
                             <View style={{ flexDirection: 'column' }}>
-                                <Text style={[theme.fonts.titleLarge, { color: 'white' }]}>
+                                <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>
                                     {bookDetail.quantity === 1 ? `${bookDetail.quantity} Item` : `${bookDetail.quantity} Items`} </Text>
-                                <Text style={[theme.fonts.titleLarge, { color: 'white' }]}>Place order</Text>
+                                <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>Place Order</Text>
                             </View>
                             <View style={{
                                 height: '100%',
                                 width: 1,
                                 backgroundColor: 'white',
-                                marginHorizontal: 5,
+                                marginHorizontal: 10,
                             }} />
-                            <Text style={[theme.fonts.titleLarge, { color: 'white' }]}>
+                            <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>
                                 {bookDetail.totalPrice ? MMUtils.formatCurrency(bookDetail.totalPrice) : null}</Text>
                         </View>
                     </Card>
@@ -135,7 +135,7 @@ const styles = (theme) => StyleSheet.create({
     },
     stepper: {
         flexDirection: 'row',
-        padding: MMConstants.paddingLarge
+        padding: MMConstants.paddingMedium
     },
     stepItem: {
         alignItems: 'center',
@@ -150,7 +150,7 @@ const styles = (theme) => StyleSheet.create({
     },
     surfaceStyle: {
         borderRadius: 20,
-        marginHorizontal: MMConstants.marginLarge,
+        marginHorizontal: MMConstants.marginMedium,
         marginBottom: MMConstants.marginMedium,
         backgroundColor: theme.colors.secondaryContainer,
         flexDirection: 'row',

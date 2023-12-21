@@ -67,7 +67,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
     const renderView = () => {
         return (
-            <View style={{ padding: MMConstants.paddingLarge }}>
+            <View>
                 <RadioButton.Group onValueChange={(value) => onCoverChange(value)} value={bookDetail.productId}>
                     <Text style={theme.fonts.titleMedium}>Book Cover</Text>
                     {productList.map((product, index) => (
@@ -125,7 +125,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
         return (
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
-                <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingMedium }}>
+                <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingMedium, marginTop: MMConstants.marginLarge }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Image
                             textAlign="center"
@@ -152,13 +152,13 @@ const BookSelection = ({ validStep, clickStep }) => {
 
 
     return (
-        <MMContentContainer>
+        <View style={{ padding: 10 }}>
             <MMScrollView>
                 {renderView()}
                 {renderBookPreview()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        </View>
     );
 }
 
