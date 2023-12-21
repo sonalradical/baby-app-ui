@@ -4,6 +4,7 @@ import { Chip, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { validateAll } from 'indicative/validator';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -12,17 +13,18 @@ import MMInput from '../../components/common/Input';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
-import MMPlacesAutocomplete from './PlacesAutocomplete';
 import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMFormErrorText from '../../components/common/FormErrorText';
-import { validateAll } from 'indicative/validator';
 import MMFlexView from '../../components/common/FlexView';
+import MMPlacesAutocomplete from './PlacesAutocomplete';
+import MMEnums from '../../helpers/Enums';
 
 export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
     const { addressId } = route.params || '';
     const [isOverlayLoading, setOverlayLoading] = useState(false);
+    const [isVisible, setVisible] = useState(false);
     const initState = {
         latitude: 0.0,
         longitude: 0.0,
@@ -40,6 +42,7 @@ export default function AddAddress({ navigation, route }) {
     useEffect(() => {
         if (addressId) {
             loadAddressById();
+            setVisible(true);
         }
     }, [addressId]);
 
@@ -47,7 +50,6 @@ export default function AddAddress({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const response = await MMApiService.getAddressById(addressId);
-            console.log(response, 'response')
             if (response.data) {
                 const addressDetail = response.data
                 setState({
@@ -85,6 +87,7 @@ export default function AddAddress({ navigation, route }) {
                 postcode: ''
             }
         });
+        setVisible(data ? true : false);
     }
 
     const onInputChange = (field, value) => {
@@ -164,148 +167,146 @@ export default function AddAddress({ navigation, route }) {
                 <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row' }}>
                     <Chip
                         mode='outlined'
-                        onPress={() => onInputChange('addressType', 'home')}
-                        selected={state.addressType == 'home'}
+                        onPress={() => onInputChange('addressType', MMEnums.addressType.home)}
+                        selected={state.addressType === MMEnums.addressType.home}
                         selectedColor={theme.colors.primary}
                         style={[styles(theme).chip,
                         {
-                            borderColor: state.addressType == 'home' ? theme.colors.primary : theme.colors.outline,
-                            borderWidth: state.addressType == 'home' ? 2 : 1
+                            borderColor: state.addressType === MMEnums.addressType.home ? theme.colors.primary : theme.colors.outline,
+                            borderWidth: state.addressType === MMEnums.addressType.home ? 2 : 1
                         }]}
                         textStyle={theme.fonts.default}> Home </Chip>
                     <Chip
                         mode='outlined'
-                        onPress={() => onInputChange('addressType', 'work')}
+                        onPress={() => onInputChange('addressType', MMEnums.addressType.work)}
                         style={[styles(theme).chip, {
-                            borderColor: state.addressType == 'work' ? theme.colors.primary : theme.colors.outline,
-                            borderWidth: state.addressType == 'work' ? 2 : 1
+                            borderColor: state.addressType === MMEnums.addressType.work ? theme.colors.primary : theme.colors.outline,
+                            borderWidth: state.addressType === MMEnums.addressType.work ? 2 : 1
                         }]}
                         selectedColor={theme.colors.primary}
-                        selected={state.addressType == 'work'}
+                        selected={state.addressType === MMEnums.addressType.work}
                         textStyle={theme.fonts.default}> Work</Chip>
                     <Chip
                         mode='outlined'
-                        onPress={() => onInputChange('addressType', 'other')}
+                        onPress={() => onInputChange('addressType', MMEnums.addressType.other)}
                         selectedColor={theme.colors.primary}
                         style={[styles(theme).chip, {
-                            borderColor: state.addressType == 'other' ? theme.colors.primary : theme.colors.outline,
-                            borderWidth: state.addressType == 'other' ? 2 : 1
+                            borderColor: state.addressType === MMEnums.addressType.other ? theme.colors.primary : theme.colors.outline,
+                            borderWidth: state.addressType === MMEnums.addressType.other ? 2 : 1
                         }]}
-                        selected={state.addressType == 'other'}
+                        selected={state.addressType === MMEnums.addressType.other}
                         textStyle={theme.fonts.default} >Other</Chip>
 
                 </View>
                 <MMFormErrorText errorText={state.errors.addressType} />
+                {isVisible ?
+                    <>
+                        <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                            <MMInput
+                                label='Line 1'
+                                name='addressLine1'
+                                placeholder='Enter Address Line 1'
+                                value={state.addressLine1}
+                                errorText={state.errors.addressLine1}
+                                onChangeText={(value) => onInputChange('addressLine1', value)}
+                                maxLength={100}
+                            />
+                        </View>
+                        <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                            <MMInput
+                                label='Line 2'
+                                name='addressLine2'
+                                placeholder='Enter Address Line 2'
+                                value={state.addressLine2}
+                                errorText={state.errors.addressLine2}
+                                onChangeText={(value) => onInputChange('addressLine2', value)}
+                                maxLength={100}
+                            />
+                        </View>
+                        <View>
+                            <MMInput
+                                label='City / Suburb'
+                                name='suburb'
+                                placeholder='City'
+                                value={state.suburb}
+                                editable={false}
+                                maxLength={50}
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={{ width: '60%' }}>
+                                <MMInput
+                                    label="State"
+                                    name='state'
+                                    placeholder='State'
+                                    value={state.state}
+                                    editable={false}
+                                    maxLength={50}
+                                />
+                            </View>
+                            <View style={{ width: '30%' }}>
+                                <MMInput
+                                    label="Post Code"
+                                    name='postcode'
+                                    placeholder='Post Code'
+                                    value={state.postcode}
+                                    editable={false}
+                                    maxLength={5}
+                                />
+                            </View>
+                        </View>
+                        <View>
+                            <MMInput
+                                label='Country'
+                                name='country'
+                                placeholder='Country'
+                                value={state.country}
+                                editable={false}
+                                maxLength={50}
+                            />
+                        </View>
+                        {
+                            addressId ?
+                                <MMFlexView>
+                                    <MMOutlineButton
+                                        label="Delete"
+                                        //onPress={() => onConfirm()}
+                                        width='45%'
+                                    />
+                                    <MMButton
+                                        label="Save"
+                                        onPress={() => onSave()}
+                                        width='45%'
+                                    />
+                                </MMFlexView> :
+                                <MMFlexView>
+                                    <MMOutlineButton
+                                        label="Cancel"
+                                        onPress={() => navigation.goBack()}
+                                        width='45%'
+                                    />
+                                    <MMButton
+                                        label="Save"
+                                        onPress={() => onSave()}
+                                        width='45%'
+                                    />
+                                </MMFlexView>
 
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
-                    <MMInput
-                        label='Line 1'
-                        name='addressLine1'
-                        placeholder='Enter Address Line 1'
-                        value={state.addressLine1}
-                        errorText={state.errors.addressLine1}
-                        onChangeText={(value) => onInputChange('addressLine1', value)}
-                        maxLength={100}
-                    />
-                </View>
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
-                    <MMInput
-                        label='Line 2'
-                        name='addressLine2'
-                        placeholder='Enter Address Line 2'
-                        value={state.addressLine2}
-                        errorText={state.errors.addressLine2}
-                        onChangeText={(value) => onInputChange('addressLine2', value)}
-                        maxLength={100}
-                    />
-                </View>
-                <View>
-                    <MMInput
-                        label='City / Suburb'
-                        name='suburb'
-                        placeholder='City'
-                        value={state.suburb}
-                        editable={false}
-                        maxLength={50}
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ width: '60%' }}>
-                        <MMInput
-                            label="State"
-                            name='state'
-                            placeholder='State'
-                            value={state.state}
-                            editable={false}
-                            maxLength={50}
-                        />
-                    </View>
-                    <View style={{ width: '30%' }}>
-                        <MMInput
-                            label="Post Code"
-                            name='postcode'
-                            placeholder='Post Code'
-                            value={state.postcode}
-                            editable={false}
-                            maxLength={5}
-                        />
-                    </View>
-                </View>
-                <View>
-                    <MMInput
-                        label='Country'
-                        name='country'
-                        placeholder='Country'
-                        value={state.country}
-                        editable={false}
-                        maxLength={50}
-                    />
-                </View>
-                {
-                    addressId ?
-                        <MMFlexView>
-                            <MMOutlineButton
-                                label="Delete"
-                                //onPress={() => onConfirm()}
-                                width='45%'
-                            />
-                            <MMButton
-                                label="Save"
-                                onPress={() => onSave()}
-                                width='45%'
-                            />
-                        </MMFlexView> :
-                        <MMFlexView>
-                            <MMOutlineButton
-                                label="Cancel"
-                                onPress={() => navigation.goBack()}
-                                width='45%'
-                            />
-                            <MMButton
-                                label="Save"
-                                onPress={() => onSave()}
-                                width='45%'
-                            />
-                        </MMFlexView>
-
-                }
-                {/* <MMButton
-                    label="Save Address"
-                    onPress={() => onSave()}
-                /> */}
+                        }
+                    </> : null}
             </View>
         );
     };
 
     return (
         <MMContentContainer>
-            <MMPageTitle title={'Enter Complete address'} />
+            <MMPageTitle title={'Select address'} />
             <View style={{ paddingTop: MMConstants.paddingMedium }}>
                 <MMPlacesAutocomplete
                     placeholder='Search Area, Location'
                     updatedLatLong={(data) => onAutoSuggestChange(data)}
-                    onInputChange={(value) => onInputChange('line1', value)}
-                    defaultValue={state.line1}
+                    onInputChange={(value) => onInputChange('addressLine1', value)}
+                    defaultValue={state.addressLine1}
                 />
             </View>
             <MMScrollView>

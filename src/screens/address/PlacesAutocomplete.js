@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { View } from 'react-native';
 import MMConfig from '../../helpers/Config';
@@ -12,10 +12,16 @@ function MMPlacesAutocomplete(props) {
     const theme = useTheme();
 
     const {
-        placeholder, updatedLatLong
+        placeholder, updatedLatLong, defaultValue = ''
     } = props;
 
     const ref = useRef();
+
+    useEffect(() => {
+        if (defaultValue) {
+            ref.current?.setAddressText(defaultValue);
+        }
+    }, [defaultValue]);
 
 
     const onChange = async ({ data, details }) => {
@@ -43,7 +49,6 @@ function MMPlacesAutocomplete(props) {
         if (location.addressLine1.length > 3) {
             location.addressLine1 = location.addressLine1.substring(0, location.addressLine1.length - 2);
         }
-        console.log(location, 'location')
         updatedLatLong(location);
     }
 

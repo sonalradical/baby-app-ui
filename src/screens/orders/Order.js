@@ -4,15 +4,15 @@ import { Card, Surface, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
+import { useSelector } from 'react-redux';
 
-import { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMUtils from '../../helpers/Utils';
+import MMConstants from '../../helpers/Constants';
+import MMIcon from '../../components/common/Icon';
+import MMContentContainer from '../../components/common/ContentContainer';
 import Address from './Address';
 import BookSelection from './BookSelection';
 import Payment from './Payment';
-import MMIcon from '../../components/common/Icon';
-import { useSelector } from 'react-redux';
-import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
 
 const labels = ['Cart', 'Address', 'Payment'];
 
@@ -65,11 +65,11 @@ export default function Order() {
         return (
             <TouchableOpacity onPress={activeStep < 2 ? () => onStepPress(activeStep + 1) : null}>
                 <Surface style={styles(theme).surfaceStyle}>
-                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'column', width: '48%', paddingTop: 5 }}>
                         <Text style={theme.fonts.labelLarge}>My Order</Text>
-                        <Text style={theme.fonts.default} numberOfLines={2}>{bookDetail.bookTitle ? bookDetail.bookTitle : null}</Text>
+                        <Text style={[theme.fonts.default]} numberOfLines={2}>{bookDetail.bookTitle ? bookDetail.bookTitle : null}</Text>
                     </View>
-                    <Card style={{ backgroundColor: theme.colors.primary, padding: 5, width: '55%', borderRadius: 10 }}>
+                    <Card style={{ backgroundColor: theme.colors.primary, padding: 5, width: '50%', borderRadius: 10 }}>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -115,21 +115,15 @@ export default function Order() {
     };
 
     return (
-        <View style={styles(theme).container}>
+        <MMContentContainer>
             {renderStepper()}
             <View style={styles(theme).stepContent}>{getStepContent(activeStep)}</View>
             {renderActionButtons()}
-        </View>
+        </MMContentContainer>
     );
 };
 
 const styles = (theme) => StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingVertical: MMConstants.paddingLarge,
-        backgroundColor: theme.colors.background,
-    },
     stepContent: {
         flex: 1,
     },
@@ -150,7 +144,6 @@ const styles = (theme) => StyleSheet.create({
     },
     surfaceStyle: {
         borderRadius: 20,
-        marginHorizontal: MMConstants.marginMedium,
         marginBottom: MMConstants.marginMedium,
         backgroundColor: theme.colors.secondaryContainer,
         flexDirection: 'row',

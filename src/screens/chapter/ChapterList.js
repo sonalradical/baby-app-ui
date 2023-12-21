@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
 
@@ -8,6 +7,7 @@ import { useSelector } from 'react-redux';
 import CircularProgress, {
     CircularProgressWithChild,
 } from 'react-native-circular-progress-indicator';
+import { useNavigation } from '@react-navigation/native';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -15,7 +15,6 @@ import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMPageTitle from '../../components/common/PageTitle';
 
 export default function ChapterList() {

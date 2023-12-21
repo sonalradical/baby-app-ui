@@ -8,7 +8,7 @@ const initialState = {
 	reloadBookPage: false,
 	bookDetail: {
 		productId: '',
-		bookTitle: '',
+		bookTitle: 'Birthday',
 		bookSubTitle: '',
 		quantity: 1,
 		totalPrice: ''

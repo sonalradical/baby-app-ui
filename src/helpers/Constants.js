@@ -74,11 +74,6 @@ const MMConstants = {
         "Row3-Column3": require('../assets/images/template/Row3-Column3.png'),
         "Row4-Column4": require('../assets/images/template/Row4-Column4.png'),
     },
-    product: {
-        smallSoftCover: require('../assets/images/cover/smallSoftCover.png'),
-        largeSoftCover: require('../assets/images/cover/largeSoftCover.png'),
-        largeHardCover: require('../assets/images/cover/largeHardCover.png')
-    },
 
     paddingMedium: 5,
     paddingLarge: 10,

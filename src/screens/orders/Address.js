@@ -2,30 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Keyboard, TouchableOpacity, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
-import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import * as _ from 'lodash';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import PropTypes from 'prop-types';
 import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { setAddressId } from '../../redux/Slice/AppSlice';
+
+import MMConstants from '../../helpers/Constants';
+import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
-import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
-import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
-import MMPageTitle from '../../components/common/PageTitle';
-import MMSurface from '../../components/common/Surface';
-import { useNavigation } from '@react-navigation/native';
-import MMConstants from '../../helpers/Constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAddressId } from '../../redux/Slice/AppSlice';
 import MMFormErrorText from '../../components/common/FormErrorText';
+import MMPageTitle from '../../components/common/PageTitle';
+import MMSpinner from '../../components/common/Spinner';
+import MMSurface from '../../components/common/Surface';
 
 export default function Address({ validStep, clickStep }) {
     const theme = useTheme();
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { addressId } = useSelector((state) => state.AppReducer.addressId);
-    const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [addressList, setAddressList] = useState([]);
 
@@ -64,14 +63,14 @@ export default function Address({ validStep, clickStep }) {
                     {isLoading ? <MMSpinner /> :
                         <>
                             <View style={{ flexDirection: 'row' }}>
-                                {item.addressType === 'home' ? <Feather name={'home'} size={30} color={theme.colors.primary} /> :
-                                    item.addressType === 'work' ? <Ionicons name={'business-outline'} size={30} color={theme.colors.primary} /> :
+                                {item.addressType === MMEnums.addressType.home ? <Feather name={'home'} size={30} color={theme.colors.primary} /> :
+                                    item.addressType === MMEnums.addressType.work ? <Ionicons name={'business-outline'} size={30} color={theme.colors.primary} /> :
                                         <Ionicons name={'location-outline'} size={30} color={theme.colors.primary} />}
                                 <View style={{ paddingLeft: MMConstants.paddingLarge }}>
                                     <Text style={[theme.fonts.labelLarge]} numberOfLines={1}>
                                         {_.capitalize(item.addressType)}</Text>
                                     <Text style={[theme.fonts.default, { lineHeight: 20 }]} numberOfLines={4} >{address} </Text>
-                                    <Feather name={'edit'} size={18} color={theme.colors.primary} style={{ paddingTop: 2 }}
+                                    <Feather name={'edit'} size={18} color={theme.colors.primary} style={{ paddingTop: 2, width: 20 }}
                                         onPress={() => navigation.navigate('AddAddress', { addressId: item._id })} />
                                 </View>
                             </View>
@@ -90,7 +89,7 @@ export default function Address({ validStep, clickStep }) {
                 renderItem={({ item, index }) => {
                     return renderAddressDetail(item, index);
                 }}
-                contentContainerStyle={{ padding: MMConstants.paddingMedium }}
+                contentContainerStyle={{ padding: 5 }}
                 keyExtractor={(item, index) => {
                     return item._id;
                 }}
@@ -121,11 +120,10 @@ export default function Address({ validStep, clickStep }) {
     };
 
     return (
-        <MMContentContainer>
+        <>
             {renderView()}
             {renderAddressList()}
-            <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        </>
     );
 }
 

@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { List, Text, useTheme } from 'react-native-paper';
 
-import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
-import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { List, Text, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
+
+import { useNavigation } from '@react-navigation/native';
+
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRoundBackground from '../../components/common/RoundBackground';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
-import MMConstants from '../../helpers/Constants';
-import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
 import Parents from './Parents';
 
 export default function BookPreview({ updateFooterVisibility }) {
@@ -126,12 +127,14 @@ export default function BookPreview({ updateFooterVisibility }) {
             return pageDetail;
         });
         return (
-            <View style={{ height: 300, paddingLeft: 20 }}>
+            <View style={{ paddingLeft: MMConstants.paddingLarge }}>
                 {headerText ?
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>{headerText}</Text>
                     : null}
-                <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
-                    templateName={template.code} />
+                <View style={{ height: 250, width: 250, alignSelf: 'center' }}>
+                    <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
+                        templateName={template.code} />
+                </View>
                 {footerText ?
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingTop: MMConstants.paddingLarge }]}> {footerText}</Text>
                     : null}

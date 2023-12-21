@@ -13,7 +13,6 @@ import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMListView from '../../components/common/ListView';
 import MMInput from '../../components/common/Input';
 import MMTextInputNumeric from '../../components/common/TextInputNumeric';
@@ -121,7 +120,7 @@ const BookSelection = ({ validStep, clickStep }) => {
         if (!productList) return null;
         const product = productList.find((item) => item._id === bookDetail.productId);
         if (!product) return null;
-        let productImage = MMConstants.product[product.productImage];
+        let productImage = MMUtils.getImagePath(product.productImage);
 
         return (
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
@@ -130,15 +129,15 @@ const BookSelection = ({ validStep, clickStep }) => {
                         <Image
                             textAlign="center"
                             resizeMode="contain"
-                            source={productImage}
+                            source={{ uri: productImage }}
                             style={styles(theme).image}
                         />
                         <View style={{ padding: MMConstants.paddingLarge }}>
                             <Text style={[theme.fonts.titleMedium]}>
                                 {product.productName}</Text>
-                            <Text style={[theme.fonts.titleSmall]}>
+                            <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
                                 Title: {bookDetail.bookTitle}</Text>
-                            {bookDetail.bookSubTitle ? <Text style={[theme.fonts.titleSmall]}>
+                            {bookDetail.bookSubTitle ? <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
                                 Sub title: {bookDetail.bookSubTitle}</Text> : null}
                             <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text>Qty: {bookDetail.quantity} </Text>
@@ -152,7 +151,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
 
     return (
-        <View style={{ padding: 10 }}>
+        <View>
             <MMScrollView>
                 {renderView()}
                 {renderBookPreview()}
@@ -169,7 +168,7 @@ BookSelection.propTypes = {
 
 const styles = (theme) => StyleSheet.create({
     image: {
-        width: Dimensions.get('window').width / 6,
+        width: Dimensions.get('window').width / 5,
         height: Dimensions.get('window').height / 8,
         padding: 10
     },
