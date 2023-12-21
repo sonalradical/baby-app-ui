@@ -161,6 +161,15 @@ async function getAddressList() {
     return result;
 }
 
+async function deleteAddress(addressId) {
+    const config = {
+        url: `address/delete/${addressId}`,
+        method: 'delete'
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#end
 
 //------------------------------------------------------------------ Quiz API
@@ -297,6 +306,7 @@ export default {
     saveAddress,
     getAddressById,
     getAddressList,
+    deleteAddress,
     getQuiz,
     saveQuiz,
     getBookPreview,

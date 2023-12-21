@@ -5,8 +5,10 @@ import { Chip, Text, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { validateAll } from 'indicative/validator';
+import { useDispatch } from 'react-redux';
 
 import MMUtils from '../../helpers/Utils';
+import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
@@ -17,11 +19,13 @@ import { MMButton, MMOutlineButton } from '../../components/common/Button';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMFlexView from '../../components/common/FlexView';
+import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPlacesAutocomplete from './PlacesAutocomplete';
-import MMEnums from '../../helpers/Enums';
+import { reloadAddressPage } from '../../redux/Slice/AppSlice';
 
 export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
+    const dispatch = useDispatch();
     const { addressId } = route.params || '';
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [isVisible, setVisible] = useState(false);
@@ -101,6 +105,16 @@ export default function AddAddress({ navigation, route }) {
         });
     }
 
+    const onDeleteAddress = async () => {
+        setOverlayLoading(true);
+        const response = await MMApiService.deleteAddress(addressId);
+        if (response) {
+            dispatch(reloadAddressPage({ reloadAddressPage: true }));
+            navigation.navigate('Order');
+        }
+        setOverlayLoading(false);
+    }
+
     const onSave = () => {
         if (isOverlayLoading) {
             return;
@@ -136,7 +150,8 @@ export default function AddAddress({ navigation, route }) {
                     await MMApiService.saveAddress(apiData)
                         .then(function (response) {
                             if (response) {
-                                navigation.navigate('Address');
+                                dispatch(reloadAddressPage({ reloadAddressPage: true }));
+                                navigation.navigate('Order');
                             }
                         })
                         .catch(function (error) {
@@ -160,43 +175,34 @@ export default function AddAddress({ navigation, route }) {
             });
     };
 
+    const renderChip = (type, label) => {
+        const isSelected = state.addressType === type;
+        return (
+            <Chip
+                mode='outlined'
+                onPress={() => onInputChange('addressType', type)}
+                selected={isSelected}
+                selectedColor={theme.colors.primary}
+                style={[
+                    styles(theme).chip,
+                    {
+                        borderColor: isSelected ? theme.colors.primary : theme.colors.outline,
+                        borderWidth: isSelected ? 2 : 1,
+                    },
+                ]}
+                textStyle={theme.fonts.default}
+            > {label} </Chip>
+        );
+    };
+
     const renderView = () => {
         return (
             <View style={{ paddingTop: MMConstants.paddingMedium }}>
                 <Text style={theme.fonts.titleMedium}>Save address as *</Text>
                 <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row' }}>
-                    <Chip
-                        mode='outlined'
-                        onPress={() => onInputChange('addressType', MMEnums.addressType.home)}
-                        selected={state.addressType === MMEnums.addressType.home}
-                        selectedColor={theme.colors.primary}
-                        style={[styles(theme).chip,
-                        {
-                            borderColor: state.addressType === MMEnums.addressType.home ? theme.colors.primary : theme.colors.outline,
-                            borderWidth: state.addressType === MMEnums.addressType.home ? 2 : 1
-                        }]}
-                        textStyle={theme.fonts.default}> Home </Chip>
-                    <Chip
-                        mode='outlined'
-                        onPress={() => onInputChange('addressType', MMEnums.addressType.work)}
-                        style={[styles(theme).chip, {
-                            borderColor: state.addressType === MMEnums.addressType.work ? theme.colors.primary : theme.colors.outline,
-                            borderWidth: state.addressType === MMEnums.addressType.work ? 2 : 1
-                        }]}
-                        selectedColor={theme.colors.primary}
-                        selected={state.addressType === MMEnums.addressType.work}
-                        textStyle={theme.fonts.default}> Work</Chip>
-                    <Chip
-                        mode='outlined'
-                        onPress={() => onInputChange('addressType', MMEnums.addressType.other)}
-                        selectedColor={theme.colors.primary}
-                        style={[styles(theme).chip, {
-                            borderColor: state.addressType === MMEnums.addressType.other ? theme.colors.primary : theme.colors.outline,
-                            borderWidth: state.addressType === MMEnums.addressType.other ? 2 : 1
-                        }]}
-                        selected={state.addressType === MMEnums.addressType.other}
-                        textStyle={theme.fonts.default} >Other</Chip>
-
+                    {renderChip(MMEnums.addressType.home, 'Home')}
+                    {renderChip(MMEnums.addressType.work, 'Work')}
+                    {renderChip(MMEnums.addressType.other, 'Other')}
                 </View>
                 <MMFormErrorText errorText={state.errors.addressType} />
                 {isVisible ?
@@ -270,7 +276,10 @@ export default function AddAddress({ navigation, route }) {
                                 <MMFlexView>
                                     <MMOutlineButton
                                         label="Delete"
-                                        //onPress={() => onConfirm()}
+                                        onPress={() => MMConfirmDialog({
+                                            message: "Are you sure you want to delete this Address?",
+                                            onConfirm: onDeleteAddress
+                                        })}
                                         width='45%'
                                     />
                                     <MMButton

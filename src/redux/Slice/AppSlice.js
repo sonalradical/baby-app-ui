@@ -6,6 +6,7 @@ const initialState = {
 	reloadChapterList: false,
 	reloadPage: false,
 	reloadBookPage: false,
+	reloadAddressPage: true,
 	bookDetail: {
 		productId: '',
 		bookTitle: 'Birthday',
@@ -37,6 +38,9 @@ const AppReducer = createSlice({
 		reloadBookPage: (state, action) => {
 			state.reloadBookPage = action.payload;
 		},
+		reloadAddressPage: (state, action) => {
+			state.reloadAddressPage = action.payload;
+		},
 		setBookDetail: (state, action) => {
 			return {
 				...state,
@@ -60,6 +64,7 @@ export const {
 	reloadChapterList,
 	reloadPage,
 	reloadBookPage,
+	reloadAddressPage,
 	setBookDetail,
 	setAddressId,
 	setPaymentId

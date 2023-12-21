@@ -25,12 +25,15 @@ export default function Address({ validStep, clickStep }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { addressId } = useSelector((state) => state.AppReducer.addressId);
+    const reloadAddressPage = useSelector((state) => state.AppReducer.reloadAddressPage)
     const [isLoading, setLoading] = useState(true);
     const [addressList, setAddressList] = useState([]);
 
     useEffect(() => {
-        loadAddressList();
-    }, []);
+        if (reloadAddressPage) {
+            loadAddressList();
+        }
+    }, [reloadAddressPage]);
 
     const loadAddressList = async () => {
         setLoading(true);
