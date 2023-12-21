@@ -78,7 +78,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
-            <TouchableOpacity style={{ flexDirection: 'column', marginVertical: MMConstants.marginMedium }}
+            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
                 <Image
                     textAlign="center"
@@ -86,7 +86,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
                     source={milestoneImage}
                     style={styles(theme).image}
                 />
-                <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={2} ellipsizeMode='tail'>
+                <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={undefined} ellipsizeMode='tail'>
                     {item.title}</Text>
             </TouchableOpacity>
         );
@@ -98,10 +98,9 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
                 ref={flatListRef}
                 data={milestones}
                 ListHeaderComponent={<MMPageTitle title='My First' />}
-                columnWrapperStyle={{ justifyContent: 'space-around' }}
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
-                numColumns={2}
+                numColumns={3}
                 onScroll={handleScroll}
                 onScrollEndDrag={handleScrollEndDrag}
             />
@@ -124,6 +123,7 @@ const styles = (theme) => StyleSheet.create({
     milestone: {
         color: theme.colors.text.primary,
         textAlign: 'center',
+        width: 80,
         marginTop: MMConstants.marginSmall
     },
     image: {
