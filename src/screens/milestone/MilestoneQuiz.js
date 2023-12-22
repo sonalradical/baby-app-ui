@@ -4,21 +4,20 @@ import { Text, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
-import MMApiService from '../../services/ApiService';
-import MMContentContainer from '../../components/common/ContentContainer';
-import MMScrollView from '../../components/common/ScrollView';
 import { Dimensions, Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
-import MMInput from '../../components/common/Input';
-import MMDateTimePicker from '../../components/common/DateTimePicker';
-import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import { MMButton, MMOutlineButton } from '../../components/common/Button';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMDateTimePicker from '../../components/common/DateTimePicker';
+import MMFlexView from '../../components/common/FlexView';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import MMInput from '../../components/common/Input';
 import MMInputMultiline from '../../components/common/InputMultiline';
-import MMPageTitle from '../../components/common/PageTitle';
-import MMFlexView from '../../components/common/FlexView';
+import MMScrollView from '../../components/common/ScrollView';
+import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
 
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;

@@ -8,9 +8,7 @@ import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
 import MMConfig from '../helpers/Config';
 
-// Defaults
-axios.defaults.baseURL = 'http://localhost:4000/';
-
+axios.defaults.baseURL = MMConfig().baseApiUrl;
 const { dispatch, getState } = store;
 
 // Request interceptor
