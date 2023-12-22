@@ -20,7 +20,7 @@ import MMPageTitle from '../../components/common/PageTitle';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 
-export default function Address({ validStep, clickStep }) {
+const Address = ({ validStep, clickStep }) => {
     const theme = useTheme();
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -134,3 +134,5 @@ Address.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
+
+export default Address;

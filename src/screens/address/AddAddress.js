@@ -20,7 +20,7 @@ import MMPageTitle from '../../components/common/PageTitle';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMFlexView from '../../components/common/FlexView';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
-import MMPlacesAutocomplete from './PlacesAutocomplete';
+import MMPlacesAutocomplete from '../../components/common/PlacesAutocomplete';
 import { reloadAddressPage } from '../../redux/Slice/AppSlice';
 
 export default function AddAddress({ navigation, route }) {
