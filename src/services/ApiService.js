@@ -36,7 +36,7 @@ async function resendOTP(data) {
 
 async function userLoginWithPassword(authTokan) {
     const config = {
-        url: `auth/login/${authTokan}/${'65780c81d2a96049f98a0809'}`,
+        url: `auth/login/${authTokan}/${'65780c81d2a96049f98a0808'}`,
         method: 'post'
     };
     const result = await axios(config);
