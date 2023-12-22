@@ -74,7 +74,6 @@ export default function OTPView({ navigation, route }) {
         setIsResendVisible(false);
         const apiData = {
             mobileNumber: mobileNumber,
-            deviceId: '65780c81d2a96049f98a0808'
         };
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
@@ -89,7 +88,6 @@ export default function OTPView({ navigation, route }) {
                 setIsResendVisible(true);
             }, MMConstants.otpTimeOut);
             setOverlayLoading(false);
-            MMUtils.showToastMessage("OTP send successfully.")
         }
     }
 
@@ -131,7 +129,8 @@ export default function OTPView({ navigation, route }) {
         try {
             const apiData = {
                 mobileNumber: mobileNumber,
-                otp: state.otp
+                otp: state.otp,
+                deviceId: '65780c81d2a96049f98a0805'
             };
 
             await MMApiService.verifyOTP(apiData)
