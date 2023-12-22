@@ -74,7 +74,7 @@ export default function OTPView({ navigation, route }) {
         setIsResendVisible(false);
         const apiData = {
             mobileNumber: mobileNumber,
-            deviceId: '65780c81d2a96049f98a0809'
+            deviceId: '65780c81d2a96049f98a0808'
         };
         const resendOTP = await MMApiService.resendOTP(apiData);
         if (resendOTP) {
