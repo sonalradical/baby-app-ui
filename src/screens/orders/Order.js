@@ -16,14 +16,18 @@ import Payment from './Payment';
 
 const labels = ['Cart', 'Address', 'Payment'];
 
-export default function Order() {
+export default function Order({ navigation }) {
     const theme = useTheme();
     const [activeStep, setActiveStep] = useState(0);
     const [validStep, setValidStep] = useState(0);
     const [clickStep, setclickstep] = useState(0);
     const bookDetail = useSelector((state) => state.AppReducer.bookDetail);
-    const { addressId } = useSelector((state) => state.AppReducer.addressId);
+    const addressId = useSelector((state) => state.AppReducer.addressId);
     const paymentId = useSelector((state) => state.AppReducer.paymentId);
+
+    useEffect(() => {
+        onValidField();
+    }, [bookDetail, addressId, paymentId]);
 
     const onStepPress = (step) => {
         setclickstep(step);
@@ -44,9 +48,11 @@ export default function Order() {
         setValidStep(maxValidStep);
     };
 
-    useEffect(() => {
-        onValidField();
-    }, [bookDetail, addressId, paymentId]);
+    const onPlaceOrder = () => {
+        if (validStep === 3) {
+            navigation.navigate('PlaceOrder')
+        }
+    };
 
     const getStepContent = (step) => {
         switch (step) {
@@ -63,7 +69,7 @@ export default function Order() {
 
     const renderActionButtons = () => {
         return (
-            <TouchableOpacity onPress={activeStep < 2 ? () => onStepPress(activeStep + 1) : null}>
+            <TouchableOpacity onPress={() => onPlaceOrder()}>
                 <Surface style={styles(theme).surfaceStyle}>
                     <View style={{ flexDirection: 'column', width: '48%', paddingTop: 5 }}>
                         <Text style={theme.fonts.labelLarge}>My Order</Text>

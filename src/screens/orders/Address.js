@@ -24,7 +24,7 @@ const Address = ({ validStep, clickStep }) => {
     const theme = useTheme();
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { addressId } = useSelector((state) => state.AppReducer.addressId);
+    const addressId = useSelector((state) => state.AppReducer.addressId);
     const reloadAddressPage = useSelector((state) => state.AppReducer.reloadAddressPage)
     const [isLoading, setLoading] = useState(true);
     const [addressList, setAddressList] = useState([]);
@@ -52,7 +52,7 @@ const Address = ({ validStep, clickStep }) => {
     };
 
     const onSelectAddress = (addressId) => {
-        dispatch(setAddressId({ addressId }))
+        dispatch(setAddressId(addressId))
     };
 
     const renderAddressDetail = (item) => {
@@ -116,7 +116,7 @@ const Address = ({ validStep, clickStep }) => {
                         <Ionicons name={'chevron-forward'} size={28} color={theme.colors.outline} style={{ marginTop: 3 }} />
                     </MMSurface>
                 </TouchableOpacity>
-                {(validStep === 1 && clickStep >= 2) && <MMFormErrorText errorText={'Please Select an Address'} />}
+                {(validStep === 1 && clickStep >= 2) && <MMFormErrorText errorText={'Please select an address'} />}
                 {addressList.length > 0 ? <Text style={[{ margin: MMConstants.marginSmall }]}>Your saved address</Text> : null}
             </View>
         );

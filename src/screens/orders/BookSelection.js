@@ -34,9 +34,14 @@ const BookSelection = ({ validStep, clickStep }) => {
         const response = await MMApiService.getProductList();
         if (response.data) {
             setProductList(response.data);
+            const productDetail = response.data[0];
             if (!bookDetail.productId) {
-                dispatch(setBookDetail({ productId: response.data[0]._id }));
-                dispatch(setBookDetail({ totalPrice: 1 * response.data[0].productPrice }));
+                dispatch(setBookDetail({
+                    productId: productDetail._id,
+                    totalPrice: productDetail.productPrice,
+                    productName: productDetail.productName,
+                    productImage: productDetail.productImage
+                }));
             }
         }
         setOverlayLoading(false);
@@ -60,7 +65,11 @@ const BookSelection = ({ validStep, clickStep }) => {
         const product = productList.find((item) => item._id === productId);
         if (product) {
             const price = quantity * product.productPrice;
-            dispatch(setBookDetail({ totalPrice: price }))
+            dispatch(setBookDetail({
+                totalPrice: price,
+                productName: product.productName,
+                productImage: product.productImage
+            }))
         }
     };
 
@@ -118,13 +127,11 @@ const BookSelection = ({ validStep, clickStep }) => {
 
     const renderBookPreview = () => {
         if (!productList) return null;
-        const product = productList.find((item) => item._id === bookDetail.productId);
-        if (!product) return null;
-        let productImage = MMUtils.getImagePath(product.productImage);
+        let productImage = MMUtils.getImagePath(bookDetail.productImage);
 
         return (
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
-                <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingMedium, marginTop: MMConstants.marginLarge }}>
+                <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge, marginTop: MMConstants.marginLarge }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Image
                             textAlign="center"
@@ -134,7 +141,7 @@ const BookSelection = ({ validStep, clickStep }) => {
                         />
                         <View style={{ padding: MMConstants.paddingLarge }}>
                             <Text style={[theme.fonts.titleMedium]}>
-                                {product.productName}</Text>
+                                {bookDetail.productName}</Text>
                             <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
                                 Title: {bookDetail.bookTitle}</Text>
                             {bookDetail.bookSubTitle ? <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>

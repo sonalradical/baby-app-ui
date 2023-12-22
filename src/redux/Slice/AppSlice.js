@@ -12,10 +12,12 @@ const initialState = {
 		bookTitle: 'Birthday',
 		bookSubTitle: '',
 		quantity: 1,
-		totalPrice: ''
+		totalPrice: '',
+		productName: '',
+		productImage: ''
 	},
 	addressId: '',
-	paymentId: ''
+	paymentId: '123'
 };
 
 // slice
