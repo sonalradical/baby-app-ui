@@ -16,7 +16,7 @@ const initialState = {
 		productName: '',
 		productImage: ''
 	},
-	addressId: '',
+	addressDetail: {},
 	paymentId: '123'
 };
 
@@ -49,8 +49,8 @@ const AppReducer = createSlice({
 				bookDetail: { ...state.bookDetail, ...action.payload }
 			}
 		},
-		setAddressId: (state, action) => {
-			state.addressId = action.payload;
+		setAddressDetail: (state, action) => {
+			state.addressDetail = action.payload;
 		},
 		setPaymentId: (state, action) => {
 			state.paymentId = action.payload;
@@ -68,6 +68,6 @@ export const {
 	reloadBookPage,
 	reloadAddressPage,
 	setBookDetail,
-	setAddressId,
+	setAddressDetail,
 	setPaymentId
 } = AppReducer.actions;

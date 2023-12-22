@@ -86,7 +86,7 @@ export default function MainTemplate({ navigation, route }) {
                 }
 
                 setTemplateData(imageDetails);
-                const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
+                const result = await MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
                 if (_.isNil(result)) {
                     MMUtils.showToastMessage(`Uploading picture failed...`);
                 } else {

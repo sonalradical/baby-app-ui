@@ -22,12 +22,12 @@ export default function Order({ navigation }) {
     const [validStep, setValidStep] = useState(0);
     const [clickStep, setclickstep] = useState(0);
     const bookDetail = useSelector((state) => state.AppReducer.bookDetail);
-    const addressId = useSelector((state) => state.AppReducer.addressId);
+    const addressDetail = useSelector((state) => state.AppReducer.addressDetail);
     const paymentId = useSelector((state) => state.AppReducer.paymentId);
 
     useEffect(() => {
         onValidField();
-    }, [bookDetail, addressId, paymentId]);
+    }, [bookDetail, addressDetail, paymentId]);
 
     const onStepPress = (step) => {
         setclickstep(step);
@@ -38,7 +38,7 @@ export default function Order({ navigation }) {
 
     const onValidField = () => {
         const hasBookTitle = !_.isEmpty(bookDetail.bookTitle);
-        const hasAddressId = !_.isEmpty(addressId);
+        const hasAddressId = !_.isEmpty(addressDetail._id);
         const hasPaymentId = !_.isEmpty(paymentId);
 
         const steps = [hasBookTitle, hasAddressId, hasPaymentId];
