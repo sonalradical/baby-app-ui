@@ -9,7 +9,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setAddressId } from '../../redux/Slice/AppSlice';
+import { setAddressDetail } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
@@ -24,7 +24,7 @@ const Address = ({ validStep, clickStep }) => {
     const theme = useTheme();
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const addressId = useSelector((state) => state.AppReducer.addressId);
+    const addressDetail = useSelector((state) => state.AppReducer.addressDetail);
     const reloadAddressPage = useSelector((state) => state.AppReducer.reloadAddressPage)
     const [isLoading, setLoading] = useState(true);
     const [addressList, setAddressList] = useState([]);
@@ -51,17 +51,17 @@ const Address = ({ validStep, clickStep }) => {
         setLoading(false);
     };
 
-    const onSelectAddress = (addressId) => {
-        dispatch(setAddressId(addressId))
+    const onSelectAddress = (address) => {
+        dispatch(setAddressDetail(address))
     };
 
     const renderAddressDetail = (item) => {
-        const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2},` : ''}${item.suburb}, \n${item.state}, ${item.postcode}, ${item.country}`
+        const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2},` : ''}${item.suburb}, \n${item.state}, ${item.postcode}, ${item.country}`;
         return (
-            <TouchableOpacity onPress={() => onSelectAddress(item._id)} >
+            <TouchableOpacity onPress={() => onSelectAddress(item)} >
                 <MMSurface style={{
-                    borderWidth: item._id === addressId ? 2 : 0,
-                    borderColor: item._id === addressId ? theme.colors.primary : theme.colors.secondaryContainer
+                    borderWidth: item._id === addressDetail._id ? 2 : 0,
+                    borderColor: item._id === addressDetail._id ? theme.colors.primary : theme.colors.secondaryContainer
                 }}>
                     {isLoading ? <MMSpinner /> :
                         <>
