@@ -172,6 +172,20 @@ async function deleteAddress(addressId) {
 
 //#end
 
+//------------------------------------------------------------------- Order APIs
+
+async function saveOrder(data) {
+    const config = {
+        url: `order/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
+
 //------------------------------------------------------------------ Quiz API
 
 async function getQuiz(babyId, chapterId) {
@@ -307,6 +321,7 @@ export default {
     getAddressById,
     getAddressList,
     deleteAddress,
+    saveOrder,
     getQuiz,
     saveQuiz,
     getBookPreview,

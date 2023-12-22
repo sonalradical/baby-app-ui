@@ -34,8 +34,8 @@ import InitialSetup from '../screens/initialSetup/InitialSetup';
 import TemplateList from '../screens/templates/TemplateList';
 import MainTemplate from '../screens/templates/MainTemplate';
 import Order from '../screens/orders/Order';
-import Address from '../screens/orders/Address';
 import AddAddress from '../screens/address/AddAddress';
+import PlaceOrder from '../screens/orders/PlaceOrder';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -139,8 +139,12 @@ function AppStackNavigator(userDetail) {
                     }}
                 />
                 <AppStack.Screen
-                    name="Address"
-                    component={Address}
+                    name="PlaceOrder"
+                    component={PlaceOrder}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
                 />
                 <AppStack.Screen
                     name="Logout"
