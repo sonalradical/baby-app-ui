@@ -144,8 +144,8 @@ export default function BookPreview({ updateFooterVisibility }) {
 
     const renderNoData = () => {
         return (
-            <MMSurface>
-                <Text>No data found ! please add some chapters </Text>
+            <MMSurface margin={[20, 0, 10, 0]}>
+                <Text >No data found ! please add some chapters. </Text>
             </MMSurface>
         )
     }
@@ -204,12 +204,10 @@ export default function BookPreview({ updateFooterVisibility }) {
 
     return (
         <>
-            <MMContentContainer>
+            <MMContentContainer paddingStyle='none'>
                 {!bookData || bookData.length === 0 ? renderNoData() : null}
-            </MMContentContainer>
-            <View style={{ backgroundColor: theme.colors.background }}>
                 {isLoading ? <MMSpinner /> : renderView()}
-            </View>
+            </MMContentContainer>
         </>
     );
 }
