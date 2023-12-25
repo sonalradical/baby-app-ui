@@ -251,6 +251,7 @@ export default function Order({ navigation }) {
 const styles = (theme) => StyleSheet.create({
     stepContent: {
         flex: 1,
+        paddingTop: MMConstants.paddingMedium
     },
     stepper: {
         flexDirection: 'row',
