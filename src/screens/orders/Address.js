@@ -5,14 +5,12 @@ import { Text, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import * as _ from 'lodash';
 import PropTypes from 'prop-types';
-import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setAddressDetail } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
-import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
 import MMFormErrorText from '../../components/common/FormErrorText';

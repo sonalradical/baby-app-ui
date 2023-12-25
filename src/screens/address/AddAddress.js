@@ -6,7 +6,6 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { validateAll } from 'indicative/validator';
 import { useDispatch } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { reloadAddressPage } from '../../redux/Slice/AppSlice';
 
