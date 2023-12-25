@@ -25,6 +25,7 @@ import MMFlexView from '../../components/common/FlexView';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPlacesAutocomplete from '../../components/common/PlacesAutocomplete';
 import MMSurface from '../../components/common/Surface';
+import AddressView from '../orders/AddressView';
 
 export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
@@ -233,14 +234,12 @@ export default function AddAddress({ navigation, route }) {
                             />
                         </View>
                         <MMSurface margin={[10, 0, 10, 0]}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Ionicons name={'location-outline'} size={30} color={theme.colors.primary} />
-                                <View style={{ paddingLeft: MMConstants.paddingLarge }}>
-                                    {state.addressType ? <Text style={[theme.fonts.labelLarge]} numberOfLines={1}>
-                                        {_.capitalize(state.addressType)}</Text> : null}
-                                    <Text style={[theme.fonts.default, { lineHeight: 20 }]} numberOfLines={4} >{address} </Text>
-                                </View>
-                            </View>
+                            <AddressView
+                                item={{ addressType: state.addressType }}
+                                address={address}
+                                isDisable={true}
+                                navigation={navigation}
+                            />
                         </MMSurface>
                         {
                             addressId ?

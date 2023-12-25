@@ -18,6 +18,7 @@ import MMApiService from '../../services/ApiService';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
+import AddressView from './AddressView';
 
 const Address = ({ validStep, clickStep, isDisable = false }) => {
     const theme = useTheme();
@@ -64,18 +65,12 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
                     borderColor: !isDisable && item._id === addressDetail._id ? theme.colors.primary : theme.colors.secondaryContainer
                 }}>
                     {isLoading ? <MMSpinner /> :
-                        <View style={{ flexDirection: 'row' }}>
-                            {item.addressType === MMEnums.addressType.home ? <Feather name={'home'} size={30} color={theme.colors.primary} /> :
-                                item.addressType === MMEnums.addressType.work ? <Ionicons name={'business-outline'} size={30} color={theme.colors.primary} /> :
-                                    <Ionicons name={'location-outline'} size={30} color={theme.colors.primary} />}
-                            <View style={{ paddingLeft: MMConstants.paddingLarge }}>
-                                <Text style={[theme.fonts.labelLarge]} numberOfLines={1}>
-                                    {_.capitalize(item.addressType)}</Text>
-                                <Text style={[theme.fonts.default, { lineHeight: 20 }]} numberOfLines={4} >{address} </Text>
-                                {isDisable ? null : <Feather name={'edit'} size={18} color={theme.colors.primary} style={{ paddingTop: 2, width: 20 }}
-                                    onPress={() => navigation.navigate('AddAddress', { addressId: item._id, isDisable: isDisable })} />}
-                            </View>
-                        </View>
+                        <AddressView
+                            item={item}
+                            address={address}
+                            isDisable={isDisable}
+                            navigation={navigation}
+                        />
                     }
                 </MMSurface>
             </TouchableOpacity>
