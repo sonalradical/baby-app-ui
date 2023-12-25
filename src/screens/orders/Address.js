@@ -16,11 +16,10 @@ import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
 import MMFormErrorText from '../../components/common/FormErrorText';
-import MMPageTitle from '../../components/common/PageTitle';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 
-const Address = ({ validStep, clickStep }) => {
+const Address = ({ validStep, clickStep, isDisable = false }) => {
     const theme = useTheme();
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -58,10 +57,10 @@ const Address = ({ validStep, clickStep }) => {
     const renderAddressDetail = (item) => {
         const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2},` : ''}${item.suburb}, \n${item.state}, ${item.postcode}, ${item.country}`;
         return (
-            <TouchableOpacity onPress={() => onSelectAddress(item)} >
+            <TouchableOpacity onPress={() => onSelectAddress(item)} disabled={isDisable}>
                 <MMSurface style={{
-                    borderWidth: item._id === addressDetail._id ? 2 : 0,
-                    borderColor: item._id === addressDetail._id ? theme.colors.primary : theme.colors.secondaryContainer
+                    borderWidth: !isDisable && item._id === addressDetail._id ? 2 : 0,
+                    borderColor: !isDisable && item._id === addressDetail._id ? theme.colors.primary : theme.colors.secondaryContainer
                 }}>
                     {isLoading ? <MMSpinner /> :
                         <>
@@ -74,7 +73,7 @@ const Address = ({ validStep, clickStep }) => {
                                         {_.capitalize(item.addressType)}</Text>
                                     <Text style={[theme.fonts.default, { lineHeight: 20 }]} numberOfLines={4} >{address} </Text>
                                     <Feather name={'edit'} size={18} color={theme.colors.primary} style={{ paddingTop: 2, width: 20 }}
-                                        onPress={() => navigation.navigate('AddAddress', { addressId: item._id })} />
+                                        onPress={() => navigation.navigate('AddAddress', { addressId: item._id, isDisable: isDisable })} />
                                 </View>
                             </View>
                         </>
@@ -105,9 +104,8 @@ const Address = ({ validStep, clickStep }) => {
 
     const renderView = () => {
         return (
-            <View>
-                <MMPageTitle title={'Select an address'} />
-                <TouchableOpacity onPress={() => navigation.navigate('AddAddress')}>
+            <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                <TouchableOpacity onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })}>
                     <MMSurface padding={[8, 8, 8, 10]} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Ionicons name={'add'} size={30} color={theme.colors.primary} />

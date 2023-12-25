@@ -26,7 +26,7 @@ import { reloadAddressPage } from '../../redux/Slice/AppSlice';
 export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { addressId } = route.params || '';
+    const { addressId, isDisable } = route.params || '';
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [isVisible, setVisible] = useState(false);
     const initState = {
@@ -110,7 +110,7 @@ export default function AddAddress({ navigation, route }) {
         const response = await MMApiService.deleteAddress(addressId);
         if (response) {
             dispatch(reloadAddressPage({ reloadAddressPage: true }));
-            navigation.navigate('Order');
+            navigation.navigate(isDisable ? 'AddressBook' : 'Order');
         }
         setOverlayLoading(false);
     }
@@ -121,7 +121,7 @@ export default function AddAddress({ navigation, route }) {
         }
 
         const messages = {
-            'addressLine1.required': 'Please address line 1.',
+            'addressLine1.required': 'Please enter address line 1.',
             'addressType.required': 'Please select address type.',
         };
 
@@ -151,7 +151,7 @@ export default function AddAddress({ navigation, route }) {
                         .then(function (response) {
                             if (response) {
                                 dispatch(reloadAddressPage({ reloadAddressPage: true }));
-                                navigation.navigate('Order');
+                                navigation.navigate(isDisable ? 'AddressBook' : 'Order');
                             }
                         })
                         .catch(function (error) {
@@ -166,7 +166,6 @@ export default function AddAddress({ navigation, route }) {
                 setOverlayLoading(false);
             })
             .catch((errors) => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)

@@ -9,13 +9,13 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MMUtils from '../../helpers/Utils';
+import MMEnums from '../../helpers/Enums';
+import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMScrollView from '../../components/common/ScrollView';
 import MMSurface from '../../components/common/Surface';
 import MMPageTitle from '../../components/common/PageTitle';
-import MMConstants from '../../helpers/Constants';
-import MMEnums from '../../helpers/Enums';
 import { MMButton } from '../../components/common/Button';
 
 export default function PlaceOrder({ navigation, route }) {
@@ -32,7 +32,7 @@ export default function PlaceOrder({ navigation, route }) {
         setOverlayLoading(true);
         try {
             const apiData = {
-                babyId: selectedBaby.id,
+                babyId: selectedBaby._id,
                 productId: bookDetail.productId,
                 bookTitle: bookDetail.bookTitle,
                 bookSubTitle: bookDetail.bookSubTitle,
@@ -43,7 +43,7 @@ export default function PlaceOrder({ navigation, route }) {
             await MMApiService.saveOrder(apiData)
                 .then(function (response) {
                     if (response) {
-                        navigation.navigate('home');
+                        navigation.navigate('Home');
                     }
                 })
                 .catch(function (error) {
@@ -109,7 +109,7 @@ export default function PlaceOrder({ navigation, route }) {
                 <MMSurface>
                     {renderBookDetail()}
                     <Divider style={{ marginVertical: 10 }} />
-                    {renderAddressDetail()}
+                    {addressDetail._id ? renderAddressDetail() : null}
                     <MMButton label={'Place Order'} onPress={() => onPlaceOrder()} />
                 </MMSurface>
             </>
