@@ -6,6 +6,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { validateAll } from 'indicative/validator';
 import { useDispatch } from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { reloadAddressPage } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
@@ -21,7 +24,7 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMFlexView from '../../components/common/FlexView';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPlacesAutocomplete from '../../components/common/PlacesAutocomplete';
-import { reloadAddressPage } from '../../redux/Slice/AppSlice';
+import MMSurface from '../../components/common/Surface';
 
 export default function AddAddress({ navigation, route }) {
     const theme = useTheme();
@@ -195,6 +198,7 @@ export default function AddAddress({ navigation, route }) {
     };
 
     const renderView = () => {
+        const address = `${state.addressLine1 ? `${state.addressLine1}, ` : ''} ${state.addressLine2 ? `${state.addressLine2}, ` : ''}${state.suburb}, \n${state.state}, ${state.postcode}, ${state.country}`;
         return (
             <View style={{ paddingTop: MMConstants.paddingMedium }}>
                 <Text style={theme.fonts.titleMedium}>Save address as *</Text>
@@ -228,48 +232,16 @@ export default function AddAddress({ navigation, route }) {
                                 maxLength={100}
                             />
                         </View>
-                        <View>
-                            <MMInput
-                                label='City / Suburb'
-                                name='suburb'
-                                placeholder='City'
-                                value={state.suburb}
-                                editable={false}
-                                maxLength={50}
-                            />
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={{ width: '60%' }}>
-                                <MMInput
-                                    label="State"
-                                    name='state'
-                                    placeholder='State'
-                                    value={state.state}
-                                    editable={false}
-                                    maxLength={50}
-                                />
+                        <MMSurface margin={[10, 0, 10, 0]}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Ionicons name={'location-outline'} size={30} color={theme.colors.primary} />
+                                <View style={{ paddingLeft: MMConstants.paddingLarge }}>
+                                    {state.addressType ? <Text style={[theme.fonts.labelLarge]} numberOfLines={1}>
+                                        {_.capitalize(state.addressType)}</Text> : null}
+                                    <Text style={[theme.fonts.default, { lineHeight: 20 }]} numberOfLines={4} >{address} </Text>
+                                </View>
                             </View>
-                            <View style={{ width: '30%' }}>
-                                <MMInput
-                                    label="Post Code"
-                                    name='postcode'
-                                    placeholder='Post Code'
-                                    value={state.postcode}
-                                    editable={false}
-                                    maxLength={5}
-                                />
-                            </View>
-                        </View>
-                        <View>
-                            <MMInput
-                                label='Country'
-                                name='country'
-                                placeholder='Country'
-                                value={state.country}
-                                editable={false}
-                                maxLength={50}
-                            />
-                        </View>
+                        </MMSurface>
                         {
                             addressId ?
                                 <MMFlexView>
