@@ -75,7 +75,8 @@ export default function Login({ navigation }) {
                                     email: userDetail.email,
                                     password: userDetail.password,
                                     gender: userDetail.gender,
-                                    childCount: userDetail.childCount ? userDetail.childCount : 0
+                                    childCount: userDetail.childCount ? userDetail.childCount : 0,
+                                    dueDate: userDetail.dueDate ? userDetail.dueDate : null
                                 },
                             };
                             MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
