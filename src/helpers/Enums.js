@@ -24,7 +24,7 @@ const MMEnums = {
         refreshToken: 'refreshToken',
         userDetail: 'userDetail',
         selectedBaby: 'selectedBaby',
-
+        deviceId: 'deviceId'
     },
     questionType: {
         radio: 'radio',

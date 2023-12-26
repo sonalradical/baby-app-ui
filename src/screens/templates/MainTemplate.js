@@ -14,7 +14,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
-import CommonTemplate from '../../components/common/CommonTemplate';
+import MMCommonTemplate from '../../components/common/CommonTemplate';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMImageCrop from '../../components/common/ImageCrop';
 import MMInput from '../../components/common/Input';
@@ -195,7 +195,7 @@ export default function MainTemplate({ navigation, route }) {
             <>
                 <MMPageTitle title='Select Image' paddingBottom={20} />
                 <View style={[styles(theme).container]}>
-                    <CommonTemplate onPickImage={onPickImage}
+                    <MMCommonTemplate onPickImage={onPickImage}
                         templateData={templateData}
                         templateName={templateName}
                         pageId={pageId}

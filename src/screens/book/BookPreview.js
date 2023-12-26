@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Keyboard, TouchableOpacity, View } from 'react-native';
 import { List, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
@@ -12,12 +12,13 @@ import { useNavigation } from '@react-navigation/native';
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
-import CommonTemplate from '../../components/common/CommonTemplate';
+import MMCommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRoundBackground from '../../components/common/RoundBackground';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 import Parents from './Parents';
+import Baby from './Baby';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
@@ -132,7 +133,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>{headerText}</Text>
                     : null}
                 <View style={{ height: 250, width: 250, alignSelf: 'center' }}>
-                    <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
+                    <MMCommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
                         templateName={template.code} />
                 </View>
                 {footerText ?
@@ -141,14 +142,6 @@ export default function BookPreview({ updateFooterVisibility }) {
             </View>
         )
     };
-
-    const renderNoData = () => {
-        return (
-            <MMSurface margin={[20, 0, 10, 0]}>
-                <Text >No data found ! please add some chapters. </Text>
-            </MMSurface>
-        )
-    }
 
     const renderBookData = (item) => {
         if (!bookData || bookData.length === 0) return null;
@@ -183,10 +176,12 @@ export default function BookPreview({ updateFooterVisibility }) {
         );
     };
 
+
     const renderView = () => {
         return (
             <FlatList
                 data={bookData}
+                ListHeaderComponent={<Baby></Baby>}
                 renderItem={({ item, index }) => {
                     return renderBookData(item, index);
                 }}
@@ -205,7 +200,6 @@ export default function BookPreview({ updateFooterVisibility }) {
     return (
         <>
             <MMContentContainer paddingStyle='none'>
-                {!bookData || bookData.length === 0 ? renderNoData() : null}
                 {isLoading ? <MMSpinner /> : renderView()}
             </MMContentContainer>
         </>

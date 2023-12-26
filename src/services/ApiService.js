@@ -34,7 +34,7 @@ async function resendOTP(data) {
     return result;
 }
 
-async function userLoginWithPassword(authTokan) {
+async function userLoginWithPassword(authTokan, deviceId) {
     const config = {
         url: `auth/login/${authTokan}/${'65780c81d2a96049f98a0808'}`,
         method: 'post'
@@ -63,6 +63,20 @@ async function getLookupData() {
 }
 
 //#endregion
+
+//------------------------------------------------------------------ Device API
+
+async function saveDevice(data) {
+    const config = {
+        url: `device/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
 
 //------------------------------------------------------------------- Manage User APIs
 
@@ -310,6 +324,7 @@ export default {
     userLoginWithPassword,
     userLoginWithOTP,
     getLookupData,
+    saveDevice,
     updateInItProfile,
     babyList,
     addInit,

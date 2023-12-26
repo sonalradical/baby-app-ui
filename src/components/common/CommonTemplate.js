@@ -15,7 +15,7 @@ import Row4Column4 from '../../screens/templates/Row4-Column4';
 import ColumnRow2 from '../../screens/templates/Column-Row2';
 import Row2Column from '../../screens/templates/Row2-Column';
 
-const CommonTemplate = (props) => {
+const MMCommonTemplate = (props) => {
     const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, pageId, ImageProps, onImageChange } = props;
 
     const Components = {
@@ -63,4 +63,4 @@ const CommonTemplate = (props) => {
     );
 };
 
-export default CommonTemplate;
+export default MMCommonTemplate;
