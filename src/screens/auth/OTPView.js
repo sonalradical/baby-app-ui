@@ -24,7 +24,7 @@ import MMAuthHeader from '../../components/common/AuthHeader';
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const { mobileNumber } = route.params;
+    const { mobileNumber, deviceId } = route.params;
     const [isResendVisible, setIsResendVisible] = useState(false);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
 
