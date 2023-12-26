@@ -99,8 +99,12 @@ export default function BookPreview({ updateFooterVisibility }) {
                     questionType === 'radio'
                         ? options.map((option, optionIndex) => (
                             <React.Fragment key={option}>
-                                {answer && answer[0] === option && <MMRoundBackground text={option} />}
-                                {!answer || (answer && answer[0] !== option) && (
+                                {answer && answer[0] === option ? (
+                                    <React.Fragment key={option}>
+                                        <Text style={{ backgroundColor: 'yellow', margin: 10 }}>{option}</Text>
+                                        {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
+                                    </React.Fragment>
+                                ) : (
                                     <React.Fragment key={option}>
                                         <Text>{option}</Text>
                                         {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
