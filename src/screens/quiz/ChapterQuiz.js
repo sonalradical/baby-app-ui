@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMInputMultiline from '../../components/common/InputMultiline';
 import MMSpinner from '../../components/common/Spinner';
+import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
@@ -20,7 +21,6 @@ import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
-import { reloadChapterList } from '../../redux/Slice/AppSlice';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
