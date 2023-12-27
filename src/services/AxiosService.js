@@ -54,7 +54,7 @@ axios.interceptors.response.use(async (response) => {
     console.log('API Response Errors: ', error);
     if (error.message === 'Network Error') {
         // Handle network errors separately
-        MMUtils.showToastMessage('Network Error: Please check your internet connection.');
+        MMUtils.showToastMessage('Connection failed.');
     }
     else if (error.response.status === MMEnums.ServiceResult.NotFound) {
         const errorMessage = error.response.data.message;
