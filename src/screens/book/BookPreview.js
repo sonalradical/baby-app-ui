@@ -67,9 +67,9 @@ export default function BookPreview({ updateFooterVisibility }) {
         updateFooterVisibility(isScrollingUp);
     };
 
-    const onPressAdd = (currentPosition) => {
+    const onPressAdd = (currentPosition, itemId) => {
         let previousItemPosition = currentPosition - 10;
-        const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
+        const currentIndex = bookData.findIndex((item) => item._id === itemId);
         if (currentIndex > 0) {
             const perviousItem = bookData[currentIndex - 1];
             previousItemPosition = perviousItem.position;
@@ -100,8 +100,12 @@ export default function BookPreview({ updateFooterVisibility }) {
                     questionType === 'radio'
                         ? options.map((option, optionIndex) => (
                             <React.Fragment key={option}>
-                                {answer && answer[0] === option && <MMRoundBackground text={option} />}
-                                {!answer || (answer && answer[0] !== option) && (
+                                {answer && answer[0] === option ? (
+                                    <React.Fragment key={option}>
+                                        <Text style={{ backgroundColor: 'yellow', margin: 10 }}>{option}</Text>
+                                        {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
+                                    </React.Fragment>
+                                ) : (
                                     <React.Fragment key={option}>
                                         <Text>{option}</Text>
                                         {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
@@ -150,7 +154,7 @@ export default function BookPreview({ updateFooterVisibility }) {
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
-                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
+                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
                     <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>

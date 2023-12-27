@@ -145,7 +145,8 @@ export default function ChapterQuiz({ navigation, route }) {
         setSelectedAnswer([]);
         setLoading(false);
         if (selectedQuestion > 0) {
-            dispatch(reloadChapterList({ reloadChapterList: true }))
+            dispatch(reloadChapterList({ reloadChapterList: true }));
+            dispatch(reloadBookPage({ reloadBookPage: true }));
             setSelectedQuestion(selectedQuestion - 1);
         };
     }
@@ -156,7 +157,8 @@ export default function ChapterQuiz({ navigation, route }) {
         }
         setSelectedAnswer([]);
         setLoading(false);
-        dispatch(reloadChapterList({ reloadChapterList: true }))
+        dispatch(reloadChapterList({ reloadChapterList: true }));
+        dispatch(reloadBookPage({ reloadBookPage: true }));
         if (selectedQuestion === questionList.length - 1) {
             navigation.navigate('Home');
         } else {

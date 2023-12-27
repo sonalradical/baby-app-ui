@@ -123,6 +123,7 @@ export default function Login({ navigation }) {
                             const userDetails = {
                                 accessToken,
                                 userDetail: {
+                                    _id: userDetail._id,
                                     mobileNumber: userDetail.mobileNumber,
                                     name: userDetail.name,
                                     email: userDetail.email,

@@ -140,6 +140,7 @@ export default function OTPView({ navigation, route }) {
                         const userDetails = {
                             accessToken,
                             userDetail: {
+                                _id: userDetail._id,
                                 mobileNumber: userDetail.mobileNumber,
                                 name: userDetail.name,
                                 email: userDetail.email,
