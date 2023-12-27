@@ -207,7 +207,6 @@ export default function AddEditBaby({ route }) {
                 setOverlayLoading(false);
             })
             .catch((errors) => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)

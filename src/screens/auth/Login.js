@@ -45,7 +45,7 @@ export default function Login({ navigation }) {
                     addNewDevice();
                 } else {
                     // device exists in store
-                    MMUtils.consoleError(`Device: ${deviceId} found in mobile cache`);
+                    // MMUtils.consoleError(`Device: ${deviceId} found in mobile cache`);
                     setDeviceId(deviceId);
                 }
             } catch (error) {
@@ -71,13 +71,12 @@ export default function Login({ navigation }) {
             totalDiskStorage: await DeviceInfo.getFreeDiskStorage(),
             ipAddress: await DeviceInfo.getIpAddress(),
         };
-        console.log(deviceJSON, 'deviceJSON')
         try {
             const { data } = await MMApiService.saveDevice(deviceJSON);
             if (data) {
                 setOverlayLoading(false);
-                setDeviceId(response.data.id);
-                await MMUtils.setItemToStorage(MMEnums.storage.deviceId, response.data.id);
+                setDeviceId(data);
+                await MMUtils.setItemToStorage(MMEnums.storage.deviceId, data);
             }
         } catch (err) {
             setOverlayLoading(false);
@@ -149,7 +148,6 @@ export default function Login({ navigation }) {
                 setOverlayLoading(false);
             })
             .catch(errors => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
@@ -185,7 +183,6 @@ export default function Login({ navigation }) {
                 setOverlayLoading(false);
             })
             .catch(errors => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
@@ -240,7 +237,7 @@ export default function Login({ navigation }) {
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={[theme.fonts.default]}>Need an account ? </Text>
-                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate('SignUp')} />
+                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate('SignUp', { deviceId: deviceId })} />
                     </View>
                 </View>
             </MMSurface >

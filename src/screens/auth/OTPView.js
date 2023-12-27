@@ -116,7 +116,6 @@ export default function OTPView({ navigation, route }) {
                 onVerifyOtp();
             })
             .catch((errors) => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
@@ -130,7 +129,7 @@ export default function OTPView({ navigation, route }) {
             const apiData = {
                 mobileNumber: mobileNumber,
                 otp: state.otp,
-                deviceId: '65780c81d2a96049f98a0805'
+                deviceId: deviceId
             };
 
             await MMApiService.verifyOTP(apiData)

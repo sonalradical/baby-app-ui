@@ -21,6 +21,7 @@ import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
+    const { deviceId } = route.params || '';
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
@@ -114,7 +115,7 @@ export default function SignUp({ navigation, route }) {
             await MMApiService.userSignup(apiData)
                 .then(function (response) {
                     if (response) {
-                        navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
+                        navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
                     }
                 })
                 .catch(function (error) {
