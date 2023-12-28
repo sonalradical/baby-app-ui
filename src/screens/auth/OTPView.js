@@ -136,9 +136,10 @@ export default function OTPView({ navigation, route }) {
                 .then(function (response) {
                     const responseData = response.data;
                     if (responseData) {
-                        const { accessToken, userDetail } = responseData;
+                        const { accessToken, refreshToken, userDetail } = responseData;
                         const userDetails = {
                             accessToken,
+                            refreshToken,
                             userDetail: {
                                 _id: userDetail._id,
                                 mobileNumber: userDetail.mobileNumber,
@@ -151,9 +152,14 @@ export default function OTPView({ navigation, route }) {
                             },
                         };
                         MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                        MMUtils.setItemToStorage(MMEnums.storage.refreshToken, userDetails.refreshToken);
                         MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
 
-                        dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
+                        dispatch(setLogin({
+                            userDetail: userDetails.userDetail,
+                            accessToken: userDetails.accessToken,
+                            refreshToken: userDetails.refreshToken
+                        }));
                     }
 
                 })

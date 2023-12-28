@@ -50,7 +50,6 @@ export default function MainTemplate({ navigation, route }) {
     }, [pageDetails, pageId]);
 
     const onImageChange = async (photo, key = '') => {
-        let storageFileKeys = [];
         try {
             setOverlayLoading(true);
             const fileName = _.head(photo.uri.match(/[^\/]+$/));
@@ -99,7 +98,6 @@ export default function MainTemplate({ navigation, route }) {
             setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
-        return storageFileKeys;
     };
 
     const onPickImage = (name, type, width, height) => {
@@ -114,27 +112,27 @@ export default function MainTemplate({ navigation, route }) {
 
     const onSavePage = async () => {
         const pageDetails = _.map(templateData, _.partialRight(_.omit, 'source'));
-        const isValid = MMUtils.isValidCombination(templateName, pageDetails);
-        if (isValid) {
-            setOverlayLoading(true);
-            const apiData = {
-                id: pageId ? pageId : null,
-                babyId: selectedBaby._id,
-                templateId,
-                position,
-                pageDetails,
-                headerText: pageText.headerText,
-                footerText: pageText.footerText
-            }
-            const response = await MMApiService.savePage(apiData);
-            if (response) {
-                dispatch(reloadBookPage({ reloadBookPage: true }));
-                navigation.navigate('BookPreview');
-            }
+        //const isValid = MMUtils.isValidCombination(templateName, pageDetails);
+        //if (isValid) {
+        setOverlayLoading(true);
+        const apiData = {
+            id: pageId ? pageId : null,
+            babyId: selectedBaby._id,
+            templateId,
+            position,
+            pageDetails,
+            headerText: pageText.headerText,
+            footerText: pageText.footerText
         }
-        else {
-            MMUtils.showToastMessage('Please add photos to fill the available slots.')
+        const response = await MMApiService.savePage(apiData);
+        if (response) {
+            dispatch(reloadBookPage({ reloadBookPage: true }));
+            navigation.navigate('BookPreview');
         }
+        //}
+        // else {
+        //     MMUtils.showToastMessage('Please add photos to fill the available slots.')
+        // }
         setOverlayLoading(false);
     };
 

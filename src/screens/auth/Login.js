@@ -114,38 +114,33 @@ export default function Login({ navigation }) {
             .then(async () => {
                 setOverlayLoading(true);
                 const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
-                await MMApiService.userLoginWithPassword(authTokan, deviceId)
-                    .then(function (response) {
+                const { data } = await MMApiService.userLoginWithPassword(authTokan, deviceId);
+                if (data) {
+                    const { accessToken, refreshToken, userDetail } = data;
+                    const userDetails = {
+                        accessToken,
+                        refreshToken,
+                        userDetail: {
+                            _id: userDetail._id,
+                            mobileNumber: userDetail.mobileNumber,
+                            name: userDetail.name,
+                            email: userDetail.email,
+                            password: userDetail.password,
+                            gender: userDetail.gender,
+                            childCount: userDetail.childCount ? userDetail.childCount : 0,
+                            dueDate: userDetail.dueDate ? userDetail.dueDate : null
+                        },
+                    };
+                    MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                    MMUtils.setItemToStorage(MMEnums.storage.refreshToken, userDetails.refreshToken);
+                    MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
 
-                        const responseData = response.data;
-                        if (responseData) {
-                            const { accessToken, userDetail } = responseData;
-                            const userDetails = {
-                                accessToken,
-                                userDetail: {
-                                    _id: userDetail._id,
-                                    mobileNumber: userDetail.mobileNumber,
-                                    name: userDetail.name,
-                                    email: userDetail.email,
-                                    password: userDetail.password,
-                                    gender: userDetail.gender,
-                                    childCount: userDetail.childCount ? userDetail.childCount : 0,
-                                    dueDate: userDetail.dueDate ? userDetail.dueDate : null
-                                },
-                            };
-                            MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
-                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
-
-                            dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
-                        }
-
-                    })
-                    .catch(function (error) {
-                        setState({
-                            ...state,
-                            errors: MMUtils.apiErrorParamMessages(error)
-                        });
-                    });
+                    dispatch(setLogin({
+                        userDetail: userDetails.userDetail,
+                        accessToken: userDetails.accessToken,
+                        refreshToken: userDetails.refreshToken
+                    }));
+                }
                 setOverlayLoading(false);
             })
             .catch(errors => {
@@ -167,20 +162,10 @@ export default function Login({ navigation }) {
                 const apiData = {
                     mobileNumber: state.mobileNumber
                 };
-
-                await MMApiService.userLoginWithOTP(apiData)
-                    .then(function (response) {
-                        if (response) {
-                            navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
-                        }
-
-                    })
-                    .catch(function (error) {
-                        setState({
-                            ...state,
-                            errors: MMUtils.apiErrorParamMessages(error)
-                        });
-                    })
+                const { data } = await MMApiService.userLoginWithOTP(apiData);
+                if (data) {
+                    navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+                }
                 setOverlayLoading(false);
             })
             .catch(errors => {

@@ -180,7 +180,7 @@ async function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
                 }
             };
 
-            xhr.setRequestHeader('Content-Type', 'image/jpeg');
+            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
 
             xhr.send({
                 uri: fileUri,

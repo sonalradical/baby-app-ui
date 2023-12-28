@@ -53,6 +53,16 @@ async function userLoginWithOTP(data) {
     return result;
 }
 
+async function getToken(data) {
+    const config = {
+        url: `auth/refreshToken`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 async function getLookupData() {
     const config = {
         url: `/lookup`,
@@ -323,6 +333,7 @@ export default {
     resendOTP,
     userLoginWithPassword,
     userLoginWithOTP,
+    getToken,
     getLookupData,
     saveDevice,
     updateInItProfile,
