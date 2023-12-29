@@ -100,6 +100,25 @@ async function updateInItProfile(data) {
     return result;
 }
 
+async function getUserDetail(mobileNumber) {
+    const config = {
+        url: `user/get/${mobileNumber}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function updateProfile(data) {
+    const config = {
+        url: `user/update`,
+        method: 'put',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
 //#endregion
 
 //------------------------------------------------------------------- Manage Baby APIs
@@ -333,6 +352,8 @@ export default {
     resendOTP,
     userLoginWithPassword,
     userLoginWithOTP,
+    getUserDetail,
+    updateProfile,
     getToken,
     getLookupData,
     saveDevice,

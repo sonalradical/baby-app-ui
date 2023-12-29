@@ -183,24 +183,15 @@ export default function AddEditBaby({ route }) {
                         gender: state.gender,
                         picture: state.picture,
                     };
-                    await MMApiService.saveBaby(apiData)
-                        .then(function (response) {
-                            if (response) {
-                                dispatch(setBaby(response.data));
-                                if (babyId) {
-                                    dispatch(reloadPage({ reloadPage: true }));
-                                }
-                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(response.data));
-                                navigation.navigate('Footer');
-                            }
-
-                        })
-                        .catch(function (error) {
-                            setState({
-                                ...state,
-                                errors: MMUtils.apiErrorParamMessages(error)
-                            });
-                        });
+                    const { data } = await MMApiService.saveBaby(apiData);
+                    if (data) {
+                        dispatch(setBaby(data));
+                        if (babyId) {
+                            dispatch(reloadPage({ reloadPage: true }));
+                        }
+                        MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(data));
+                        navigation.navigate('Footer');
+                    }
                 } catch (err) {
                     MMUtils.consoleError(err);
                 }
