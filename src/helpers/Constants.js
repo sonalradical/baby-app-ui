@@ -97,6 +97,17 @@ const MMConstants = {
         "Row3-Column3": require('../assets/images/template/Row3-Column3.png'),
         "Row4-Column4": require('../assets/images/template/Row4-Column4.png'),
     },
+    familyMember: [
+        { label: 'Father', value: 'father' },
+        { label: 'Mother', value: 'mother' },
+        { label: 'Daughter', value: 'daughter' },
+        { label: 'Uncle', value: 'uncle' },
+        { label: 'Aunt', value: 'aunt' },
+        { label: 'Brother', value: 'brother' },
+        { label: 'Sister', value: 'sister' },
+        { label: 'Husband', value: 'husband' },
+        { label: 'Wife', value: 'wife' },
+    ],
 
     paddingMedium: 5,
     paddingLarge: 10,

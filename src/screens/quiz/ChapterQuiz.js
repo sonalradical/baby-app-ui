@@ -248,29 +248,34 @@ export default function ChapterQuiz({ navigation, route }) {
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.checkbox && (
-                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            {questionList[selectedQuestion].options.map((option, index) => (
-                                <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
-                                    <Checkbox.Android
-                                        status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
-                                        onPress={() => onCheckboxChange(option)}
-                                        position='leading'
+                        <MMScrollView style={{ height: '90%' }}>
+                            <View style={{ paddingTop: MMConstants.paddingLarge }}>
+
+                                {questionList[selectedQuestion].options.map((option, index) => (
+                                    <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
+                                        <Checkbox.Android
+                                            status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
+                                            onPress={() => onCheckboxChange(option)}
+                                            position='leading'
+                                        />
+                                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
+                                    </View>
+                                ))}
+
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
+
+                                    <MMInput placeholder='Add something different' value={newOption}
+                                        onChangeText={(text) => setNewOption(text)}
+                                        containerWidth={'75%'}
                                     />
-                                    <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
+                                    <MMButton label={'Add'}
+                                        width={'22%'}
+                                        marginVertical={0}
+                                        onPress={onAddOption}
+                                        borderRadius={10} />
                                 </View>
-                            ))}
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
-                                <MMInput placeholder='Add something different' value={newOption}
-                                    onChangeText={(text) => setNewOption(text)}
-                                    containerWidth={'75%'}
-                                />
-                                <MMButton label={'Add'}
-                                    width={'22%'}
-                                    marginVertical={0}
-                                    onPress={onAddOption}
-                                    borderRadius={10} />
                             </View>
-                        </View>
+                        </MMScrollView>
                     )}
                     {currentQuestionType === MMEnums.questionType.textArea && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
@@ -389,19 +394,17 @@ export default function ChapterQuiz({ navigation, route }) {
         <>
             {renderScreenHeader()}
             <MMContentContainer>
-                <MMScrollView>
-                    {isLoading ? <MMSpinner /> :
-                        <Swiper
-                            loop={false}
-                            index={selectedQuestion}
-                            onIndexChanged={onSwipe}
-                            showsPagination={false}
-                            showsButtons={false}
-                            removeClippedSubviews={true}
-                        >
-                            {renderQuestionSlides()}
-                        </Swiper>}
-                </MMScrollView>
+                {isLoading ? <MMSpinner /> :
+                    <Swiper
+                        loop={false}
+                        index={selectedQuestion}
+                        onIndexChanged={onSwipe}
+                        showsPagination={false}
+                        showsButtons={false}
+                        removeClippedSubviews={true}
+                    >
+                        {renderQuestionSlides()}
+                    </Swiper>}
             </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}

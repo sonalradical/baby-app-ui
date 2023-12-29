@@ -304,6 +304,20 @@ async function getProductList() {
 }
 
 //#end
+
+//------------------------------------------------------------------ Link User API
+
+async function linkFamilyMember(data) {
+    const config = {
+        url: `linkUser/inviteFamilyMember`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+//#end
+
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
@@ -375,6 +389,7 @@ export default {
     deletePage,
     savePage,
     getProductList,
+    linkFamilyMember,
     getPagePreSignedUrl,
     getPreSignedUrl,
     getFile,

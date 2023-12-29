@@ -58,7 +58,7 @@ export default function Profile({ route }) {
                 <MMItemCard name={'Your Profile'} icon={'person-outline'} routeName={"SignUp"} routeParams={{ mobileNumber: userDetail.mobileNumber }} />
                 <MMItemCard name={'Address Book'} icon={'book-outline'} routeName={"AddressBook"} />
                 <MMItemCard name={'Orders'} icon={'cart-outline'} routeName={"Home"} />
-                <MMItemCard name={'Baby Profiles'} icon={'heart-outline'} routeName={"Home"} />
+                <MMItemCard name={'Add Family member'} icon={'heart-outline'} routeName={"AddFamilyMember"} />
                 <MMItemCard name={'Notifications'} icon={'notifications-outline'} routeName={"Home"} />
                 <MMItemCard name={'Privacy'} icon={'shield-checkmark-outline'} routeName={"Home"} />
                 <MMItemCard name={'Contact Us'} icon={'mail-outline'} routeName={"Home"} />
