@@ -6,6 +6,7 @@ import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-nativ
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import Swiper from 'react-native-swiper';
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
@@ -197,7 +198,6 @@ export default function ChapterQuiz({ navigation, route }) {
 
     };
 
-
     const onAddOption = () => {
         if (newOption.trim() !== '') {
             const updatedOptions = [...questionList[selectedQuestion].options, newOption];
@@ -213,6 +213,14 @@ export default function ChapterQuiz({ navigation, route }) {
             });
             setSelectedAnswer([...selectedAnswer, newOption]);
             setNewOption('');
+        }
+    };
+
+    const onSwipe = (index) => {
+        if (index < selectedQuestion) {
+            onPreviousClick();
+        } else if (index > selectedQuestion) {
+            onNextClick();
         }
     };
 
@@ -369,12 +377,30 @@ export default function ChapterQuiz({ navigation, route }) {
         );
     };
 
+    const renderQuestionSlides = () => {
+        return questionList.map((question, index) => (
+            <View key={index}>
+                {renderView()}
+            </View>
+        ));
+    };
+
     return (
         <>
             {renderScreenHeader()}
             <MMContentContainer>
                 <MMScrollView>
-                    {isLoading ? <MMSpinner /> : renderView()}
+                    {isLoading ? <MMSpinner /> :
+                        <Swiper
+                            loop={false}
+                            index={selectedQuestion}
+                            onIndexChanged={onSwipe}
+                            showsPagination={false}
+                            showsButtons={false}
+                            removeClippedSubviews={true}
+                        >
+                            {renderQuestionSlides()}
+                        </Swiper>}
                 </MMScrollView>
             </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
