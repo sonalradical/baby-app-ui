@@ -1,13 +1,11 @@
-import _ from 'lodash';
-import PropTypes from 'prop-types';
+
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
 
-import MMContentContainer from '../../components/common/ContentContainer';
-import MMInputMultiline from '../../components/common/InputMultiline';
-import MMSpinner from '../../components/common/Spinner';
+import { useDispatch } from 'react-redux';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
@@ -19,6 +17,9 @@ import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMInputMultiline from '../../components/common/InputMultiline';
+import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
 
