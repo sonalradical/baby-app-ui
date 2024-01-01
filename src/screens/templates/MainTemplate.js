@@ -136,10 +136,9 @@ export default function MainTemplate({ navigation, route }) {
     };
 
     const onDeletePage = async () => {
-
         setOverlayLoading(true);
-        const response = await MMApiService.deletePage(pageId);
-        if (response) {
+        const { data } = await MMApiService.deletePage(pageId);
+        if (data) {
             setOverlayLoading(false);
             dispatch(reloadBookPage({ reloadBookPage: true }));
             navigation.navigate('BookPreview');
