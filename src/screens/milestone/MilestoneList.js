@@ -44,8 +44,8 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
         setLoading(true);
         if (selectedBaby) {
             try {
-                const response = await MMApiService.getTypeList(selectedBaby._id, 'milestone');
-                setMilestones(response.data.milestoneList);
+                const { data } = await MMApiService.getTypeList(selectedBaby._id, 'milestone');
+                setMilestones(data.milestoneList);
 
             } catch (error) {
                 setMilestones([]);
