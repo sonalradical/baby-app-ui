@@ -33,9 +33,9 @@ export default function ChapterList() {
         setLoading(true);
         if (selectedBaby || reloadChapterList) {
             try {
-                const response = await MMApiService.getTypeList(selectedBaby._id, 'chapter');
-                if (response.data) {
-                    setChapterList(response.data.chapterDetail);
+                const { data } = await MMApiService.getTypeList(selectedBaby._id, 'chapter');
+                if (data) {
+                    setChapterList(data.chapterDetail);
                 }
             } catch (error) {
                 setChapterList();
@@ -47,7 +47,7 @@ export default function ChapterList() {
             setLoading(false);
         }
         else {
-            setChapterList();
+            setChapterList([]);
             setLoading(false);
         }
     }
