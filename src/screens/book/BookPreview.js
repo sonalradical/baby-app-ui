@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
-import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
-import MMSurface from '../../components/common/Surface';
-import MMSpinner from '../../components/common/Spinner';
-import { Avatar, List, Text, useTheme } from 'react-native-paper';
-import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
-import MMConstants from '../../helpers/Constants';
+import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { List, Text, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
+import MMRoundBackground from '../../components/common/RoundBackground';
+import MMSpinner from '../../components/common/Spinner';
+import MMSurface from '../../components/common/Surface';
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
+import Parents from './Parents';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
@@ -64,45 +66,76 @@ export default function BookPreview({ updateFooterVisibility }) {
     };
 
     const onPressAdd = (currentPosition) => {
-        let nextItemPosition = currentPosition + 10;
+        let previousItemPosition = currentPosition - 10;
         const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
-        if (currentIndex < bookData.length - 1) {
-            const nextItem = bookData[currentIndex + 1];
-            nextItemPosition = nextItem.position;
+        if (currentIndex > 0) {
+            const perviousItem = bookData[currentIndex - 1];
+            previousItemPosition = perviousItem.position;
         }
-        const pagePosition = (currentPosition + nextItemPosition) / 2;
+        const pagePosition = (currentPosition + previousItemPosition) / 2;
         navigation.navigate('TemplateList', { position: pagePosition })
     };
 
     const onPressEdit = (bookData, template) => {
         navigation.navigate('MainTemplate', {
             position: bookData.position,
-            templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id
+            templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id,
+            headerText: bookData.headerText, footerText: bookData.footerText
         })
     };
 
     const renderQuestionAnswerList = (item, index) => {
+        const { questionId, answer } = item;
+        const { question, questionType, options } = questionId;
+
         return (
             <List.Item
                 key={index}
-                title={item.questionId.question}
-                titleNumberOfLines={2}
+                title={question}
+                titleNumberOfLines={5}
                 titleStyle={theme.fonts.titleMedium}
-                description={`Answer: ${item.questionId.questionType != 'milestone' ? item.answer : null}`}
-                descriptionNumberOfLines={20}
-                descriptionStyle={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge, lineHeight: 25 }]}
+                description={
+                    questionType === 'radio'
+                        ? options.map((option, optionIndex) => (
+                            <React.Fragment key={option}>
+                                {answer && answer[0] === option && <MMRoundBackground text={option} />}
+                                {!answer || (answer && answer[0] !== option) && (
+                                    <React.Fragment key={option}>
+                                        <Text>{option}</Text>
+                                        {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
+                                    </React.Fragment>
+                                )}
+                            </React.Fragment>
+                        ))
+                        : questionType === 'checkbox'
+                            ? answer && answer.length > 0 && answer.join(', ')
+                            : answer || null
+                }
+                descriptionNumberOfLines={2000}
+                descriptionStyle={[
+                    questionType === 'radio' ? { paddingTop: 20, lineHeight: 25 } : theme.fonts.default,
+                    { lineHeight: 25 },
+                ]}
             />
         );
     };
 
-    const renderTemplatePage = (template, pageDetails) => {
+    const renderTemplatePage = (template, pageDetails, headerText, footerText) => {
         const customPageDetails = _.map(pageDetails, (pageDetail, index) => {
             pageDetail.source = MMUtils.getImagePath(pageDetail.value);
             return pageDetail;
         });
         return (
-            <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
-                templateName={template.code} />
+            <View style={{ height: 300, paddingLeft: 20 }}>
+                {headerText ?
+                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>{headerText}</Text>
+                    : null}
+                <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
+                    templateName={template.code} />
+                {footerText ?
+                    <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingTop: MMConstants.paddingLarge }]}> {footerText}</Text>
+                    : null}
+            </View>
         )
     };
 
@@ -114,38 +147,35 @@ export default function BookPreview({ updateFooterVisibility }) {
         )
     }
 
-    const renderBookData = (item, index) => {
+    const renderBookData = (item) => {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
-        const chapterImage = !isTemplate && item?.icon ? MMConstants.chapters[item.icon] : null;
         const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
         return (
             <>
-                <MMSurface key={item._id} margin={[0, 0, 0, 0]} padding={[0, 0, 0, 0]}>
-                    {isTemplate ?
-                        renderTemplatePage(template, item.pageDetails) :
-                        (
-                            <>
-                                <View style={[styles(theme).title, { backgroundColor: item.color }]}>
-                                    <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
-                                    <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{item.title}</Text>
-                                </View>
-                                {_.map(item.pageDetails, (i, index) => {
-                                    return renderQuestionAnswerList(i, index);
-                                })}
-                            </>
-                        )
-                    }
-                </MMSurface>
-                <View style={{ flexDirection: 'row', padding: MMConstants.marginMedium, marginBottom: bookData.length === index + 1 ? 10 : 0 }}>
-                    <Icon name={'plus'} size={30} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
-                    {isTemplate ?
-                        <Icon name={'edit-2'} size={24} color={theme.colors.text.primary}
-                            onPress={() => onPressEdit(item, template)} style={{ marginLeft: 15, marginTop: MMConstants.marginSmall }} /> : null}
-                    <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
-                        <Text>Page {index + 1}</Text>
-                    </View>
+                <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
+                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
                 </View>
+                <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
+                    <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
+                        {isTemplate ?
+                            <TouchableOpacity onPress={() => onPressEdit(item, template)} style={{ paddingVertical: 30 }}>
+                                {renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText)}
+                            </TouchableOpacity> :
+                            (
+                                <View style={{ paddingVertical: 30 }}>
+                                    {item.type === 'parents' ? (
+                                        <Parents pageDetails={item.pageDetails} title={item.title} />
+                                    ) : (
+                                        _.map(item.pageDetails, (i, index) => {
+                                            return renderQuestionAnswerList(i, index);
+                                        })
+                                    )}
+                                </View>
+                            )
+                        }
+                    </View>
+                </MMSurface>
             </>
         );
     };

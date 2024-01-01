@@ -17,11 +17,14 @@ import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMImageCrop from '../../components/common/ImageCrop';
+import MMInput from '../../components/common/Input';
+import MMConstants from '../../helpers/Constants';
+import MMScrollView from '../../components/common/ScrollView';
 
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const { position, templateName, templateId, pageId, pageDetails } = route.params || '';
+    const { position, templateName, templateId, pageId, pageDetails, headerText, footerText } = route.params || '';
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -29,6 +32,11 @@ export default function MainTemplate({ navigation, route }) {
     const [selectedName, setSelectedName] = useState('p1');
     const [selectedType, setSelectedType] = useState(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+    const [pageText, setPageText] = useState({
+        headerText: '',
+        footerText: ''
+    })
+
     const toggleModal = () => {
         setModalVisible(!modalVisible);
     };
@@ -37,6 +45,7 @@ export default function MainTemplate({ navigation, route }) {
     useEffect(() => {
         if (pageId && pageDetails) {
             setTemplateData(pageDetails);
+            setPageText({ headerText: headerText, footerText: footerText })
         }
     }, [pageDetails, pageId]);
 
@@ -113,7 +122,9 @@ export default function MainTemplate({ navigation, route }) {
             babyId: selectedBaby._id,
             templateId,
             position,
-            pageDetails
+            pageDetails,
+            headerText: pageText.headerText,
+            footerText: pageText.footerText
         }
         const response = await MMApiService.savePage(apiData);
         if (response) {
@@ -134,6 +145,13 @@ export default function MainTemplate({ navigation, route }) {
         }
         setOverlayLoading(false);
     }
+
+    const onInputChange = (field, value) => {
+        setPageText({
+            ...pageText,
+            [field]: value
+        });
+    };
 
     const renderActionButtons = () => {
         return (
@@ -184,6 +202,24 @@ export default function MainTemplate({ navigation, route }) {
                         pageId={pageId}
                         onImageChange={onImageChange} />
                 </View>
+                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                    <MMInput
+                        label='Page Header Text'
+                        maxLength={30}
+                        value={pageText.headerText}
+                        onChangeText={(value) => onInputChange('headerText', value)}
+                        placeholder="Enter Page Header"
+                    />
+                </View>
+                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                    <MMInput
+                        label='Page Footer Text'
+                        maxLength={30}
+                        value={pageText.footerText}
+                        onChangeText={(value) => onInputChange('footerText', value)}
+                        placeholder="Enter Page Footer"
+                    />
+                </View>
                 <MMImageCrop
                     visible={modalVisible}
                     toggleModal={toggleModal}
@@ -197,7 +233,9 @@ export default function MainTemplate({ navigation, route }) {
     return (
         <>
             <MMContentContainer>
-                {renderView()}
+                <MMScrollView>
+                    {renderView()}
+                </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
             </MMContentContainer>
             {renderActionButtons()}

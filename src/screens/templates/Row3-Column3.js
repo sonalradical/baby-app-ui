@@ -3,17 +3,16 @@ import { StyleSheet, Image, TouchableOpacity, Dimensions, View } from 'react-nat
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
-import ImagePicker from 'react-native-image-crop-picker';
 
-import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
 
-const Row2Column2 = (props) => {
+const Row3Column3 = (props) => {
     const theme = useTheme();
     const {
         templateData, pageId, isDisable = false, onPickImage, onEditPicture, borderWidth = 1 } = props;
     const deviceWidth = Dimensions.get('window').width;
+
 
     const renderImage = (name) => {
         const template = templateData.find(item => item.name === name);
@@ -41,11 +40,11 @@ const Row2Column2 = (props) => {
                 {
                     pageId ?
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onEditPicture(name, deviceWidth / 2, deviceWidth / 2)} disabled={isDisable}>
+                            onPress={() => onEditPicture(name, deviceWidth / 3, deviceWidth / 2)} disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity> :
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onPickImage(name, 'img', deviceWidth / 2, deviceWidth / 2)}
+                            onPress={() => onPickImage(name, 'img', deviceWidth / 3, deviceWidth / 2)}
                             disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity>
@@ -56,16 +55,17 @@ const Row2Column2 = (props) => {
 
     return (
         <>
-            {/* Row 1 */}
-            <View style={styles(theme).row}>
-                {renderImageBox('p1', { borderRightWidth: borderWidth, borderColor: theme.colors.outline, borderBottomWidth: borderWidth })}
-                {renderImageBox('p2', { borderBottomWidth: borderWidth, borderColor: theme.colors.outline })}
-            </View>
-
             {/* Row 2 */}
             <View style={styles(theme).row}>
-                {renderImageBox('p3', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
-                {renderImageBox('p4')}
+                {renderImageBox('p1', { borderRightWidth: borderWidth, borderColor: theme.colors.outline, borderBottomWidth: borderWidth })}
+                {renderImageBox('p2', { borderRightWidth: borderWidth, borderColor: theme.colors.outline, borderBottomWidth: borderWidth })}
+                {renderImageBox('p3', { borderBottomWidth: borderWidth })}
+            </View>
+            {/* Row 1 */}
+            <View style={styles(theme).row}>
+                {renderImageBox('p4', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
+                {renderImageBox('p5', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
+                {renderImageBox('p6')}
             </View>
         </>
     );
@@ -87,4 +87,4 @@ const styles = (theme) => StyleSheet.create({
     },
 });
 
-export default Row2Column2;
+export default Row3Column3;

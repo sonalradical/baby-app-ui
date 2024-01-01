@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, ScrollView, View } from 'react-native';
-import { Appbar, Avatar, Button, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import { BackHandler, View } from 'react-native';
+import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
 import MMContentContainer from '../../components/common/ContentContainer';
@@ -13,12 +13,12 @@ import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 
-import { reloadChapterList } from '../../redux/Slice/AppSlice';
-import MMApiService from '../../services/ApiService';
-import MMInput from '../../components/common/Input';
 import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
+import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
+import { reloadChapterList } from '../../redux/Slice/AppSlice';
+import MMApiService from '../../services/ApiService';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
@@ -225,7 +225,7 @@ export default function ChapterQuiz({ navigation, route }) {
                             </View>
                         </View>
                     )}
-                    {currentQuestionType === MMEnums.questionType.text && (
+                    {currentQuestionType === MMEnums.questionType.textArea && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             <MMInputMultiline
                                 placeholder="Your answer..."
@@ -235,6 +235,16 @@ export default function ChapterQuiz({ navigation, route }) {
                             />
                             <Text style={{ textAlign: 'right' }}>
                                 {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} / 2000` : '0 / 2000'}</Text>
+                        </View>
+                    )}
+                    {currentQuestionType === MMEnums.questionType.text && (
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                            <MMInput
+                                placeholder="Your answer..."
+                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                onChangeText={(text) => onAnswerChange(text)}
+                                maxLength={30}
+                            />
                         </View>
                     )}
                 </View>

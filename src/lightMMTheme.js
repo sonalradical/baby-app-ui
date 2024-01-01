@@ -37,7 +37,7 @@ const fontConfig = {
   labelMedium: {
     fontSize: 12, // Secondary headings
     fontWeight: 400, // Bold style for emphasis
-    color: '#153634',
+    color: '#000',
     fontFamily: 'MaisonNeue-Book',
   },
   headlineSmall: {
