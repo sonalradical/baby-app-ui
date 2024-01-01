@@ -123,8 +123,8 @@ export default function MainTemplate({ navigation, route }) {
             headerText: pageText.headerText,
             footerText: pageText.footerText
         }
-        const response = await MMApiService.savePage(apiData);
-        if (response) {
+        const { data } = await MMApiService.savePage(apiData);
+        if (data) {
             dispatch(reloadBookPage({ reloadBookPage: true }));
             navigation.navigate('BookPreview');
         }
