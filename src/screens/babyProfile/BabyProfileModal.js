@@ -34,20 +34,19 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	async function Init() {
 		try {
 			setLoding(true);
-			const response = await MMApiService.babyList();
-			if (response.data) {
-				const babyProfiles = response.data;
+			const { data } = await MMApiService.babyList();
+			if (data) {
 				if (selectedBaby) {
-					const selectedIndex = babyProfiles.findIndex(profile => profile._id === selectedBaby._id);
+					const selectedIndex = data.findIndex(profile => profile._id === selectedBaby._id);
 					if (selectedIndex !== -1) {
-						babyProfiles.splice(selectedIndex, 1);
-						babyProfiles.unshift(selectedBaby);
+						data.splice(selectedIndex, 1);
+						data.unshift(selectedBaby);
 					}
 					setSelectedBabyDetail(selectedBaby);
 				} else {
 					setSelectedBabyDetail();
 				}
-				setBabyList(babyProfiles);
+				setBabyList(data);
 			}
 			setLoding(false);
 		} catch (error) {
