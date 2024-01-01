@@ -44,9 +44,9 @@ export default function ChapterQuiz({ navigation, route }) {
         if (babyId && chapterId) {
             setLoading(true);
             try {
-                const response = await MMApiService.getQuiz(babyId, chapterId);
-                if (response.data) {
-                    const { questionList: questionsList, answerList: answersList } = response.data;
+                const { data } = await MMApiService.getQuiz(babyId, chapterId);
+                if (data) {
+                    const { questionList: questionsList, answerList: answersList } = data;
                     answersList.forEach(answer => {
                         const questions = _.find(questionsList, { questionId: answer.questionId });
                         if (questions) {
@@ -109,25 +109,23 @@ export default function ChapterQuiz({ navigation, route }) {
 
     const setImageUri = async (imageData) => {
         const photo = imageData.assets[0];
-        console.log(photo, 'photo')
         try {
             setLoading(true);
-            const response = await MMApiService.getPreSignedUrl(photo.fileName);
-            const responseData = response.data;
-            if (responseData) {
+            const { data } = await MMApiService.getPreSignedUrl(photo.fileName);
+            if (data) {
                 // setState({
                 //     ...state,
                 //     picture: responseData.storageFileKey
                 // })
                 setImageSource(photo.uri);
-                const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl);
-                if (_.isNil(result)) {
-                    MMUtils.showToastMessage(`Uploading picture failed...`);
-                } else {
+                const result = MMUtils.uploadPicture(photo, data.preSignedUrl);
+                if (result) {
                     MMUtils.showToastMessage(`Uploading picture completed.`);
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
                 }
             } else {
-                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${data.message}`);
             }
             setLoading(false);
         } catch (err) {
