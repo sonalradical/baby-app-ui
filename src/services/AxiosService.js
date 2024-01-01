@@ -30,6 +30,7 @@ axios.interceptors.request.use(async (config) => {
 
 axios.interceptors.response.use(
     async response => {
+        console.log(response?.data)
         return response?.data;
     },
     async error => {
