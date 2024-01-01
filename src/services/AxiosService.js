@@ -40,7 +40,6 @@ axios.interceptors.response.use(
             const { status, data } = error.response;
 
             if (status === axios.HttpStatusCode.BadRequest) {
-                console.log('mmmm')
                 const { error } = data;
                 if (_.isArray(error.message)) {
                     return { data: null, error: formatValidationError(error.message) }
@@ -75,11 +74,11 @@ axios.interceptors.response.use(
     })
 
 async function refreshTokens() {
-    const state = getState();
-    const { accessToken } = state.auth;
-    let { refreshToken } = state.auth;
+    const { AuthReducer } = getState();
+    const accessToken = AuthReducer.auth.accessToken;
+    let refreshToken = AuthReducer.auth.refreshToken;
 
-    if (isNull(accessToken) || isNull(refreshToken)) {
+    if (_.isNull(accessToken) || _.isNull(refreshToken)) {
         return false;
     }
 

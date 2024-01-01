@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Chip, Text, useTheme } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { validateAll } from 'indicative/validator';
-import { useDispatch } from 'react-redux';
-
-import { reloadAddressPage } from '../../redux/Slice/AppSlice';
 
 import MMUtils from '../../helpers/Utils';
-import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
-import { MMButton, MMOutlineButton } from '../../components/common/Button';
+import { MMButton } from '../../components/common/Button';
 import MMPageTitle from '../../components/common/PageTitle';
-import MMFormErrorText from '../../components/common/FormErrorText';
-import MMFlexView from '../../components/common/FlexView';
-import MMConfirmDialog from '../../components/common/ConfirmDialog';
-import MMPlacesAutocomplete from '../../components/common/PlacesAutocomplete';
-import MMSurface from '../../components/common/Surface';
-import AddressView from '../orders/AddressView';
 import MMRadioButton from '../../components/common/RadioButton';
 
 export default function AddFamilyMember({ navigation, route }) {
@@ -77,11 +67,9 @@ export default function AddFamilyMember({ navigation, route }) {
                         connectionEmail: state.email,
                         relationShipType: state.relationShipType
                     };
-                    console.log(apiData, 'apiData')
                     const { data } = await MMApiService.linkFamilyMember(apiData);
-                    console.log(data, 'data')
                     if (data) {
-                        navigation.navigate('Home');
+                        navigation.navigate(MMConstants.screens.home);
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);
