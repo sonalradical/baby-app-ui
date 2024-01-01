@@ -121,12 +121,7 @@ export default function Login({ navigation }) {
                         accessToken,
                         refreshToken,
                         userDetail: {
-                            _id: userDetail._id,
-                            mobileNumber: userDetail.mobileNumber,
-                            name: userDetail.name,
-                            email: userDetail.email,
-                            password: userDetail.password,
-                            gender: userDetail.gender,
+                            ...userDetail,
                             childCount: userDetail.childCount ? userDetail.childCount : 0,
                             dueDate: userDetail.dueDate ? userDetail.dueDate : null
                         },
