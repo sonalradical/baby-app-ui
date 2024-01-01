@@ -190,7 +190,7 @@ export default function AddEditBaby({ route }) {
                             dispatch(reloadPage({ reloadPage: true }));
                         }
                         MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(data));
-                        navigation.navigate('Footer');
+                        navigation.navigate(MMConstants.screens.footer);
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);
@@ -218,7 +218,7 @@ export default function AddEditBaby({ route }) {
                 dispatch(setBaby(null));
                 setOverlayLoading(false);
                 dispatch(reloadPage(false));
-                navigation.navigate('Footer');
+                navigation.navigate(MMConstants.screens.footer);
                 setIsModalOpen(false);
             }
         } catch (error) {

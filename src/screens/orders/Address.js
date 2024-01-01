@@ -56,7 +56,7 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
     const renderAddressDetail = (item) => {
         const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2},` : ''}${item.suburb}, \n${item.state}, ${item.postcode}, ${item.country}`;
         return (
-            <TouchableOpacity onPress={isDisable ? () => navigation.navigate('AddAddress', { addressId: item._id, isDisable: isDisable }) :
+            <TouchableOpacity onPress={isDisable ? () => navigation.navigate(MMConstants.screens.addAddress, { addressId: item._id, isDisable: isDisable }) :
                 () => onSelectAddress(item)}>
                 <MMSurface style={{
                     borderWidth: !isDisable && item._id === addressDetail._id ? 2 : 0,
@@ -97,7 +97,7 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
     const renderView = () => {
         return (
             <View>
-                <TouchableOpacity onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })}>
+                <TouchableOpacity onPress={() => navigation.navigate(MMConstants.screens.addAddress, { isDisable: isDisable })}>
                     <MMSurface padding={[8, 8, 8, 10]} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Ionicons name={'add'} size={30} color={theme.colors.primary} />

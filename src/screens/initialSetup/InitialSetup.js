@@ -141,9 +141,9 @@ export default function InitialSetup({ route, navigation }) {
                             if (state.situation == MMEnums.situation.currentlyPregnant) {
                                 MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(response.data.babyDetail));
                                 dispatch(setBaby(response.data.babyDetail));
-                                navigation.navigate('Footer');
+                                navigation.navigate(MMConstants.screens.footer);
                             } else {
-                                navigation.navigate('AddEditBaby');
+                                navigation.navigate(MMConstants.screens.addEditBaby);
                             }
                         }
                     })

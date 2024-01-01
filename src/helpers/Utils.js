@@ -139,7 +139,7 @@ function decode(value = null) {
 
 async function logout() {
     const navigation = useNavigation();
-    navigation.navigate('Logout');
+    navigation.navigate(MMConstants.screens.logout);
 }
 // -------------------------------------------------------------- functions
 function filterDataByQuery(data, query) {

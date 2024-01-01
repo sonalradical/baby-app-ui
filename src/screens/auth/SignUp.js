@@ -148,7 +148,7 @@ export default function SignUp({ navigation, route }) {
             };
             const { data } = await MMApiService.userSignup(apiData);
             if (data) {
-                navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+                navigation.navigate(MMConstants.screens.otpView, { mobileNumber: state.mobileNumber, deviceId: deviceId });
             }
             setOverlayLoading(false);
         } catch (err) {
@@ -195,7 +195,7 @@ export default function SignUp({ navigation, route }) {
                             userDetail: userDetails.userDetail,
                             accessToken: userDetails.accessToken,
                         }));
-                        navigation.navigate('Home');
+                        navigation.navigate(MMConstants.screens.home);
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);
@@ -293,7 +293,7 @@ export default function SignUp({ navigation, route }) {
                 {mobileNumber ? null :
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <Text style={[theme.fonts.default]}>Already have an account? </Text>
-                        <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
+                        <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate(MMConstants.screens.login)} />
                     </View>}
             </View>
         );

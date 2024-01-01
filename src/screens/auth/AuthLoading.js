@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 import { setLogin } from '../../redux/Slice/AuthSlice';
+import MMConstants from '../../helpers/Constants';
 
 export default function AuthLoading({ navigation }) {
 	const dispatch = useDispatch();
@@ -21,10 +22,10 @@ export default function AuthLoading({ navigation }) {
 				const user = await MMUtils.getItemFromStorage(MMEnums.storage.user);
 				dispatch(setLogin({ user, token }));
 			} else {
-				navigation.navigate('Login');
+				navigation.navigate(MMConstants.screens.login);
 			}
 		} else {
-			navigation.navigate('Login');
+			navigation.navigate(MMConstants.screens.login);
 		}
 	}
 

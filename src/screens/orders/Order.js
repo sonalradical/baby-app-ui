@@ -151,7 +151,7 @@ export default function Order({ navigation }) {
             const { data } = await MMApiService.saveOrder(apiData);
             if (data) {
                 setPopUpVisible(false);
-                navigation.navigate('Home');
+                navigation.navigate(MMConstants.screens.home);
             }
         } catch (err) {
             MMUtils.consoleError(err);

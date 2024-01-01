@@ -52,7 +52,8 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
 				</>
 			}
-			{showHome ? <Ionicons name="home-outline" size={28} color={theme.colors.text.secondary} onPress={() => navigation.navigate('Home')}
+			{showHome ? <Ionicons name="home-outline" size={28} color={theme.colors.text.secondary}
+				onPress={() => navigation.navigate(MMConstants.screens.home)}
 				style={{ paddingRight: MMConstants.paddingLarge }} /> :
 				<Ionicons name="notifications-outline" size={28} color={theme.colors.text.secondary} style={{ paddingRight: MMConstants.paddingLarge }}
 					onPress={() => console.log('Bell pressed')} />}

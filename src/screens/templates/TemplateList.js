@@ -19,7 +19,7 @@ export default function TemplateList({ navigation, route }) {
         const templateImage = MMConstants.templates[item.icon];
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
-                onPress={() => navigation.navigate('MainTemplate', { position: position, templateName: item.code, templateId: item._id })} >
+                onPress={() => navigation.navigate(MMConstants.screens.mainTemplate, { position: position, templateName: item.code, templateId: item._id })} >
                 <Image
                     textAlign="center"
                     resizeMode="contain"

@@ -63,12 +63,12 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 
 	const onAddBaby = () => {
 		setIsModalOpen(false);
-		navigation.navigate('AddEditBaby');
+		navigation.navigate(MMConstants.screens.addEditBaby);
 	};
 
 	const onBabyEdit = (babyId) => {
 		setIsModalOpen(false);
-		navigation.navigate('AddEditBaby', { babyId: babyId, babyListSize: _.size(babyList) })
+		navigation.navigate(MMConstants.screens.addEditBaby, { babyId: babyId, babyListSize: _.size(babyList) })
 	}
 
 	const onSelectProfile = (babyDetail) => {
@@ -76,7 +76,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		setSelectedBabyDetail(babyDetail);
 		MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(babyDetail));
 		dispatch(setBaby(babyDetail));
-		navigation.navigate('Home', { babyId: babyDetail._id })
+		navigation.navigate(MMConstants.screens.home, { babyId: babyDetail._id })
 	}
 
 	const ProfileCard = ({ profileData, index }) => {

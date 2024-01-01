@@ -79,7 +79,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
         const milestoneImage = MMConstants.milestones[item.icon];
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
-                onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
+                onPress={() => navigation.navigate(MMConstants.screens.milestoneQuiz, { babyId: selectedBaby._id, milestoneId: item._id })}>
                 <Image
                     textAlign="center"
                     resizeMode="contain"

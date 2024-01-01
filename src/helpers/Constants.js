@@ -10,7 +10,7 @@ const MMConstants = {
 
     screens: {
         login: 'Login',
-        otpView: 'OTPView',
+        otpView: 'Otp',
         signUp: 'SignUp',
         addEditBaby: 'AddEditBaby',
         logout: 'Logout',
@@ -28,7 +28,8 @@ const MMConstants = {
         addAddress: 'AddAddress',
         home: 'Home',
         bookPreview: 'BookPreview',
-        profile: 'Profile'
+        profile: 'Profile',
+        addressBook: 'AddressBook'
     },
 
     chapters: {

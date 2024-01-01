@@ -113,7 +113,7 @@ export default function AddAddress({ navigation, route }) {
         const response = await MMApiService.deleteAddress(addressId);
         if (response) {
             dispatch(reloadAddressPage({ reloadAddressPage: true }));
-            navigation.navigate(isDisable ? 'AddressBook' : 'Order');
+            navigation.navigate(isDisable ? MMConstants.screens.addressBook : MMConstants.screens.order);
         }
         setOverlayLoading(false);
     }
@@ -154,7 +154,7 @@ export default function AddAddress({ navigation, route }) {
                         .then(function (response) {
                             if (response) {
                                 dispatch(reloadAddressPage({ reloadAddressPage: true }));
-                                navigation.navigate(isDisable ? 'AddressBook' : 'Order');
+                                navigation.navigate(isDisable ? MMConstants.screens.addressBook : MMConstants.screens.order);
                             }
                         })
                         .catch(function (error) {

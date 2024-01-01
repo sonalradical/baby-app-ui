@@ -127,7 +127,7 @@ export default function MainTemplate({ navigation, route }) {
         const response = await MMApiService.savePage(apiData);
         if (response) {
             dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('BookPreview');
+            navigation.navigate(MMConstants.screens.bookPreview);
         }
         //}
         // else {
@@ -143,7 +143,7 @@ export default function MainTemplate({ navigation, route }) {
         if (response) {
             setOverlayLoading(false);
             dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('BookPreview');
+            navigation.navigate(MMConstants.screens.bookPreview);
         }
         setOverlayLoading(false);
     }

@@ -164,7 +164,7 @@ export default function Login({ navigation }) {
                 };
                 const { data } = await MMApiService.userLoginWithOTP(apiData);
                 if (data) {
-                    navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+                    navigation.navigate(MMConstants.screens.otpView, { mobileNumber: state.mobileNumber, deviceId: deviceId });
                 }
                 setOverlayLoading(false);
             })
@@ -223,7 +223,7 @@ export default function Login({ navigation }) {
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={[theme.fonts.default]}>Need an account ? </Text>
-                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate('SignUp', { deviceId: deviceId })} />
+                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate(MMConstants.screens.signUp, { deviceId: deviceId })} />
                     </View>
                 </View>
             </MMSurface >

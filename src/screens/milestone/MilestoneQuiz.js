@@ -155,7 +155,7 @@ export default function MilestoneQuiz({ navigation, route }) {
             }
             const response = await MMApiService.saveQuiz(apiData);
             if (response) {
-                navigation.navigate('MilestoneList', { milestoneId: milestoneId })
+                navigation.navigate(MMConstants.screens.milestoneList, { milestoneId: milestoneId })
             }
             setLoading(false);
         } catch (error) {

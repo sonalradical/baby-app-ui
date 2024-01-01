@@ -75,11 +75,11 @@ export default function BookPreview({ updateFooterVisibility }) {
             previousItemPosition = perviousItem.position;
         }
         const pagePosition = (currentPosition + previousItemPosition) / 2;
-        navigation.navigate('TemplateList', { position: pagePosition })
+        navigation.navigate(MMConstants.screens.templateList, { position: pagePosition })
     };
 
     const onPressEdit = (bookData, template) => {
-        navigation.navigate('MainTemplate', {
+        navigation.navigate(MMConstants.screens.mainTemplate, {
             position: bookData.position,
             templateName: template.code, templateId: bookData.templateId, pageDetails: bookData.pageDetails, pageId: bookData._id,
             headerText: bookData.headerText, footerText: bookData.footerText

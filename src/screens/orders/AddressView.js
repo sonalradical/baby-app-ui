@@ -41,7 +41,7 @@ const AddressView = ({ item, navigation, address, isDisable }) => {
                         size={18}
                         color={theme.colors.primary}
                         style={{ paddingTop: 2, width: 20 }}
-                        onPress={() => navigation.navigate('AddAddress', { addressId: item._id, isDisable })}
+                        onPress={() => navigation.navigate(MMConstants.screens.addAddress, { addressId: item._id, isDisable })}
                     />
                 )}
             </View>

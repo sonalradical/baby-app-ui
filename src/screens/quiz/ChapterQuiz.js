@@ -162,7 +162,7 @@ export default function ChapterQuiz({ navigation, route }) {
         dispatch(reloadChapterList({ reloadChapterList: true }));
         dispatch(reloadBookPage({ reloadBookPage: true }));
         if (selectedQuestion === questionList.length - 1) {
-            navigation.navigate('Home');
+            navigation.navigate(MMConstants.screens.home);
         } else {
             setSelectedQuestion(selectedQuestion + 1);
         }
