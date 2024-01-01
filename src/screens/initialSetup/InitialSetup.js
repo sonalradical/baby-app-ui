@@ -133,26 +133,18 @@ export default function InitialSetup({ route, navigation }) {
                     dueDate: state.dueDate,
                     childCount: state.numberOfBaby ? _.parseInt(state.numberOfBaby) : 1,
                 };
-                await MMApiService.updateInItProfile(apiData)
-                    .then(function (response) {
-                        if (response) {
-                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(response.data.userDetail));
-                            dispatch(setLogin({ userDetail: response.data.userDetail, accessToken: accessToken }));
-                            if (state.situation == MMEnums.situation.currentlyPregnant) {
-                                MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(response.data.babyDetail));
-                                dispatch(setBaby(response.data.babyDetail));
-                                navigation.navigate('Footer');
-                            } else {
-                                navigation.navigate('AddEditBaby');
-                            }
-                        }
-                    })
-                    .catch(function (error) {
-                        setState({
-                            ...state,
-                            errors: MMUtils.apiErrorParamMessages(error)
-                        });
-                    });
+                const { data } = await MMApiService.updateInItProfile(apiData)
+                if (data) {
+                    MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(data.userDetail));
+                    dispatch(setLogin({ userDetail: data.userDetail, accessToken: accessToken }));
+                    if (state.situation == MMEnums.situation.currentlyPregnant) {
+                        MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(data.babyDetail));
+                        dispatch(setBaby(data.babyDetail));
+                        navigation.navigate('Footer');
+                    } else {
+                        navigation.navigate('AddEditBaby');
+                    }
+                }
                 setOverlayLoading(false);
             })
             .catch((errors) => {
