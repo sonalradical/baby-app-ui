@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { List, Text, useTheme } from 'react-native-paper';
 
-import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
-import { FlatList, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { List, Text, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
+
+import { useNavigation } from '@react-navigation/native';
+
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
 import CommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRoundBackground from '../../components/common/RoundBackground';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
-import MMConstants from '../../helpers/Constants';
-import MMUtils from '../../helpers/Utils';
-import MMApiService from '../../services/ApiService';
 import Parents from './Parents';
 
 export default function BookPreview({ updateFooterVisibility }) {
@@ -65,9 +66,9 @@ export default function BookPreview({ updateFooterVisibility }) {
         updateFooterVisibility(isScrollingUp);
     };
 
-    const onPressAdd = (currentPosition) => {
+    const onPressAdd = (currentPosition, itemId) => {
         let previousItemPosition = currentPosition - 10;
-        const currentIndex = bookData.findIndex((item) => item.position === currentPosition);
+        const currentIndex = bookData.findIndex((item) => item._id === itemId);
         if (currentIndex > 0) {
             const perviousItem = bookData[currentIndex - 1];
             previousItemPosition = perviousItem.position;
@@ -98,8 +99,12 @@ export default function BookPreview({ updateFooterVisibility }) {
                     questionType === 'radio'
                         ? options.map((option, optionIndex) => (
                             <React.Fragment key={option}>
-                                {answer && answer[0] === option && <MMRoundBackground text={option} />}
-                                {!answer || (answer && answer[0] !== option) && (
+                                {answer && answer[0] === option ? (
+                                    <React.Fragment key={option}>
+                                        <Text style={{ backgroundColor: 'yellow', margin: 10 }}>{option}</Text>
+                                        {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
+                                    </React.Fragment>
+                                ) : (
                                     <React.Fragment key={option}>
                                         <Text>{option}</Text>
                                         {optionIndex < options.length - 1 && <Text>{"   "}</Text>}
@@ -126,12 +131,14 @@ export default function BookPreview({ updateFooterVisibility }) {
             return pageDetail;
         });
         return (
-            <View style={{ height: 300, paddingLeft: 20 }}>
+            <View style={{ paddingLeft: MMConstants.paddingLarge }}>
                 {headerText ?
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>{headerText}</Text>
                     : null}
-                <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
-                    templateName={template.code} />
+                <View style={{ height: 250, width: 250, alignSelf: 'center' }}>
+                    <CommonTemplate borderWidth={0} onPickImage={null} templateData={customPageDetails} isDisable={true}
+                        templateName={template.code} />
+                </View>
                 {footerText ?
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingTop: MMConstants.paddingLarge }]}> {footerText}</Text>
                     : null}
@@ -141,8 +148,8 @@ export default function BookPreview({ updateFooterVisibility }) {
 
     const renderNoData = () => {
         return (
-            <MMSurface>
-                <Text>No data found ! please add some chapters </Text>
+            <MMSurface margin={[20, 0, 10, 0]}>
+                <Text >No data found ! please add some chapters. </Text>
             </MMSurface>
         )
     }
@@ -150,11 +157,11 @@ export default function BookPreview({ updateFooterVisibility }) {
     const renderBookData = (item) => {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
-        const template = isTemplate ? _.find(lookupData.template, { '_id': item?.templateId }) : null;
+        const template = isTemplate ? _.find(lookupData.templates, { '_id': item?.templateId }) : null;
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
-                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position)} />
+                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
                     <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
@@ -201,12 +208,10 @@ export default function BookPreview({ updateFooterVisibility }) {
 
     return (
         <>
-            <MMContentContainer>
+            <MMContentContainer paddingStyle='none'>
                 {!bookData || bookData.length === 0 ? renderNoData() : null}
-            </MMContentContainer>
-            <View style={{ backgroundColor: theme.colors.background }}>
                 {isLoading ? <MMSpinner /> : renderView()}
-            </View>
+            </MMContentContainer>
         </>
     );
 }
@@ -215,10 +220,3 @@ BookPreview.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
-
-const styles = (theme) => StyleSheet.create({
-    title: {
-        flexDirection: 'row',
-        padding: MMConstants.paddingLarge
-    }
-});

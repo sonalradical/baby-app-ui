@@ -36,7 +36,7 @@ async function resendOTP(data) {
 
 async function userLoginWithPassword(authTokan) {
     const config = {
-        url: `auth/login/${authTokan}`,
+        url: `auth/login/${authTokan}/${'65780c81d2a96049f98a0808'}`,
         method: 'post'
     };
     const result = await axios(config);
@@ -131,6 +131,61 @@ async function getTypeList(babyId, type) {
 
 //#end
 
+//------------------------------------------------------------------- Address APIs
+
+async function saveAddress(data) {
+    const config = {
+        url: `address/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function getAddressById(addressId) {
+    const config = {
+        url: `address/get/${addressId}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function getAddressList() {
+    const config = {
+        url: `address/list`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function deleteAddress(addressId) {
+    const config = {
+        url: `address/delete/${addressId}`,
+        method: 'delete'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
+
+//------------------------------------------------------------------- Order APIs
+
+async function saveOrder(data) {
+    const config = {
+        url: `order/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
+
 //------------------------------------------------------------------ Quiz API
 
 async function getQuiz(babyId, chapterId) {
@@ -193,6 +248,19 @@ async function deletePage(pageId) {
 }
 
 //#end
+
+//------------------------------------------------------------------ Product API
+
+async function getProductList() {
+    const config = {
+        url: `product/list`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
@@ -249,11 +317,17 @@ export default {
     saveBaby,
     deleteBaby,
     getTypeList,
+    saveAddress,
+    getAddressById,
+    getAddressList,
+    deleteAddress,
+    saveOrder,
     getQuiz,
     saveQuiz,
     getBookPreview,
     deletePage,
     savePage,
+    getProductList,
     getPagePreSignedUrl,
     getPreSignedUrl,
     getFile,

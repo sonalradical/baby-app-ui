@@ -12,6 +12,8 @@ import Row1Column3 from '../../screens/templates/Row1-Column3';
 import Column3Row1 from '../../screens/templates/Column3-Row1';
 import Row3Column3 from '../../screens/templates/Row3-Column3';
 import Row4Column4 from '../../screens/templates/Row4-Column4';
+import ColumnRow2 from '../../screens/templates/Column-Row2';
+import Row2Column from '../../screens/templates/Row2-Column';
 
 const CommonTemplate = (props) => {
     const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, pageId, ImageProps, onImageChange } = props;
@@ -26,7 +28,9 @@ const CommonTemplate = (props) => {
         "Row1-Column3": Row1Column3,
         "Column3-Row1": Column3Row1,
         "Row3-Column3": Row3Column3,
-        "Row4-Column4": Row4Column4
+        "Row4-Column4": Row4Column4,
+        "Column-Row2": ColumnRow2,
+        "Row2-Column": Row2Column
     }
     const TemplateComponents = Components[templateName];
 

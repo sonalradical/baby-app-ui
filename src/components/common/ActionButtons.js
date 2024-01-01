@@ -1,13 +1,16 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
+
+import PropTypes from 'prop-types';
 
 const MMActionButtons = ({ type, children }) => {
+	const theme = useTheme();
 
 	if (type === 'bottomFixed') {
 		return (
-			<View style={styles.bottomWrap}>
-				<View style={styles.buttons}>
+			<View style={styles(theme).bottomWrap}>
+				<View style={styles(theme).buttons}>
 					{children}
 				</View>
 			</View>
@@ -15,13 +18,13 @@ const MMActionButtons = ({ type, children }) => {
 	}
 
 	return (
-		<View style={styles.buttons}>
+		<View style={styles(theme).buttons}>
 			{children}
 		</View>
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = (theme) => StyleSheet.create({
 	buttons: {
 		width: '100%',
 		flexDirection: 'row',
@@ -33,6 +36,7 @@ const styles = StyleSheet.create({
 	bottomWrap: {
 		paddingHorizontal: 12,
 		paddingVertical: 10,
+		backgroundColor: theme.colors.background
 	},
 });
 

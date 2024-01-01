@@ -56,7 +56,7 @@ export default function Profile({ route }) {
         return (
             <>
                 <MMItemCard name={'Your Profile'} icon={'person-outline'} routeName={"Home"} />
-                <MMItemCard name={'Address Book'} icon={'book-outline'} routeName={"Home"} />
+                <MMItemCard name={'Address Book'} icon={'book-outline'} routeName={"AddressBook"} />
                 <MMItemCard name={'Orders'} icon={'cart-outline'} routeName={"Home"} />
                 <MMItemCard name={'Baby Profiles'} icon={'heart-outline'} routeName={"Home"} />
                 <MMItemCard name={'Notifications'} icon={'notifications-outline'} routeName={"Home"} />

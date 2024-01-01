@@ -23,14 +23,15 @@ const fontConfig = {
   displayMedium: {
     fontSize: 20, // Secondary headings
     fontWeight: 400, // Bold style for emphasis
-    color: '#153634',
+    color: '#000',
+    lineHeight: 20,
     fontFamily: 'MaisonNeue-Book',
   },
   // Labels
   labelLarge: {
     fontSize: 22, // Secondary headings
     fontWeight: 600, // Bold style for emphasis
-    color: '#153634',
+    color: '#000',
     lineHeight: 22,
     fontFamily: 'MaisonNeue-Bold',
   },

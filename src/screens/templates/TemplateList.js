@@ -33,7 +33,7 @@ export default function TemplateList({ navigation, route }) {
     const renderView = () => {
         return (
             <FlatList
-                data={lookupData.template}
+                data={lookupData.templates}
                 columnWrapperStyle={{ alignContent: 'center' }}
                 ListHeaderComponent={<MMPageTitle title='Select Layout' />}
                 renderItem={renderTemplate}

@@ -54,43 +54,42 @@ export default function MainTemplate({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const fileName = _.head(photo.uri.match(/[^\/]+$/));
-            const response = await MMApiService.getPreSignedUrl(fileName);
+            const response = await MMApiService.getPagePreSignedUrl(selectedBaby._id, fileName);
             const responseData = response.data;
             if (responseData) {
-                const imageDetails = [...templateData];
+                const result = await MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
+                if (result) {
+                    const imageDetails = [...templateData];
 
-                //find selected box index
-                const boxName = pageId ? key : selectedName;
-                const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
+                    //find selected box index
+                    const boxName = pageId ? key : selectedName;
+                    const existingItemIndex = imageDetails.findIndex(item => item.name === boxName);
 
-                // Update existing item with new image URI and dynamic type
-                if (existingItemIndex >= 0) {
-                    imageDetails[existingItemIndex] = {
-                        ...imageDetails[existingItemIndex],
-                        value: responseData.storageFileKey,
-                        source: photo.uri, imageParam: {
-                            height: containerSize.height,
-                            width: containerSize.width,
-                        }
-                    };
-                } else {
-                    // Create a new item if it doesn't exist
-                    imageDetails.push({
-                        name: selectedName, type: selectedType,
-                        value: responseData.storageFileKey,
-                        source: photo.uri, imageParam: {
-                            height: photo.height,
-                            width: photo.width
-                        }
-                    });
-                }
-
-                setTemplateData(imageDetails);
-                const result = MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
-                if (_.isNil(result)) {
-                    MMUtils.showToastMessage(`Uploading picture failed...`);
-                } else {
+                    // Update existing item with new image URI and dynamic type
+                    if (existingItemIndex >= 0) {
+                        imageDetails[existingItemIndex] = {
+                            ...imageDetails[existingItemIndex],
+                            value: responseData.storageFileKey,
+                            source: photo.uri, imageParam: {
+                                height: containerSize.height,
+                                width: containerSize.width,
+                            }
+                        };
+                    } else {
+                        // Create a new item if it doesn't exist
+                        imageDetails.push({
+                            name: selectedName, type: selectedType,
+                            value: responseData.storageFileKey,
+                            source: photo.uri, imageParam: {
+                                height: photo.height,
+                                width: photo.width
+                            }
+                        });
+                    }
+                    setTemplateData(imageDetails);
                     MMUtils.showToastMessage(`Uploading picture completed.`);
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
                 }
             } else {
                 MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
@@ -101,7 +100,6 @@ export default function MainTemplate({ navigation, route }) {
             MMUtils.consoleError(err);
         }
         return storageFileKeys;
-
     };
 
     const onPickImage = (name, type, width, height) => {
@@ -129,7 +127,7 @@ export default function MainTemplate({ navigation, route }) {
         const response = await MMApiService.savePage(apiData);
         if (response) {
             dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('Home');
+            navigation.navigate('BookPreview');
         }
         setOverlayLoading(false);
     };
@@ -141,7 +139,7 @@ export default function MainTemplate({ navigation, route }) {
         if (response) {
             setOverlayLoading(false);
             dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('Home');
+            navigation.navigate('BookPreview');
         }
         setOverlayLoading(false);
     }
@@ -185,7 +183,6 @@ export default function MainTemplate({ navigation, route }) {
                                 width={'45%'}
                             />
                         </>
-
                 }
             </MMActionButtons>
         )
@@ -202,19 +199,17 @@ export default function MainTemplate({ navigation, route }) {
                         pageId={pageId}
                         onImageChange={onImageChange} />
                 </View>
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                <View style={{ marginTop: MMConstants.marginLarge }}>
                     <MMInput
-                        label='Page Header Text'
-                        maxLength={30}
+                        maxLength={50}
                         value={pageText.headerText}
                         onChangeText={(value) => onInputChange('headerText', value)}
                         placeholder="Enter Page Header"
                     />
                 </View>
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                <View style={{ marginTop: MMConstants.marginSmall }}>
                     <MMInput
-                        label='Page Footer Text'
-                        maxLength={30}
+                        maxLength={50}
                         value={pageText.footerText}
                         onChangeText={(value) => onInputChange('footerText', value)}
                         placeholder="Enter Page Footer"

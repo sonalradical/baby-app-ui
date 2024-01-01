@@ -4,21 +4,21 @@ import { Text, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-import MMUtils from '../../helpers/Utils';
-import MMConstants from '../../helpers/Constants';
-import MMApiService from '../../services/ApiService';
-import MMContentContainer from '../../components/common/ContentContainer';
-import MMScrollView from '../../components/common/ScrollView';
 import { Dimensions, Image, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
-import MMInput from '../../components/common/Input';
-import MMDateTimePicker from '../../components/common/DateTimePicker';
-import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
 import { MMButton, MMOutlineButton } from '../../components/common/Button';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMDateTimePicker from '../../components/common/DateTimePicker';
+import MMFlexView from '../../components/common/FlexView';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import MMInput from '../../components/common/Input';
 import MMInputMultiline from '../../components/common/InputMultiline';
-import MMPageTitle from '../../components/common/PageTitle';
-import MMFlexView from '../../components/common/FlexView';
+import MMScrollView from '../../components/common/ScrollView';
+import MMSpinner, { MMOverlaySpinner } from '../../components/common/Spinner';
+import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
+import MMApiService from '../../services/ApiService';
+import MMActionButtons from '../../components/common/ActionButtons';
 
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
@@ -172,12 +172,16 @@ export default function MilestoneQuiz({ navigation, route }) {
         return (
             <>
                 <View style={{ padding: MMConstants.paddingLarge }}>
-                    <MMInputMultiline
-                        value={state.description}
-                        onChangeText={onTextChange}
-                        placeholder="Enter Description"
-                        maxLength={2000}
-                    />
+                    <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                        <MMInputMultiline
+                            value={state.description}
+                            onChangeText={onTextChange}
+                            placeholder="Enter Description"
+                            maxLength={2000}
+                        />
+                        <Text style={{ textAlign: 'right' }}>
+                            {state.description.length > 0 ? `${state.description.length} / 2000` : '0 / 2000'}</Text>
+                    </View>
                     <View style={{ paddingTop: MMConstants.paddingLarge }}>
                         <MMInput
                             name='date'
@@ -220,20 +224,25 @@ export default function MilestoneQuiz({ navigation, route }) {
                             </View> : null
                         }
                         {imageSource ?
-                            <TouchableOpacity onPress={toggleModal}>
+                            <TouchableOpacity onPress={toggleModal} style={{ paddingTop: MMConstants.paddingMedium }}>
                                 <Image source={{ uri: imageSource }}
                                     style={{ height: Dimensions.get('window').height / 4, width: '100%' }} />
                             </TouchableOpacity> : null}
                     </>
-                    <MMFlexView paddingTop={20}>
-                        <MMOutlineButton label='Cancel' width='45%' onPress={() => navigation.goBack()} />
-                        <MMButton label='Save' width='45%' onPress={() => onSubmit()} />
-                    </MMFlexView>
                 </View>
                 <MMImagePickerModal visible={isModalVisible} toggleModal={toggleModal} onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>
         );
     };
+
+    const renderActionButtons = () => {
+        return (
+            <MMActionButtons type='bottomFixed'>
+                <MMOutlineButton label='Cancel' width='45%' onPress={() => navigation.goBack()} />
+                <MMButton label='Save' width='45%' onPress={() => onSubmit()} />
+            </MMActionButtons>
+        )
+    }
 
     const renderScreenHeader = () => {
         if (!questions || questions.length === 0) return null;
@@ -255,6 +264,7 @@ export default function MilestoneQuiz({ navigation, route }) {
                 <MMScrollView>
                     {isLoading ? <MMSpinner /> : renderView()}
                 </MMScrollView>
+                {renderActionButtons()}
                 <MMOverlaySpinner visible={isOverlayLoading} />
             </MMContentContainer>
         </>

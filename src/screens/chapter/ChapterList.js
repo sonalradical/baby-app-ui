@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
 
@@ -8,6 +7,7 @@ import { useSelector } from 'react-redux';
 import CircularProgress, {
     CircularProgressWithChild,
 } from 'react-native-circular-progress-indicator';
+import { useNavigation } from '@react-navigation/native';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -15,7 +15,6 @@ import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
 import MMPageTitle from '../../components/common/PageTitle';
 
 export default function ChapterList() {
@@ -53,15 +52,21 @@ export default function ChapterList() {
         }
     }
 
+    const whiteBg = styles(theme).whiteBg;
+    const image = styles(theme).image;
+
+    const paddingVertical = MMUtils.isPlatformAndroid() ? 22 : 25;
+
+    const chapterIconUrl = 'https://mm-uat.s3.ap-southeast-2.amazonaws.com/Chapter/';
 
     const renderView = () => {
         return (
             <>
                 <MMPageTitle title='Chapters' />
                 {_.map(chapterList, (chapter) => {
-                    const chapterImage = MMConstants.chapters[chapter.icon];
+                    const chapterImage = `${chapterIconUrl}${chapter.icon}.png`
                     return (
-                        <Card style={styles(theme).whiteBg} key={chapter._id}
+                        <Card style={whiteBg} key={chapter._id}
                             onPress={() => navigation.navigate('ChapterQuiz', {
                                 babyId: selectedBaby._id, chapterId: chapter._id,
                                 chapter: chapter, chapterImage: chapterImage
@@ -70,14 +75,21 @@ export default function ChapterList() {
                                 <Image
                                     textAlign="center"
                                     resizeMode="contain"
-                                    source={chapterImage}
-                                    style={styles(theme).image}
+                                    source={{
+                                        uri: chapterImage
+                                    }}
+                                    style={image}
+                                    onError={(error) => {
+                                        console.error("Error loading image:", error);
+                                        console.log("Chapter Image URL:", chapterImage);
+                                        // Provide a fallback image or handle the error in another way
+                                    }}
                                 />
-                                <View style={[MMUtils.isPlatformAndroid() ? { paddingVertical: 22 } : { paddingVertical: 25 }]}>
+                                <View style={{ paddingVertical }}>
                                     <Text style={[theme.fonts.labelLarge, { width: 150 }]} numberOfLines={1} ellipsizeMode='tail'>
                                         {chapter.title}</Text>
                                     <Text style={theme.fonts.labelMedium} numberOfLines={1} ellipsizeMode='tail'>
-                                        {'You’ve grown and learnt'}</Text>
+                                        {`You've grown and learnt`}</Text>
                                 </View>
                                 <View style={{ padding: MMConstants.paddingLarge }}>
                                     <CircularProgress value={chapter.totalAnswers}
@@ -100,11 +112,9 @@ export default function ChapterList() {
     };
 
     return (
-        <MMContentContainer>
-            <MMScrollView>
-                {isLoading ? <MMSpinner /> : renderView()}
-            </MMScrollView>
-        </MMContentContainer>
+        <MMScrollView>
+            {isLoading ? <MMSpinner /> : renderView()}
+        </MMScrollView>
     );
 }
 

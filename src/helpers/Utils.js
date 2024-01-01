@@ -151,41 +151,49 @@ function filterDataByQuery(data, query) {
 }
 
 
-function uploadPicture(picture, preSignedUrl, filetName = null) {
+async function uploadPicture(picture, preSignedUrl, filetName = null) {
     const fileUri = isPlatformAndroid() ? picture.uri : picture.uri.replace('file:', '');
     const fileName = picture.fileName ? picture.fileName : filetName
-    return uploadPictureToS3(preSignedUrl, fileUri, fileName);
-};
-
-function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
-    let result = {};
-
-    // only xhr style works; axios and S3 doesn't seem to like each other.
-    // todo: migrate this to use axios and/or use promises.
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', preSignedUrl);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === HttpStatusCode.Ok) {
-                result = {
-                    success: true
-                };
-            } else {
-                result = {
-                    success: false
-                };
-            }
-        }
+    try {
+        const result = await uploadPictureToS3(preSignedUrl, fileUri, fileName);
+        return result.success;
+    } catch (error) {
+        return error.error;
     }
-    xhr.setRequestHeader('Content-Type', 'image/jpeg');
-    xhr.send({
-        uri: fileUri,
-        type: 'image/jpeg',
-        name: fileName
-    });
-
-    return result;
 };
+
+async function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
+
+    try {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('PUT', preSignedUrl);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log('call.if');
+                        resolve({ success: true });
+                    } else {
+                        console.log('callelse');
+                        reject({ error: false });
+                    }
+                }
+            };
+
+            xhr.setRequestHeader('Content-Type', 'image/jpeg');
+
+            xhr.send({
+                uri: fileUri,
+                type: 'image/jpeg',
+                name: fileName
+            });
+        });
+    } catch (error) {
+        console.error('An error occurred during the upload:', error);
+        throw { success: false, errorMessage: 'An error occurred during the upload.' };
+    }
+}
 
 function getImagePath(picture) {
     return `${MMConfig().AWS_S3_BASE_URL}/${picture}`
@@ -246,6 +254,13 @@ function validateEmail(emailAddress) {
     }
     return false;
 }
+
+function formatCurrency(value) {
+    return value.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+};
 
 function apiErrorParamMessages(error) {
     const errors = error?.response?.data?.errors;
@@ -331,6 +346,7 @@ export default {
     apiErrorMessage,
     consoleError,
     validateEmail,
+    formatCurrency,
     formatString,
     getItemFromStorage,
     setItemToStorage,

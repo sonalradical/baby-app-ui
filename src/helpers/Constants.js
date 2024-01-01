@@ -8,6 +8,29 @@ const MMConstants = {
 
     otpTimeOut: 60000,
 
+    screens: {
+        login: 'Login',
+        otpView: 'OTPView',
+        signUp: 'SignUp',
+        addEditBaby: 'AddEditBaby',
+        logout: 'Logout',
+        chapterList: 'ChapterList',
+        chapterQuiz: 'ChapterQuiz',
+        footer: 'Footer',
+        header: 'Header',
+        milestoneList: 'MilestoneList',
+        milestoneQuiz: 'MilestoneQuiz',
+        initialSetup: 'InitialSetup',
+        templateList: 'TemplateList',
+        mainTemplate: 'MainTemplate',
+        order: 'Order',
+        address: 'Address',
+        addAddress: 'AddAddress',
+        home: 'Home',
+        bookPreview: 'BookPreview',
+        profile: 'Profile'
+    },
+
     chapters: {
         pregnancy: require('../assets/images/chapter/pregnancy.png'),
         adoption: require('../assets/images/chapter/adoption.png'),

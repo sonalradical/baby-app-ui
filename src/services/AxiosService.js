@@ -2,13 +2,13 @@ import axios from 'axios';
 import * as _ from 'lodash';
 
 import { store } from '../redux/Store/configureStores';
+import { setLogout } from '../redux/Slice/AuthSlice';
 
 import MMUtils from '../helpers/Utils';
 import MMEnums from '../helpers/Enums';
+import MMConfig from '../helpers/Config';
 
-// Defaults
-axios.defaults.baseURL = 'http://localhost:4000/';
-
+axios.defaults.baseURL = MMConfig().baseApiUrl;
 const { dispatch, getState } = store;
 
 // Request interceptor
@@ -30,7 +30,7 @@ axios.interceptors.request.use(async (config) => {
 // Response interceptor
 axios.interceptors.response.use(async (response) => {
 
-    const { status, friendlyMassage, error } = response.data;
+    const { status, friendlyMassage } = response.data;
     switch (status) {
         case MMEnums.ServiceResult.Ok:
             if (friendlyMassage) {
@@ -44,7 +44,6 @@ axios.interceptors.response.use(async (response) => {
             MMUtils.removeItemFromStorage(MMEnums.storage.accessToken);
             MMUtils.removeItemFromStorage(MMEnums.storage.userDetail);
             dispatch(setLogout());
-            MMUtils.showToastMessage(error.message);
             break;
         default:
             MMUtils.showToastMessage(friendlyMassage);
@@ -55,7 +54,7 @@ axios.interceptors.response.use(async (response) => {
     console.log('API Response Errors: ', error);
     if (error.message === 'Network Error') {
         // Handle network errors separately
-        MMUtils.showToastMessage('Network Error: Please check your internet connection.');
+        MMUtils.showToastMessage('Connection failed.');
     }
     else if (error.response.status === MMEnums.ServiceResult.NotFound) {
         const errorMessage = error.response.data.message;

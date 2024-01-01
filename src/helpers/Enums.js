@@ -39,6 +39,11 @@ const MMEnums = {
         toddlerMum: 'toddlerMum',
         mumToMultiple: 'mumToMultiple'
     },
+    addressType: {
+        home: 'home',
+        work: 'work',
+        other: 'other'
+    }
 };
 
 export default MMEnums;

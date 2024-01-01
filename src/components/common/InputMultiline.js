@@ -4,40 +4,36 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { useTheme, TextInput } from 'react-native-paper';
 import MMConstants from '../../helpers/Constants';
 
-const MMInputMultiline = ({ name, label, placeholder, maxLength, mode, errorText, ...props }) => {
+const MMInputMultiline = ({ name, placeholder, maxLength, mode, errorText, ...props }) => {
 	const theme = useTheme();
 
 	return (
-		<View style={styles(theme).container}>
-			<TextInput
-				name={name}
-				placeholder={placeholder}
-				multiline={true}
-				numberOfLines={20}
-				maxLength={maxLength}
-				autoCapitalize='sentences'
-				keyboardType='default'
-				errorText={errorText}
-				mode={mode}
-				label=''
-				{...props}
-				style={styles(theme).textMultiline}
-				{...props}
-			/>
-		</View>
+		<TextInput
+			name={name}
+			placeholder={placeholder}
+			multiline={true}
+			numberOfLines={20}
+			maxLength={maxLength}
+			autoCapitalize='sentences'
+			keyboardType='default'
+			errorText={errorText}
+			mode={'outlined'}
+			{...props}
+			outlineStyle={{ borderColor: theme.colors.onPrimary, borderBottomColor: theme.colors.outline }}
+			style={styles(theme).textMultiline}
+			{...props}
+		/>
 	)
 };
 
 const styles = (theme) => StyleSheet.create({
-	container: {
-		width: '100%',
-		height: Dimensions.get('window').height / 3,
-		borderRadius: 20
-	},
+
 	textMultiline: {
 		backgroundColor: theme.colors.secondaryContainer,
 		marginBottom: MMConstants.marginMedium,
-		marginTop: MMConstants.marginSmall
+		marginTop: MMConstants.marginSmall,
+		height: Dimensions.get('window').height / 3,
+
 	},
 });
 
