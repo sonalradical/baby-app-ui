@@ -376,7 +376,7 @@ export default function ChapterQuiz({ navigation, route }) {
                 shadowRadius: 4,
                 shadowOffset: { width: -2, height: 4 }
             }}>
-                <Avatar.Image size={36} source={chapterImage} style={{ backgroundColor: theme.colors.secondaryContainer }} />
+                <Avatar.Image size={36} source={{ uri: chapterImage }} style={{ backgroundColor: theme.colors.secondaryContainer }} />
                 <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{chapter.title}</Text>
             </View>
         );
