@@ -8,6 +8,7 @@ import CircularProgress, {
     CircularProgressWithChild,
 } from 'react-native-circular-progress-indicator';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -72,7 +73,7 @@ export default function ChapterList() {
                                 chapter: chapter, chapterImage: chapterImage
                             })}>
                             <View style={{ flexDirection: 'row', padding: MMConstants.paddingMedium, justifyContent: 'space-between' }}>
-                                <Image
+                                <FastImage
                                     textAlign="center"
                                     resizeMode="contain"
                                     source={{
