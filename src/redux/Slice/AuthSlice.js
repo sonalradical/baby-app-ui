@@ -6,6 +6,7 @@ const initialState = {
 		isLoading: false,
 		userDetail: null,
 		accessToken: null,
+		refreshToken: null,
 	},
 	lookupData: []
 };
@@ -16,13 +17,10 @@ const AuthReducer = createSlice({
 	initialState: initialState,
 	reducers: {
 		setLogin: (state, action) => {
-			state.auth = {
-				...state.auth,
-				isLoggedOut: false,
-				userDetail: action.payload.userDetail,
-				accessToken: action.payload.accessToken,
-				isLoading: false
-			};
+			return {
+				...state,
+				auth: { ...state.auth, ...action.payload }
+			}
 		},
 		setLogout: (state, action) => {
 			state.auth = {
@@ -30,6 +28,7 @@ const AuthReducer = createSlice({
 				isLoggedOut: true,
 				userDetail: null,
 				accessToken: null,
+				refreshToken: null
 			};
 		},
 		setLookupData: (state, action) => {

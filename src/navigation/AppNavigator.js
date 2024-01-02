@@ -36,6 +36,7 @@ import MainTemplate from '../screens/templates/MainTemplate';
 import Order from '../screens/orders/Order';
 import AddAddress from '../screens/address/AddAddress';
 import AddressBook from '../screens/address/AddressBook';
+import AddFamilyMember from '../screens/familyMember/AddFamilyMember';
 
 // Auth Stack Screens
 const AuthStack = createStackNavigator();
@@ -141,6 +142,14 @@ function AppStackNavigator(userDetail) {
                 <AppStack.Screen
                     name="AddressBook"
                     component={AddressBook}
+                    options={{
+                        headerShown: true,
+                        header: (props) => <Header showHome={true} />,
+                    }}
+                />
+                <AppStack.Screen
+                    name="AddFamilyMember"
+                    component={AddFamilyMember}
                     options={{
                         headerShown: true,
                         header: (props) => <Header showHome={true} />,

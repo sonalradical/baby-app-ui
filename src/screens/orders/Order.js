@@ -148,19 +148,11 @@ export default function Order({ navigation }) {
                 totalPrice: bookDetail.totalPrice,
                 addressId: addressDetail._id
             };
-            await MMApiService.saveOrder(apiData)
-                .then(function (response) {
-                    if (response) {
-                        setPopUpVisible(false);
-                        navigation.navigate('Home');
-                    }
-                })
-                .catch(function (error) {
-                    const serverError = MMUtils.apiErrorMessage(error);
-                    if (serverError) {
-                        MMUtils.showToastMessage(serverError);
-                    }
-                });
+            const { data } = await MMApiService.saveOrder(apiData);
+            if (data) {
+                setPopUpVisible(false);
+                navigation.navigate('Home');
+            }
         } catch (err) {
             MMUtils.consoleError(err);
         }

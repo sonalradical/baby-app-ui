@@ -34,9 +34,9 @@ async function resendOTP(data) {
     return result;
 }
 
-async function userLoginWithPassword(authTokan) {
+async function userLoginWithPassword(authTokan, deviceId) {
     const config = {
-        url: `auth/login/${authTokan}/${'65780c81d2a96049f98a0808'}`,
+        url: `auth/login/${authTokan}/${deviceId}`,
         method: 'post'
     };
     const result = await axios(config);
@@ -46,6 +46,16 @@ async function userLoginWithPassword(authTokan) {
 async function userLoginWithOTP(data) {
     const config = {
         url: `auth/generateOTP`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function getToken(data) {
+    const config = {
+        url: `auth/refreshToken`,
         method: 'post',
         data: data
     };
@@ -64,11 +74,44 @@ async function getLookupData() {
 
 //#endregion
 
+//------------------------------------------------------------------ Device API
+
+async function saveDevice(data) {
+    const config = {
+        url: `device/save`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+//#end
+
 //------------------------------------------------------------------- Manage User APIs
 
 async function updateInItProfile(data) {
     const config = {
         url: `user/updateInitProfile`,
+        method: 'put',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function getUserDetail(mobileNumber) {
+    const config = {
+        url: `user/get/${mobileNumber}`,
+        method: 'get'
+    };
+    const result = await axios(config);
+    return result;
+}
+
+async function updateProfile(data) {
+    const config = {
+        url: `user/update`,
         method: 'put',
         data: data
     };
@@ -261,6 +304,20 @@ async function getProductList() {
 }
 
 //#end
+
+//------------------------------------------------------------------ Link User API
+
+async function linkFamilyMember(data) {
+    const config = {
+        url: `linkUser/inviteFamilyMember`,
+        method: 'post',
+        data: data
+    };
+    const result = await axios(config);
+    return result;
+}
+//#end
+
 //------------------------------------------------------------------ Image upload API
 
 async function getPreSignedUrl(fileName) {
@@ -309,7 +366,11 @@ export default {
     resendOTP,
     userLoginWithPassword,
     userLoginWithOTP,
+    getUserDetail,
+    updateProfile,
+    getToken,
     getLookupData,
+    saveDevice,
     updateInItProfile,
     babyList,
     addInit,
@@ -328,6 +389,7 @@ export default {
     deletePage,
     savePage,
     getProductList,
+    linkFamilyMember,
     getPagePreSignedUrl,
     getPreSignedUrl,
     getFile,

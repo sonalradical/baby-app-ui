@@ -163,7 +163,6 @@ async function uploadPicture(picture, preSignedUrl, filetName = null) {
 };
 
 async function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
-
     try {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -181,7 +180,7 @@ async function uploadPictureToS3(preSignedUrl, fileUri, fileName) {
                 }
             };
 
-            xhr.setRequestHeader('Content-Type', 'image/jpeg');
+            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
 
             xhr.send({
                 uri: fileUri,
@@ -242,6 +241,17 @@ const numberToWords = (num) => {
     return result.trim();
 };
 
+function isValidCombination(templateName, arrayLength) {
+    const conditions = [
+        _.includes(['Column2', 'Row2'], templateName) && arrayLength === 2,
+        _.includes(['Column-Row2', 'Column2-Row', 'Row-Column2', 'Row2-Column'], templateName) && arrayLength === 3,
+        _.includes(['Column1-Row3', 'Row2-Column2', 'Row3-Column1'], templateName) && arrayLength === 4,
+        templateName === 'Blank' && arrayLength === 1, templateName === 'Row3-Column3' && arrayLength === 6,
+        templateName === 'Row4-Column4' && arrayLength === 8
+    ];
+
+    return _.some(conditions);
+}
 
 // #endregion
 
@@ -345,6 +355,7 @@ export default {
     clientErrorMessages,
     apiErrorMessage,
     consoleError,
+    isValidCombination,
     validateEmail,
     formatCurrency,
     formatString,

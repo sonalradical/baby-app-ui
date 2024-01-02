@@ -1,13 +1,12 @@
-import _ from 'lodash';
-import PropTypes from 'prop-types';
+
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
 
-import MMContentContainer from '../../components/common/ContentContainer';
-import MMInputMultiline from '../../components/common/InputMultiline';
-import MMSpinner from '../../components/common/Spinner';
+import { useDispatch } from 'react-redux';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import Swiper from 'react-native-swiper';
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
@@ -19,6 +18,9 @@ import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
 import MMInput from '../../components/common/Input';
 import MMScrollView from '../../components/common/ScrollView';
+import MMContentContainer from '../../components/common/ContentContainer';
+import MMInputMultiline from '../../components/common/InputMultiline';
+import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
 
@@ -196,7 +198,6 @@ export default function ChapterQuiz({ navigation, route }) {
 
     };
 
-
     const onAddOption = () => {
         if (newOption.trim() !== '') {
             const updatedOptions = [...questionList[selectedQuestion].options, newOption];
@@ -212,6 +213,14 @@ export default function ChapterQuiz({ navigation, route }) {
             });
             setSelectedAnswer([...selectedAnswer, newOption]);
             setNewOption('');
+        }
+    };
+
+    const onSwipe = (index) => {
+        if (index < selectedQuestion) {
+            onPreviousClick();
+        } else if (index > selectedQuestion) {
+            onNextClick();
         }
     };
 
@@ -239,29 +248,34 @@ export default function ChapterQuiz({ navigation, route }) {
                         </View>
                     )}
                     {currentQuestionType === MMEnums.questionType.checkbox && (
-                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            {questionList[selectedQuestion].options.map((option, index) => (
-                                <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
-                                    <Checkbox.Android
-                                        status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
-                                        onPress={() => onCheckboxChange(option)}
-                                        position='leading'
+                        <MMScrollView style={{ height: '90%' }}>
+                            <View style={{ paddingTop: MMConstants.paddingLarge }}>
+
+                                {questionList[selectedQuestion].options.map((option, index) => (
+                                    <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
+                                        <Checkbox.Android
+                                            status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
+                                            onPress={() => onCheckboxChange(option)}
+                                            position='leading'
+                                        />
+                                        <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
+                                    </View>
+                                ))}
+
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
+
+                                    <MMInput placeholder='Add something different' value={newOption}
+                                        onChangeText={(text) => setNewOption(text)}
+                                        containerWidth={'75%'}
                                     />
-                                    <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
+                                    <MMButton label={'Add'}
+                                        width={'22%'}
+                                        marginVertical={0}
+                                        onPress={onAddOption}
+                                        borderRadius={10} />
                                 </View>
-                            ))}
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
-                                <MMInput placeholder='Add something different' value={newOption}
-                                    onChangeText={(text) => setNewOption(text)}
-                                    containerWidth={'75%'}
-                                />
-                                <MMButton label={'Add'}
-                                    width={'22%'}
-                                    marginVertical={0}
-                                    onPress={onAddOption}
-                                    borderRadius={10} />
                             </View>
-                        </View>
+                        </MMScrollView>
                     )}
                     {currentQuestionType === MMEnums.questionType.textArea && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
@@ -368,13 +382,29 @@ export default function ChapterQuiz({ navigation, route }) {
         );
     };
 
+    const renderQuestionSlides = () => {
+        return questionList.map((question, index) => (
+            <View key={index}>
+                {renderView()}
+            </View>
+        ));
+    };
+
     return (
         <>
             {renderScreenHeader()}
             <MMContentContainer>
-                <MMScrollView>
-                    {isLoading ? <MMSpinner /> : renderView()}
-                </MMScrollView>
+                {isLoading ? <MMSpinner /> :
+                    <Swiper
+                        loop={false}
+                        index={selectedQuestion}
+                        onIndexChanged={onSwipe}
+                        showsPagination={false}
+                        showsButtons={false}
+                        removeClippedSubviews={true}
+                    >
+                        {renderQuestionSlides()}
+                    </Swiper>}
             </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}

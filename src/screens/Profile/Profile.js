@@ -18,7 +18,7 @@ export default function Profile({ route }) {
     const theme = useTheme();
     const { userDetail } = useSelector((state) => state.AuthReducer.auth);
 
-    const MMItemCard = ({ name, icon, routeName }) => {
+    const MMItemCard = ({ name, icon, routeName, routeParams = null }) => {
         return (
             <Card style={{
                 backgroundColor: theme.colors.secondaryContainer,
@@ -26,7 +26,7 @@ export default function Profile({ route }) {
                 paddingHorizontal: 10,
                 elevation: 3
             }}
-                onPress={() => navigation.navigate(routeName)}>
+                onPress={() => navigation.navigate(routeName, routeParams)}>
                 <Card.Title
                     title={name}
                     titleStyle={[theme.fonts.bodyLarge, { marginTop: MMConstants.marginSmall }]}
@@ -55,10 +55,10 @@ export default function Profile({ route }) {
     const renderView = () => {
         return (
             <>
-                <MMItemCard name={'Your Profile'} icon={'person-outline'} routeName={"Home"} />
+                <MMItemCard name={'Your Profile'} icon={'person-outline'} routeName={"SignUp"} routeParams={{ mobileNumber: userDetail.mobileNumber }} />
                 <MMItemCard name={'Address Book'} icon={'book-outline'} routeName={"AddressBook"} />
                 <MMItemCard name={'Orders'} icon={'cart-outline'} routeName={"Home"} />
-                <MMItemCard name={'Baby Profiles'} icon={'heart-outline'} routeName={"Home"} />
+                <MMItemCard name={'Add Family Member'} icon={'heart-outline'} routeName={"AddFamilyMember"} />
                 <MMItemCard name={'Notifications'} icon={'notifications-outline'} routeName={"Home"} />
                 <MMItemCard name={'Privacy'} icon={'shield-checkmark-outline'} routeName={"Home"} />
                 <MMItemCard name={'Contact Us'} icon={'mail-outline'} routeName={"Home"} />

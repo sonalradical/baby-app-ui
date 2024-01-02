@@ -156,7 +156,6 @@ export default function InitialSetup({ route, navigation }) {
                 setOverlayLoading(false);
             })
             .catch((errors) => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)

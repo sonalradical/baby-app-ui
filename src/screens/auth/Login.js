@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Keyboard } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
@@ -6,6 +6,7 @@ import { validateAll } from 'indicative/validator';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 
 import { setLogin } from '../../redux/Slice/AuthSlice';
 
@@ -25,6 +26,7 @@ export default function Login({ navigation }) {
     const theme = useTheme();
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
+    const [deviceId, setDeviceId] = useState(null);
     const dispatch = useDispatch();
 
     const initState = {
@@ -33,6 +35,57 @@ export default function Login({ navigation }) {
         errors: {},
     };
     const [state, setState] = useState(initState);
+
+    useEffect(() => {
+        async function bootstrapAsync() {
+            setOverlayLoading(true);
+            try {
+                const deviceId = await MMUtils.getItemFromStorage(MMEnums.storage.deviceId);
+                if (_.isNil(deviceId)) {
+                    addNewDevice();
+                } else {
+                    // device exists in store
+                    // MMUtils.consoleError(`Device: ${deviceId} found in mobile cache`);
+                    setDeviceId(deviceId);
+                }
+            } catch (error) {
+                MMUtils.consoleError(error);
+            }
+            setOverlayLoading(false);
+        }
+        bootstrapAsync();
+    }, []);
+
+    const addNewDevice = async () => {
+        const deviceJSON = {
+            deviceId: await DeviceInfo.getDeviceId(),
+            deviceName: await DeviceInfo.getDeviceName(),
+            brand: await DeviceInfo.getBrand(),
+            manufacturer: await DeviceInfo.getManufacturer(),
+            appName: await DeviceInfo.getApplicationName(),
+            appBuildId: await DeviceInfo.getBuildNumber(),
+            osName: await DeviceInfo.getBaseOs(),
+            osVersion: await DeviceInfo.getVersion(),
+            osBuildId: await DeviceInfo.getBuildId(),
+            totalMemory: await DeviceInfo.getTotalMemory(),
+            totalDiskStorage: await DeviceInfo.getFreeDiskStorage(),
+            ipAddress: await DeviceInfo.getIpAddress(),
+        };
+        try {
+            const { data } = await MMApiService.saveDevice(deviceJSON);
+            if (data) {
+                setOverlayLoading(false);
+                setDeviceId(data);
+                await MMUtils.setItemToStorage(MMEnums.storage.deviceId, data);
+            }
+        } catch (err) {
+            setOverlayLoading(false);
+            setState({
+                ...state,
+                errors: MMUtils.apiErrorParamMessages(err)
+            });
+        }
+    }
 
     const onInputChange = (field, value) => {
         setState({
@@ -61,41 +114,31 @@ export default function Login({ navigation }) {
             .then(async () => {
                 setOverlayLoading(true);
                 const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
-                await MMApiService.userLoginWithPassword(authTokan)
-                    .then(function (response) {
+                const { data } = await MMApiService.userLoginWithPassword(authTokan, deviceId);
+                if (data) {
+                    const { accessToken, refreshToken, userDetail } = data;
+                    const userDetails = {
+                        accessToken,
+                        refreshToken,
+                        userDetail: {
+                            ...userDetail,
+                            childCount: userDetail.childCount ? userDetail.childCount : 0,
+                            dueDate: userDetail.dueDate ? userDetail.dueDate : null
+                        },
+                    };
+                    MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                    MMUtils.setItemToStorage(MMEnums.storage.refreshToken, userDetails.refreshToken);
+                    MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
 
-                        const responseData = response.data;
-                        if (responseData) {
-                            const { accessToken, userDetail } = responseData;
-                            const userDetails = {
-                                accessToken,
-                                userDetail: {
-                                    _id: userDetail._id,
-                                    mobileNumber: userDetail.mobileNumber,
-                                    name: userDetail.name,
-                                    email: userDetail.email,
-                                    password: userDetail.password,
-                                    gender: userDetail.gender,
-                                    childCount: userDetail.childCount ? userDetail.childCount : 0
-                                },
-                            };
-                            MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
-                            MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
-
-                            dispatch(setLogin({ userDetail: userDetails.userDetail, accessToken: userDetails.accessToken }));
-                        }
-
-                    })
-                    .catch(function (error) {
-                        setState({
-                            ...state,
-                            errors: MMUtils.apiErrorParamMessages(error)
-                        });
-                    });
+                    dispatch(setLogin({
+                        userDetail: userDetails.userDetail,
+                        accessToken: userDetails.accessToken,
+                        refreshToken: userDetails.refreshToken
+                    }));
+                }
                 setOverlayLoading(false);
             })
             .catch(errors => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
@@ -114,24 +157,13 @@ export default function Login({ navigation }) {
                 const apiData = {
                     mobileNumber: state.mobileNumber
                 };
-
-                await MMApiService.userLoginWithOTP(apiData)
-                    .then(function (response) {
-                        if (response) {
-                            navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
-                        }
-
-                    })
-                    .catch(function (error) {
-                        setState({
-                            ...state,
-                            errors: MMUtils.apiErrorParamMessages(error)
-                        });
-                    })
+                const { data } = await MMApiService.userLoginWithOTP(apiData);
+                if (data) {
+                    navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+                }
                 setOverlayLoading(false);
             })
             .catch(errors => {
-                console.log("Validation Errors:", errors);
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
@@ -186,7 +218,7 @@ export default function Login({ navigation }) {
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={[theme.fonts.default]}>Need an account ? </Text>
-                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate('SignUp')} />
+                        <MMTransparentButton label='SIGN UP' onPress={() => navigation.navigate('SignUp', { deviceId: deviceId })} />
                     </View>
                 </View>
             </MMSurface >

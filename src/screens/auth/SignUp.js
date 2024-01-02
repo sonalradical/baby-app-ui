@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import { Checkbox, RadioButton, useTheme } from 'react-native-paper';
+import { Checkbox, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import MMUtils from '../../helpers/Utils'
+import { setLogin } from '../../redux/Slice/AuthSlice';
+
+import MMUtils from '../../helpers/Utils';
+import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
@@ -21,6 +24,8 @@ import MMAuthHeader from '../../components/common/AuthHeader';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const { deviceId, mobileNumber } = route.params || '';
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
@@ -36,6 +41,36 @@ export default function SignUp({ navigation, route }) {
     };
     const [state, setState] = useState(initState);
 
+    useEffect(() => {
+        if (mobileNumber) {
+            Init();
+        }
+    }, [mobileNumber]);
+
+    async function Init() {
+        try {
+            setOverlayLoading(true);
+            const { data } = await MMApiService.getUserDetail(mobileNumber);
+            if (data) {
+                const userDetail = data.userDetail;
+                setState({
+                    ...state,
+                    mobileNumber: userDetail.mobileNumber,
+                    name: userDetail.name,
+                    email: userDetail.email,
+                    gender: userDetail.gender
+                })
+            }
+            setOverlayLoading(false);
+        } catch (error) {
+            setOverlayLoading(false);
+            const serverError = MMUtils.apiErrorMessage(error);
+            if (serverError) {
+                MMUtils.showToastMessage(serverError);
+            }
+        }
+    }
+
     const onInputChange = (field, value) => {
         setState({
             ...state,
@@ -47,22 +82,22 @@ export default function SignUp({ navigation, route }) {
         });
     };
 
+    const messages = {
+        'mobileNumber.required': 'Please enter mobile no.',
+        'mobileNumber.min': 'Mobile number must be 10 digits.',
+        'name.required': 'Please enter name.',
+        'email.required': 'Please enter email.',
+        'email.email': 'Email address is not in a valid format.',
+        'password.required': 'Please enter password.',
+        'password.min': 'Password should have a minimum of 8 characters.',
+        'gender.required': 'Please select gender.',
+        'terms.required': 'please Accept Terms.',
+    };
+
     const onSubmit = () => {
         if (isOverlayLoading) {
             return;
         }
-
-        const messages = {
-            'mobileNumber.required': 'Please enter mobile no.',
-            'mobileNumber.min': 'Mobile number must be 10 digits.',
-            'name.required': 'Please enter name.',
-            'email.required': 'Please enter email.',
-            'email.email': 'Email address is not in a valid format.',
-            'password.required': 'Please enter password.',
-            'password.min': 'Password should have a minimum of 8 characters.',
-            'gender.required': 'Please select gender.',
-            'terms.required': 'please Accept Terms.',
-        };
 
         const rules = {
             mobileNumber: 'required|string|min:10',
@@ -102,7 +137,7 @@ export default function SignUp({ navigation, route }) {
         });
     };
 
-    async function onSignUp() {
+    const onSignUp = async () => {
         try {
             const apiData = {
                 mobileNumber: state.mobileNumber,
@@ -111,24 +146,70 @@ export default function SignUp({ navigation, route }) {
                 password: state.password,
                 gender: state.gender,
             };
-            await MMApiService.userSignup(apiData)
-                .then(function (response) {
-                    if (response) {
-                        navigation.navigate('Otp', { mobileNumber: state.mobileNumber });
-                    }
-                })
-                .catch(function (error) {
-                    setState({
-                        ...state,
-                        errors: MMUtils.apiErrorParamMessages(error)
-                    });
-                });
+            const { data } = await MMApiService.userSignup(apiData);
+            if (data) {
+                navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+            }
             setOverlayLoading(false);
         } catch (err) {
             MMUtils.consoleError(err);
             setOverlayLoading(false);
         }
     }
+
+    const onUpdateProfile = () => {
+        if (isOverlayLoading) {
+            return;
+        }
+        const rules = {
+            name: 'required|string',
+        };
+        validateAll(state, rules, messages)
+            .then(async () => {
+                setOverlayLoading(true);
+                try {
+                    const apiData = {
+                        mobileNumber: state.mobileNumber,
+                        name: state.name,
+                        email: state.email,
+                        gender: state.gender,
+                    };
+                    const { data } = await MMApiService.updateProfile(apiData)
+                    if (data) {
+                        const { accessToken, updatedUser } = data;
+                        const userDetails = {
+                            accessToken,
+                            userDetail: {
+                                _id: updatedUser._id,
+                                mobileNumber: updatedUser.mobileNumber,
+                                name: updatedUser.name,
+                                email: updatedUser.email,
+                                childCount: updatedUser.childCount ? updatedUser.childCount : 0,
+                                dueDate: updatedUser.dueDate ? updatedUser.dueDate : null
+                            },
+                        };
+                        MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                        MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
+
+                        dispatch(setLogin({
+                            userDetail: userDetails.userDetail,
+                            accessToken: userDetails.accessToken,
+                        }));
+                        navigation.navigate('Home');
+                    }
+                } catch (err) {
+                    MMUtils.consoleError(err);
+                }
+                setOverlayLoading(false);
+            })
+            .catch((errors) => {
+                setState({
+                    ...state,
+                    errors: MMUtils.clientErrorMessages(errors)
+                });
+                setOverlayLoading(false);
+            });
+    };
 
 
     const renderView = () => {
@@ -146,6 +227,7 @@ export default function SignUp({ navigation, route }) {
                     placeholder="Enter Phone Number"
                     name="mobileNumber"
                     errorText={state.errors.mobileNumber}
+                    editable={!mobileNumber}
                     keyboardType="phone-pad"
                 />
                 <MMInput
@@ -163,49 +245,56 @@ export default function SignUp({ navigation, route }) {
                     placeholder="Enter Email Address"
                     keyboardType="email-address"
                     autoCorrect={false}
+                    editable={!mobileNumber}
                     maxLength={150}
                     errorText={state.errors.email}
-                />
-                <MMInput
-                    label='Password *'
-                    value={state.password}
-                    onChangeText={(value) => onInputChange('password', value)}
-                    placeholder="Enter Password"
-                    maxLength={8}
-                    errorText={state.errors.password}
-                    secureTextEntry={passwordHide}
-                    name="password"
-                    rightIcon={passwordHide ? 'eye-off' : 'eye'}
-                    onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
-                />
+                />{mobileNumber ? null :
+                    <MMInput
+                        label='Password *'
+                        value={state.password}
+                        onChangeText={(value) => onInputChange('password', value)}
+                        placeholder="Enter Password"
+                        maxLength={8}
+                        errorText={state.errors.password}
+                        secureTextEntry={passwordHide}
+                        name="password"
+                        rightIcon={passwordHide ? 'eye-off' : 'eye'}
+                        onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
+                    />}
                 <MMRadioButton
                     label='Gender *'
                     options={lookupData.gender}
                     selectedValue={state.gender}
                     onValueChange={onGenderChange}
+                    disabled={mobileNumber}
                     errorText={state.errors.gender}
                 />
-                <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox.Android
-                        color={theme.colors.primary}
-                        size="sm"
-                        status={state.terms ? 'checked' : 'unchecked'}
-                        onPress={onTermsCheck}
-                        value={state.terms}
-                        style={{ borderColor: theme.colors.primary }} />
-                    <Text style={theme.fonts.default}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
-                        <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
-
-                </View>
+                {mobileNumber ? null :
+                    <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center' }}>
+                        <Checkbox.Android
+                            color={theme.colors.primary}
+                            size="sm"
+                            status={state.terms ? 'checked' : 'unchecked'}
+                            onPress={onTermsCheck}
+                            value={state.terms}
+                            style={{ borderColor: theme.colors.primary }} />
+                        <Text style={theme.fonts.default}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
+                            <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
+                    </View>}
                 <MMFormErrorText errorText={state.errors.terms} />
-                <MMButton
-                    label="Sign Up"
-                    onPress={() => onSubmit()}
-                />
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text style={[theme.fonts.default]}>Already have an account? </Text>
-                    <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
-                </View>
+                {mobileNumber ? <MMButton
+                    label="Save"
+                    onPress={() => onUpdateProfile()}
+                /> :
+                    <MMButton
+                        label="Sign Up"
+                        onPress={() => onSubmit()}
+                    />}
+                {mobileNumber ? null :
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <Text style={[theme.fonts.default]}>Already have an account? </Text>
+                        <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
+                    </View>}
             </View>
         );
     };

@@ -14,7 +14,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
-import CommonTemplate from '../../components/common/CommonTemplate';
+import MMCommonTemplate from '../../components/common/CommonTemplate';
 import MMActionButtons from '../../components/common/ActionButtons';
 import MMImageCrop from '../../components/common/ImageCrop';
 import MMInput from '../../components/common/Input';
@@ -50,7 +50,6 @@ export default function MainTemplate({ navigation, route }) {
     }, [pageDetails, pageId]);
 
     const onImageChange = async (photo, key = '') => {
-        let storageFileKeys = [];
         try {
             setOverlayLoading(true);
             const fileName = _.head(photo.uri.match(/[^\/]+$/));
@@ -99,7 +98,6 @@ export default function MainTemplate({ navigation, route }) {
             setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
-        return storageFileKeys;
     };
 
     const onPickImage = (name, type, width, height) => {
@@ -114,20 +112,26 @@ export default function MainTemplate({ navigation, route }) {
 
     const onSavePage = async () => {
         const pageDetails = _.map(templateData, _.partialRight(_.omit, 'source'));
-        setOverlayLoading(true);
-        const apiData = {
-            id: pageId ? pageId : null,
-            babyId: selectedBaby._id,
-            templateId,
-            position,
-            pageDetails,
-            headerText: pageText.headerText,
-            footerText: pageText.footerText
+        const isValid = await MMUtils.isValidCombination(templateName, pageDetails.length);
+        if (isValid) {
+            setOverlayLoading(true);
+            const apiData = {
+                id: pageId ? pageId : null,
+                babyId: selectedBaby._id,
+                templateId,
+                position,
+                pageDetails,
+                headerText: pageText.headerText,
+                footerText: pageText.footerText
+            }
+            const { data } = await MMApiService.savePage(apiData);
+            if (data) {
+                dispatch(reloadBookPage({ reloadBookPage: true }));
+                navigation.navigate('BookPreview');
+            }
         }
-        const response = await MMApiService.savePage(apiData);
-        if (response) {
-            dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('BookPreview');
+        else {
+            MMUtils.showToastMessage('Please add photos to fill the available slots.')
         }
         setOverlayLoading(false);
     };
@@ -193,7 +197,7 @@ export default function MainTemplate({ navigation, route }) {
             <>
                 <MMPageTitle title='Select Image' paddingBottom={20} />
                 <View style={[styles(theme).container]}>
-                    <CommonTemplate onPickImage={onPickImage}
+                    <MMCommonTemplate onPickImage={onPickImage}
                         templateData={templateData}
                         templateName={templateName}
                         pageId={pageId}

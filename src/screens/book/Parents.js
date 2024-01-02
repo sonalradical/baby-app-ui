@@ -3,7 +3,7 @@ import { FlatList, Dimensions } from 'react-native';
 import { List, Text, useTheme } from 'react-native-paper';
 
 const Parents = ({ pageDetails, title = null }) => {
-    const theme = useTheme()
+    const theme = useTheme();
 
     const renderPageDetails = (item, index) => {
         const { questionId, answer } = item;

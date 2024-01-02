@@ -67,7 +67,7 @@ export default function ChapterList() {
                     const chapterImage = `${chapterIconUrl}${chapter.icon}.png`
                     return (
                         <Card style={whiteBg} key={chapter._id}
-                            onPress={() => navigation.navigate('ChapterQuiz', {
+                            onPress={() => navigation.navigate(MMConstants.screens.chapterQuiz, {
                                 babyId: selectedBaby._id, chapterId: chapter._id,
                                 chapter: chapter, chapterImage: chapterImage
                             })}>
@@ -79,11 +79,6 @@ export default function ChapterList() {
                                         uri: chapterImage
                                     }}
                                     style={image}
-                                    onError={(error) => {
-                                        console.error("Error loading image:", error);
-                                        console.log("Chapter Image URL:", chapterImage);
-                                        // Provide a fallback image or handle the error in another way
-                                    }}
                                 />
                                 <View style={{ paddingVertical }}>
                                     <Text style={[theme.fonts.labelLarge, { width: 150 }]} numberOfLines={1} ellipsizeMode='tail'>
