@@ -26,7 +26,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
 
     useEffect(() => {
-        loadMilestoneList();
+        getTypeList();
     }, [selectedBaby]);
 
     const handleScroll = (event) => {
@@ -40,7 +40,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
         updateFooterVisibility(isScrollingUp);
     };
 
-    const loadMilestoneList = async () => {
+    const getTypeList = async () => {
         setLoading(true);
         if (selectedBaby) {
             try {
