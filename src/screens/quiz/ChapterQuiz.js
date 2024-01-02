@@ -1,6 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
-import { BackHandler, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { BackHandler, Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 
 import { useDispatch } from 'react-redux';
@@ -23,6 +23,10 @@ import MMInputMultiline from '../../components/common/InputMultiline';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import { extend, validateAll } from 'indicative/validator';
+import RenderRadioGroup from './component/RenderRadioGroup';
+
+
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
@@ -30,6 +34,7 @@ export default function ChapterQuiz({ navigation, route }) {
     const dispatch = useDispatch();
     const [isLoading, setLoading] = useState(true);
     const [selectedQuestion, setSelectedQuestion] = useState();
+    const [selectedAnswers, setSelectedAnswers] = useState({});
     const [selectedAnswer, setSelectedAnswer] = useState([]);
     const [questionList, setQuestionList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
@@ -49,11 +54,12 @@ export default function ChapterQuiz({ navigation, route }) {
                     const { questionList: questionsList, answerList: answersList } = response.data;
                     answersList.forEach(answer => {
                         const questions = _.find(questionsList, { questionId: answer.questionId });
-                        if (questions) {
+                        if (questions.questionType === 'checkbox') {
                             const newOptions = _.difference(answer.answer, questions.options);
                             questions.options = questions.options.concat(newOptions);
                         }
                     });
+
                     setQuestionList(questionsList);
                     setAnswerList(answersList);
 
@@ -81,7 +87,8 @@ export default function ChapterQuiz({ navigation, route }) {
 
     useEffect(() => {
         const currentQuestionId = questionList[selectedQuestion]?.questionId;
-        const matchingAnswer = answerList.find(answer => answer.questionId === currentQuestionId);
+        const matchingAnswer = answerList.find(answer => { console.log(answer.questionId === currentQuestionId, "==="), answer.questionId === currentQuestionId });
+        console.log("answer list", answerList);
         setSelectedAnswer(matchingAnswer && matchingAnswer.answer ? matchingAnswer.answer : []);
     }, [selectedQuestion]);
 
@@ -107,6 +114,27 @@ export default function ChapterQuiz({ navigation, route }) {
         }
     };
 
+    //for groupRadio
+    const handleOptionPress = (option, options) => {
+        // setSelectedAnswers({selectedAnswer
+        //     ...selectedAnswers,
+        //     [options]: option,
+        // });
+
+        const [labelA, labelB] = options.split('##');
+
+        if (selectedAnswer.includes(labelA.trim())) {
+            setSelectedAnswer(selectedAnswer.filter((ans) => ans !== labelA.trim()));
+        } else if (selectedAnswer.includes(labelB.trim())) {
+            setSelectedAnswer(selectedAnswer.filter((ans) => ans !== labelB.trim()));
+        }
+
+        setSelectedAnswer((prevSelectedOptions) =>
+            prevSelectedOptions.includes(option) ?
+                prevSelectedOptions.filter((ans) => ans !== option) :
+                [...prevSelectedOptions, option]
+        );
+    };
     const setImageUri = async (imageData) => {
         const photo = imageData.assets[0];
         console.log(photo, 'photo')
@@ -168,9 +196,17 @@ export default function ChapterQuiz({ navigation, route }) {
         }
     };
 
+
+
     const onSaveQuiz = async () => {
         try {
             setLoading(true);
+            // if (questionList[selectedQuestion].questionType === MMEnums.questionType.groupedradio) {
+            //     const tmpSelectedAnswer = _.map(selectedAnswers, (key, value) => {
+            //         return key;
+            //     })
+            //     setSelectedAnswer(tmpSelectedAnswer)
+            // }
             const questionId = questionList[selectedQuestion].questionId;
             const apiData = {
                 chapterId,
@@ -178,6 +214,7 @@ export default function ChapterQuiz({ navigation, route }) {
                 questionId,
                 answer: selectedAnswer
             }
+            console.log(apiData);
             await MMApiService.saveQuiz(apiData);
             const updatedAnswers = [...answerList];
             const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionId === questionId);
@@ -227,7 +264,6 @@ export default function ChapterQuiz({ navigation, route }) {
     const renderView = () => {
         if (!questionList || questionList.length === 0) return null;
         const currentQuestionType = questionList[selectedQuestion].questionType;
-
         return (
             <>
                 <View style={{ padding: MMConstants.paddingLarge }}>
@@ -308,20 +344,57 @@ export default function ChapterQuiz({ navigation, route }) {
                                 maxLength={30}
                             />
                             {/* <>
-                                {!imageSource ?
-                                    <View style={styles(theme).imagePickerSquare}>
-                                        <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
-                                        <Text style={theme.fonts.default} >Upload Photo</Text>
-                                    </View> : null
-                                }
-                                {imageSource ?
-                                    <TouchableOpacity onPress={toggleModal}>
-                                        <Image source={{ uri: imageSource }}
-                                            style={{ height: Dimensions.get('window').width, width: '100%' }} />
-                                    </TouchableOpacity> : null}
-                            </> */}
+                                    {!imageSource ?
+                                        <View style={styles(theme).imagePickerSquare}>
+                                            <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
+                                            <Text style={theme.fonts.default} >Upload Photo</Text>
+                                        </View> : null
+                                    }
+                                    {imageSource ?
+                                        <TouchableOpacity onPress={toggleModal}>
+                                            <Image source={{ uri: imageSource }}
+                                                style={{ height: Dimensions.get('window').width, width: '100%' }} />
+                                        </TouchableOpacity> : null}
+                                </> */}
                         </View>
                     )}
+                    {currentQuestionType === MMEnums.questionType.groupedradio ?
+                        // <View style={{ marginBottom: 50 }}>
+                        //     <FlatList
+                        //         data={questionList[selectedQuestion].options}
+                        //         renderItem={({ item, index }) => <RenderRadioGroup key={index}
+                        //             option={item}
+                        //             selectedAnswers={selectedAnswers}
+                        //             handleOptionPress={handleOptionPress} />}
+                        //     />
+                        // </View>
+                        questionList[selectedQuestion].options.map((option, index) => {
+                            const [labelA, labelB] = option.split('##');
+
+                            return (
+                                <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <RadioButton.Android
+                                            value={labelA.trim()}
+                                            status={selectedAnswer.includes(labelA.trim()) ? 'checked' : 'unchecked'}
+                                            onPress={() => handleOptionPress(labelA.trim(), option)}
+                                        />
+                                        <Text>{labelA.trim()}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}>
+                                        <RadioButton.Android
+                                            value={labelB.trim()}
+                                            status={selectedAnswer.includes(labelB.trim()) ? 'checked' : 'unchecked'}
+                                            onPress={() => handleOptionPress(labelB.trim(), option)}
+                                        />
+                                        <Text>{labelB.trim()}</Text>
+                                    </View>
+                                </View>
+                            );
+                        })
+
+
+                        : null}
                 </View>
                 <MMImagePickerModal
                     visible={isModalVisible}
@@ -329,6 +402,7 @@ export default function ChapterQuiz({ navigation, route }) {
                     onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>
         );
+
     };
 
     const renderActionButtons = () => {
@@ -395,16 +469,19 @@ export default function ChapterQuiz({ navigation, route }) {
             {renderScreenHeader()}
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> :
-                    <Swiper
-                        loop={false}
-                        index={selectedQuestion}
-                        onIndexChanged={onSwipe}
-                        showsPagination={false}
-                        showsButtons={false}
-                        removeClippedSubviews={true}
-                    >
-                        {renderQuestionSlides()}
-                    </Swiper>}
+                    // <Swiper
+                    //     loop={false}
+                    //     index={selectedQuestion}
+                    //     onIndexChanged={onSwipe}
+                    //     showsPagination={false}
+                    //     showsButtons={false}
+                    //     removeClippedSubviews={true}
+                    // >
+                    //     {renderQuestionSlides()}
+                    // </Swiper>}
+                    renderView()
+                }
+
             </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}
