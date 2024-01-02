@@ -1,40 +1,41 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
-import { RadioButton } from 'react-native-paper';
+import { RadioButton, Text } from 'react-native-paper';
 import { View } from 'react-native';
 
-export default function RenderRadioGroup({ option, selectedAnswers, handleOptionPress }) {
+export default function RenderRadioGroup({ option, selectedAnswer, handleOptionPress }) {
 
     const [optionA, optionB] = option.split('##');
     const _optionA = _.trim(optionA);
     const _optionB = _.trim(optionB);
 
-    const value = useMemo(() => selectedAnswers[option], [selectedAnswers[option]]);
-
+    const isSelectedOptionA = _.includes(selectedAnswer, _optionA);
+    const isSelectedOptionB = _.includes(selectedAnswer, _optionB);
     return (
-        <RadioButton.Group
-            onValueChange={value => handleOptionPress(value, option)}
-            value={value}
-        >
-            <View style={{
+        <View
+            style={{
                 flexDirection: 'row',
+                alignItems: 'center',
                 justifyContent: 'space-between',
-                marginVertical: 5,
-                width: '100%'
+                marginBottom: 5
             }}>
-                <RadioButton.Item
-                    mode='android' position='leading'
-                    label={_optionA} value={_optionA}
-
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
+                <RadioButton.Android
+                    value={_optionA}
+                    status={isSelectedOptionA ? 'checked' : 'unchecked'}
+                    onPress={() => handleOptionPress(_optionA, option)}
                 />
-                <RadioButton.Item
-                    mode='android' position='leading'
-                    label={_optionB} value={_optionB}
-                    labelStyle={marginLeft = -30}
-                    style={{ width: 155 }}
-                />
+                <Text>{_optionA}</Text>
             </View>
-        </RadioButton.Group>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
+                <RadioButton.Android
+                    value={_optionB}
+                    status={isSelectedOptionB ? 'checked' : 'unchecked'}
+                    onPress={() => handleOptionPress(_optionB, option)}
+                />
+                <Text>{_optionB}</Text>
+            </View>
+        </View>
 
 
     );
