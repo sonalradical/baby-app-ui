@@ -26,10 +26,10 @@ export default function ChapterList() {
     const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {
-        loadChapterList();
+        getTypeList();
     }, [selectedBaby, reloadChapterList]);
 
-    const loadChapterList = async () => {
+    const getTypeList = async () => {
         setLoading(true);
         if (selectedBaby || reloadChapterList) {
             try {
