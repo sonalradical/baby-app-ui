@@ -33,11 +33,11 @@ export default function BookPreview({ updateFooterVisibility }) {
 
     useEffect(() => {
         if (selectedBaby || reloadBookPage) {
-            loadBookPreview();
+            getBookPreview();
         }
     }, [selectedBaby, reloadBookPage]);
 
-    const loadBookPreview = async () => {
+    const getBookPreview = async () => {
         setLoading(true);
         try {
             const { data } = await MMApiService.getBookPreview(selectedBaby._id);
