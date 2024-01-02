@@ -37,10 +37,10 @@ export default function ChapterQuiz({ navigation, route }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
-        loadQuiz();
+        getQuiz();
     }, [babyId, chapterId]);
 
-    const loadQuiz = async () => {
+    const getQuiz = async () => {
         if (babyId && chapterId) {
             setLoading(true);
             try {
