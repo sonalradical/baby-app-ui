@@ -112,27 +112,27 @@ export default function MainTemplate({ navigation, route }) {
 
     const onSavePage = async () => {
         const pageDetails = _.map(templateData, _.partialRight(_.omit, 'source'));
-        //const isValid = MMUtils.isValidCombination(templateName, pageDetails);
-        //if (isValid) {
-        setOverlayLoading(true);
-        const apiData = {
-            id: pageId ? pageId : null,
-            babyId: selectedBaby._id,
-            templateId,
-            position,
-            pageDetails,
-            headerText: pageText.headerText,
-            footerText: pageText.footerText
+        const isValid = await MMUtils.isValidCombination(templateName, pageDetails.length);
+        if (isValid) {
+            setOverlayLoading(true);
+            const apiData = {
+                id: pageId ? pageId : null,
+                babyId: selectedBaby._id,
+                templateId,
+                position,
+                pageDetails,
+                headerText: pageText.headerText,
+                footerText: pageText.footerText
+            }
+            const { data } = await MMApiService.savePage(apiData);
+            if (data) {
+                dispatch(reloadBookPage({ reloadBookPage: true }));
+                navigation.navigate('BookPreview');
+            }
         }
-        const response = await MMApiService.savePage(apiData);
-        if (response) {
-            dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate('BookPreview');
+        else {
+            MMUtils.showToastMessage('Please add photos to fill the available slots.')
         }
-        //}
-        // else {
-        //     MMUtils.showToastMessage('Please add photos to fill the available slots.')
-        // }
         setOverlayLoading(false);
     };
 
