@@ -1,12 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import { Avatar, Checkbox, Chip, RadioButton, Text, TextInput, useTheme } from 'react-native-paper';
 
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
+import moment from 'moment';
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
@@ -23,6 +24,7 @@ import MMInputMultiline from '../../components/common/InputMultiline';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import MMDateTimePicker from '../../components/common/DateTimePicker';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
@@ -34,6 +36,7 @@ export default function ChapterQuiz({ navigation, route }) {
     const [questionList, setQuestionList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
     const [newOption, setNewOption] = useState('');
+    const [showBirthTime, setShowBirthTime] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
@@ -320,6 +323,41 @@ export default function ChapterQuiz({ navigation, route }) {
                             </> */}
                         </View>
                     )}
+                    {currentQuestionType === MMEnums.questionType.timepicker &&
+                        (
+                            <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                                <MMInput
+                                    name='birthTime'
+                                    placeholder='Enter Birth Time'
+                                    value={selectedAnswer.length > 0 ? moment(selectedAnswer[0]).format(MMConstants.dateTimePickerTime) : ''}
+                                    onPressIn={() => setShowBirthTime(true)}
+                                    onKeyPress={() => setShowBirthTime(true)}
+                                    left={<TextInput.Icon
+                                        icon='clock-time-four-outline'
+                                        forceTextInputFocus={false}
+                                        onPress={() => setShowBirthTime(true)}
+                                    />}
+                                />
+                                {
+                                    showBirthTime &&
+                                    <MMDateTimePicker
+                                        name='birthTime'
+                                        mode='time'
+                                        date={_.isNil(selectedAnswer[0]) ? new Date() : new Date(selectedAnswer[0])}
+                                        minimumDate={new Date()}
+                                        maximumDate={null}
+                                        onConfirm={(date) => {
+                                            setSelectedAnswer([new Date(date)]);
+                                            setShowBirthTime(false);
+                                        }}
+                                        onCancel={() => {
+                                            setShowBirthTime(false);
+                                        }}
+                                    />
+                                }
+                            </View>
+                        )
+                    }
                 </View>
                 <MMImagePickerModal
                     visible={isModalVisible}
@@ -393,16 +431,8 @@ export default function ChapterQuiz({ navigation, route }) {
             {renderScreenHeader()}
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> :
-                    <Swiper
-                        loop={false}
-                        index={selectedQuestion}
-                        onIndexChanged={onSwipe}
-                        showsPagination={false}
-                        showsButtons={false}
-                        removeClippedSubviews={true}
-                    >
-                        {renderQuestionSlides()}
-                    </Swiper>}
+                    renderView()
+                }
             </MMContentContainer>
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}

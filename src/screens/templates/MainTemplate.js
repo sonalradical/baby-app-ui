@@ -24,7 +24,8 @@ import MMScrollView from '../../components/common/ScrollView';
 export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const { position, templateName, templateId, pageId, pageDetails, headerText, footerText } = route.params || '';
+    const { position, templateName, templateId, pageId, pageDetails, headerText, footerText, itemTitle } = route.params || '';
+    console.log(itemTitle, 'itemTitle')
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -33,7 +34,7 @@ export default function MainTemplate({ navigation, route }) {
     const [selectedType, setSelectedType] = useState(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
     const [pageText, setPageText] = useState({
-        headerText: '',
+        headerText: itemTitle,
         footerText: ''
     })
 

@@ -19,6 +19,8 @@ import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 import Parents from './Parents';
 import Baby from './Baby';
+import MMEnums from '../../helpers/Enums';
+import WelcomeToWorld from './WelcomeToWorld';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
@@ -67,7 +69,7 @@ export default function BookPreview({ updateFooterVisibility }) {
         updateFooterVisibility(isScrollingUp);
     };
 
-    const onPressAdd = (currentPosition, itemId) => {
+    const onPressAdd = (currentPosition, itemId, itemTitle) => {
         let previousItemPosition = currentPosition - 10;
         const currentIndex = bookData.findIndex((item) => item._id === itemId);
         if (currentIndex > 0) {
@@ -75,7 +77,7 @@ export default function BookPreview({ updateFooterVisibility }) {
             previousItemPosition = perviousItem.position;
         }
         const pagePosition = (currentPosition + previousItemPosition) / 2;
-        navigation.navigate('TemplateList', { position: pagePosition })
+        navigation.navigate('TemplateList', { position: pagePosition, itemTitle: itemTitle })
     };
 
     const onPressEdit = (bookData, template) => {
@@ -154,7 +156,7 @@ export default function BookPreview({ updateFooterVisibility }) {
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
-                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id)} />
+                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id, item.title ? item.title : item.headerText)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
                     <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
@@ -164,8 +166,10 @@ export default function BookPreview({ updateFooterVisibility }) {
                             </TouchableOpacity> :
                             (
                                 <View style={{ paddingVertical: 30 }}>
-                                    {item.type === 'parents' ? (
+                                    {item.type === MMEnums.chapterType.parents ? (
                                         <Parents pageDetails={item.pageDetails} title={item.title} />
+                                    ) : item.type === MMEnums.chapterType.welcomeToWorld ? (
+                                        <WelcomeToWorld pageDetails={item.pageDetails} title={item.title} />
                                     ) : (
                                         _.map(item.pageDetails, (i, index) => {
                                             return renderQuestionAnswerList(i, index);
