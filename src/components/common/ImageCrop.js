@@ -1,6 +1,6 @@
 import React from 'react';
 import { Divider, useTheme } from 'react-native-paper';
-import { View, StyleSheet, Text, Modal, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Modal, TouchableOpacity, Platform } from 'react-native';
 import * as _ from 'lodash';
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -55,9 +55,9 @@ const MMImageCrop = (props) => {
                     height: selectedImage.height,
                     mime: selectedImage.mime,
                 })
+                toggleModal();
             })
-            .catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
-        toggleModal();
+            .catch((e) => { MMUtils.showToastMessage(e.message ? e.message : e), toggleModal() });
     };
 
     return (

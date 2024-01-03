@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 
 import MMConstants from '../../helpers/Constants';
 import MMIcon from '../../components/common/Icon';
+import MMUtils from '../../helpers/Utils';
 
 const Column2Row = (props) => {
     const theme = useTheme();
@@ -24,7 +25,7 @@ const Column2Row = (props) => {
                         flex: 1,
                         width: '100%',
                         height: '100%',
-                        resizeMode: 'contain'
+                        resizeMode: MMUtils.isPlatformAndroid ? 'contain' : 'cover'
                     }}
                     source={{ uri: template?.source }}
                 />

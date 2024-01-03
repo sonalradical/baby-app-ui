@@ -18,10 +18,10 @@ const MMInputMultiline = ({ name, placeholder, maxLength, mode, errorText, ...pr
 			keyboardType='default'
 			errorText={errorText}
 			mode={'outlined'}
-			{...props}
-			outlineStyle={{ borderColor: theme.colors.onPrimary, borderBottomColor: theme.colors.outline }}
+			outlineStyle={{ borderColor: theme.colors.onPrimary }}
 			style={styles(theme).textMultiline}
 			{...props}
+
 		/>
 	)
 };
@@ -33,6 +33,8 @@ const styles = (theme) => StyleSheet.create({
 		marginBottom: MMConstants.marginMedium,
 		marginTop: MMConstants.marginSmall,
 		height: Dimensions.get('window').height / 3,
+		textAlignVertical: 0,
+		paddingVertical: 0
 
 	},
 });
