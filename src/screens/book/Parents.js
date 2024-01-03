@@ -43,17 +43,17 @@ const Parents = ({ pageDetails, title = null }) => {
                     <Text style={styles(theme).optionText}> or </Text>
                     <Text style={[styles(theme).optionText, { backgroundColor: isSelectedOptionB ? 'yellow' : 'transparent' }]}>{optionB}</Text>
                 </View>
-                <View style={{ width: '10%', }}></View>
+                <View style={{ width: '10%' }}></View>
             </>
         )
 
     }
 
     const renderParentsOption = () => {
-        let optionQuestions = _.filter(pageDetails, (pageData) => {
-            return pageData.questionId.questionType === MMEnums.questionType.groupedradio
-        });
-        optionQuestions = _.first(optionQuestions)
+        const optionQuestions = _.chain(pageDetails)
+            .filter((pageData) => pageData.questionId.questionType === MMEnums.questionType.groupedradio)
+            .first()
+            .value();
 
         return (
             <FlatList
@@ -89,7 +89,7 @@ const Parents = ({ pageDetails, title = null }) => {
 const styles = (theme) => StyleSheet.create({
     optionText: {
         fontSize: 6,
-        textAlign: 'center'
+        width: 'auto'
     }
 });
 
