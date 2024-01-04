@@ -11,7 +11,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import MMPageTitle from '../../components/common/PageTitle';
 
 export default function TemplateList({ navigation, route }) {
-    const { position } = route.params;
+    const { position, itemTitle } = route.params;
     const theme = useTheme();
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
 
@@ -19,7 +19,7 @@ export default function TemplateList({ navigation, route }) {
         const templateImage = MMConstants.templates[item.icon];
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
-                onPress={() => navigation.navigate(MMConstants.screens.mainTemplate, { position: position, templateName: item.code, templateId: item._id })} >
+                onPress={() => navigation.navigate(MMConstants.screens.mainTemplate, { position: position, templateName: item.code, templateId: item._id, itemTitle: itemTitle })} >
                 <Image
                     textAlign="center"
                     resizeMode="contain"

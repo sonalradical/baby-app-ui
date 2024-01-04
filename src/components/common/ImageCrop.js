@@ -26,9 +26,10 @@ const MMImageCrop = (props) => {
                     height: selectedImage.height,
                     mime: selectedImage.mime,
                 })
+                toggleModal();
             })
-            .catch((e) => MMUtils.showToastMessage(e.message ? e.message : e));
-        toggleModal();
+            .catch((e) => { MMUtils.showToastMessage(e.message ? e.message : e), toggleModal() });
+
     };
 
     const pickSingle = (cropit, circular = false) => {

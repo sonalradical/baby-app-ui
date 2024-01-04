@@ -75,10 +75,10 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
     }, [milestoneId]);
 
 
-    const milestoneUri = 'https://mm-uat.s3.ap-southeast-2.amazonaws.com/Milestone/';
+    const milestoneUri = 'https://mm-uat.s3.ap-southeast-2.amazonaws.com//';
 
     const renderMilestone = ({ item }) => {
-        const milestoneImage = `${milestoneUri}${item.icon}.png`;
+        const milestoneImage = MMUtils.getImagePath(`Milestone/${item.icon}.png`)
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate(MMConstants.screens.milestoneQuiz, { babyId: selectedBaby._id, milestoneId: item._id })}>

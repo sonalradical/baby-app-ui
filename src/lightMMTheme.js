@@ -18,6 +18,7 @@ const fontConfig = {
     fontSize: 20, // Secondary headings
     fontWeight: 600, // Bold style for emphasis
     color: '#000',
+    lineHeight: 20,
     fontFamily: 'WulkanDisplayMedium',
   },
   displayMedium: {
