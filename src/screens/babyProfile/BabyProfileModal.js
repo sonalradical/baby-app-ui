@@ -5,7 +5,7 @@ import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -23,6 +23,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const navigation = useNavigation();
+	const { userDetail } = useSelector((state) => state.AuthReducer.auth);
 	const [isLoading, setLoding] = useState(true);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
@@ -81,43 +82,38 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	}
 
 	const ProfileCard = () => {
-		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id)
+		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id);
 		return (
 			<>
 				<>
 					<Text style={[theme.fonts.headlineMedium, { paddingBottom: MMConstants.paddingLarge, textAlign: 'center' }]}>
 						{selectedBabyDetail.name}</Text>
 					<View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 10 }}>
-
 						<View style={{ height: 1, width: '100%', backgroundColor: theme.colors.surfaceDisabled, marginTop: 25 }} />
 						<View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -35 }}>
 							<Avatar.Image size={75} source={{ uri: MMUtils.getImagePath(selectedBabyDetail.picture) }} />
 							<TouchableOpacity onPress={() => onBabyEdit(selectedBabyDetail._id)} style={{ position: 'absolute', right: -5, bottom: 5 }}>
-								{/* You can customize the edit button as needed */}
-								{/* For example, you can use another Avatar component for the edit button */}
 								<Avatar.Icon size={25} icon="pencil" color={theme.colors.secondaryContainer} />
 							</TouchableOpacity>
 						</View>
 					</View>
 				</>
-				{/* <View style={{ position: 'absolute', right: 20, top: 65 }} >
-					<Feather
-						name="edit-2"
-						color={theme.colors.outline}
-						size={15}
-						onPress={() => onBabyEdit(selectedBabyDetail._id)}
-					/>
-				</View> */}
-				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingBottom: MMConstants.paddingMedium }}>
+				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingVertical: MMConstants.paddingMedium }}>
 					{filterBabyDetail && filterBabyDetail.map((item, index) => (
-						<TouchableOpacity style={{ flexDirection: 'row', padding: 5 }} key={index} onPress={() => onSelectProfile(item)}>
-							<Avatar.Image
-								size={40}
-								source={item.isBorn === 'Yes' ?
-									{ uri: MMUtils.getImagePath(item.picture) } : require('../../assets/images/parenthood.jpg')}
-							/>
-							<Text style={[theme.fonts.headlineMedium, { padding: 10 }]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
-						</TouchableOpacity>
+						<React.Fragment key={index}>
+							<TouchableOpacity style={{ flexDirection: 'row', padding: MMConstants.paddingMedium }} key={index} onPress={() => onSelectProfile(item)}>
+								<Avatar.Image
+									size={40}
+									source={item.isBorn === 'Yes' ?
+										{ uri: MMUtils.getImagePath(item.picture) } : require('../../assets/images/parenthood.jpg')}
+								/>
+								<View style={{ flexDirection: 'column', paddingLeft: 20 }}>
+									<Text style={[theme.fonts.bodyLarge]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
+									<Text style={[theme.fonts.labelSmall]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
+								</View>
+							</TouchableOpacity>
+							{index < _.size(filterBabyDetail) - 1 && <Divider />}
+						</React.Fragment>
 					))}
 					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} style={{ margin: MMConstants.marginMedium }} />
 				</View>
@@ -139,10 +135,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					{isLoading ? (
 						<View style={{ height: 40 }}>
 							<MMSpinner /></View>
-					) :
-						<ProfileCard />
-
-					}
+					) : <ProfileCard />}
 				</View>
 			</View>
 		</Modal>
@@ -159,7 +152,7 @@ const styles = (theme) => StyleSheet.create({
 		backgroundColor: theme.colors.secondaryContainer,
 		borderRadius: 20,
 		elevation: 10,
-		margin: MMConstants.marginLarge,
+		margin: 40,
 		shadowColor: theme.colors.shadow,
 		shadowOpacity: 0.4,
 		shadowRadius: 2,

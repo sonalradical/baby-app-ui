@@ -44,7 +44,7 @@ const WelcomeToWorld = ({ pageDetails, title = null }) => {
                         return (
                             <React.Fragment key={index}>
                                 <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingVertical: 15 }]}>{details.questionId.question}</Text>
-                                <Text style={[theme.fonts.default, { fontSize: 11, textAlign: 'center' }]}>{details.answer}</Text>
+                                <Text style={[theme.fonts.default, { fontSize: 11, textAlign: 'center', lineHeight: 20 }]}>{details.answer}</Text>
                             </React.Fragment>
                         );
                     }
