@@ -53,10 +53,9 @@ export default function MainTemplate({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const fileName = _.head(photo.uri.match(/[^\/]+$/));
-            const response = await MMApiService.getPagePreSignedUrl(selectedBaby._id, fileName);
-            const responseData = response.data;
-            if (responseData) {
-                const result = await MMUtils.uploadPicture(photo, responseData.preSignedUrl, fileName);
+            const { data } = await MMApiService.getPagePreSignedUrl(selectedBaby._id, fileName);
+            if (data) {
+                const result = await MMUtils.uploadPicture(photo, data.preSignedUrl, fileName);
                 if (result) {
                     const imageDetails = [...templateData];
 
@@ -68,7 +67,7 @@ export default function MainTemplate({ navigation, route }) {
                     if (existingItemIndex >= 0) {
                         imageDetails[existingItemIndex] = {
                             ...imageDetails[existingItemIndex],
-                            value: responseData.storageFileKey,
+                            value: data.storageFileKey,
                             source: photo.uri, imageParam: {
                                 height: containerSize.height,
                                 width: containerSize.width,
@@ -78,7 +77,7 @@ export default function MainTemplate({ navigation, route }) {
                         // Create a new item if it doesn't exist
                         imageDetails.push({
                             name: selectedName, type: selectedType,
-                            value: responseData.storageFileKey,
+                            value: data.storageFileKey,
                             source: photo.uri, imageParam: {
                                 height: photo.height,
                                 width: photo.width
@@ -91,7 +90,7 @@ export default function MainTemplate({ navigation, route }) {
                     MMUtils.showToastMessage(`Uploading picture failed...`);
                 }
             } else {
-                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${responseData.message}`);
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${data.message}`);
             }
             setOverlayLoading(false);
         } catch (err) {
@@ -112,35 +111,34 @@ export default function MainTemplate({ navigation, route }) {
 
     const onSavePage = async () => {
         const pageDetails = _.map(templateData, _.partialRight(_.omit, 'source'));
-        //const isValid = MMUtils.isValidCombination(templateName, pageDetails);
-        //if (isValid) {
-        setOverlayLoading(true);
-        const apiData = {
-            id: pageId ? pageId : null,
-            babyId: selectedBaby._id,
-            templateId,
-            position,
-            pageDetails,
-            headerText: pageText.headerText,
-            footerText: pageText.footerText
+        const isValid = await MMUtils.isValidCombination(templateName, pageDetails.length);
+        if (isValid) {
+            setOverlayLoading(true);
+            const apiData = {
+                id: pageId ? pageId : null,
+                babyId: selectedBaby._id,
+                templateId,
+                position,
+                pageDetails,
+                headerText: pageText.headerText,
+                footerText: pageText.footerText
+            }
+            const { data } = await MMApiService.savePage(apiData);
+            if (data) {
+                dispatch(reloadBookPage({ reloadBookPage: true }));
+                navigation.navigate(MMConstants.screens.bookPreview);
+            }
         }
-        const response = await MMApiService.savePage(apiData);
-        if (response) {
-            dispatch(reloadBookPage({ reloadBookPage: true }));
-            navigation.navigate(MMConstants.screens.bookPreview);
+        else {
+            MMUtils.showToastMessage('Please add photos to fill the available slots.')
         }
-        //}
-        // else {
-        //     MMUtils.showToastMessage('Please add photos to fill the available slots.')
-        // }
         setOverlayLoading(false);
     };
 
     const onDeletePage = async () => {
-
         setOverlayLoading(true);
-        const response = await MMApiService.deletePage(pageId);
-        if (response) {
+        const { data } = await MMApiService.deletePage(pageId);
+        if (data) {
             setOverlayLoading(false);
             dispatch(reloadBookPage({ reloadBookPage: true }));
             navigation.navigate(MMConstants.screens.bookPreview);

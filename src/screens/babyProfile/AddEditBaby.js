@@ -48,30 +48,26 @@ export default function AddEditBaby({ route }) {
 
     useEffect(() => {
         if (babyId) {
-            loadBabyProfileDetail();
+            getBabyById();
         }
     }, [babyId]);
 
-    const loadBabyProfileDetail = async () => {
+    const getBabyById = async () => {
         setOverlayLoading(true);
         if (babyId) {
-            const response = await MMApiService.getBabyById(babyId);
-            if (response.data) {
+            const { data } = await MMApiService.getBabyById(babyId);
+            if (data) {
                 setState({
                     ...state,
-                    name: response.data.name,
-                    birthDate: response.data.birthDate,
-                    birthPlace: response.data.birthPlace,
-                    gender: response.data.gender,
-                    picture: response.data.picture
+                    ...data
                 });
-                if (response.data.picture) {
-                    imageSourceUri = MMUtils.getImagePath(response.data.picture);
+                if (data.picture) {
+                    imageSourceUri = MMUtils.getImagePath(data.picture);
                     setImageSource(imageSourceUri);
                 }
             }
-            setOverlayLoading(false);
         }
+        setOverlayLoading(false);
     }
 
     const setImageUri = async (imageData) => {
@@ -79,54 +75,29 @@ export default function AddEditBaby({ route }) {
         let storageFileKeys = [];
         try {
             setOverlayLoading(true);
-            let picIndex = 0;
-
-            for (const pic of imageData.assets) {
-                picIndex++;
-
-                await MMApiService.getPreSignedUrl(photo.fileName)
-                    .then(function (response) {
-                        (async () => {
-                            const responseData = response.data;
-                            if (responseData) {
-                                const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
-                                if (_.isNil(result)) {
-                                    setOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
-                                } else {
-                                    setOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
-                                    setState({
-                                        ...state,
-                                        picture: responseData.storageFileKey
-                                    })
-                                    setImageSource(photo.uri);
-                                    storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
-                                }
-                            } else {
-                                setOverlayLoading(false);
-                                MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
-                            }
-                        })();
+            const { data } = await MMApiService.getPreSignedUrl(photo.fileName);
+            if (data) {
+                const result = MMUtils.uploadPicture(photo, data.preSignedUrl);
+                if (result) {
+                    MMUtils.showToastMessage(`Uploading picture completed.`);
+                    setState({
+                        ...state,
+                        picture: data.storageFileKey
                     })
-                    .catch(function (error) {
-                        setOverlayLoading(false);
-                        setState({
-                            ...state,
-                            errors: MMUtils.apiErrorParamMessages(error)
-                        });
-
-                        const serverError = MMUtils.apiErrorMessage(error);
-                        if (serverError) {
-                            MMUtils.showToastMessage(serverError);
-                        }
-                    });
+                    setImageSource(photo.uri);
+                    storageFileKeys.push({ storageFileKey: data.storageFileKey });
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
+                }
+                setOverlayLoading(false);
+            } else {
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${data.message}`);
             }
+            setOverlayLoading(false);
         } catch (err) {
             setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
-
         return storageFileKeys;
     };
 
@@ -209,10 +180,8 @@ export default function AddEditBaby({ route }) {
     async function onBabyDelete() {
         try {
             setOverlayLoading(true);
-            console.log('Loading baby profile list...');
-
-            const response = await MMApiService.deleteBaby(babyId);
-            if (response) {
+            const { data } = await MMApiService.deleteBaby(babyId);
+            if (data) {
                 MMUtils.showToastMessage('Baby deleted successfully.')
                 MMUtils.removeItemFromStorage(MMEnums.storage.selectedBaby);
                 dispatch(setBaby(null));

@@ -75,8 +75,8 @@ export default function OTPView({ navigation, route }) {
         const apiData = {
             mobileNumber: mobileNumber,
         };
-        const resendOTP = await MMApiService.resendOTP(apiData);
-        if (resendOTP) {
+        const { data } = await MMApiService.resendOTP(apiData);
+        if (data) {
             setState({
                 ...state,
                 otp: '',
@@ -132,43 +132,28 @@ export default function OTPView({ navigation, route }) {
                 deviceId: deviceId
             };
 
-            await MMApiService.verifyOTP(apiData)
-                .then(function (response) {
-                    const responseData = response.data;
-                    if (responseData) {
-                        const { accessToken, refreshToken, userDetail } = responseData;
-                        const userDetails = {
-                            accessToken,
-                            refreshToken,
-                            userDetail: {
-                                _id: userDetail._id,
-                                mobileNumber: userDetail.mobileNumber,
-                                name: userDetail.name,
-                                email: userDetail.email,
-                                password: userDetail.password,
-                                gender: userDetail.gender,
-                                childCount: userDetail.childCount ? userDetail.childCount : 0,
-                                dueDate: userDetail.dueDate ? userDetail.dueDate : null
-                            },
-                        };
-                        MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
-                        MMUtils.setItemToStorage(MMEnums.storage.refreshToken, userDetails.refreshToken);
-                        MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
+            const { data } = await MMApiService.verifyOTP(apiData);
+            if (data) {
+                const { accessToken, refreshToken, userDetail } = data;
+                const userDetails = {
+                    accessToken,
+                    refreshToken,
+                    userDetail: {
+                        ...userDetail,
+                        childCount: userDetail.childCount ? userDetail.childCount : 0,
+                        dueDate: userDetail.dueDate ? userDetail.dueDate : null
+                    },
+                };
+                MMUtils.setItemToStorage(MMEnums.storage.accessToken, userDetails.accessToken);
+                MMUtils.setItemToStorage(MMEnums.storage.refreshToken, userDetails.refreshToken);
+                MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(userDetails.userDetail));
 
-                        dispatch(setLogin({
-                            userDetail: userDetails.userDetail,
-                            accessToken: userDetails.accessToken,
-                            refreshToken: userDetails.refreshToken
-                        }));
-                    }
-
-                })
-                .catch(function (error) {
-                    setState({
-                        ...state,
-                        errors: MMUtils.apiErrorParamMessages(error)
-                    });
-                });
+                dispatch(setLogin({
+                    userDetail: userDetails.userDetail,
+                    accessToken: userDetails.accessToken,
+                    refreshToken: userDetails.refreshToken
+                }));
+            }
             setOverlayLoading(false);
         } catch (err) {
             MMUtils.consoleError(err);

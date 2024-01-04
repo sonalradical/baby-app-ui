@@ -29,16 +29,16 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
 
     useEffect(() => {
         if (reloadAddressPage) {
-            loadAddressList();
+            getAddressList();
         }
     }, [reloadAddressPage]);
 
-    const loadAddressList = async () => {
+    const getAddressList = async () => {
         setLoading(true);
         try {
-            const response = await MMApiService.getAddressList();
-            if (response.data) {
-                setAddressList(response.data);
+            const { data } = await MMApiService.getAddressList();
+            if (data) {
+                setAddressList(data);
             }
         } catch (error) {
             const serverError = MMUtils.apiErrorMessage(error);

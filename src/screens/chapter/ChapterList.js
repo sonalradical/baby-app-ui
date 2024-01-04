@@ -8,6 +8,7 @@ import CircularProgress, {
     CircularProgressWithChild,
 } from 'react-native-circular-progress-indicator';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -26,16 +27,16 @@ export default function ChapterList() {
     const [chapterList, setChapterList] = useState([]);
 
     useEffect(() => {
-        loadChapterList();
+        getTypeList();
     }, [selectedBaby, reloadChapterList]);
 
-    const loadChapterList = async () => {
+    const getTypeList = async () => {
         setLoading(true);
         if (selectedBaby || reloadChapterList) {
             try {
-                const response = await MMApiService.getTypeList(selectedBaby._id, 'chapter');
-                if (response.data) {
-                    setChapterList(response.data.chapterDetail);
+                const { data } = await MMApiService.getTypeList(selectedBaby._id, 'chapter');
+                if (data) {
+                    setChapterList(data.chapterDetail);
                 }
             } catch (error) {
                 setChapterList();
@@ -47,7 +48,7 @@ export default function ChapterList() {
             setLoading(false);
         }
         else {
-            setChapterList();
+            setChapterList([]);
             setLoading(false);
         }
     }
@@ -72,7 +73,7 @@ export default function ChapterList() {
                                 chapter: chapter, chapterImage: chapterImage
                             })}>
                             <View style={{ flexDirection: 'row', padding: MMConstants.paddingMedium, justifyContent: 'space-between' }}>
-                                <Image
+                                <FastImage
                                     textAlign="center"
                                     resizeMode="contain"
                                     source={{

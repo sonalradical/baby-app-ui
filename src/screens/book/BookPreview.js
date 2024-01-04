@@ -33,16 +33,16 @@ export default function BookPreview({ updateFooterVisibility }) {
 
     useEffect(() => {
         if (selectedBaby || reloadBookPage) {
-            loadBookPreview();
+            getBookPreview();
         }
     }, [selectedBaby, reloadBookPage]);
 
-    const loadBookPreview = async () => {
+    const getBookPreview = async () => {
         setLoading(true);
         try {
-            const response = await MMApiService.getBookPreview(selectedBaby._id);
-            if (response.data) {
-                const filteredData = _.filter(response.data, (item) => {
+            const { data } = await MMApiService.getBookPreview(selectedBaby._id);
+            if (data) {
+                const filteredData = _.filter(data, (item) => {
                     return item?.pageDetails?.[0]?.questionId?.questionType !== 'milestone';
                 });
                 setBookData(filteredData);
