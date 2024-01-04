@@ -11,16 +11,28 @@ const OrderNowBanner = ({ onPress }) => {
     const theme = useTheme();
 
     return (
-        <View style={{ marginVertical: MMConstants.marginMedium }}>
-            <MMSurface style={{ borderRadius: 10, backgroundColor: theme.colors.secondary, flexDirection: 'row' }} margin={[0, 0, 0, 0]}>
-                <Image
-                    resizeMode="contain"
-                    source={require('../../assets/images/chapter/banner.png')}
-                    style={styles(theme).image}
-                />
-                <View style={{ paddingLeft: 30 }}>
-                    <Text style={[theme.fonts.headlineMedium, { color: theme.colors.secondaryContainer }]}>Order your book now.</Text>
-                    <MMButton mode="contained" label={'Order Now'} onPress={onPress} />
+        <View style={{ marginVertical: MMConstants.marginLarge }}>
+            <MMSurface padding={[0, 0, 0, 0]} style={{ borderRadius: 10, backgroundColor: '#e8e4fb', flexDirection: 'row' }} margin={[0, 0, 0, 0]}>
+                <View style={{
+                    backgroundColor: theme.colors.primary,
+                    paddingHorizontal: 5,
+                    //paddingVertical: 20,
+                    borderTopLeftRadius: 10,
+                    borderBottomLeftRadius: 10,
+                    alignItems: 'center',
+                    borderTopEndRadius: 90,
+                    borderBottomEndRadius: 10
+                }}>
+                    <Image
+                        resizeMode="contain"
+                        source={require('../../assets/images/order_banner.png')}
+                        style={styles(theme).image}
+                    />
+                </View>
+                <View style={{ justifyContent: 'center', paddingStart: 20, marginTop: MMConstants.marginLarge }}>
+                    <Text style={[theme.fonts.titleMedium,]}>Your Joyful Moments!</Text>
+                    <Text style={[theme.fonts.bodySmall, { fontWeight: 700 }]}>Order for cherished memories</Text>
+                    <MMButton width={'auto'} mode="contained" label={'Order Now'} onPress={onPress} />
                 </View>
             </MMSurface>
         </View>
@@ -28,9 +40,8 @@ const OrderNowBanner = ({ onPress }) => {
 }
 const styles = (theme) => StyleSheet.create({
     image: {
-        width: Dimensions.get('window').width / 4,
-        height: Dimensions.get('window').height / 8,
-        padding: 10,
+        width: Dimensions.get('window').width / 2.7,
+        height: Dimensions.get('window').height / 5.5,
     },
 });
 
