@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Text, useTheme } from 'react-native-paper';
+import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import Feather from 'react-native-vector-icons/Feather';
 
 import { setBaby } from '../../redux/Slice/AppSlice';
 
@@ -13,7 +15,7 @@ import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
-import { MMTransparentButton } from '../../components/common/Button';
+import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 
@@ -78,78 +80,69 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 
-	const ProfileCard = ({ profileData, index }) => {
-		const isSelected = selectedBabyDetail && selectedBabyDetail._id === profileData._id;
+	const ProfileCard = () => {
+		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id)
 		return (
-			<TouchableOpacity
-				onPress={() => onSelectProfile(profileData)}
-				key={index}
-			>
-				<Card style={{
-					shadowColor: isSelected ? 'blue' : 'transparent',
-					shadowOpacity: isSelected ? 1 : 0,
-					shadowRadius: isSelected ? 2 : 0,
-					opacity: isSelected ? 1 : 0.5,
-					marginBottom: MMConstants.marginMedium
+			<>
+				<View style={{
+					justifyContent: 'center', alignItems: 'center', paddingVertical: 10, borderTopLeftRadius: 20, borderTopRightRadius: 20
 				}}>
-					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<Text style={[theme.fonts.headlineMedium, { paddingVertical: MMConstants.paddingLarge }]}>{selectedBabyDetail.name}</Text>
+					<View style={{ flexDirection: 'row', alignItems: 'center', }}>
+						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: 10 }} />
 						<Avatar.Image
-							size={56}
-							source={profileData.isBorn === 'Yes' ?
-								{ uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
+							size={80}
+							source={{ uri: MMUtils.getImagePath(selectedBabyDetail.picture) }}
 						/>
-						<Card.Title title={profileData.isBorn === 'Yes' ? profileData.name : 'Mini Baby'}
-							subtitle={_.capitalize(profileData.gender)}
-							style={{ width: 100, marginLeft: MMConstants.marginMedium }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
-						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
-							{isSelected ? <MMIcon
-								iconName="edit"
-								iconColor={theme.colors.primary}
-								onPress={() => onBabyEdit(profileData._id)}
-							/> : null}
-						</View>
-					</Card.Content>
-				</Card>
-			</TouchableOpacity>
+						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: 10 }} />
+					</View>
+					<View style={{ position: 'absolute', right: 20, bottom: 50 }} >
+						<Feather
+							name="edit-2"
+							color={theme.colors.outline}
+							size={15}
+							onPress={() => onBabyEdit(selectedBabyDetail._id)}
+						/>
+					</View>
+				</View>
+				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingBottom: MMConstants.paddingMedium }}>
+					{filterBabyDetail && filterBabyDetail.map((item, index) => (
+						<TouchableOpacity style={{ flexDirection: 'row', padding: 5 }} key={index} onPress={() => onSelectProfile(item)}>
+							<Avatar.Image
+								size={40}
+								source={item.isBorn === 'Yes' ?
+									{ uri: MMUtils.getImagePath(item.picture) } : require('../../assets/images/parenthood.jpg')}
+							/>
+							<Text style={[theme.fonts.headlineMedium, { padding: 10 }]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
+						</TouchableOpacity>
+					))}
+					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} style={{ margin: MMConstants.marginMedium }} />
+				</View>
+
+			</>
 		);
 	}
 
 	return (
-		<>
-			<Modal
-				animationType="slide"
-				transparent={true}
-				visible={isModalOpen}>
-				<View style={styles(theme).centeredView}>
-					<View style={styles(theme).card}>
-						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: MMConstants.marginLarge }}>
-							<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center' }]}>Minimemoirs</Text>
-							<View style={{ alignSelf: 'flex-end', marginBottom: MMConstants.marginSmall }}>
-								<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
-							</View>
-						</View>
-						{
-							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>Please Select Baby</Text> : null
-						}
-						{isLoading ? (
-							<View style={{ height: 40 }}>
-								<MMSpinner /></View>
-						) : (
-							babyList && babyList.map((item, index) => (
-								<ProfileCard key={index.toString()} profileData={item} index={index} />
-							))
-						)}
-						{_.isEmpty(babyList) ?
-							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>No Babies Found Please Add New Baby</Text> : null}
-						<View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-							<MMIcon iconName={'plus'} iconSize={24} iconColor={theme.colors.primary} />
-							<MMTransparentButton label='Add New Baby' onPress={() => onAddBaby()} style={{ alignSelf: 'center', paddingLeft: MMConstants.paddingMedium }} />
-						</View>
+		<Modal
+			animationType="slide"
+			transparent={true}
+			visible={isModalOpen}>
+			<View style={styles(theme).centeredView}>
+				<View style={styles(theme).card}>
+					<View style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, position: 'absolute', top: 12, right: 12, backgroundColor: 'red' }}>
+						<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
 					</View>
+					{isLoading ? (
+						<View style={{ height: 40 }}>
+							<MMSpinner /></View>
+					) :
+						<ProfileCard />
+
+					}
 				</View>
-			</Modal>
-		</>
+			</View>
+		</Modal>
 	);
 };
 
@@ -161,7 +154,6 @@ const styles = (theme) => StyleSheet.create({
 	},
 	card: {
 		backgroundColor: theme.colors.secondaryContainer,
-		padding: MMConstants.paddingLarge,
 		borderRadius: 20,
 		elevation: 10,
 		margin: MMConstants.marginLarge,

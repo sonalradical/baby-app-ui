@@ -25,7 +25,6 @@ export default function MainTemplate({ navigation, route }) {
     const dispatch = useDispatch();
     const theme = useTheme();
     const { position, templateName, templateId, pageId, pageDetails, headerText, footerText, itemTitle } = route.params || '';
-    console.log(itemTitle, 'itemTitle')
     const selectedBaby = useSelector((state) => state.AppReducer.baby);
     const [templateData, setTemplateData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
