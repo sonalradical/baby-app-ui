@@ -99,7 +99,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                 titleNumberOfLines={5}
                 titleStyle={theme.fonts.titleMedium}
                 description={
-                    questionType === 'radio'
+                    questionType === MMEnums.questionType.radio
                         ? options.map((option, optionIndex) => (
                             <React.Fragment key={option}>
                                 {answer && answer[0] === option ? (
@@ -115,7 +115,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                                 )}
                             </React.Fragment>
                         ))
-                        : questionType === 'checkbox'
+                        : questionType === MMEnums.questionType.checkbox
                             ? answer && answer.length > 0 && answer.join(', ')
                             : answer || null
                 }
