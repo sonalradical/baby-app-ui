@@ -165,7 +165,7 @@ function AppStackNavigator(userDetail) {
 }
 
 export default function AppNavigator() {
-    const { isLoading, isLoggedOut, accessToken, userDetail } = useSelector((state) => state.AuthReducer.auth);
+    const { isLoading, isLoggedOut, accessToken, refreshToken, userDetail } = useSelector((state) => state.AuthReducer.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -174,13 +174,15 @@ export default function AppNavigator() {
 
     const initApp = async () => {
         const accessToken = await MMUtils.getItemFromStorage(MMEnums.storage.accessToken);
+        const refreshToken = await MMUtils.getItemFromStorage(MMEnums.storage.refreshToken);
         const existingUserDetail = await MMUtils.getItemFromStorage(MMEnums.storage.userDetail);
         const baby = await MMUtils.getItemFromStorage(MMEnums.storage.selectedBaby);
 
-        if (accessToken && existingUserDetail) {
+        if (accessToken && refreshToken && existingUserDetail) {
             dispatch(setBaby(JSON.parse(baby)));
             dispatch(setLogin({
                 accessToken,
+                refreshToken,
                 userDetail: JSON.parse(existingUserDetail),
                 isLoading: false,
                 isLoggedOut: false

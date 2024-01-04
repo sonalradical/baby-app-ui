@@ -26,15 +26,15 @@ const BookSelection = ({ validStep, clickStep }) => {
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
-        loadProductList();
+        getProductList();
     }, []);
 
-    const loadProductList = async () => {
+    const getProductList = async () => {
         setOverlayLoading(true);
-        const response = await MMApiService.getProductList();
-        if (response.data) {
-            setProductList(response.data);
-            const productDetail = response.data[0];
+        const { data } = await MMApiService.getProductList();
+        if (data) {
+            setProductList(data);
+            const productDetail = data[0];
             if (!bookDetail.productId) {
                 dispatch(setBookDetail({
                     productId: productDetail._id,

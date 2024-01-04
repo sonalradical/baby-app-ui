@@ -32,10 +32,9 @@ export default function App() {
   }, []);
 
   const getLookupData = async () => {
-    const response = await MMApiService.getLookupData();
-    const lookupData = response.data;
-    if (lookupData) {
-      dispatch(setLookupData(lookupData));
+    const { data } = await MMApiService.getLookupData();
+    if (data) {
+      dispatch(setLookupData(data));
     }
   }
 

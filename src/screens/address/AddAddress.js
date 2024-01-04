@@ -48,29 +48,20 @@ export default function AddAddress({ navigation, route }) {
 
     useEffect(() => {
         if (addressId) {
-            loadAddressById();
-            setVisible(true);
+            getAddressById();
         }
     }, [addressId]);
 
-    const loadAddressById = async () => {
+    const getAddressById = async () => {
         try {
             setOverlayLoading(true);
-            const response = await MMApiService.getAddressById(addressId);
-            if (response.data) {
-                const addressDetail = response.data
+            const { data } = await MMApiService.getAddressById(addressId);
+            if (data) {
                 setState({
                     ...state,
-                    addressLine1: addressDetail.addressLine1,
-                    addressLine2: addressDetail.addressLine2,
-                    addressType: addressDetail.addressType,
-                    country: addressDetail.country,
-                    latitude: addressDetail.latitude,
-                    longitude: addressDetail.longitude,
-                    postcode: addressDetail.postcode,
-                    state: addressDetail.state,
-                    suburb: addressDetail.suburb
+                    ...data,
                 })
+                setVisible(true);
             }
             setOverlayLoading(false);
         } catch (error) {
@@ -110,8 +101,8 @@ export default function AddAddress({ navigation, route }) {
 
     const onDeleteAddress = async () => {
         setOverlayLoading(true);
-        const response = await MMApiService.deleteAddress(addressId);
-        if (response) {
+        const { data } = await MMApiService.deleteAddress(addressId);
+        if (data) {
             dispatch(reloadAddressPage({ reloadAddressPage: true }));
             navigation.navigate(isDisable ? 'AddressBook' : 'Order');
         }
@@ -150,19 +141,11 @@ export default function AddAddress({ navigation, route }) {
                         suburb: state.suburb,
                         isDeleted: false
                     };
-                    await MMApiService.saveAddress(apiData)
-                        .then(function (response) {
-                            if (response) {
-                                dispatch(reloadAddressPage({ reloadAddressPage: true }));
-                                navigation.navigate(isDisable ? 'AddressBook' : 'Order');
-                            }
-                        })
-                        .catch(function (error) {
-                            setState({
-                                ...state,
-                                errors: MMUtils.apiErrorParamMessages(error)
-                            });
-                        });
+                    const { data } = await MMApiService.saveAddress(apiData);
+                    if (data) {
+                        dispatch(reloadAddressPage({ reloadAddressPage: true }));
+                        navigation.navigate(isDisable ? 'AddressBook' : 'Order');
+                    }
                 } catch (err) {
                     MMUtils.consoleError(err);
                 }

@@ -33,7 +33,7 @@ axios.interceptors.response.use(
         return response?.data;
     },
     async error => {
-        console.log('call')
+        console.log('call', error)
         const originalRequest = error.config;
         if (error?.response) {
             const defaultErrorMessage = 'The server was not reachable or an internal server error occurred. Please close and re-open the app again.';
@@ -76,14 +76,17 @@ axios.interceptors.response.use(
 async function refreshTokens() {
     const { AuthReducer } = getState();
     const accessToken = AuthReducer.auth.accessToken;
-    let refreshToken = AuthReducer.auth.refreshToken;
+    const refreshToken = AuthReducer.auth.refreshToken;
 
     if (_.isNull(accessToken) || _.isNull(refreshToken)) {
         return false;
     }
 
+    const payload = {
+        Token: refreshToken
+    }
     // todo:: changes refresh code according new axios service
-    const { data } = await MMApiService.getToken(refreshToken);
+    const { data } = await MMApiService.getToken(payload);
     if (data) {
         MMUtils.setItemToStorage(MMEnums.storage.accessToken, data.accessToken);
         dispatch(setLogin({ accessToken: data.accessToken }));
