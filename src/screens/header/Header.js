@@ -17,16 +17,16 @@ export default function Header(props) {
     const [babyDetail, setBabyDetail] = useState();
 
     useEffect(() => {
-        loadBabyProfileDetail();
+        getBabyById();
     }, [selectedBaby, reloadPage]);
 
-    const loadBabyProfileDetail = async () => {
+    const getBabyById = async () => {
         setOverlayLoading(true);
         if (selectedBaby || reloadPage) {
             try {
-                const response = await MMApiService.getBabyById(selectedBaby._id);
-                if (response.data) {
-                    setBabyDetail(response.data);
+                const { data } = await MMApiService.getBabyById(selectedBaby._id);
+                if (data) {
+                    setBabyDetail(data);
                 }
             } catch (error) {
                 setBabyDetail();

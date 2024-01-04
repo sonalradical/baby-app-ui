@@ -54,11 +54,10 @@ export default function Home({ updateFooterVisibility }) {
     }, [selectedBaby]);
 
     async function Init() {
-        const response = await MMApiService.babyList();
-        if (response.data) {
-            const babyProfiles = response.data;
-            MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(babyProfiles[0]));
-            dispatch(setBaby(babyProfiles[0]));
+        const { data } = await MMApiService.babyList();
+        if (data) {
+            MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(data[0]));
+            dispatch(setBaby(data[0]));
         }
     }
 

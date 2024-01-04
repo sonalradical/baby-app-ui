@@ -37,22 +37,20 @@ export default function MilestoneQuiz({ navigation, route }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
-        loadQuiz();
+        getQuiz();
     }, [babyId, milestoneId]);
 
-    const loadQuiz = async () => {
+    const getQuiz = async () => {
         if (babyId && milestoneId) {
             try {
                 setLoading(true);
-                const response = await MMApiService.getQuiz(babyId, milestoneId);
-                if (response.data) {
-                    setQuestions(response.data.questionList);
-                    const answer = response.data.answerList[0].answer;
+                const { data } = await MMApiService.getQuiz(babyId, milestoneId);
+                if (data) {
+                    setQuestions(data.questionList);
+                    const answer = data.answerList[0].answer;
                     setState({
                         ...state,
-                        description: answer.description,
-                        date: answer.date,
-                        picture: answer.picture
+                        ...answer,
                     })
                     if (answer.picture) {
                         imageSourceUri = MMUtils.getImagePath(answer.picture);
@@ -94,49 +92,29 @@ export default function MilestoneQuiz({ navigation, route }) {
         let storageFileKeys = [];
         try {
             setOverlayLoading(true);
-            let picIndex = 0;
-
-            for (const pic of imageData.assets) {
-                picIndex++;
-
-                await MMApiService.getPreSignedUrl(photo.fileName)
-                    .then(function (response) {
-                        (async () => {
-                            const responseData = response.data;
-                            if (responseData) {
-                                const result = MMUtils.uploadPicture(pic, responseData.preSignedUrl);
-                                if (_.isNil(result)) {
-                                    setOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} failed...`);
-                                } else {
-                                    setOverlayLoading(false);
-                                    MMUtils.showToastMessage(`Uploading picture ${picIndex} completed.`);
-                                    setState({
-                                        ...state,
-                                        picture: responseData.storageFileKey
-                                    })
-                                    setImageSource(photo.uri);
-                                    storageFileKeys.push({ storageFileKey: responseData.storageFileKey });
-                                }
-                            } else {
-                                setLoading(false);
-                                MMUtils.showToastMessage(`Getting presigned url for uploading picture ${picIndex} failed. Error: ${responseData.message}`);
-                            }
-                        })();
+            const { data } = await MMApiService.getPreSignedUrl(photo.fileName);
+            if (data) {
+                const result = MMUtils.uploadPicture(pic, data.preSignedUrl);
+                if (result) {
+                    MMUtils.showToastMessage(`Uploading picture completed.`);
+                    setState({
+                        ...state,
+                        picture: data.storageFileKey
                     })
-                    .catch(function (error) {
-                        setOverlayLoading(false);
-                        const serverError = MMUtils.apiErrorMessage(error);
-                        if (serverError) {
-                            MMUtils.showToastMessage(serverError);
-                        }
-                    });
+                    setImageSource(photo.uri);
+                    storageFileKeys.push({ storageFileKey: data.storageFileKey });
+                } else {
+                    MMUtils.showToastMessage(`Uploading picture failed...`);
+                }
+                setOverlayLoading(false);
+            } else {
+                MMUtils.showToastMessage(`Getting presigned url for uploading picture failed. Error: ${data.message}`);
             }
+            setOverlayLoading(false);
         } catch (err) {
             setOverlayLoading(false);
             MMUtils.consoleError(err);
         }
-
         return storageFileKeys;
     };
 
@@ -153,8 +131,8 @@ export default function MilestoneQuiz({ navigation, route }) {
                     picture: state.picture
                 }
             }
-            const response = await MMApiService.saveQuiz(apiData);
-            if (response) {
+            const { data } = await MMApiService.saveQuiz(apiData);
+            if (data) {
                 navigation.navigate('MilestoneList', { milestoneId: milestoneId })
             }
             setLoading(false);
