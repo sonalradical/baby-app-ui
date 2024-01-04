@@ -101,25 +101,36 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
 					</View>
 				</>
-				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingVertical: MMConstants.paddingMedium }}>
+				<View style={{ marginTop: MMConstants.marginLarge }}>
 					{filterBabyDetail && filterBabyDetail.map((item, index) => (
 						<React.Fragment key={index}>
-							<TouchableOpacity style={{ flexDirection: 'row', padding: MMConstants.paddingMedium }} key={index}
-								onPress={() => onSelectProfile(item)}>
+							<TouchableOpacity
+								style={{ flexDirection: 'row', paddingVertical: MMConstants.paddingLarge, paddingHorizontal: 20 }}
+								key={index}
+								onPress={() => onSelectProfile(item)}
+							>
 								<Avatar.Image
 									size={40}
-									source={item.isBorn === 'Yes' ?
-										{ uri: MMUtils.getImagePath(item.picture) } : require('../../assets/images/parenthood.jpg')}
+									source={
+										item.isBorn === 'Yes'
+											? { uri: MMUtils.getImagePath(item.picture) }
+											: require('../../assets/images/parenthood.jpg')
+									}
 								/>
-								<View style={{ flexDirection: 'column', paddingLeft: 20 }}>
-									<Text style={[theme.fonts.bodyLarge]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
-									<Text style={[theme.fonts.labelSmall]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
+								<View style={{ flexDirection: 'column', paddingLeft: 20, width: '78%' }}>
+									<Text style={[theme.fonts.titleMedium]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
+									<Text style={[theme.fonts.labelMedium]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
+								</View>
+								<View style={{ alignSelf: 'flex-end' }}>
+									<Ionicons name={'chevron-forward'} size={28} color={theme.colors.primary} />
 								</View>
 							</TouchableOpacity>
-							{index < _.size(filterBabyDetail) - 1 && <Divider />}
+							<Divider />
 						</React.Fragment>
 					))}
-					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} style={{ margin: MMConstants.marginMedium }} />
+				</View>
+				<View style={{ paddingHorizontal: 20, marginVertical: MMConstants.marginSmall }}>
+					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} />
 				</View>
 			</>
 		);
@@ -132,9 +143,11 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 			visible={isModalOpen}>
 			<View style={styles(theme).centeredView}>
 				<View style={styles(theme).card}>
-					<View style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, top: 12, right: 12, }}>
-						<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
-					</View>
+					<TouchableOpacity
+						style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, top: 12, right: 12 }}
+						onPress={() => setIsModalOpen(false)}>
+						<MMIcon iconName={'close'} />
+					</TouchableOpacity>
 					{isLoading ? (
 						<View style={{ height: 40 }}>
 							<MMSpinner /></View>
