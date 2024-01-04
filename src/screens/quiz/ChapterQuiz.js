@@ -27,7 +27,7 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import RenderRadioGroup from './component/RenderRadioGroup';
 
 export default function ChapterQuiz({ navigation, route }) {
-    const { babyId, chapterId, chapter, chapterImage } = route.params;
+    const { babyId, chapterId, chapterTitle, chapterImage } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
     const [isLoading, setLoading] = useState(true);
@@ -454,7 +454,7 @@ export default function ChapterQuiz({ navigation, route }) {
                 shadowOffset: { width: -2, height: 4 }
             }}>
                 <Avatar.Image size={36} source={{ uri: chapterImage }} style={{ backgroundColor: theme.colors.secondaryContainer }} />
-                <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{chapter.title}</Text>
+                <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{chapterTitle}</Text>
             </View>
         );
     };

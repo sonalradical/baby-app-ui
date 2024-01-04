@@ -153,6 +153,7 @@ export default function BookPreview({ updateFooterVisibility }) {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
         const template = isTemplate ? _.find(lookupData.templates, { '_id': item?.templateId }) : null;
+        const chapterImage = isTemplate ? null : MMUtils.getImagePath(`Chapter/${item.icon}.png`);
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
@@ -165,17 +166,22 @@ export default function BookPreview({ updateFooterVisibility }) {
                                 {renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText)}
                             </TouchableOpacity> :
                             (
-                                <View style={{ paddingVertical: 30 }}>
+                                < TouchableOpacity onPress={() =>
+                                    navigation.navigate('ChapterQuiz', {
+                                        babyId: selectedBaby._id, chapterId: item._id, chapterTitle: item.title,
+                                        chapterImage: chapterImage
+                                    })}
+                                    style={{ paddingVertical: 30 }}>
                                     {item.type === MMEnums.chapterType.parents ? (
                                         <Parents pageDetails={item.pageDetails} title={item.title} />
                                     ) : item.type === MMEnums.chapterType.welcomeToWorld ? (
                                         <WelcomeToWorld pageDetails={item.pageDetails} title={item.title} />
                                     ) : (
                                         _.map(item.pageDetails, (i, index) => {
-                                            return renderQuestionAnswerList(i, index);
+                                            return renderQuestionAnswerList(i, index)
                                         })
                                     )}
-                                </View>
+                                </TouchableOpacity>
                             )
                         }
                     </View>
