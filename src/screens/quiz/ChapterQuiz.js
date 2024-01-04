@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Swiper from 'react-native-swiper';
+
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
@@ -28,6 +29,13 @@ export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
+
+    // config for: swipe gesture
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
+
     const [isLoading, setLoading] = useState(true);
     const [selectedQuestion, setSelectedQuestion] = useState();
     const [selectedAnswer, setSelectedAnswer] = useState([]);
@@ -138,11 +146,6 @@ export default function ChapterQuiz({ navigation, route }) {
 
     //for groupRadio
     const handleOptionPress = (option, options) => {
-        // setSelectedAnswers({
-        //     ...selectedAnswers,
-        //     [options]: option,
-        // });
-
         const [optionA, optionB] = options.split('##');
         const _optionA = _.trim(optionA);
         const _optionB = _.trim(optionB);
@@ -360,8 +363,6 @@ export default function ChapterQuiz({ navigation, route }) {
                                 selectedAnswer={selectedAnswer}
                                 handleOptionPress={handleOptionPress} />}
                         />
-
-
                         : null}
                 </View>
                 <MMImagePickerModal
@@ -431,21 +432,22 @@ export default function ChapterQuiz({ navigation, route }) {
         ));
     };
 
+
     return (
+
         <>
             {renderScreenHeader()}
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> :
-                    // <Swiper
-                    //     loop={false}
-                    //     index={selectedQuestion}
-                    //     onIndexChanged={onSwipe}
-                    //     showsPagination={false}
-                    //     showsButtons={false}
-                    //     removeClippedSubviews={true}
-                    // >
-                    renderView()}
-
+                    <GestureRecognizer
+                        onSwipeLeft={() => onNextClick()}
+                        onSwipeRight={() => onPreviousClick()}
+                        config={config}
+                        style={{ flex: 1 }}
+                    >
+                        {renderView()}
+                    </GestureRecognizer>
+                }
             </MMContentContainer >
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}

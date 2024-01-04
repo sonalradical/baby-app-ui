@@ -157,7 +157,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                     <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
-                    <View style={{ borderLeftWidth: 1, borderStyle: MMUtils.isPlatformIos ? 'dotted' : 'dashed' }}>
+                    <View style={{ borderLeftWidth: 1, borderStyle: MMUtils.isPlatformIos ? 'solid' : 'dashed' }}>
                         {isTemplate ?
                             <TouchableOpacity onPress={() => onPressEdit(item, template)} style={{ paddingVertical: 30 }}>
                                 {renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText)}
