@@ -85,23 +85,27 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id);
 		return (
 			<>
-				<>
+				< >
 					<Text style={[theme.fonts.headlineMedium, { paddingBottom: MMConstants.paddingLarge, textAlign: 'center' }]}>
-						{selectedBabyDetail.name}</Text>
-					<View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 10 }}>
-						<View style={{ height: 1, width: '100%', backgroundColor: theme.colors.surfaceDisabled, marginTop: 25 }} />
-						<View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -35 }}>
-							<Avatar.Image size={75} source={{ uri: MMUtils.getImagePath(selectedBabyDetail.picture) }} />
+						{selectedBabyDetail.isBorn === 'Yes' ? selectedBabyDetail.name : 'Mini Baby'}</Text>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Avatar.Image size={75}
+								source={selectedBabyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(selectedBabyDetail.picture) } :
+									require('../../assets/images/parenthood.jpg')} />
 							<TouchableOpacity onPress={() => onBabyEdit(selectedBabyDetail._id)} style={{ position: 'absolute', right: -5, bottom: 5 }}>
 								<Avatar.Icon size={25} icon="pencil" color={theme.colors.secondaryContainer} />
 							</TouchableOpacity>
 						</View>
+						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
 					</View>
 				</>
 				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingVertical: MMConstants.paddingMedium }}>
 					{filterBabyDetail && filterBabyDetail.map((item, index) => (
 						<React.Fragment key={index}>
-							<TouchableOpacity style={{ flexDirection: 'row', padding: MMConstants.paddingMedium }} key={index} onPress={() => onSelectProfile(item)}>
+							<TouchableOpacity style={{ flexDirection: 'row', padding: MMConstants.paddingMedium }} key={index}
+								onPress={() => onSelectProfile(item)}>
 								<Avatar.Image
 									size={40}
 									source={item.isBorn === 'Yes' ?
@@ -117,7 +121,6 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 					))}
 					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} style={{ margin: MMConstants.marginMedium }} />
 				</View>
-
 			</>
 		);
 	}
