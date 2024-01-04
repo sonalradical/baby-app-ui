@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackHandler, Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
 
 import { useDispatch } from 'react-redux';
@@ -23,6 +22,7 @@ import MMInputMultiline from '../../components/common/InputMultiline';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import RenderRadioGroup from './component/RenderRadioGroup';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapter, chapterImage } = route.params;
@@ -49,7 +49,7 @@ export default function ChapterQuiz({ navigation, route }) {
                     const { questionList: questionsList, answerList: answersList } = response.data;
                     answersList.forEach(answer => {
                         const questions = _.find(questionsList, { questionId: answer.questionId });
-                        if (questions) {
+                        if (questions.questionType === 'checkbox') {
                             const newOptions = _.difference(answer.answer, questions.options);
                             questions.options = questions.options.concat(newOptions);
                         }
@@ -134,6 +134,35 @@ export default function ChapterQuiz({ navigation, route }) {
             setLoading(false);
             MMUtils.consoleError(err);
         }
+    };
+
+    //for groupRadio
+    const handleOptionPress = (option, options) => {
+        // setSelectedAnswers({
+        //     ...selectedAnswers,
+        //     [options]: option,
+        // });
+
+        const [optionA, optionB] = options.split('##');
+        const _optionA = _.trim(optionA);
+        const _optionB = _.trim(optionB);
+
+        const isSelectedOptionA = _.includes(selectedAnswer, _optionA);
+        const isSelectedOptionB = _.includes(selectedAnswer, _optionB);
+
+        if (isSelectedOptionA) {
+            setSelectedAnswer(selectedAnswer.filter((ans) => ans !== _optionA));
+        } else if (isSelectedOptionB) {
+            setSelectedAnswer(selectedAnswer.filter((ans) => ans !== _optionB));
+        }
+
+        setSelectedAnswer((prevSelectedOptions) =>
+            prevSelectedOptions.includes(option) ?
+                prevSelectedOptions.filter((ans) => ans !== option) :
+                [...prevSelectedOptions, option]
+        );
+
+
     };
 
     const toggleModal = () => {
@@ -227,11 +256,11 @@ export default function ChapterQuiz({ navigation, route }) {
     const renderView = () => {
         if (!questionList || questionList.length === 0) return null;
         const currentQuestionType = questionList[selectedQuestion].questionType;
-
+        const questionTitle = questionList[selectedQuestion].questionType === MMEnums.questionType.groupedradio ? '' : questionList[selectedQuestion].question
         return (
             <>
                 <View style={{ padding: MMConstants.paddingLarge }}>
-                    <Text style={theme.fonts.titleMedium} >{questionList[selectedQuestion].question}</Text>
+                    <Text style={theme.fonts.titleMedium} >{questionTitle}</Text>
                     {currentQuestionType === MMEnums.questionType.radio && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             {questionList[selectedQuestion].options.map((option, index) => (
@@ -322,6 +351,18 @@ export default function ChapterQuiz({ navigation, route }) {
                             </> */}
                         </View>
                     )}
+                    {currentQuestionType === MMEnums.questionType.groupedradio ?
+
+                        <FlatList
+                            data={questionList[selectedQuestion].options}
+                            renderItem={({ item, index }) => <RenderRadioGroup key={index}
+                                option={item}
+                                selectedAnswer={selectedAnswer}
+                                handleOptionPress={handleOptionPress} />}
+                        />
+
+
+                        : null}
                 </View>
                 <MMImagePickerModal
                     visible={isModalVisible}
@@ -395,17 +436,17 @@ export default function ChapterQuiz({ navigation, route }) {
             {renderScreenHeader()}
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> :
-                    <Swiper
-                        loop={false}
-                        index={selectedQuestion}
-                        onIndexChanged={onSwipe}
-                        showsPagination={false}
-                        showsButtons={false}
-                        removeClippedSubviews={true}
-                    >
-                        {renderQuestionSlides()}
-                    </Swiper>}
-            </MMContentContainer>
+                    // <Swiper
+                    //     loop={false}
+                    //     index={selectedQuestion}
+                    //     onIndexChanged={onSwipe}
+                    //     showsPagination={false}
+                    //     showsButtons={false}
+                    //     removeClippedSubviews={true}
+                    // >
+                    renderView()}
+
+            </MMContentContainer >
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}
             </View>
