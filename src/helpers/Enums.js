@@ -32,7 +32,8 @@ const MMEnums = {
         text: 'text',
         textArea: 'textArea',
         textImage: 'textImage',
-        timepicker: 'timepicker'
+        timepicker: 'timepicker',
+        groupedradio: 'groupedradio'
     },
     situation: {
         currentlyPregnant: 'currentlyPregnant',
