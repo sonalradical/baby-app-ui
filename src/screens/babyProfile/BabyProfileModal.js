@@ -84,27 +84,30 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id)
 		return (
 			<>
-				<View style={{
-					justifyContent: 'center', alignItems: 'center', paddingVertical: 10, borderTopLeftRadius: 20, borderTopRightRadius: 20
-				}}>
-					<Text style={[theme.fonts.headlineMedium, { paddingVertical: MMConstants.paddingLarge }]}>{selectedBabyDetail.name}</Text>
-					<View style={{ flexDirection: 'row', alignItems: 'center', }}>
-						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: 10 }} />
-						<Avatar.Image
-							size={80}
-							source={{ uri: MMUtils.getImagePath(selectedBabyDetail.picture) }}
-						/>
-						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: 10 }} />
+				<>
+					<Text style={[theme.fonts.headlineMedium, { paddingBottom: MMConstants.paddingLarge, textAlign: 'center' }]}>
+						{selectedBabyDetail.name}</Text>
+					<View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 10 }}>
+
+						<View style={{ height: 1, width: '100%', backgroundColor: theme.colors.surfaceDisabled, marginTop: 25 }} />
+						<View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -35 }}>
+							<Avatar.Image size={75} source={{ uri: MMUtils.getImagePath(selectedBabyDetail.picture) }} />
+							<TouchableOpacity onPress={() => onBabyEdit(selectedBabyDetail._id)} style={{ position: 'absolute', right: -5, bottom: 5 }}>
+								{/* You can customize the edit button as needed */}
+								{/* For example, you can use another Avatar component for the edit button */}
+								<Avatar.Icon size={25} icon="pencil" color={theme.colors.secondaryContainer} />
+							</TouchableOpacity>
+						</View>
 					</View>
-					<View style={{ position: 'absolute', right: 20, bottom: 50 }} >
-						<Feather
-							name="edit-2"
-							color={theme.colors.outline}
-							size={15}
-							onPress={() => onBabyEdit(selectedBabyDetail._id)}
-						/>
-					</View>
-				</View>
+				</>
+				{/* <View style={{ position: 'absolute', right: 20, top: 65 }} >
+					<Feather
+						name="edit-2"
+						color={theme.colors.outline}
+						size={15}
+						onPress={() => onBabyEdit(selectedBabyDetail._id)}
+					/>
+				</View> */}
 				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingBottom: MMConstants.paddingMedium }}>
 					{filterBabyDetail && filterBabyDetail.map((item, index) => (
 						<TouchableOpacity style={{ flexDirection: 'row', padding: 5 }} key={index} onPress={() => onSelectProfile(item)}>
@@ -130,7 +133,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 			visible={isModalOpen}>
 			<View style={styles(theme).centeredView}>
 				<View style={styles(theme).card}>
-					<View style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, position: 'absolute', top: 12, right: 12, backgroundColor: 'red' }}>
+					<View style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, top: 12, right: 12, }}>
 						<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
 					</View>
 					{isLoading ? (
