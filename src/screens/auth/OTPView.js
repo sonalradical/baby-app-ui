@@ -166,7 +166,6 @@ export default function OTPView({ navigation, route }) {
                 <View style={{ padding: MMConstants.paddingLarge }}>
                     <MMAuthHeader title='OTP Verification' />
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={theme.fonts.headlineSmall}>Enter OTP</Text>
                         <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{`We have sent a verification code to`}</Text>
                         <Text style={theme.fonts.titleMedium}>{mobileNumber}</Text>
                     </View>

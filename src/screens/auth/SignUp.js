@@ -112,19 +112,17 @@ export default function SignUp({ navigation, route }) {
         validateAll(state, rules, messages)
             .then(async () => {
                 setOverlayLoading(true);
-
                 if (state.terms) {
                     onSignUp();
                 }
-
             })
             .catch((errors) => {
                 setState({
                     ...state,
                     errors: MMUtils.clientErrorMessages(errors)
                 });
-                setOverlayLoading(false);
             });
+        setOverlayLoading(false);
     };
 
     const onGenderChange = (value) => {
@@ -218,9 +216,17 @@ export default function SignUp({ navigation, route }) {
         return (
             <View style={{ padding: MMConstants.paddingLarge }}>
                 <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
-                <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge }]} >To start things off, kindly share some
+                <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium }]} >To start things off, kindly share some
                     details about yourself. You can add more
                     information later.</Text>
+                <MMInput
+                    label='Name *'
+                    maxLength={50}
+                    value={state.name}
+                    onChangeText={(value) => onInputChange('name', value)}
+                    placeholder="Enter Your Name"
+                    errorText={state.errors.name}
+                />
                 <MMInput
                     label='Phone Number *'
                     maxLength={10}
@@ -231,14 +237,6 @@ export default function SignUp({ navigation, route }) {
                     errorText={state.errors.mobileNumber}
                     editable={!mobileNumber}
                     keyboardType="phone-pad"
-                />
-                <MMInput
-                    label='Name *'
-                    maxLength={50}
-                    value={state.name}
-                    onChangeText={(value) => onInputChange('name', value)}
-                    placeholder="Enter Your Name"
-                    errorText={state.errors.name}
                 />
                 <MMInput
                     label='Email Address *'
