@@ -21,7 +21,6 @@ import MMIcon from '../../components/common/Icon';
 import Parents from './Parents';
 import Baby from './Baby';
 import WelcomeToWorld from './WelcomeToWorld';
-import MMIcon from '../../components/common/Icon';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
