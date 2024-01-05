@@ -60,7 +60,7 @@ const fontConfig = {
     color: '#000',
   },
   headlineLarge: {
-    fontFamily: Platform.OS === 'ios' ? 'Wulkan display' : 'Wulkan Display Medium',
+    fontFamily: Platform.OS === 'ios' ? 'Wulkan display' : 'WulkanDisplayMedium',
     fontWeight: 600,
     fontSize: 28, // Secondary headings
     color: '#000',
