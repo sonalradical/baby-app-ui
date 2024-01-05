@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Text, useTheme } from 'react-native-paper';
+import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import Feather from 'react-native-vector-icons/Feather';
 
 import { setBaby } from '../../redux/Slice/AppSlice';
 
@@ -13,7 +15,7 @@ import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
-import { MMTransparentButton } from '../../components/common/Button';
+import { MMButton, MMTransparentButton } from '../../components/common/Button';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 
@@ -21,6 +23,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const navigation = useNavigation();
+	const { userDetail } = useSelector((state) => state.AuthReducer.auth);
 	const [isLoading, setLoding] = useState(true);
 	const [selectedBabyDetail, setSelectedBabyDetail] = useState(null);
 	const [babyList, setBabyList] = useState();
@@ -78,78 +81,80 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 		navigation.navigate('Home', { babyId: babyDetail._id })
 	}
 
-	const ProfileCard = ({ profileData, index }) => {
-		const isSelected = selectedBabyDetail && selectedBabyDetail._id === profileData._id;
+	const ProfileCard = () => {
+		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id);
 		return (
-			<TouchableOpacity
-				onPress={() => onSelectProfile(profileData)}
-				key={index}
-			>
-				<Card style={{
-					shadowColor: isSelected ? 'blue' : 'transparent',
-					shadowOpacity: isSelected ? 1 : 0,
-					shadowRadius: isSelected ? 2 : 0,
-					opacity: isSelected ? 1 : 0.5,
-					marginBottom: MMConstants.marginMedium
-				}}>
-					<Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<Avatar.Image
-							size={56}
-							source={profileData.isBorn === 'Yes' ?
-								{ uri: MMUtils.getImagePath(profileData.picture) } : require('../../assets/images/parenthood.jpg')}
-						/>
-						<Card.Title title={profileData.isBorn === 'Yes' ? profileData.name : 'Mini Baby'}
-							subtitle={_.capitalize(profileData.gender)}
-							style={{ width: 100, marginLeft: MMConstants.marginMedium }} titleStyle={theme.fonts.headlineMedium} subtitleStyle={theme.fonts.labelMedium} />
-						<View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
-							{isSelected ? <MMIcon
-								iconName="edit"
-								iconColor={theme.colors.primary}
-								onPress={() => onBabyEdit(profileData._id)}
-							/> : null}
+			<>
+				< >
+					<Text style={[theme.fonts.headlineMedium, { paddingBottom: MMConstants.paddingLarge, textAlign: 'center' }]}>
+						{selectedBabyDetail.isBorn === 'Yes' ? selectedBabyDetail.name : 'Mini Baby'}</Text>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Avatar.Image size={75}
+								source={selectedBabyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(selectedBabyDetail.picture) } :
+									require('../../assets/images/parenthood.jpg')} />
+							<TouchableOpacity onPress={() => onBabyEdit(selectedBabyDetail._id)} style={{ position: 'absolute', right: -5, bottom: 5 }}>
+								<Avatar.Icon size={25} icon="pencil" color={theme.colors.secondaryContainer} />
+							</TouchableOpacity>
 						</View>
-					</Card.Content>
-				</Card>
-			</TouchableOpacity>
+						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
+					</View>
+				</>
+				<View style={{ marginTop: MMConstants.marginLarge }}>
+					{filterBabyDetail && filterBabyDetail.map((item, index) => (
+						<React.Fragment key={index}>
+							<TouchableOpacity
+								style={{ flexDirection: 'row', paddingVertical: MMConstants.paddingLarge, paddingHorizontal: 20 }}
+								key={index}
+								onPress={() => onSelectProfile(item)}
+							>
+								<Avatar.Image
+									size={40}
+									source={
+										item.isBorn === 'Yes'
+											? { uri: MMUtils.getImagePath(item.picture) }
+											: require('../../assets/images/parenthood.jpg')
+									}
+								/>
+								<View style={{ flexDirection: 'column', paddingLeft: 20, width: '78%' }}>
+									<Text style={[theme.fonts.titleMedium]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
+									<Text style={[theme.fonts.labelMedium]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
+								</View>
+								<View style={{ alignSelf: 'flex-end' }}>
+									<Ionicons name={'chevron-forward'} size={28} color={theme.colors.primary} />
+								</View>
+							</TouchableOpacity>
+							<Divider />
+						</React.Fragment>
+					))}
+				</View>
+				<View style={{ paddingHorizontal: 20, marginVertical: MMConstants.marginSmall }}>
+					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} />
+				</View>
+			</>
 		);
 	}
 
 	return (
-		<>
-			<Modal
-				animationType="slide"
-				transparent={true}
-				visible={isModalOpen}>
-				<View style={styles(theme).centeredView}>
-					<View style={styles(theme).card}>
-						<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: MMConstants.marginLarge }}>
-							<Text style={[theme.fonts.headlineMedium, { flex: 1, textAlign: 'center' }]}>Minimemoirs</Text>
-							<View style={{ alignSelf: 'flex-end', marginBottom: MMConstants.marginSmall }}>
-								<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
-							</View>
-						</View>
-						{
-							_.isEmpty(selectedBabyDetail) && !_.isEmpty(babyList) ?
-								<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>Please Select Baby</Text> : null
-						}
-						{isLoading ? (
-							<View style={{ height: 40 }}>
-								<MMSpinner /></View>
-						) : (
-							babyList && babyList.map((item, index) => (
-								<ProfileCard key={index.toString()} profileData={item} index={index} />
-							))
-						)}
-						{_.isEmpty(babyList) ?
-							<Text style={[theme.fonts.default, { textAlign: 'center', marginBottom: MMConstants.marginMedium }]}>No Babies Found Please Add New Baby</Text> : null}
-						<View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-							<MMIcon iconName={'plus'} iconSize={24} iconColor={theme.colors.primary} />
-							<MMTransparentButton label='Add New Baby' onPress={() => onAddBaby()} style={{ alignSelf: 'center', paddingLeft: MMConstants.paddingMedium }} />
-						</View>
-					</View>
+		<Modal
+			animationType="slide"
+			transparent={true}
+			visible={isModalOpen}>
+			<View style={styles(theme).centeredView}>
+				<View style={styles(theme).card}>
+					<TouchableOpacity
+						style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, top: 12, right: 12 }}
+						onPress={() => setIsModalOpen(false)}>
+						<MMIcon iconName={'close'} />
+					</TouchableOpacity>
+					{isLoading ? (
+						<View style={{ height: 40 }}>
+							<MMSpinner /></View>
+					) : <ProfileCard />}
 				</View>
-			</Modal>
-		</>
+			</View>
+		</Modal>
 	);
 };
 
@@ -161,10 +166,9 @@ const styles = (theme) => StyleSheet.create({
 	},
 	card: {
 		backgroundColor: theme.colors.secondaryContainer,
-		padding: MMConstants.paddingLarge,
 		borderRadius: 20,
 		elevation: 10,
-		margin: MMConstants.marginLarge,
+		margin: 40,
 		shadowColor: theme.colors.shadow,
 		shadowOpacity: 0.4,
 		shadowRadius: 2,

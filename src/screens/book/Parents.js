@@ -38,12 +38,12 @@ const Parents = ({ pageDetails, title = null }) => {
 
         return (
             <>
-                <View key={index} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', padding: 8 }}>
+                <View key={index} style={{ flex: 1, flexDirection: 'row', padding: 8 }}>
                     <Text style={[styles(theme).optionText, { backgroundColor: isSelectedOptionA ? 'yellow' : 'transparent' }]}>{optionA}</Text>
                     <Text style={styles(theme).optionText}> or </Text>
                     <Text style={[styles(theme).optionText, { backgroundColor: isSelectedOptionB ? 'yellow' : 'transparent' }]}>{optionB}</Text>
                 </View>
-                <View style={{ width: '10%' }}></View>
+                <View style={{ width: '5%' }}></View>
             </>
         )
 

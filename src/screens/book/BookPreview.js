@@ -19,6 +19,8 @@ import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 import Parents from './Parents';
 import Baby from './Baby';
+import MMEnums from '../../helpers/Enums';
+import WelcomeToWorld from './WelcomeToWorld';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
@@ -67,7 +69,7 @@ export default function BookPreview({ updateFooterVisibility }) {
         updateFooterVisibility(isScrollingUp);
     };
 
-    const onPressAdd = (currentPosition, itemId) => {
+    const onPressAdd = (currentPosition, itemId, itemTitle) => {
         let previousItemPosition = currentPosition - 10;
         const currentIndex = bookData.findIndex((item) => item._id === itemId);
         if (currentIndex > 0) {
@@ -75,7 +77,7 @@ export default function BookPreview({ updateFooterVisibility }) {
             previousItemPosition = perviousItem.position;
         }
         const pagePosition = (currentPosition + previousItemPosition) / 2;
-        navigation.navigate('TemplateList', { position: pagePosition })
+        navigation.navigate('TemplateList', { position: pagePosition, itemTitle: itemTitle })
     };
 
     const onPressEdit = (bookData, template) => {
@@ -97,7 +99,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                 titleNumberOfLines={5}
                 titleStyle={theme.fonts.titleMedium}
                 description={
-                    questionType === 'radio'
+                    questionType === MMEnums.questionType.radio
                         ? options.map((option, optionIndex) => (
                             <React.Fragment key={option}>
                                 {answer && answer[0] === option ? (
@@ -113,7 +115,7 @@ export default function BookPreview({ updateFooterVisibility }) {
                                 )}
                             </React.Fragment>
                         ))
-                        : questionType === 'checkbox'
+                        : questionType === MMEnums.questionType.checkbox
                             ? answer && answer.length > 0 && answer.join(', ')
                             : answer || null
                 }
@@ -151,27 +153,35 @@ export default function BookPreview({ updateFooterVisibility }) {
         if (!bookData || bookData.length === 0) return null;
         const isTemplate = item?.templateId ? true : false;
         const template = isTemplate ? _.find(lookupData.templates, { '_id': item?.templateId }) : null;
+        const chapterImage = isTemplate ? null : MMUtils.getImagePath(`Chapter/${item.icon}.png`);
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
-                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id)} />
+                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id, item.title ? item.title : item.headerText)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
-                    <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
+                    <View style={{ borderLeftWidth: 1, borderStyle: MMUtils.isPlatformIos ? 'solid' : 'dashed' }}>
                         {isTemplate ?
                             <TouchableOpacity onPress={() => onPressEdit(item, template)} style={{ paddingVertical: 30 }}>
                                 {renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText)}
                             </TouchableOpacity> :
                             (
-                                <View style={{ paddingVertical: 30 }}>
-                                    {item.type === 'parents' ? (
+                                < TouchableOpacity onPress={() =>
+                                    navigation.navigate('ChapterQuiz', {
+                                        babyId: selectedBaby._id, chapterId: item._id, chapterTitle: item.title,
+                                        chapterImage: chapterImage
+                                    })}
+                                    style={{ paddingVertical: 30 }}>
+                                    {item.type === MMEnums.chapterType.parents ? (
                                         <Parents pageDetails={item.pageDetails} title={item.title} />
+                                    ) : item.type === MMEnums.chapterType.welcomeToWorld ? (
+                                        <WelcomeToWorld pageDetails={item.pageDetails} title={item.title} />
                                     ) : (
                                         _.map(item.pageDetails, (i, index) => {
-                                            return renderQuestionAnswerList(i, index);
+                                            return renderQuestionAnswerList(i, index)
                                         })
                                     )}
-                                </View>
+                                </TouchableOpacity>
                             )
                         }
                     </View>

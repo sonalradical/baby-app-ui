@@ -1,9 +1,10 @@
 import React from 'react';
-import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import MMIcon from '../../components/common/Icon';
 import MMConstants from '../../helpers/Constants';
+import MMUtils from '../../helpers/Utils';
 
 const Column2 = (props) => {
     const theme = useTheme();
@@ -18,7 +19,7 @@ const Column2 = (props) => {
                     flex: 1,
                     width: '100%',
                     height: '100%',
-                    resizeMode: 'contain'
+                    resizeMode: MMUtils.isPlatformAndroid ? 'contain' : 'cover'
                 }}
                     source={{ uri: template?.source }} />
             );
