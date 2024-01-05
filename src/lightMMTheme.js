@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { DefaultTheme, configureFonts } from 'react-native-paper';
 
 // custom theme
@@ -19,7 +20,7 @@ const fontConfig = {
     fontWeight: 600, // Bold style for emphasis
     color: '#000',
     lineHeight: 20,
-    fontFamily: 'WulkanDisplayMedium',
+    fontFamily: 'Wulkan Display Medium',
   },
   displayMedium: {
     fontSize: 20, // Secondary headings
@@ -59,7 +60,7 @@ const fontConfig = {
     color: '#000',
   },
   headlineLarge: {
-    fontFamily: 'WulkanDisplayMedium',
+    fontFamily: Platform.OS === 'ios' ? 'Wulkan display' : 'Wulkan Display Medium',
     fontWeight: 600,
     fontSize: 28, // Secondary headings
     color: '#000',
