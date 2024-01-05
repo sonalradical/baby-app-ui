@@ -99,7 +99,7 @@ export default function AddFamilyMember({ navigation, route }) {
                 onPress={() => {
                     onRelationChange(item.value);
                 }}
-                right={(props) => state.relationShipType === item.value ? <MMIcon iconName='check' iconColor={theme.colors.primary} /> : null}
+                right={(props) => state.relationShipType === item.value ? <MMIcon iconName='checkmark-sharp' iconColor={theme.colors.primary} /> : null}
             />
             {_.size(MMConstants.familyMember) - 1 === index ? null : <Divider />}
         </>
