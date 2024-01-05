@@ -51,6 +51,7 @@ export default function SignUp({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const { data } = await MMApiService.getUserDetail(mobileNumber);
+            console.log(data, 'data')
             if (data) {
                 const userDetail = data.userDetail;
                 setState({
@@ -147,6 +148,7 @@ export default function SignUp({ navigation, route }) {
                 gender: state.gender,
             };
             const { data } = await MMApiService.userSignup(apiData);
+            console.log(data, 'data')
             if (data) {
                 navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
             }

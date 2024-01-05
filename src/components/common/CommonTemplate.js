@@ -14,6 +14,8 @@ import Row3Column3 from '../../screens/templates/Row3-Column3';
 import Row4Column4 from '../../screens/templates/Row4-Column4';
 import ColumnRow2 from '../../screens/templates/Column-Row2';
 import Row2Column from '../../screens/templates/Row2-Column';
+import Column1Row3 from '../../screens/templates/Column1-Row3';
+import Row3Column1 from '../../screens/templates/Row3-Column1';
 
 const MMCommonTemplate = (props) => {
     const { templateName, onPickImage, templateData, isDisable = false, borderWidth = 1, pageId, ImageProps, onImageChange } = props;
@@ -30,7 +32,9 @@ const MMCommonTemplate = (props) => {
         "Row3-Column3": Row3Column3,
         "Row4-Column4": Row4Column4,
         "Column-Row2": ColumnRow2,
-        "Row2-Column": Row2Column
+        "Row2-Column": Row2Column,
+        "Column1-Row3": Column1Row3,
+        "Row3-Column1": Row3Column1
     }
     const TemplateComponents = Components[templateName];
 

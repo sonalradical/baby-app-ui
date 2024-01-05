@@ -8,6 +8,7 @@ import CircularProgress, {
     CircularProgressWithChild,
 } from 'react-native-circular-progress-indicator';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -58,19 +59,17 @@ export default function ChapterList() {
 
     const paddingVertical = MMUtils.isPlatformAndroid() ? 22 : 25;
 
-    const chapterIconUrl = 'https://mm-uat.s3.ap-southeast-2.amazonaws.com/Chapter/';
-
     const renderView = () => {
         return (
             <>
                 <MMPageTitle title='Chapters' />
                 {_.map(chapterList, (chapter) => {
-                    const chapterImage = `${chapterIconUrl}${chapter.icon}.png`
+                    const chapterImage = MMUtils.getImagePath(`Chapter/${chapter.icon}.png`);
                     return (
                         <Card style={whiteBg} key={chapter._id}
                             onPress={() => navigation.navigate(MMConstants.screens.chapterQuiz, {
                                 babyId: selectedBaby._id, chapterId: chapter._id,
-                                chapter: chapter, chapterImage: chapterImage
+                                chapterTitle: chapter.title, chapterImage: chapterImage
                             })}>
                             <View style={{ flexDirection: 'row', padding: MMConstants.paddingMedium, justifyContent: 'space-between' }}>
                                 <MMPicture

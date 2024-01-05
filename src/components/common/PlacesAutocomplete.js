@@ -28,6 +28,7 @@ function MMPlacesAutocomplete(props) {
 
 
     const onChange = async ({ data, details }) => {
+
         if (!data) {
             return;
         }
@@ -56,19 +57,19 @@ function MMPlacesAutocomplete(props) {
     }
 
     return (
-        <View style={{ height: 50, zIndex: 1000 }}>
+        <View style={{ height: 45, }}>
             <GooglePlacesAutocomplete
                 currentLocation={true}
                 currentLocationLabel='My Location'
                 placeholder={placeholder}
-                onPress={(data, details = null) => onChange({ data, details })}
+                onPress={(data, details) => onChange({ data, details })}
                 query={{ key: MMConfig().REACT_APP_GOOGLE_PLACES_API_KEY, components: "country:au", type: "address", language: 'en' }}
                 fetchDetails={true}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}
                 renderLeftButton={() => (
                     <View style={{ position: 'absolute', marginLeft: 8, zIndex: 9, height: '90%', display: 'flex', justifyContent: 'center' }}>
-                        <MMIcon iconName='search' iconSize={26} iconColor={theme.colors.primary} />
+                        <MMIcon iconName='search-outline' iconSize={26} iconColor={theme.colors.primary} />
                     </View>
                 )}
                 enablePoweredByContainer={false}

@@ -31,7 +31,9 @@ const MMEnums = {
         checkbox: 'checkbox',
         text: 'text',
         textArea: 'textArea',
-        textImage: 'textImage'
+        textImage: 'textImage',
+        timepicker: 'timepicker',
+        groupedradio: 'groupedradio'
     },
     situation: {
         currentlyPregnant: 'currentlyPregnant',
@@ -43,6 +45,10 @@ const MMEnums = {
         home: 'home',
         work: 'work',
         other: 'other'
+    },
+    chapterType: {
+        parents: 'parents',
+        welcomeToWorld: 'welcomeToWorld'
     }
 };
 

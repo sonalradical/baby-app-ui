@@ -5,6 +5,7 @@ import { Card, RadioButton, Text, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 
 import { setBookDetail } from '../../redux/Slice/AppSlice';
 

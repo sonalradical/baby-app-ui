@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 
 import CommonImageTemplate from './CommonImageTemplate';
 
-const RowColumn2 = (props) => {
+const Row3Column1 = (props) => {
     const theme = useTheme();
     const {
         templateData, pageId, isDisable = false, onPickImage, onEditPicture, borderWidth = 1 } = props;
@@ -28,12 +28,12 @@ const RowColumn2 = (props) => {
             <>
                 {
                     pageId ?
-                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onEditPicture(name, deviceWidth, deviceWidth / 2)} disabled={isDisable}>
+                        <TouchableOpacity style={[styles(theme).rowInner, extraStyle]}
+                            onPress={() => onEditPicture(name, deviceWidth / 1, deviceWidth / 1.5)} disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity> :
-                        <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onPickImage(name, 'img', deviceWidth, deviceWidth / 2)}
+                        <TouchableOpacity style={[styles(theme).rowInner, extraStyle]}
+                            onPress={() => onPickImage(name, 'img', deviceWidth / 1, deviceWidth / 1.5)}
                             disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity>
@@ -48,11 +48,11 @@ const RowColumn2 = (props) => {
                 {
                     pageId ?
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onEditPicture(name, deviceWidth / 2, deviceWidth / 2)} disabled={isDisable}>
+                            onPress={() => onEditPicture(name, deviceWidth / 2, deviceWidth)} disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity> :
                         <TouchableOpacity style={[styles(theme).column, extraStyle]}
-                            onPress={() => onPickImage(name, 'img', deviceWidth / 2, deviceWidth / 2)}
+                            onPress={() => onPickImage(name, 'img', deviceWidth / 2, deviceWidth)}
                             disabled={isDisable}>
                             {renderImage(name)}
                         </TouchableOpacity>
@@ -65,13 +65,22 @@ const RowColumn2 = (props) => {
         <>
             {/* Row 1 */}
             <View style={styles(theme).row}>
-                {renderImageRowBox('p1', { borderColor: theme.colors.outline, borderBottomWidth: borderWidth })}
-            </View>
-
-            {/* Row 2 */}
-            <View style={styles(theme).row}>
-                {renderImageBox('p2', { borderRightWidth: borderWidth, borderColor: theme.colors.outline })}
-                {renderImageBox('p3')}
+                {/* Row 2 */}
+                <View style={[styles(theme).column, { width: isDisable ? 125 : deviceWidth / 2 }]}>
+                    {renderImageRowBox('p1', {
+                        borderBottomWidth: borderWidth, borderColor: theme.colors.outline,
+                        width: isDisable ? 125 : deviceWidth / 2
+                    })}
+                    {renderImageRowBox('p2', {
+                        borderBottomWidth: borderWidth, borderColor: theme.colors.outline,
+                        width: isDisable ? 125 : deviceWidth / 2
+                    })}
+                    {renderImageRowBox('p3', { width: isDisable ? 125 : deviceWidth / 2 })}
+                </View>
+                {renderImageBox('p4', {
+                    borderLeftWidth: borderWidth, borderColor: theme.colors.outline,
+                    width: isDisable ? 125 : deviceWidth / 2
+                })}
             </View>
         </>
     );
@@ -82,11 +91,16 @@ const styles = (theme) => StyleSheet.create({
         flex: 1,
         flexDirection: 'row', // main axis
     },
-    column: {
+    rowInner: {
         flex: 1,
+        flexDirection: 'row', // main axis
+        justifyContent: 'center', // main axis
+        alignItems: 'center',
+    },
+    column: {
         justifyContent: 'center', // main axis
         alignItems: 'center', // cross axis
     }
 });
 
-export default RowColumn2;
+export default Row3Column1;

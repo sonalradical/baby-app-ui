@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
-import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSpinner from '../../components/common/Spinner';
@@ -75,9 +74,8 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
         }
     }, [milestoneId]);
 
-
     const renderMilestone = ({ item }) => {
-        const milestoneImage = MMConstants.milestones[item.icon];
+        const milestoneImage = MMUtils.getImagePath(`Milestone/${item.icon}.png`)
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
@@ -89,7 +87,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
                 />
                 <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={undefined} ellipsizeMode='tail'>
                     {item.title}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity >
         );
     };
 
