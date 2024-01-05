@@ -18,6 +18,7 @@ import MMListView from '../../components/common/ListView';
 import MMInput from '../../components/common/Input';
 import MMTextInputNumeric from '../../components/common/TextInputNumeric';
 import MMFormErrorText from '../../components/common/FormErrorText';
+import MMPicture from '../../components/common/Picture';
 
 const BookSelection = ({ validStep, clickStep }) => {
     const theme = useTheme();
@@ -134,10 +135,10 @@ const BookSelection = ({ validStep, clickStep }) => {
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
                 <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge, marginTop: MMConstants.marginLarge }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <FastImage
+                        <MMPicture
                             textAlign="center"
                             resizeMode="contain"
-                            source={{ uri: productImage }}
+                            pictureUri={productImage}
                             style={styles(theme).image}
                         />
                         <View style={{ padding: MMConstants.paddingLarge }}>
