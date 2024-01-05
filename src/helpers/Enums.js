@@ -32,6 +32,7 @@ const MMEnums = {
         text: 'text',
         textArea: 'textArea',
         textImage: 'textImage',
+        timepicker: 'timepicker',
         groupedradio: 'groupedradio'
     },
     situation: {
@@ -44,6 +45,10 @@ const MMEnums = {
         home: 'home',
         work: 'work',
         other: 'other'
+    },
+    chapterType: {
+        parents: 'parents',
+        welcomeToWorld: 'welcomeToWorld'
     }
 };
 

@@ -37,8 +37,12 @@ function displayUtcDate(date) {
     return moment(`${date}Z`).format('DD/MM/yyyy');
 }
 
+function dispalyMonthDate(date) {
+    return moment(date).format('MMMM Do, YYYY')
+}
+
 function displayTime(dateTime) {
-    return moment(`${dateTime}`).format('HH:mm');
+    return moment(`${dateTime}`).format('h:mm A');
 }
 
 function displayUtcTime(dateTime) {
@@ -340,6 +344,7 @@ export default {
     isPlatformIos,
     displayDateForPostApi,
     displayDate,
+    dispalyMonthDate,
     displayTime,
     getTodayDateTime,
     getTodayUtcDateTime,

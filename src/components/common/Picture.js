@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-const MMPicture = ({ pictureUrl, onPressPicture, type = 'cardTitle' }) => {
+const MMPicture = ({ pictureUrl, onPressPicture, }) => {
   const theme = useTheme();
 
   return (
@@ -16,23 +16,9 @@ const MMPicture = ({ pictureUrl, onPressPicture, type = 'cardTitle' }) => {
 
 };
 
-const styles = (theme) => StyleSheet.create({
-  cardTitleView: {
-    marginTop: -12,
-    marginRight: 12,
-    paddingBottom: 12,
-    paddingLeft: 16,
-  },
-  multipleView: {
-    marginTop: 4,
-    marginRight: 12,
-  },
-});
-
 MMPicture.propTypes = {
   pictureUrl: PropTypes.string,
   onPressPicture: PropTypes.func,
-  type: PropTypes.oneOf(['cardTitle', 'multiple']),
 };
 
 export default MMPicture;

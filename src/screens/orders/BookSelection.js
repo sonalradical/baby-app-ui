@@ -5,6 +5,7 @@ import { Card, RadioButton, Text, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 
 import { setBookDetail } from '../../redux/Slice/AppSlice';
 
@@ -133,7 +134,7 @@ const BookSelection = ({ validStep, clickStep }) => {
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
                 <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge, marginTop: MMConstants.marginLarge }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Image
+                        <FastImage
                             textAlign="center"
                             resizeMode="contain"
                             source={{ uri: productImage }}

@@ -8,6 +8,12 @@ const MMConstants = {
 
     otpTimeOut: 60000,
 
+    unicode: {
+        bull: '\u2022',
+        dash: '\u2014',
+        space: '\u00A0',
+    },
+
     screens: {
         login: 'Login',
         otpView: 'OTPView',
