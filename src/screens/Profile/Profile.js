@@ -6,12 +6,12 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import MMConstants from '../../helpers/Constants';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSurface from '../../components/common/Surface';
 import MMScrollView from '../../components/common/ScrollView';
+import MMIcon from '../../components/common/Icon';
 
 export default function Profile({ route }) {
     const navigation = useNavigation();
@@ -30,8 +30,8 @@ export default function Profile({ route }) {
                 <Card.Title
                     title={name}
                     titleStyle={[theme.fonts.bodyLarge, { marginTop: MMConstants.marginSmall }]}
-                    left={() => <Ionicons name={icon} size={30} color={theme.colors.primary} />}
-                    right={() => <Ionicons name={'chevron-forward'} size={28} color={theme.colors.primary} />}
+                    left={() => <MMIcon iconName={icon} iconSize={30} iconColor={theme.colors.primary} />}
+                    right={() => <MMIcon iconName={'chevron-forward'} iconSize={28} iconColor={theme.colors.primary} />}
                 />
             </Card>
         )

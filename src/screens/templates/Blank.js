@@ -27,7 +27,7 @@ const Blank = (props) => {
                 />
             );
         } else {
-            return <MMIcon iconName={'plus-circle'} style={styles(theme).imagePickerButton} />;
+            return <MMIcon iconName={'add-circle-sharp'} style={styles(theme).imagePickerButton} />;
         }
     };
 
