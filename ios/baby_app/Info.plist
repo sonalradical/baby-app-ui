@@ -39,9 +39,9 @@
 	<string/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>TangerineRegular</string>
-		<string>MaisonNeue-Book</string>
-		<string>MaisonNeue-Bold</string>
+		<string>TangerineRegular.ttf</string>
+		<string>MaisonNeue-Book.ttf</string>
+		<string>MaisonNeue-Bold.ttf</string>
 		<string>Ionicons.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>Wulkan Display Medium.otf</string>
