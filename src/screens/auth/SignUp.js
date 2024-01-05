@@ -233,8 +233,8 @@ export default function SignUp({ navigation, route }) {
             <View style={{ padding: MMConstants.paddingLarge }}>
                 <Image
                     textAlign="center"
-                    source={require('../../assets/images/secondaryLogo.png')}
-                    style={{ height: '5%', width: '70%', alignSelf: 'center' }}
+                    source={require('../../assets/images/secondaryLogo1.png')}
+                    style={{ height: '4%', width: '100%', aspectRatio: 7, alignSelf: 'center', marginBottom: MMConstants.marginMedium }}
                 />
                 <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium }]} >To start things off, kindly share some

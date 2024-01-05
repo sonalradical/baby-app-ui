@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Keyboard } from 'react-native';
+import { View, Text, Keyboard, StyleSheet, Image } from 'react-native';
 import { RadioButton, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
@@ -21,6 +21,8 @@ import MMDateTimePicker from '../../components/common/DateTimePicker';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMPageTitle from '../../components/common/PageTitle';
+import MMImageBackground from '../../components/common/ImageBackground';
+import MMSurface from '../../components/common/Surface';
 
 export default function InitialSetup({ route, navigation }) {
     const theme = useTheme();
@@ -158,9 +160,9 @@ export default function InitialSetup({ route, navigation }) {
 
     const renderView = () => {
         return (
-            <>
-                <View style={{ padding: MMConstants.paddingLarge }}>
-                    <MMPageTitle title='Tell us a bit about yourself' />
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
+                <View style={{ padding: MMConstants.paddingMedium }}>
+                    <MMPageTitle title='Tell us a bit about yourself' paddingBottom={20} />
                     <View>
                         <Text style={theme.fonts.titleMedium}>1. Are you the birthing Parent?</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -267,16 +269,16 @@ export default function InitialSetup({ route, navigation }) {
                             : null
                     }
                 </View>
-            </>
+            </MMSurface>
         );
     };
 
     return (
-        <MMContentContainer>
+        <MMImageBackground imgSource={require('../../assets/images/initial.jpg')}>
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
-        </MMContentContainer>
+        </MMImageBackground>
     );
 }
 
@@ -285,3 +287,12 @@ InitialSetup.propTypes = {
     route: PropTypes.object,
 };
 
+const styles = (theme) => StyleSheet.create({
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: theme.colors.background
+    }
+});
