@@ -186,7 +186,7 @@ export default function Order({ navigation }) {
                             flexDirection: 'row',
                             alignItems: 'center',
                         }}>
-                            <View style={{ flexDirection: 'column' }}>
+                            <View style={{ flexDirection: 'column', paddingLeft: 2 }}>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>
                                     {bookDetail.quantity === 1 ? `${bookDetail.quantity} Item` : `${bookDetail.quantity} Items`} </Text>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>Place Order</Text>

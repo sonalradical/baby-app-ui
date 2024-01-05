@@ -18,7 +18,7 @@ const MMTextInputNumeric = ({ label, errorText, containerClass = 'container', ..
 				step={1}
 				minValue={1}
 				totalHeight={44}
-				separatorWidth={0.2}
+				separatorWidth={0}
 				rounded={true}
 				editable={false}
 				iconStyle={{ fontSize: 18, color: theme.colors.secondaryContainer }}

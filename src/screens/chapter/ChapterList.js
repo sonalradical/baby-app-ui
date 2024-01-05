@@ -16,6 +16,7 @@ import MMApiService from '../../services/ApiService';
 import MMSpinner from '../../components/common/Spinner';
 import MMScrollView from '../../components/common/ScrollView';
 import MMPageTitle from '../../components/common/PageTitle';
+import MMPicture from '../../components/common/Picture';
 
 export default function ChapterList() {
     const theme = useTheme();
@@ -72,12 +73,10 @@ export default function ChapterList() {
                                 chapter: chapter, chapterImage: chapterImage
                             })}>
                             <View style={{ flexDirection: 'row', padding: MMConstants.paddingMedium, justifyContent: 'space-between' }}>
-                                <Image
+                                <MMPicture
                                     textAlign="center"
                                     resizeMode="contain"
-                                    source={{
-                                        uri: chapterImage
-                                    }}
+                                    pictureUri={chapterImage}
                                     style={image}
                                 />
                                 <View style={{ paddingVertical }}>

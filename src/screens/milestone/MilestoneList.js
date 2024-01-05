@@ -5,6 +5,7 @@ import { Text, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -13,7 +14,7 @@ import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSpinner from '../../components/common/Spinner';
 import MMPageTitle from '../../components/common/PageTitle';
-import { useNavigation } from '@react-navigation/native';
+import MMPicture from '../../components/common/Picture';
 
 export default function MilestoneList({ route, updateFooterVisibility }) {
     const navigation = useNavigation();
@@ -80,10 +81,10 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
-                <Image
+                <MMPicture
                     textAlign="center"
                     resizeMode="contain"
-                    source={milestoneImage}
+                    pictureUri={milestoneImage}
                     style={styles(theme).image}
                 />
                 <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={undefined} ellipsizeMode='tail'>
