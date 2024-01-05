@@ -3,8 +3,6 @@ import { Animated, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Feather'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import MMIcon from '../../components/common/Icon';
 import FooterTab from './FooterTab';
@@ -59,7 +57,7 @@ export default function Footer() {
                     options={{
                         tabBarLabel: 'Chapters',
                         tabBarIcon: ({ color, size }) => {
-                            return <Ionicons name="bookmarks-outline" size={size} color={color} />;
+                            return <MMIcon iconName="bookmarks-outline" iconSize={size} iconColor={color} />;
                         },
                     }}
                 >
@@ -69,7 +67,9 @@ export default function Footer() {
                     name="MilestoneList"
                     options={{
                         tabBarLabel: 'Milestone',
-                        tabBarIcon: ({ color, size }) => <Icon name="flag" size={size} color={color} />,
+                        tabBarIcon: ({ color, size }) => {
+                            return <MMIcon iconName="flag-outline" iconSize={size} iconColor={color} />;
+                        },
                     }}
                 >
                     {({ route }) => <MilestoneList route={route} updateFooterVisibility={updateFooterVisibility} />}
@@ -79,7 +79,7 @@ export default function Footer() {
                     options={{
                         tabBarLabel: 'Book Preview',
                         tabBarIcon: ({ color, size }) => {
-                            return <Icon name="book-open" size={size} color={color} />;
+                            return <MMIcon iconName="book-outline" iconSize={size} iconColor={color} />;
                         },
                     }}
                 >
@@ -91,7 +91,7 @@ export default function Footer() {
                     options={{
                         tabBarLabel: 'Profile',
                         tabBarIcon: ({ color, size }) => {
-                            return <MMIcon iconName="user-o" iconSize={size} iconColor={color} />;
+                            return <MMIcon iconName="person-outline" iconSize={size} iconColor={color} />;
                         },
                     }}
                 />

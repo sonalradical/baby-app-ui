@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper';
+import { Avatar, Divider, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Feather from 'react-native-vector-icons/Feather';
 
 import { setBaby } from '../../redux/Slice/AppSlice';
 
@@ -15,7 +13,7 @@ import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
-import { MMButton, MMTransparentButton } from '../../components/common/Button';
+import { MMButton } from '../../components/common/Button';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 
@@ -122,7 +120,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 									<Text style={[theme.fonts.labelMedium]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
 								</View>
 								<View style={{ alignSelf: 'flex-end' }}>
-									<Ionicons name={'chevron-forward'} size={28} color={theme.colors.primary} />
+									<MMIcon iconName={'chevron-forward'} iconSize={28} iconColor={theme.colors.primary} />
 								</View>
 							</TouchableOpacity>
 							<Divider />

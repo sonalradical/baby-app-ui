@@ -3,7 +3,6 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar, Text, useTheme } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash';
 
 import MMConstants from '../../helpers/Constants';
@@ -46,15 +45,16 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 							size={50}
 							source={require('../../assets/images/parenthood.jpg')}
 						/>
-						<MMIcon iconName='plus-circle' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.secondary} />
+						<MMIcon iconName='add-circle-outline' style={styles(theme).addButton} iconSize={20} iconColor={theme.colors.secondary} />
 					</TouchableOpacity>
 					<Appbar.Content title={'Mini Memoirs'}
 						titleStyle={[theme.fonts.headlineMedium, { alignSelf: 'center' }]} />
 				</>
 			}
-			{showHome ? <Ionicons name="home-outline" size={28} color={theme.colors.text.secondary} onPress={() => navigation.navigate('Home')}
+			{showHome ? <MMIcon iconName="home-outline" iconSize={28} iconColor={theme.colors.text.secondary} onPress={() => navigation.navigate('Home')}
 				style={{ paddingRight: MMConstants.paddingLarge }} /> :
-				<Ionicons name="notifications-outline" size={28} color={theme.colors.text.secondary} style={{ paddingRight: MMConstants.paddingLarge }}
+				<MMIcon iconName="notifications-outline" iconSize={28} iconColor={theme.colors.text.secondary}
+					style={{ paddingRight: MMConstants.paddingLarge }}
 					onPress={() => console.log('Bell pressed')} />}
 		</Appbar.Header>
 	);

@@ -186,7 +186,7 @@ export default function Order({ navigation }) {
                             flexDirection: 'row',
                             alignItems: 'center',
                         }}>
-                            <View style={{ flexDirection: 'column' }}>
+                            <View style={{ flexDirection: 'column', paddingLeft: 2 }}>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>
                                     {bookDetail.quantity === 1 ? `${bookDetail.quantity} Item` : `${bookDetail.quantity} Items`} </Text>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>Place Order</Text>
@@ -212,7 +212,7 @@ export default function Order({ navigation }) {
                 {labels.map((label, index) => (
                     <React.Fragment key={label}>
                         <TouchableOpacity onPress={() => onStepPress(index)} style={styles(theme).stepItem}>
-                            <MMIcon iconName='circle'
+                            <MMIcon iconName='ellipse-sharp'
                                 iconColor={index === activeStep ? theme.colors.secondary : theme.colors.surfaceDisabled}
                                 iconSize={15} />
                             <Text style={[{ color: index === activeStep ? theme.colors.secondary : theme.colors.outline }]}>

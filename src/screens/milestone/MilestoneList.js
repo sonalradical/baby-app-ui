@@ -6,7 +6,6 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
 
 import MMUtils from '../../helpers/Utils';
 import MMConstants from '../../helpers/Constants';
@@ -14,6 +13,7 @@ import MMApiService from '../../services/ApiService';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMSpinner from '../../components/common/Spinner';
 import MMPageTitle from '../../components/common/PageTitle';
+import MMPicture from '../../components/common/Picture';
 
 export default function MilestoneList({ route, updateFooterVisibility }) {
     const navigation = useNavigation();
@@ -74,23 +74,20 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
         }
     }, [milestoneId]);
 
-
-    const milestoneUri = 'https://mm-uat.s3.ap-southeast-2.amazonaws.com//';
-
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMUtils.getImagePath(`Milestone/${item.icon}.png`)
         return (
             <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
-                <FastImage
+                <MMPicture
                     textAlign="center"
                     resizeMode="contain"
-                    source={{ uri: milestoneImage }}
+                    pictureUri={milestoneImage}
                     style={styles(theme).image}
                 />
                 <Text style={[theme.fonts.default, styles(theme).milestone]} numberOfLines={undefined} ellipsizeMode='tail'>
                     {item.title}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity >
         );
     };
 

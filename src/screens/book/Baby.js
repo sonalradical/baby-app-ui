@@ -15,7 +15,7 @@ const Baby = () => {
 
     return (
         <MMSurface margin={[10, 0, 10, 0]} padding={[0, 20, 0, 50]}>
-            <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
+            <View style={{ borderLeftWidth: 1, borderStyle: MMUtils.isPlatformIos() ? 'solid' : 'dashed' }}>
                 <View style={{ paddingVertical: 30 }}>
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>
                         {selectedBaby.isBorn === 'Yes' ? selectedBaby.name : 'Mini Baby'}</Text>

@@ -69,7 +69,7 @@ function MMPlacesAutocomplete(props) {
                 onNotFound={() => console.log('no results')}
                 renderLeftButton={() => (
                     <View style={{ position: 'absolute', marginLeft: 8, zIndex: 9, height: '90%', display: 'flex', justifyContent: 'center' }}>
-                        <MMIcon iconName='search' iconSize={26} iconColor={theme.colors.primary} />
+                        <MMIcon iconName='search-outline' iconSize={26} iconColor={theme.colors.primary} />
                     </View>
                 )}
                 enablePoweredByContainer={false}
