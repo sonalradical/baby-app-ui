@@ -5,21 +5,21 @@ import { List, Text, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/Feather';
 
 import { useNavigation } from '@react-navigation/native';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
+import MMEnums from '../../helpers/Enums';
 import MMApiService from '../../services/ApiService';
 import MMCommonTemplate from '../../components/common/CommonTemplate';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRoundBackground from '../../components/common/RoundBackground';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
+import MMIcon from '../../components/common/Icon';
 import Parents from './Parents';
 import Baby from './Baby';
-import MMEnums from '../../helpers/Enums';
 import WelcomeToWorld from './WelcomeToWorld';
 
 export default function BookPreview({ updateFooterVisibility }) {
@@ -157,7 +157,8 @@ export default function BookPreview({ updateFooterVisibility }) {
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
-                    <Icon name={'plus-square'} size={24} color={theme.colors.text.primary} onPress={() => onPressAdd(item.position, item._id, item.title ? item.title : item.headerText)} />
+                    <MMIcon iconName={'plus-square-o'} iconSize={24} iconColor={theme.colors.text.primary}
+                        onPress={() => onPressAdd(item.position, item._id, item.title ? item.title : item.headerText)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
                     <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
