@@ -42,7 +42,7 @@ export default function MMPickerModel(props) {
                     padding: MMConstants.paddingLarge,
                     backgroundColor: theme.colors.primary
                 }]}>
-                    <Text style={[theme.fonts.headlineMedium, { color: theme.colors.secondaryContainer }]}>Select {filterName} </Text>
+                    <Text style={theme.fonts.headlineMedium}>Select {filterName} </Text>
                 </View>
                 <List.Section>
                     <FlatList
