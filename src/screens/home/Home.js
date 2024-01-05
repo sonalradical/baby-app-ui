@@ -77,39 +77,8 @@ export default function Home({ updateFooterVisibility }) {
 
         return (
             userDetail.dueDate ?
-                <View style={{ marginHorizontal: MMConstants.marginLarge, marginVertical: MMConstants.marginMedium }}>
-                    <MMSurface style={{ alignItems: 'center', borderRadius: 20 }} margin={[0, 0, 0, 0]}>
-                        <Text style={theme.fonts.headlineMedium}>Only</Text>
-                        <View style={{ flexDirection: 'row' }}>
-                            {state.months > 0 &&
-                                <Card style={{
-                                    backgroundColor: theme.colors.primary, padding: MMConstants.paddingLarge,
-                                    margin: MMConstants.marginMedium
-                                }}>
-                                    <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.months}</Text>
-                                    <Text style={{ color: theme.colors.secondaryContainer }}>{state.months === 1 ? 'month' : 'months'}</Text>
-                                </Card>}
-                            {state.weeks > 0 &&
-                                <Card style={{
-                                    backgroundColor: theme.colors.primary, padding: MMConstants.paddingLarge,
-                                    margin: MMConstants.marginMedium
-                                }}>
-                                    <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.weeks}</Text>
-                                    <Text style={{ color: theme.colors.secondaryContainer }}>{state.weeks === 1 ? 'week' : 'weeks'}</Text>
-                                </Card>}
-                            {state.days > 0 &&
-                                <Card style={{
-                                    backgroundColor: theme.colors.primary, padding: MMConstants.paddingLarge,
-                                    paddingHorizontal: 20, margin: MMConstants.marginMedium
-                                }}>
-                                    <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{state.days}</Text>
-                                    <Text style={{ color: theme.colors.secondaryContainer }}>{state.days === 1 ? 'day' : 'days'}</Text>
-                                </Card>}
-                        </View>
-                        <Text style={theme.fonts.headlineMedium}>to arrive</Text>
-                        <Text> Due date {dueDate}</Text>
-                    </MMSurface>
-                </View> : null
+                <CountDownBanner />
+                : null
         );
     };
 

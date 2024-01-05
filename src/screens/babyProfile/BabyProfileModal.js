@@ -80,7 +80,9 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 	}
 
 	const ProfileCard = () => {
-		const filterBabyDetail = babyList.filter(item => item._id !== selectedBabyDetail._id);
+		if (!babyList || babyList.length === 0) return null;
+		const filterBabyDetail = _.filter(babyList, item => item._id !== selectedBabyDetail._id);
+
 		return (
 			<>
 				< >
