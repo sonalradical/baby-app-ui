@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Avatar, Checkbox, Chip, RadioButton, Text, TextInput, useTheme } from 'react-native-paper';
+import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import moment from 'moment';
 
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Swiper from 'react-native-swiper';
-import moment from 'moment';
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
 import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
-
 import { MMButton } from '../../components/common/Button';
 import MMFlexView from '../../components/common/FlexView';
 import MMInput from '../../components/common/Input';
@@ -30,6 +29,13 @@ export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapterTitle, chapterImage } = route.params;
     const theme = useTheme();
     const dispatch = useDispatch();
+
+    // config for: swipe gesture
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
+
     const [isLoading, setLoading] = useState(true);
     const [selectedQuestion, setSelectedQuestion] = useState();
     const [selectedAnswer, setSelectedAnswer] = useState([]);
@@ -139,11 +145,6 @@ export default function ChapterQuiz({ navigation, route }) {
 
     //for groupRadio
     const handleOptionPress = (option, options) => {
-        // setSelectedAnswers({
-        //     ...selectedAnswers,
-        //     [options]: option,
-        // });
-
         const [optionA, optionB] = options.split('##');
         const _optionA = _.trim(optionA);
         const _optionB = _.trim(optionB);
@@ -198,9 +199,10 @@ export default function ChapterQuiz({ navigation, route }) {
         }
     };
 
-    const onSaveQuiz = async () => {
+    //Note:Remove Async Await here for fast processing
+    const onSaveQuiz = () => {
         try {
-            setLoading(true);
+            //setLoading(true);
             const questionId = questionList[selectedQuestion].questionId;
             const apiData = {
                 chapterId,
@@ -208,7 +210,7 @@ export default function ChapterQuiz({ navigation, route }) {
                 questionId,
                 answer: selectedAnswer
             }
-            await MMApiService.saveQuiz(apiData);
+            MMApiService.saveQuiz(apiData);
             const updatedAnswers = [...answerList];
             const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionId === questionId);
             if (existingAnswerIndex >= 0) { //Answer exist then update
@@ -246,13 +248,27 @@ export default function ChapterQuiz({ navigation, route }) {
         }
     };
 
-    const onSwipe = (index) => {
-        if (index < selectedQuestion) {
-            onPreviousClick();
-        } else if (index > selectedQuestion) {
-            onNextClick();
+
+    function onSwipe(direction, state) {
+        console.log("onswipe called", state, direction);
+        const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+        switch (direction) {
+            case SWIPE_LEFT:
+                onNextClick();
+                break;
+            case SWIPE_RIGHT:
+                onPreviousClick();
+                break;
+            default:
+                const { dx } = state;
+                if (dx > 0) {
+                    onPreviousClick();
+                }
+                else if (dx < 0) {
+                    onNextClick();
+                }
         }
-    };
+    }
 
     const renderView = () => {
         if (!questionList || questionList.length === 0) return null;
@@ -396,8 +412,6 @@ export default function ChapterQuiz({ navigation, route }) {
                                 selectedAnswer={selectedAnswer}
                                 handleOptionPress={handleOptionPress} />}
                         />
-
-
                         : null}
                 </View>
                 <MMImagePickerModal
@@ -459,29 +473,24 @@ export default function ChapterQuiz({ navigation, route }) {
         );
     };
 
-    const renderQuestionSlides = () => {
-        return questionList.map((question, index) => (
-            <View key={index}>
-                {renderView()}
-            </View>
-        ));
-    };
+
 
     return (
+
         <>
             {renderScreenHeader()}
             <MMContentContainer>
                 {isLoading ? <MMSpinner /> :
-                    // <Swiper
-                    //     loop={false}
-                    //     index={selectedQuestion}
-                    //     onIndexChanged={onSwipe}
-                    //     showsPagination={false}
-                    //     showsButtons={false}
-                    //     removeClippedSubviews={true}
-                    // >
-                    renderView()}
-
+                    <GestureRecognizer
+                        onSwipe={(direction, state) => onSwipe(direction, state)}
+                        onSwipeLeft={() => { console.log("swipe left calld"), onNextClick() }}
+                        onSwipeRight={() => { console.log("swipe right called"), onPreviousClick() }}
+                        config={config}
+                        style={{ flex: 1 }}
+                    >
+                        {renderView()}
+                    </GestureRecognizer>
+                }
             </MMContentContainer >
             <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
                 {renderActionButtons()}
