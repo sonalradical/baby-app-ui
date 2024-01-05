@@ -74,6 +74,7 @@ export default function AddAddress({ navigation, route }) {
     };
 
     const onAutoSuggestChange = (data) => {
+        console.log(data);
         setState({
             ...state,
             ...data,
@@ -183,16 +184,17 @@ export default function AddAddress({ navigation, route }) {
     const renderView = () => {
         const address = `${state.addressLine1 ? `${state.addressLine1}, ` : ''} ${state.addressLine2 ? `${state.addressLine2}, ` : ''}${state.suburb}, \n${state.state}, ${state.postcode}, ${state.country}`;
         return (
-            <View style={{ paddingTop: MMConstants.paddingMedium }}>
-                <Text style={theme.fonts.titleMedium}>Save address as *</Text>
-                <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row' }}>
-                    {renderChip(MMEnums.addressType.home, 'Home')}
-                    {renderChip(MMEnums.addressType.work, 'Work')}
-                    {renderChip(MMEnums.addressType.other, 'Other')}
-                </View>
-                <MMFormErrorText errorText={state.errors.addressType} />
+            <View style={{ paddingTop: MMConstants.paddingMedium, zIndex: 1 }}>
+
                 {isVisible ?
-                    <>
+                    <View>
+                        <Text style={theme.fonts.titleMedium}>Save address as *</Text>
+                        <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row' }}>
+                            {renderChip(MMEnums.addressType.home, 'Home')}
+                            {renderChip(MMEnums.addressType.work, 'Work')}
+                            {renderChip(MMEnums.addressType.other, 'Other')}
+                        </View>
+                        <MMFormErrorText errorText={state.errors.addressType} />
                         <View style={{ paddingTop: MMConstants.paddingMedium }}>
                             <MMInput
                                 label='Line 1'
@@ -254,7 +256,7 @@ export default function AddAddress({ navigation, route }) {
                                 </MMFlexView>
 
                         }
-                    </> : null}
+                    </View> : null}
             </View>
         );
     };
@@ -262,7 +264,7 @@ export default function AddAddress({ navigation, route }) {
     return (
         <MMContentContainer>
             <MMPageTitle title={'Select address'} />
-            <View style={{ paddingTop: MMConstants.paddingMedium }}>
+            <View style={{ paddingTop: MMConstants.paddingMedium, zIndex: 2000 }}>
                 <MMPlacesAutocomplete
                     placeholder='Search Area, Location'
                     updatedLatLong={(data) => onAutoSuggestChange(data)}
@@ -270,9 +272,7 @@ export default function AddAddress({ navigation, route }) {
                     defaultValue={state.addressLine1}
                 />
             </View>
-            <MMScrollView>
-                {renderView()}
-            </MMScrollView>
+            {renderView()}
             <MMOverlaySpinner visible={isOverlayLoading} />
         </MMContentContainer>
     );

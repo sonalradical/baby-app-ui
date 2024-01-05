@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper';
+import { Avatar, Divider, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Feather from 'react-native-vector-icons/Feather';
 
 import { setBaby } from '../../redux/Slice/AppSlice';
 
@@ -15,7 +13,7 @@ import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
-import { MMButton, MMTransparentButton } from '../../components/common/Button';
+import { MMButton } from '../../components/common/Button';
 import MMSpinner from '../../components/common/Spinner';
 import MMIcon from '../../components/common/Icon';
 
@@ -101,25 +99,36 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
 					</View>
 				</>
-				<View style={{ paddingHorizontal: MMConstants.paddingLarge, paddingVertical: MMConstants.paddingMedium }}>
+				<View style={{ marginTop: MMConstants.marginLarge }}>
 					{filterBabyDetail && filterBabyDetail.map((item, index) => (
 						<React.Fragment key={index}>
-							<TouchableOpacity style={{ flexDirection: 'row', padding: MMConstants.paddingMedium }} key={index}
-								onPress={() => onSelectProfile(item)}>
+							<TouchableOpacity
+								style={{ flexDirection: 'row', paddingVertical: MMConstants.paddingLarge, paddingHorizontal: 20 }}
+								key={index}
+								onPress={() => onSelectProfile(item)}
+							>
 								<Avatar.Image
 									size={40}
-									source={item.isBorn === 'Yes' ?
-										{ uri: MMUtils.getImagePath(item.picture) } : require('../../assets/images/parenthood.jpg')}
+									source={
+										item.isBorn === 'Yes'
+											? { uri: MMUtils.getImagePath(item.picture) }
+											: require('../../assets/images/parenthood.jpg')
+									}
 								/>
-								<View style={{ flexDirection: 'column', paddingLeft: 20 }}>
-									<Text style={[theme.fonts.bodyLarge]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
-									<Text style={[theme.fonts.labelSmall]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
+								<View style={{ flexDirection: 'column', paddingLeft: 20, width: '78%' }}>
+									<Text style={[theme.fonts.titleMedium]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
+									<Text style={[theme.fonts.labelMedium]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
+								</View>
+								<View style={{ alignSelf: 'flex-end' }}>
+									<MMIcon iconName={'chevron-forward'} iconSize={28} iconColor={theme.colors.primary} />
 								</View>
 							</TouchableOpacity>
-							{index < _.size(filterBabyDetail) - 1 && <Divider />}
+							<Divider />
 						</React.Fragment>
 					))}
-					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} style={{ margin: MMConstants.marginMedium }} />
+				</View>
+				<View style={{ paddingHorizontal: 20, marginVertical: MMConstants.marginSmall }}>
+					<MMButton label={'Add New Baby'} onPress={() => onAddBaby()} />
 				</View>
 			</>
 		);
@@ -132,9 +141,11 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 			visible={isModalOpen}>
 			<View style={styles(theme).centeredView}>
 				<View style={styles(theme).card}>
-					<View style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, top: 12, right: 12, }}>
-						<MMIcon iconName={'close'} onPress={() => setIsModalOpen(false)} />
-					</View>
+					<TouchableOpacity
+						style={{ alignSelf: 'flex-end', paddingRight: MMConstants.paddingMedium, top: 12, right: 12 }}
+						onPress={() => setIsModalOpen(false)}>
+						<MMIcon iconName={'close'} />
+					</TouchableOpacity>
 					{isLoading ? (
 						<View style={{ height: 40 }}>
 							<MMSpinner /></View>

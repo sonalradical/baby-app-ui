@@ -21,6 +21,7 @@ import MMIcon from '../../components/common/Icon';
 import Parents from './Parents';
 import Baby from './Baby';
 import WelcomeToWorld from './WelcomeToWorld';
+import MMIcon from '../../components/common/Icon';
 
 export default function BookPreview({ updateFooterVisibility }) {
     const theme = useTheme();
@@ -157,11 +158,11 @@ export default function BookPreview({ updateFooterVisibility }) {
         return (
             <>
                 <View style={{ flexDirection: 'row-reverse', padding: MMConstants.paddingMedium }}>
-                    <MMIcon iconName={'plus-square-o'} iconSize={24} iconColor={theme.colors.text.primary}
+                    <MMIcon iconName={'add-circle-outline'} iconSize={24} iconColor={theme.colors.text.primary}
                         onPress={() => onPressAdd(item.position, item._id, item.title ? item.title : item.headerText)} />
                 </View>
                 <MMSurface key={item._id} margin={[0, 0, 10, 0]} padding={[0, 20, 0, 50]}>
-                    <View style={{ borderLeftWidth: 1, borderStyle: 'dashed' }}>
+                    <View style={{ borderLeftWidth: 1, borderStyle: MMUtils.isPlatformIos() ? 'solid' : 'dashed' }}>
                         {isTemplate ?
                             <TouchableOpacity onPress={() => onPressEdit(item, template)} style={{ paddingVertical: 30 }}>
                                 {renderTemplatePage(template, item.pageDetails, item.headerText, item.footerText)}
