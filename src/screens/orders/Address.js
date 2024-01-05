@@ -5,7 +5,6 @@ import { Text, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import * as _ from 'lodash';
 import PropTypes from 'prop-types';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setAddressDetail } from '../../redux/Slice/AppSlice';
@@ -17,6 +16,7 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 import AddressView from './AddressView';
+import MMIcon from '../../components/common/Icon';
 
 const Address = ({ validStep, clickStep, isDisable = false }) => {
     const theme = useTheme();
@@ -100,10 +100,10 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
                 <TouchableOpacity onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })}>
                     <MMSurface padding={[8, 8, 8, 10]} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Ionicons name={'add'} size={30} color={theme.colors.primary} />
+                            <MMIcon iconName={'add'} iconSize={30} iconColor={theme.colors.primary} />
                             <Text style={[theme.fonts.displayMedium, { marginTop: 2, marginLeft: 10 }]}>Add Address</Text>
                         </View>
-                        <Ionicons name={'chevron-forward'} size={28} color={theme.colors.outline} style={{ marginTop: 3 }} />
+                        <MMIcon iconName={'chevron-forward'} iconSize={28} iconColor={theme.colors.outline} style={{ marginTop: 3 }} />
                     </MMSurface>
                 </TouchableOpacity>
                 {(validStep === 1 && clickStep >= 2) && <MMFormErrorText errorText={'Please select an address'} />}

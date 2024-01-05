@@ -212,7 +212,7 @@ export default function Order({ navigation }) {
                 {labels.map((label, index) => (
                     <React.Fragment key={label}>
                         <TouchableOpacity onPress={() => onStepPress(index)} style={styles(theme).stepItem}>
-                            <MMIcon iconName='circle'
+                            <MMIcon iconName='ellipse-sharp'
                                 iconColor={index === activeStep ? theme.colors.secondary : theme.colors.surfaceDisabled}
                                 iconSize={15} />
                             <Text style={[{ color: index === activeStep ? theme.colors.secondary : theme.colors.outline }]}>

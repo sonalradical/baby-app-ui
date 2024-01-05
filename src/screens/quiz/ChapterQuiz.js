@@ -356,7 +356,7 @@ export default function ChapterQuiz({ navigation, route }) {
                             {/* <>
                                 {!imageSource ?
                                     <View style={styles(theme).imagePickerSquare}>
-                                        <MMIcon iconName="cloud-upload" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
+                                        <MMIcon iconName="cloud-upload-outline" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
                                         <Text style={theme.fonts.default} >Upload Photo</Text>
                                     </View> : null
                                 }
