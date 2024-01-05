@@ -2,12 +2,12 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 
-const MMImageBackground = ({ children }) => {
+const MMImageBackground = ({ children, imgSource = require('../../assets/images/backgroundImage.png') }) => {
 
     return (
         <View style={styles.container}>
             <ImageBackground
-                source={require('../../assets/images/backgroundImage.png')} style={styles.image}
+                source={imgSource} style={styles.image}
             >
                 {children}
             </ImageBackground>
