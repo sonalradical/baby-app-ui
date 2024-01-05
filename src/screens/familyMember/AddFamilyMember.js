@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { FlatList, View } from 'react-native';
+import { Divider, List, Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -11,11 +11,11 @@ import MMConstants from '../../helpers/Constants';
 import MMApiService from '../../services/ApiService';
 import MMInput from '../../components/common/Input';
 import { MMOverlaySpinner } from '../../components/common/Spinner';
-import MMScrollView from '../../components/common/ScrollView';
 import MMContentContainer from '../../components/common/ContentContainer';
 import { MMButton } from '../../components/common/Button';
 import MMPageTitle from '../../components/common/PageTitle';
-import MMRadioButton from '../../components/common/RadioButton';
+import MMIcon from '../../components/common/Icon';
+import MMFormErrorText from '../../components/common/FormErrorText';
 
 export default function AddFamilyMember({ navigation, route }) {
     const theme = useTheme();
@@ -39,9 +39,15 @@ export default function AddFamilyMember({ navigation, route }) {
     };
 
     const onRelationChange = (value) => {
-        setState({ ...state, relationShipType: value });
+        setState({
+            ...state,
+            relationShipType: value,
+            errors: {
+                ...state.errors,
+                relationShipType: '',
+            },
+        });
     };
-
 
     const onInviteMember = () => {
         if (isOverlayLoading) {
@@ -85,6 +91,35 @@ export default function AddFamilyMember({ navigation, route }) {
             });
     };
 
+    const renderItem = ({ item, index }) => (
+        <>
+            <List.Item
+                title={item.label}
+                titleStyle={theme.fonts.bodyMedium}
+                onPress={() => {
+                    onRelationChange(item.value);
+                }}
+                right={(props) => state.relationShipType === item.value ? <MMIcon iconName='checkmark-sharp' iconColor={theme.colors.primary} /> : null}
+            />
+            {_.size(MMConstants.familyMember) - 1 === index ? null : <Divider />}
+        </>
+    );
+
+    const renderRelationType = () => {
+        return (
+            <>
+                <FlatList
+                    data={MMConstants.familyMember}
+                    ListHeaderComponent={<Text style={theme.fonts.titleMedium}>RelationShip Type *</Text>}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.value}
+                />
+                <MMFormErrorText errorText={state.errors.relationShipType} />
+            </>
+        )
+
+    }
+
     const renderView = () => {
         return (
             <View style={{ paddingTop: MMConstants.paddingMedium }}>
@@ -99,26 +134,19 @@ export default function AddFamilyMember({ navigation, route }) {
                     maxLength={150}
                     errorText={state.errors.email}
                 />
-                <MMRadioButton
-                    label='RelationShip Type'
-                    options={MMConstants.familyMember}
-                    selectedValue={state.relationShipType}
-                    onValueChange={onRelationChange}
-                    errorText={state.errors.relationShipType}
-                    flexDirection={'column'}
-                />
-                <MMButton
-                    label={'Invite Member'}
-                    onPress={() => onInviteMember()} />
             </View>
         );
     };
 
     return (
         <MMContentContainer>
-            <MMScrollView>
-                {renderView()}
-            </MMScrollView>
+            {renderView()}
+            {renderRelationType()}
+            <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                <MMButton
+                    label={'Invite Member'}
+                    onPress={() => onInviteMember()} />
+            </View>
             <MMOverlaySpinner visible={isOverlayLoading} />
         </MMContentContainer>
     );
