@@ -1,12 +1,10 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, Dimensions, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
 
-import MMConstants from '../../helpers/Constants';
-import MMIcon from '../../components/common/Icon';
-import MMUtils from '../../helpers/Utils';
+import CommonImageTemplate from './CommonImageTemplate';
 
 const Column3Row1 = (props) => {
     const theme = useTheme();
@@ -16,24 +14,14 @@ const Column3Row1 = (props) => {
 
 
     const renderImage = (name) => {
-        const template = templateData.find(item => item.name === name);
-
-        if (template) {
-            return (
-                <Image
-                    style={{
-                        flex: 1,
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: MMUtils.isPlatformAndroid ? 'contain' : 'cover'
-                    }}
-                    source={{ uri: template?.source }}
-                />
-            );
-        } else {
-            return <MMIcon iconName={'add-circle-sharp'} style={styles(theme).imagePickerButton} />;
-        }
+        return (
+            <CommonImageTemplate
+                name={name}
+                templateData={templateData}
+            />
+        );
     };
+
 
     const renderImageRowBox = (name, extraStyle = {}) => {
         return (
@@ -98,11 +86,7 @@ const styles = (theme) => StyleSheet.create({
         flex: 1,
         justifyContent: 'center', // main axis
         alignItems: 'center', // cross axis
-    },
-    imagePickerButton: {
-        padding: MMConstants.paddingLarge,
-        borderRadius: 50,
-    },
+    }
 });
 
 export default Column3Row1;

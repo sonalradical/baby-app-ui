@@ -1,11 +1,9 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import * as _ from 'lodash';
-import MMConstants from '../../helpers/Constants';
-import MMIcon from '../../components/common/Icon';
-import MMUtils from '../../helpers/Utils';
+import CommonImageTemplate from './CommonImageTemplate';
 
 const Blank = (props) => {
     const theme = useTheme();
@@ -13,22 +11,12 @@ const Blank = (props) => {
     const deviceWidth = Dimensions.get('window').width;
 
     const renderImage = (name) => {
-        const template = templateData.find(item => item.name === name);
-        if (template) {
-            return (
-                <Image
-                    style={{
-                        flex: 1,
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: MMUtils.isPlatformAndroid ? 'contain' : 'cover'
-                    }}
-                    source={{ uri: template?.source }}
-                />
-            );
-        } else {
-            return <MMIcon iconName={'add-circle-sharp'} style={styles(theme).imagePickerButton} />;
-        }
+        return (
+            <CommonImageTemplate
+                name={name}
+                templateData={templateData}
+            />
+        );
     };
 
     return (
@@ -45,11 +33,7 @@ const styles = (theme) => StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1
-    },
-    imagePickerButton: {
-        padding: MMConstants.paddingLarge,
-        borderRadius: 50,
-    },
+    }
 });
 
 export default Blank;
