@@ -12,7 +12,13 @@ const OrderNowBanner = ({ onPress }) => {
 
     return (
         <View style={{ marginVertical: MMConstants.marginLarge }}>
-            <MMSurface padding={[0, 0, 0, 0]} style={{ borderRadius: 10, backgroundColor: '#e8e4fb', flexDirection: 'row' }} margin={[0, 0, 0, 0]}>
+            <MMSurface padding={[0, 0, 0, 0]}
+                style={{
+                    borderRadius: 10,
+                    backgroundColor: '#e8e4fb',
+                    flexDirection: 'row'
+                }}
+                margin={[0, 0, 0, 0]}>
                 <View style={{
                     backgroundColor: theme.colors.primary,
                     paddingHorizontal: 5,
