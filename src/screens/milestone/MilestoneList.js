@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 import _ from 'lodash';
@@ -96,7 +96,11 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
             <FlatList
                 ref={flatListRef}
                 data={milestones}
-                ListHeaderComponent={<MMPageTitle title='My First' />}
+                ListHeaderComponent={
+                    <View style={{ paddingVertical: MMConstants.paddingLarge }}>
+                        <MMPageTitle title='My First' />
+                    </View>
+                }
                 renderItem={renderMilestone}
                 keyExtractor={(item) => item._id}
                 numColumns={3}
