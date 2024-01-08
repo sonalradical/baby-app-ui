@@ -111,6 +111,16 @@ export default function SignUp({ navigation, route }) {
 
         validateAll(state, rules, messages)
             .then(async () => {
+                if (!state.terms) {
+                    setState({
+                        ...state,
+                        errors: {
+                            ...state.errors,
+                            terms: messages['terms.required'],
+                        },
+                    });
+                    return;
+                }
                 setOverlayLoading(true);
                 if (state.terms) {
                     onSignUp();
@@ -309,7 +319,6 @@ export default function SignUp({ navigation, route }) {
                 /> :
                     <MMButton
                         label="Sign Up"
-                        disabled={!state.terms}
                         onPress={() => onSubmit()}
                     />}
                 {mobileNumber ? null :
