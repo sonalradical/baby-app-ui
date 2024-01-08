@@ -77,7 +77,7 @@ export default function MilestoneList({ route, updateFooterVisibility }) {
     const renderMilestone = ({ item }) => {
         const milestoneImage = MMUtils.getImagePath(`Milestone/${item.icon}.png`)
         return (
-            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginVertical: MMConstants.marginMedium }}
+            <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 22, marginBottom: MMConstants.marginMedium }}
                 onPress={() => navigation.navigate('MilestoneQuiz', { babyId: selectedBaby._id, milestoneId: item._id })}>
                 <MMPicture
                     textAlign="center"
