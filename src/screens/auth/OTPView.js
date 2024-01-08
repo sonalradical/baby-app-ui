@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ import MMPinTextInput from '../../components/common/OTPTextView';
 import MMImageBackground from '../../components/common/ImageBackground';
 import MMSurface from '../../components/common/Surface';
 import MMAuthHeader from '../../components/common/AuthHeader';
+import MMPicture from '../../components/common/Picture';
 
 export default function OTPView({ navigation, route }) {
     const dispatch = useDispatch();
@@ -170,6 +171,14 @@ export default function OTPView({ navigation, route }) {
     const renderView = () => {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
+                <Image
+                    textAlign="center"
+                    source={require('../../assets/images/minimemoirs.png')}
+                    style={{
+                        height: Dimensions.get('window').height / 8, width: Dimensions.get('window').width / 4,
+                        alignSelf: 'center'
+                    }}
+                />
                 <View style={{ padding: MMConstants.paddingLarge }}>
                     <MMAuthHeader title='OTP Verification' />
                     <View style={{ alignItems: 'center' }}>

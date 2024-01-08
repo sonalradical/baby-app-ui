@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { Checkbox, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
@@ -21,7 +21,8 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRadioButton from '../../components/common/RadioButton';
 import MMAuthHeader from '../../components/common/AuthHeader';
-import MMPicture from '../../components/common/Picture';
+import MMSurface from '../../components/common/Surface';
+import MMImageBackground from '../../components/common/ImageBackground';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
@@ -241,11 +242,14 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <View style={{ padding: MMConstants.paddingLarge }}>
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
                 <Image
                     textAlign="center"
-                    source={require('../../assets/images/secondaryLogo1.png')}
-                    style={{ height: '4%', width: '100%', aspectRatio: 7, alignSelf: 'center', marginBottom: MMConstants.marginMedium }}
+                    source={require('../../assets/images/minimemoirs.png')}
+                    style={{
+                        height: Dimensions.get('window').height / 8, width: Dimensions.get('window').width / 4,
+                        alignSelf: 'center'
+                    }}
                 />
                 <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium }]} >To start things off, kindly share some
@@ -327,17 +331,18 @@ export default function SignUp({ navigation, route }) {
                         <Text style={[theme.fonts.default]}>Already have an account? </Text>
                         <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
                     </View>}
-            </View>
+            </MMSurface>
         );
     };
 
     return (
-        <MMContentContainer>
+        <MMImageBackground>
+
             <MMScrollView>
                 {renderView()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        </MMImageBackground>
     );
 }
 
@@ -345,3 +350,14 @@ SignUp.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
+
+
+const styles = (theme) => StyleSheet.create({
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: theme.colors.background
+    }
+});
