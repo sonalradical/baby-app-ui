@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Keyboard } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { View, Keyboard, StyleSheet } from 'react-native';
+import { Appbar, Text, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -25,6 +25,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMRadioButton from '../../components/common/RadioButton';
+import MMIcon from '../../components/common/Icon';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
@@ -56,7 +57,6 @@ export default function AddEditBaby({ route }) {
         setOverlayLoading(true);
         if (babyId) {
             const { data } = await MMApiService.getBabyById(babyId);
-            console.log(data, 'data')
             if (data) {
                 setState({
                     ...state,
@@ -217,7 +217,7 @@ export default function AddEditBaby({ route }) {
 
     const renderView = () => {
         return (
-            <View style={{ padding: MMConstants.paddingLarge }}>
+            <View style={{ padding: MMConstants.paddingLarge, marginTop: MMConstants.marginMedium }}>
                 <MMPageTitle title='Baby profile' textAlign='left' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: 20 }]} >To begin, please share some basic
                     information about your little one.
@@ -328,13 +328,30 @@ export default function AddEditBaby({ route }) {
         );
     };
 
+    const renderScreenHeader = () => {
+        return (
+            <Appbar.Header style={styles(theme).appBarHeader} mode='small'
+                statusBarHeight={0}>
+                <Appbar.BackAction onPress={() => { navigation.goBack() }} />
+                <Text style={[theme.fonts.headlineMedium, { alignSelf: 'center' }]}>
+                    {'Minimemoirs'}</Text>
+                <MMIcon iconName="notifications-outline" iconSize={28} iconColor={theme.colors.text.secondary}
+                    style={{ paddingRight: MMConstants.paddingLarge }}
+                    onPress={() => console.log('Bell pressed')} />
+            </Appbar.Header>
+        );
+    };
+
     return (
-        <MMContentContainer>
-            <MMScrollView>
-                {renderView()}
-            </MMScrollView>
-            <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        <>
+            <MMContentContainer paddingStyle='none'>
+                {renderScreenHeader()}
+                <MMScrollView>
+                    {renderView()}
+                </MMScrollView>
+                <MMOverlaySpinner visible={isOverlayLoading} />
+            </MMContentContainer>
+        </>
     );
 }
 
@@ -342,3 +359,16 @@ AddEditBaby.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
+
+const styles = (theme) => StyleSheet.create({
+    appBarHeader: {
+        backgroundColor: theme.colors.secondaryContainer,
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        elevation: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        shadowOffset: { width: -2, height: 4 },
+        justifyContent: 'space-between'
+    }
+});

@@ -24,7 +24,7 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 					babyDetail.isBorn === 'Yes' ?
 						<>
 							<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
-								{_.isEmpty(babyDetail.picture) ?
+								{firstLetter ?
 									<Avatar.Text size={45} label={firstLetter} /> :
 									<Avatar.Image
 										size={45}
@@ -48,8 +48,8 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 						<>
 							<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
 								<Avatar.Image
-									size={40}
-									source={require('../../assets/images/parenthood.jpg')}
+									size={50}
+									source={require('../../assets/images/pregnant-lady.jpg')}
 								/>
 							</TouchableOpacity>
 							<Appbar.Content
