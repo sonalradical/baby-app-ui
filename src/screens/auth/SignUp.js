@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { Checkbox, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
@@ -21,6 +21,7 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMContentContainer from '../../components/common/ContentContainer';
 import MMRadioButton from '../../components/common/RadioButton';
 import MMAuthHeader from '../../components/common/AuthHeader';
+import MMPicture from '../../components/common/Picture';
 
 export default function SignUp({ navigation, route }) {
     const theme = useTheme();
@@ -51,7 +52,6 @@ export default function SignUp({ navigation, route }) {
         try {
             setOverlayLoading(true);
             const { data } = await MMApiService.getUserDetail(mobileNumber);
-            console.log(data, 'data')
             if (data) {
                 const userDetail = data.userDetail;
                 setState({
@@ -92,7 +92,7 @@ export default function SignUp({ navigation, route }) {
         'password.required': 'Please enter password.',
         'password.min': 'Password should have a minimum of 8 characters.',
         'gender.required': 'Please select gender.',
-        'terms.required': 'please Accept Terms.',
+        'terms.required': 'Please accept terms.',
     };
 
     const onSubmit = () => {
@@ -104,17 +104,28 @@ export default function SignUp({ navigation, route }) {
             mobileNumber: 'required|string|min:10',
             name: 'required|string',
             email: 'required|string|email',
-            password: 'required|min:8|max:8',
+            password: 'required|min:8|max:50',
             gender: 'required',
             terms: 'required'
         };
 
         validateAll(state, rules, messages)
             .then(async () => {
+                if (!state.terms) {
+                    setState({
+                        ...state,
+                        errors: {
+                            ...state.errors,
+                            terms: messages['terms.required'],
+                        },
+                    });
+                    return;
+                }
                 setOverlayLoading(true);
                 if (state.terms) {
                     onSignUp();
                 }
+                setOverlayLoading(false);
             })
             .catch((errors) => {
                 setState({
@@ -126,13 +137,24 @@ export default function SignUp({ navigation, route }) {
     };
 
     const onGenderChange = (value) => {
-        setState({ ...state, gender: value });
+        setState({
+            ...state,
+            gender: value,
+            errors: {
+                ...state.errors,
+                gender: '',
+            },
+        });
     };
     const onTermsCheck = () => {
         // Update the checkbox state in the form data
         setState({
             ...state,
             terms: !state.terms,
+            errors: {
+                ...state.errors,
+                terms: '',
+            },
         });
     };
 
@@ -145,10 +167,15 @@ export default function SignUp({ navigation, route }) {
                 password: state.password,
                 gender: state.gender,
             };
-            const { data } = await MMApiService.userSignup(apiData);
-            console.log(data, 'data')
+            const { data, error } = await MMApiService.userSignup(apiData);
             if (data) {
                 navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+            }
+            else {
+                setState({
+                    ...state,
+                    errors: error
+                });
             }
             setOverlayLoading(false);
         } catch (err) {
@@ -215,6 +242,11 @@ export default function SignUp({ navigation, route }) {
     const renderView = () => {
         return (
             <View style={{ padding: MMConstants.paddingLarge }}>
+                <Image
+                    textAlign="center"
+                    source={require('../../assets/images/secondaryLogo1.png')}
+                    style={{ height: '4%', width: '100%', aspectRatio: 7, alignSelf: 'center', marginBottom: MMConstants.marginMedium }}
+                />
                 <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium }]} >To start things off, kindly share some
                     details about yourself. You can add more
@@ -254,7 +286,7 @@ export default function SignUp({ navigation, route }) {
                         value={state.password}
                         onChangeText={(value) => onInputChange('password', value)}
                         placeholder="Enter Password"
-                        maxLength={8}
+                        maxLength={50}
                         errorText={state.errors.password}
                         secureTextEntry={passwordHide}
                         name="password"
@@ -270,7 +302,7 @@ export default function SignUp({ navigation, route }) {
                     errorText={state.errors.gender}
                 />
                 {mobileNumber ? null :
-                    <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ paddingTop: 30, paddingBottom: MMConstants.paddingMedium, flexDirection: 'row', alignItems: 'center' }}>
                         <Checkbox.Android
                             color={theme.colors.primary}
                             size="sm"

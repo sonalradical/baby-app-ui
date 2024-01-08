@@ -132,7 +132,7 @@ export default function OTPView({ navigation, route }) {
                 deviceId: deviceId
             };
 
-            const { data } = await MMApiService.verifyOTP(apiData);
+            const { data, error } = await MMApiService.verifyOTP(apiData);
             if (data) {
                 const { accessToken, refreshToken, userDetail } = data;
                 const userDetails = {
@@ -153,6 +153,13 @@ export default function OTPView({ navigation, route }) {
                     accessToken: userDetails.accessToken,
                     refreshToken: userDetails.refreshToken
                 }));
+            }
+            else {
+                // setState({
+                //     ...state,
+                //     errors: error
+                // });
+                /// TODO
             }
             setOverlayLoading(false);
         } catch (err) {

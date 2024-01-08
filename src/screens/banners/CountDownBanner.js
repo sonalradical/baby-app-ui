@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
 
-
 const CountDownBanner = ({ }) => {
     const theme = useTheme();
     const { userDetail } = useSelector((state) => state.AuthReducer.auth);
@@ -16,23 +15,28 @@ const CountDownBanner = ({ }) => {
         weeks: '',
         days: '',
     });
-    const dueDate = MMUtils.displayDateMonthYear(userDetail.dueDate);
 
     useEffect(() => {
         if (userDetail.dueDate) {
-            // Calculate the duration between the current date and the due date
-            const duration = MMUtils.getDuration(userDetail.dueDate);
+            const currentDate = MMUtils.getTodayDateTime();
+            const dueDate = MMUtils.parseMoment(userDetail.dueDate);
 
-            setState({
-                months: _.floor(duration.asMonths()),
-                weeks: _.floor(duration.asWeeks()) % 4,
-                days: _.floor(duration.asDays()) % 7
-            })
+            if (dueDate.isBefore(currentDate)) {
+                console.log("Due date is in the past");
+            } else {
+                const duration = MMUtils.getDuration(dueDate);
+
+                setState({
+                    months: Math.floor(duration.asMonths()),
+                    weeks: Math.floor(duration.asWeeks()) % 4,
+                    days: Math.floor(duration.asDays()) % 7
+                });
+            }
         }
     }, [userDetail.dueDate]);
 
     return (
-        <Card style={{ marginVertical: MMConstants.marginLarge, backgroundColor: theme.colors.primary }}>
+        <Card style={{ marginVertical: MMConstants.marginMedium, backgroundColor: theme.colors.primary }}>
 
             <ImageBackground
                 resizeMode="contain"

@@ -108,7 +108,7 @@ export default function Login({ navigation }) {
     function onLoginWithPassword() {
         const rules = {
             mobileNumber: 'required|string|min:10',
-            password: 'required|string|min:8|max:8',
+            password: 'required|string|min:8|max:50',
         };
         validateAll(state, rules, messages)
             .then(async () => {
@@ -188,7 +188,7 @@ export default function Login({ navigation }) {
                     />
                     <MMInput
                         label='Password *'
-                        maxLength={8}
+                        maxLength={50}
                         value={state.password}
                         onChangeText={(value) => { onInputChange('password', value); }}
                         placeholder="Enter Password"

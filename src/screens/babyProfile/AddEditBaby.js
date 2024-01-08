@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Keyboard } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { View, Keyboard, StyleSheet } from 'react-native';
+import { Appbar, Text, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -25,6 +25,7 @@ import MMContentContainer from '../../components/common/ContentContainer';
 import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMRadioButton from '../../components/common/RadioButton';
+import MMIcon from '../../components/common/Icon';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
@@ -126,7 +127,6 @@ export default function AddEditBaby({ route }) {
     const messages = {
         'name.required': 'Please enter name.',
         'birthDate.required': 'Please enter birth date.',
-        'birthPlace.required': 'Please enter birth place.',
         'gender.required': 'Please select gender',
     };
 
@@ -138,7 +138,6 @@ export default function AddEditBaby({ route }) {
         const rules = {
             name: 'required|string',
             birthDate: 'required',
-            birthPlace: 'required',
             gender: 'required',
         };
 
@@ -216,7 +215,7 @@ export default function AddEditBaby({ route }) {
 
     const renderView = () => {
         return (
-            <View style={{ padding: MMConstants.paddingLarge }}>
+            <View style={{ padding: MMConstants.paddingLarge, marginTop: MMConstants.marginMedium }}>
                 <MMPageTitle title='Baby profile' textAlign='left' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: 20 }]} >To begin, please share some basic
                     information about your little one.
@@ -230,7 +229,7 @@ export default function AddEditBaby({ route }) {
                     label='Name *'
                     name='name'
                     placeholder='Enter Name'
-                    value={state.name}
+                    value={state.name === '--' ? '' : state.name}
                     errorText={state.errors.name}
                     onChangeText={(value) => onInputChange('name', value)}
                     maxLength={50}
@@ -276,7 +275,7 @@ export default function AddEditBaby({ route }) {
                     }
                 </View>
                 <MMInput
-                    label='Birth Place *'
+                    label='Birth Place'
                     name='birthPlace'
                     placeholder='Enter Birth Place'
                     value={state.birthPlace}
@@ -299,30 +298,58 @@ export default function AddEditBaby({ route }) {
                                     label="Delete"
                                     onPress={() => onConfirm()}
                                     width='45%'
-                                /> : null}
+                                /> : <MMOutlineButton
+                                    label="Cancel"
+                                    onPress={() => navigation.goBack()}
+                                    width='45%'
+                                />}
                             <MMButton
                                 label="Save"
                                 onPress={() => onSave()}
-                                width={babyListSize > 1 ? '45%' : '100%'}
+                                width={'45%'}
                             />
                         </MMFlexView> :
-                        <MMButton
-                            label="Save"
-                            onPress={() => onSave()}
-                        />
-
+                        <MMFlexView>
+                            <MMOutlineButton
+                                label="Cancel"
+                                onPress={() => navigation.goBack()}
+                                width='45%'
+                            />
+                            <MMButton
+                                label="Save"
+                                onPress={() => onSave()}
+                                width='45%'
+                            />
+                        </MMFlexView>
                 }
             </View>
         );
     };
 
+    const renderScreenHeader = () => {
+        return (
+            <Appbar.Header style={styles(theme).appBarHeader} mode='small'
+                statusBarHeight={0}>
+                <Appbar.BackAction onPress={() => { navigation.goBack() }} />
+                <Text style={[theme.fonts.headlineMedium, { alignSelf: 'center' }]}>
+                    {'Minimemoirs'}</Text>
+                <MMIcon iconName="notifications-outline" iconSize={28} iconColor={theme.colors.text.secondary}
+                    style={{ paddingRight: MMConstants.paddingLarge }}
+                    onPress={() => console.log('Bell pressed')} />
+            </Appbar.Header>
+        );
+    };
+
     return (
-        <MMContentContainer>
-            <MMScrollView>
-                {renderView()}
-            </MMScrollView>
-            <MMOverlaySpinner visible={isOverlayLoading} />
-        </MMContentContainer>
+        <>
+            <MMContentContainer paddingStyle='none'>
+                {renderScreenHeader()}
+                <MMScrollView>
+                    {renderView()}
+                </MMScrollView>
+                <MMOverlaySpinner visible={isOverlayLoading} />
+            </MMContentContainer>
+        </>
     );
 }
 
@@ -330,3 +357,16 @@ AddEditBaby.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
+
+const styles = (theme) => StyleSheet.create({
+    appBarHeader: {
+        backgroundColor: theme.colors.secondaryContainer,
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        elevation: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        shadowOffset: { width: -2, height: 4 },
+        justifyContent: 'space-between'
+    }
+});

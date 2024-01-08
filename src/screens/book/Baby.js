@@ -18,7 +18,7 @@ const Baby = () => {
             <View style={{ borderLeftWidth: 1, borderStyle: MMUtils.isPlatformIos() ? 'solid' : 'dashed' }}>
                 <View style={{ paddingVertical: 30 }}>
                     <Text style={[theme.fonts.headlineMedium, { textAlign: 'center', paddingBottom: MMConstants.paddingLarge }]}>
-                        {selectedBaby.isBorn === 'Yes' ? selectedBaby.name : 'Mini Baby'}</Text>
+                        {selectedBaby.isBorn === 'Yes' ? selectedBaby.name : 'Little One'}</Text>
                     <Image
                         source={selectedBaby.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(selectedBaby.picture) } :
                             require('../../assets/images/parenthood.jpg')}

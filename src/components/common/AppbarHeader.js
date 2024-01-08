@@ -14,30 +14,48 @@ const MMAppbarHeader = ({ babyDetail, onAvatarPress, showHome = false }) => {
 	const theme = useTheme();
 	const relativeTime = babyDetail?.birthDate ? MMUtils.displayFromNow(babyDetail.birthDate) : null;
 	const [number, time] = relativeTime ? relativeTime.split(' ') : [0, ''];
-	const birthRelativeNumber = MMUtils.numberToWords(_.parseInt(number));
+	const birthRelativeNumber = time === 'day' ? 'one' : MMUtils.numberToWords(_.parseInt(number));
+	const firstLetter = babyDetail && _.isEmpty(babyDetail.picture) ? _.first(babyDetail.name) : null;
 
 	return (
 		<Appbar.Header style={styles(theme).appBarHeader}>
 			{babyDetail ?
-				<>
-					<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
-						<Avatar.Image
-							size={50}
-							source={babyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(babyDetail.picture) } :
-								require('../../assets/images/parenthood.jpg')}
-						/>
-					</TouchableOpacity>
-					<Appbar.Content
-						title={
-							<View
-								style={{ flexDirection: 'column' }}>
-								<Text style={[theme.fonts.headlineMedium, { alignSelf: 'center' }]}>
-									{babyDetail.isBorn === 'Yes' ? babyDetail.name : 'Mini Baby'}</Text>
-								<Text style={[theme.fonts.labelMedium, { alignSelf: 'center' }]}>
-									{babyDetail.isBorn === 'Yes' ? `${_.startCase(birthRelativeNumber)} ${_.startCase(time)} of joy` : null}</Text>
-							</View>
-						}
-					/>
+				<>{
+					babyDetail.isBorn === 'Yes' ?
+						<>
+							<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
+								{firstLetter ?
+									<Avatar.Text size={45} label={firstLetter} /> :
+									<Avatar.Image
+										size={45}
+										source={{ uri: MMUtils.getImagePath(babyDetail.picture) }}
+									/>
+								}
+							</TouchableOpacity>
+							<Appbar.Content
+								title={
+									<View
+										style={{ flexDirection: 'column' }}>
+										<Text style={[theme.fonts.headlineMedium, { alignSelf: 'center' }]}>
+											{babyDetail.name}</Text>
+										<Text style={[theme.fonts.labelMedium, { alignSelf: 'center' }]}>
+											{time === 'minutes' ? 'One Day of joy ' : `${_.startCase(birthRelativeNumber)} ${_.startCase(time)} of joy`}</Text>
+									</View>
+								}
+							/>
+						</>
+						:
+						<>
+							<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>
+								<Avatar.Image
+									size={50}
+									source={require('../../assets/images/pregnant-lady.jpg')}
+								/>
+							</TouchableOpacity>
+							<Appbar.Content
+								title={<Text style={[theme.fonts.headlineMedium, { alignSelf: 'center' }]}>{'Awaiting Little One'}</Text>}
+							/>
+						</>}
 				</>
 				: <>
 					<TouchableOpacity onPress={onAvatarPress} style={{ paddingLeft: MMConstants.paddingLarge }}>

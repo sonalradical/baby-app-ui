@@ -73,7 +73,6 @@ export default function Home({ updateFooterVisibility }) {
     };
 
     const renderCountDownBanner = () => {
-        const dueDate = MMUtils.displayDateMonthYear(userDetail.dueDate);
 
         return (
             userDetail.dueDate ?
