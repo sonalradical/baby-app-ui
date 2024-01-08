@@ -127,7 +127,6 @@ export default function AddEditBaby({ route }) {
     const messages = {
         'name.required': 'Please enter name.',
         'birthDate.required': 'Please enter birth date.',
-        'birthPlace.required': 'Please enter birth place.',
         'gender.required': 'Please select gender',
     };
 
@@ -139,7 +138,6 @@ export default function AddEditBaby({ route }) {
         const rules = {
             name: 'required|string',
             birthDate: 'required',
-            birthPlace: 'required',
             gender: 'required',
         };
 
@@ -277,7 +275,7 @@ export default function AddEditBaby({ route }) {
                     }
                 </View>
                 <MMInput
-                    label='Birth Place *'
+                    label='Birth Place'
                     name='birthPlace'
                     placeholder='Enter Birth Place'
                     value={state.birthPlace}
