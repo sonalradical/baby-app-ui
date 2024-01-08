@@ -9,7 +9,7 @@ const defaultSetting = {
 	width: '100%',
 }
 
-const MMSurface = ({ padding, margin, width, children, style, ...props }) => {
+const MMSurface = ({ padding, margin, width, children, style, elevation = 1, ...props }) => {
 	const theme = useTheme();
 
 	const paddingValue = (_.isNil(padding) ? defaultSetting.padding : padding);
@@ -19,7 +19,7 @@ const MMSurface = ({ padding, margin, width, children, style, ...props }) => {
 	return (
 		<Surface
 			style={[surfaceStyle(theme, paddingValue, marginValue, widthValue), { ...style }]}
-			elevation={1}
+			elevation={elevation}
 			{...props}
 		>
 			{children}

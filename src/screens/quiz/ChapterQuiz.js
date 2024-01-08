@@ -423,7 +423,7 @@ export default function ChapterQuiz({ navigation, route }) {
                     borderRadius={100}
                     bgColor={selectedQuestion === 0 ? theme.colors.outline : null}
                 />
-                <View style={{ paddingTop: 20 }}>
+                <View style={{ marginTop: 12 }}>
                     <Chip>{`${selectedQuestion + 1}/${questionList ? questionList.length : 0}`}</Chip>
                 </View>
                 {selectedQuestion === questionList.length - 1 ?
