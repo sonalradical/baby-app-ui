@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 
 import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
-import moment from 'moment';
-
 
 const CountDownBanner = ({ }) => {
     const theme = useTheme();
