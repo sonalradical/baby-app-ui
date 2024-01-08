@@ -35,13 +35,13 @@ const OrderNowBanner = ({ onPress }) => {
                         style={styles(theme).image}
                     />
                 </View>
-                <View style={{ justifyContent: 'center', paddingStart: 20, marginTop: MMConstants.marginLarge }}>
-                    <Text style={[theme.fonts.titleMedium,]}>Your Joyful Moments!</Text>
-                    <Text style={[theme.fonts.bodySmall, { fontWeight: 700 }]}>Order for cherished memories</Text>
+                <View style={{ paddingVertical: 32, paddingHorizontal: 12, alignContent: 'center' }}>
+                    < Text style={[theme.fonts.titleMedium,]} > Your Joyful Moments!</Text>
+                    <Text style={[theme.fonts.bodySmall]}>Order for cherished memories</Text>
                     <MMButton width={'auto'} mode="contained" label={'Order Now'} onPress={onPress} />
                 </View>
-            </MMSurface>
-        </View>
+            </MMSurface >
+        </View >
     );
 }
 const styles = (theme) => StyleSheet.create({
