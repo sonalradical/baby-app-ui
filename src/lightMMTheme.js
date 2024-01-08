@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { DefaultTheme, configureFonts } from 'react-native-paper';
 
 // custom theme
@@ -14,12 +15,18 @@ const fontConfig = {
     fontFamily: 'MaisonNeue-Book',
     color: '#000',
   },
+  headlineLarge: {
+    fontFamily: Platform.OS === 'ios' ? 'Wulkandisplay-Medium' : 'WulkanDisplayMedium',
+    fontWeight: 600,
+    fontSize: 28, // Secondary headings
+    color: '#000',
+  },
   headlineMedium: {
     fontSize: 20, // Secondary headings
     fontWeight: 600, // Bold style for emphasis
     color: '#000',
     lineHeight: 20,
-    fontFamily: 'WulkanDisplayMedium',
+    fontFamily: Platform.OS === 'ios' ? 'Wulkandisplay-Medium' : 'WulkanDisplayMedium',
   },
   displayMedium: {
     fontSize: 20, // Secondary headings
@@ -58,12 +65,6 @@ const fontConfig = {
     fontWeight: 500,
     color: '#000',
   },
-  headlineLarge: {
-    fontFamily: 'WulkanDisplayMedium',
-    fontWeight: 600,
-    fontSize: 28, // Secondary headings
-    color: '#000',
-  }
 };
 
 export const lightMMTheme = {

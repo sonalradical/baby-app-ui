@@ -36,30 +36,16 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>AntDesign.ttf</string>
-		<string>TangerineRegular</string>
-		<string>MaisonNeue-Book</string>
-		<string>WulkanDisplayMedium</string>
-		<string>WulkanDisplayRegular</string>
-		<string>MaisonNeue-Bold</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
+		<string>TangerineRegular.ttf</string>
+		<string>MaisonNeue-Book.ttf</string>
+		<string>MaisonNeue-Bold.ttf</string>
 		<string>Ionicons.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
+		<string>Wulkan Display Medium.otf</string>
+		<string>Wulkan Display Regular.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -68,9 +54,9 @@
 		<string>armv7</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-<string>Allow access to the photo library for selecting images</string>
-<key>NSCameraUsageDescription</key>
-<string>Allow access to the camera for capturing images</string>
+	<string>Allow access to the photo library for selecting images</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow access to the camera for capturing images</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

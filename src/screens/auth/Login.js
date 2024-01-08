@@ -175,7 +175,7 @@ export default function Login({ navigation }) {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
                 <View style={{ padding: MMConstants.paddingLarge }}>
-                    <MMAuthHeader title='Get started' />
+                    <MMAuthHeader title='Get Started' />
                     <MMInput
                         label='Phone Number *'
                         maxLength={10}
