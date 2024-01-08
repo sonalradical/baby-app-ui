@@ -177,17 +177,18 @@ export default function Order({ navigation }) {
         return (
             <TouchableOpacity onPress={() => onConfirmOrder()}>
                 <Surface style={styles(theme).surfaceStyle}>
-                    <View style={{ flexDirection: 'column', width: '48%', paddingTop: 5 }}>
+                    <View style={{ flexDirection: 'column', width: '35%', paddingTop: 5, justifyContent: 'space-around' }}>
                         <Text style={theme.fonts.labelLarge}>My Order</Text>
                         <Text style={[theme.fonts.default]} numberOfLines={2}>{bookDetail.bookTitle ? bookDetail.bookTitle : null}</Text>
                     </View>
-                    <Card style={{ backgroundColor: theme.colors.primary, padding: 5, width: '50%', borderRadius: 10 }}>
+                    <Card style={{ backgroundColor: theme.colors.primary, width: '60%', padding: 8, borderRadius: 10 }}>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
+                            alignSelf: 'center'
                         }}>
-                            <View style={{ flexDirection: 'column', paddingLeft: 2 }}>
-                                <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>
+                            <View style={{ flexDirection: 'column' }}>
+                                <Text style={[theme.fonts.titleSmall, { color: 'white' }]}>
                                     {bookDetail.quantity === 1 ? `${bookDetail.quantity} Item` : `${bookDetail.quantity} Items`} </Text>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>Place Order</Text>
                             </View>
@@ -266,7 +267,7 @@ const styles = (theme) => StyleSheet.create({
         backgroundColor: theme.colors.secondaryContainer,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: MMConstants.paddingLarge,
+        padding: 12,
     }
 });
 
