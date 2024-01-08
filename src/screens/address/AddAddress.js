@@ -188,14 +188,16 @@ export default function AddAddress({ navigation, route }) {
 
                 {isVisible ?
                     <View>
-                        <Text style={theme.fonts.titleMedium}>Save address as *</Text>
-                        <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row' }}>
-                            {renderChip(MMEnums.addressType.home, 'Home')}
-                            {renderChip(MMEnums.addressType.work, 'Work')}
-                            {renderChip(MMEnums.addressType.other, 'Other')}
+                        <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                            <Text style={theme.fonts.titleMedium}>Save address as *</Text>
+                            <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row' }}>
+                                {renderChip(MMEnums.addressType.home, 'Home')}
+                                {renderChip(MMEnums.addressType.work, 'Work')}
+                                {renderChip(MMEnums.addressType.other, 'Other')}
+                            </View>
                         </View>
                         <MMFormErrorText errorText={state.errors.addressType} />
-                        <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             <MMInput
                                 label='Line 1'
                                 name='addressLine1'
@@ -206,7 +208,7 @@ export default function AddAddress({ navigation, route }) {
                                 maxLength={100}
                             />
                         </View>
-                        <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
                             <MMInput
                                 label='Line 2'
                                 name='addressLine2'
@@ -217,7 +219,7 @@ export default function AddAddress({ navigation, route }) {
                                 maxLength={100}
                             />
                         </View>
-                        <MMSurface margin={[10, 0, 10, 0]}>
+                        <MMSurface margin={[20, 0, 10, 0]}>
                             <AddressView
                                 item={{ addressType: state.addressType }}
                                 address={address}
@@ -227,7 +229,7 @@ export default function AddAddress({ navigation, route }) {
                         </MMSurface>
                         {
                             addressId ?
-                                <MMFlexView>
+                                <MMFlexView paddingTop={MMConstants.paddingLarge}>
                                     <MMOutlineButton
                                         label="Delete"
                                         onPress={() => MMConfirmDialog({
@@ -242,7 +244,7 @@ export default function AddAddress({ navigation, route }) {
                                         width='45%'
                                     />
                                 </MMFlexView> :
-                                <MMFlexView>
+                                <MMFlexView paddingTop={MMConstants.paddingLarge}>
                                     <MMOutlineButton
                                         label="Cancel"
                                         onPress={() => navigation.goBack()}
@@ -263,7 +265,7 @@ export default function AddAddress({ navigation, route }) {
 
     return (
         <MMContentContainer>
-            <MMPageTitle title={'Select address'} />
+            <MMPageTitle title={'Select address'} optionalStyle={{ paddingTop: MMConstants.paddingMedium }} />
             <View style={{ paddingTop: MMConstants.paddingMedium, zIndex: 2000 }}>
                 <MMPlacesAutocomplete
                     placeholder='Search Area, Location'

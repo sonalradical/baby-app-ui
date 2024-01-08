@@ -17,6 +17,7 @@ import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 import AddressView from './AddressView';
 import MMIcon from '../../components/common/Icon';
+import { MMButton } from '../../components/common/Button';
 
 const Address = ({ validStep, clickStep, isDisable = false }) => {
     const theme = useTheme();
@@ -97,25 +98,16 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
     const renderView = () => {
         return (
             <View>
-                <TouchableOpacity onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })}>
-                    <MMSurface padding={[8, 8, 8, 10]} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <MMIcon iconName={'add'} iconSize={30} iconColor={theme.colors.primary} />
-                            <Text style={[theme.fonts.displayMedium, { marginTop: 2, marginLeft: 10 }]}>Add Address</Text>
-                        </View>
-                        <MMIcon iconName={'chevron-forward'} iconSize={28} iconColor={theme.colors.outline} style={{ marginTop: 3 }} />
-                    </MMSurface>
-                </TouchableOpacity>
                 {(validStep === 1 && clickStep >= 2) && <MMFormErrorText errorText={'Please select an address'} />}
-                {addressList.length > 0 ? <Text style={[{ margin: MMConstants.marginSmall }]}>Your saved address</Text> : null}
+                <MMButton label={'Add Address'} onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })} />
             </View>
         );
     };
 
     return (
         <>
-            {renderView()}
             {renderAddressList()}
+            {renderView()}
         </>
     );
 }
