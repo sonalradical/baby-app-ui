@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Avatar, Checkbox, Chip, RadioButton, Text, useTheme } from 'react-native-paper';
+import { Avatar, Checkbox, Chip, Divider, RadioButton, Text, useTheme } from 'react-native-paper';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import moment from 'moment';
 
@@ -24,6 +24,8 @@ import MMIcon from '../../components/common/Icon';
 import MMImagePickerModal from '../../components/common/ImagePickerModal';
 import MMDateTimePicker from '../../components/common/DateTimePicker';
 import RenderRadioGroup from './component/RenderRadioGroup';
+import MMSurface from '../../components/common/Surface';
+import MMPicture from '../../components/common/Picture';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapterTitle, chapterImage } = route.params;
@@ -276,7 +278,7 @@ export default function ChapterQuiz({ navigation, route }) {
         const questionTitle = questionList[selectedQuestion].questionType === MMEnums.questionType.groupedradio ? '' : questionList[selectedQuestion].question
         return (
             <>
-                <View style={{ padding: MMConstants.paddingLarge }}>
+                <View style={{ padding: MMConstants.paddingLarge, margin: MMConstants.marginMedium }}>
                     <Text style={theme.fonts.titleMedium} >{questionTitle}</Text>
                     {currentQuestionType === MMEnums.questionType.radio && (
                         <View style={{ paddingTop: MMConstants.paddingLarge }}>
@@ -457,18 +459,16 @@ export default function ChapterQuiz({ navigation, route }) {
     const renderScreenHeader = () => {
         return (
             <View style={{
-                flexDirection: 'row',
-                padding: MMConstants.paddingMedium,
-                paddingLeft: MMConstants.paddingLarge,
-                backgroundColor: theme.colors.primary,
-                elevation: 20,
-                shadowColor: theme.colors.shadow,
-                shadowOpacity: 0.2,
-                shadowRadius: 4,
-                shadowOffset: { width: -2, height: 4 }
+                flexDirection: 'row', justifyContent: 'center', alignItems: 'center'
             }}>
-                <Avatar.Image size={36} source={{ uri: chapterImage }} style={{ backgroundColor: theme.colors.secondaryContainer }} />
-                <Text style={[theme.fonts.titleLarge, { marginLeft: MMConstants.marginLarge }]}>{chapterTitle}</Text>
+                <MMPicture
+                    textAlign="center"
+                    resizeMode="contain"
+                    pictureUri={chapterImage}
+                    style={styles(theme).image}
+                />
+                <Text style={[theme.fonts.labelLarge, { paddingLeft: MMConstants.paddingLarge }]}> {chapterTitle}</Text>
+
             </View>
         );
     };
@@ -478,8 +478,10 @@ export default function ChapterQuiz({ navigation, route }) {
     return (
 
         <>
-            {renderScreenHeader()}
-            <MMContentContainer>
+
+            <MMSurface margin={[24, 0, 0, 0]} padding={[18, 0, 18, 0]} style={styles(theme).surface}>
+                {renderScreenHeader()}
+                <Divider />
                 {isLoading ? <MMSpinner /> :
                     <GestureRecognizer
                         onSwipe={(direction, state) => onSwipe(direction, state)}
@@ -491,10 +493,10 @@ export default function ChapterQuiz({ navigation, route }) {
                         {renderView()}
                     </GestureRecognizer>
                 }
-            </MMContentContainer >
-            <View style={[{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }]}>
-                {renderActionButtons()}
-            </View>
+                <View style={[{ paddingVertical: MMConstants.paddingLarge }]}>
+                    {renderActionButtons()}
+                </View>
+            </MMSurface>
         </>
     );
 }
@@ -517,4 +519,15 @@ const styles = (theme) => StyleSheet.create({
         borderColor: theme.colors.outline,
         borderStyle: 'dashed'
     },
+    image: {
+        width: Dimensions.get('window').width / 7,
+        height: Dimensions.get('window').height / 10,
+    },
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        flex: 1,
+        backgroundColor: theme.colors.background
+    }
 });
