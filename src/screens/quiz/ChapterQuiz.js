@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { BackHandler, Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Avatar, Checkbox, Chip, Divider, RadioButton, Text, useTheme } from 'react-native-paper';
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { Checkbox, Chip, Divider, RadioButton, Text, useTheme } from 'react-native-paper';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 
-import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { reloadBookPage, reloadChapterList } from '../../redux/Slice/AppSlice';
 
+import { MMButton } from '../../components/common/Button';
+import MMDateTimePicker from '../../components/common/DateTimePicker';
+import MMFlexView from '../../components/common/FlexView';
+import MMImagePickerModal from '../../components/common/ImagePickerModal';
+import MMInput from '../../components/common/Input';
+import MMInputMultiline from '../../components/common/InputMultiline';
+import MMPicture from '../../components/common/Picture';
+import MMScrollView from '../../components/common/ScrollView';
+import MMSpinner from '../../components/common/Spinner';
+import MMSurface from '../../components/common/Surface';
 import MMConstants from '../../helpers/Constants';
 import MMEnums from '../../helpers/Enums';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
-import { MMButton } from '../../components/common/Button';
-import MMFlexView from '../../components/common/FlexView';
-import MMInput from '../../components/common/Input';
-import MMScrollView from '../../components/common/ScrollView';
-import MMContentContainer from '../../components/common/ContentContainer';
-import MMInputMultiline from '../../components/common/InputMultiline';
-import MMSpinner from '../../components/common/Spinner';
-import MMIcon from '../../components/common/Icon';
-import MMImagePickerModal from '../../components/common/ImagePickerModal';
-import MMDateTimePicker from '../../components/common/DateTimePicker';
 import RenderRadioGroup from './component/RenderRadioGroup';
-import MMSurface from '../../components/common/Surface';
-import MMPicture from '../../components/common/Picture';
 
 export default function ChapterQuiz({ navigation, route }) {
     const { babyId, chapterId, chapterTitle, chapterImage } = route.params;
@@ -280,146 +278,136 @@ export default function ChapterQuiz({ navigation, route }) {
             <>
                 <View style={{ padding: MMConstants.paddingLarge, margin: MMConstants.marginMedium }}>
                     <Text style={theme.fonts.titleMedium} >{questionTitle}</Text>
-                    {currentQuestionType === MMEnums.questionType.radio && (
-                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            {questionList[selectedQuestion].options.map((option, index) => (
-                                <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
-                                    <RadioButton.Android
-                                        value={option}
-                                        status={selectedAnswer.length > 0 && selectedAnswer[0] === option ? 'checked' : 'unchecked'}
-                                        onPress={() => onAnswerChange(option)}
-                                        position='leading'
-                                    />
-                                    <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
-                                </View>
-                            ))}
-                        </View>
-                    )}
-                    {currentQuestionType === MMEnums.questionType.checkbox && (
-                        <MMScrollView style={{ height: '90%' }}>
-                            <View style={{ paddingTop: MMConstants.paddingLarge }}>
-
+                    <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                        {currentQuestionType === MMEnums.questionType.radio && (
+                            <>
                                 {questionList[selectedQuestion].options.map((option, index) => (
                                     <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
-                                        <Checkbox.Android
-                                            status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
-                                            onPress={() => onCheckboxChange(option)}
+                                        <RadioButton.Android
+                                            value={option}
+                                            status={selectedAnswer.length > 0 && selectedAnswer[0] === option ? 'checked' : 'unchecked'}
+                                            onPress={() => onAnswerChange(option)}
                                             position='leading'
                                         />
                                         <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
                                     </View>
                                 ))}
+                            </>
+                        )}
 
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
+                        {currentQuestionType === MMEnums.questionType.checkbox && (
+                            <MMScrollView style={{ height: '90%' }}>
+                                <View style={{ paddingTop: MMConstants.paddingLarge }}>
 
-                                    <MMInput placeholder='Add something different' value={newOption}
-                                        onChangeText={(text) => setNewOption(text)}
-                                        containerWidth={'75%'}
-                                    />
-                                    <MMButton label={'Add'}
-                                        width={'22%'}
-                                        marginVertical={0}
-                                        onPress={onAddOption}
-                                        borderRadius={10} />
+                                    {questionList[selectedQuestion].options.map((option, index) => (
+                                        <View style={{ flexDirection: 'row', paddingTop: MMConstants.paddingLarge }} key={index}>
+                                            <Checkbox.Android
+                                                status={selectedAnswer.length > 0 && selectedAnswer.includes(option) ? 'checked' : 'unchecked'}
+                                                onPress={() => onCheckboxChange(option)}
+                                                position='leading'
+                                            />
+                                            <Text style={[theme.fonts.default, { paddingTop: MMConstants.paddingLarge }]}>{option}</Text>
+                                        </View>
+                                    ))}
+
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: MMConstants.paddingLarge }}>
+
+                                        <MMInput placeholder='Add something different' value={newOption}
+                                            onChangeText={(text) => setNewOption(text)}
+                                            containerWidth={'75%'}
+                                        />
+                                        <MMButton label={'Add'}
+                                            width={'22%'}
+                                            marginVertical={0}
+                                            onPress={onAddOption}
+                                            borderRadius={10} />
+                                    </View>
                                 </View>
-                            </View>
-                        </MMScrollView>
-                    )}
-                    {currentQuestionType === MMEnums.questionType.textArea && (
-                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            <MMInputMultiline
-                                placeholder="Your answer..."
-                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
-                                onChangeText={(text) => onAnswerChange(text)}
-                                maxLength={2000}
-                            />
-                            <Text style={{ textAlign: 'right' }}>
-                                {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} / 2000` : '0 / 2000'}</Text>
-                        </View>
-                    )}
-                    {currentQuestionType === MMEnums.questionType.text && (
-                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            <MMInput
-                                placeholder="Your answer..."
-                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
-                                onChangeText={(text) => onAnswerChange(text)}
-                                maxLength={30}
-                            />
-                        </View>
-                    )}
-                    {currentQuestionType === MMEnums.questionType.textImage && (
-                        <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                            <MMInput
-                                placeholder="Your answer..."
-                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
-                                onChangeText={(text) => onAnswerChange(text)}
-                                maxLength={30}
-                            />
-                            {/* <>
-                                {!imageSource ?
-                                    <View style={styles(theme).imagePickerSquare}>
-                                        <MMIcon iconName="cloud-upload-outline" iconSize={50} iconColor={theme.colors.primary} onPress={toggleModal} />
-                                        <Text style={theme.fonts.default} >Upload Photo</Text>
-                                    </View> : null
-                                }
-                                {imageSource ?
-                                    <TouchableOpacity onPress={toggleModal}>
-                                        <Image source={{ uri: imageSource }}
-                                            style={{ height: Dimensions.get('window').width, width: '100%' }} />
-                                    </TouchableOpacity> : null}
-                            </> */}
-                        </View>
-                    )}
-                    {currentQuestionType === MMEnums.questionType.timepicker &&
-                        (
-                            <View style={{ paddingTop: MMConstants.paddingLarge }}>
-                                <MMInput
-                                    name='birthTime'
-                                    placeholder='Enter Birth Time'
-                                    value={selectedAnswer.length > 0 ? moment(selectedAnswer[0]).format(MMConstants.dateTimePickerTime) : ''}
-                                    onPressIn={() => setShowBirthTime(true)}
-                                    onKeyPress={() => setShowBirthTime(true)}
-                                    left={<TextInput.Icon
-                                        icon='clock-time-four-outline'
-                                        forceTextInputFocus={false}
-                                        onPress={() => setShowBirthTime(true)}
-                                    />}
+                            </MMScrollView>
+                        )}
+                        {currentQuestionType === MMEnums.questionType.textArea && (
+                            <>
+                                <MMInputMultiline
+                                    placeholder="Your answer..."
+                                    value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                    onChangeText={(text) => onAnswerChange(text)}
+                                    maxLength={2000}
                                 />
-                                {
-                                    showBirthTime &&
-                                    <MMDateTimePicker
-                                        name='birthTime'
-                                        mode='time'
-                                        date={_.isNil(selectedAnswer[0]) ? new Date() : new Date(selectedAnswer[0])}
-                                        minimumDate={new Date()}
-                                        maximumDate={null}
-                                        onConfirm={(date) => {
-                                            setSelectedAnswer([new Date(date)]);
-                                            setShowBirthTime(false);
-                                        }}
-                                        onCancel={() => {
-                                            setShowBirthTime(false);
-                                        }}
-                                    />
-                                }
-                            </View>
-                        )
-                    }
-                    {currentQuestionType === MMEnums.questionType.groupedradio ?
+                                <Text style={[theme.fonts.titleSmall, {
+                                    textAlign: 'right',
+                                    color: theme.colors.secondary, paddingLeft: MMConstants.paddingLarge
+                                }]}   >
+                                    {selectedAnswer.length > 0 ? `${selectedAnswer[0].length} / 2000` : '0 / 2000'}</Text>
+                            </>
+                        )}
+                        {currentQuestionType === MMEnums.questionType.text && (
+                            <MMInput
+                                placeholder="Your answer..."
+                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                onChangeText={(text) => onAnswerChange(text)}
+                                maxLength={30}
+                            />
 
-                        <FlatList
-                            data={questionList[selectedQuestion].options}
-                            renderItem={({ item, index }) => <RenderRadioGroup key={index}
-                                option={item}
-                                selectedAnswer={selectedAnswer}
-                                handleOptionPress={handleOptionPress} />}
-                        />
-                        : null}
+                        )}
+                        {currentQuestionType === MMEnums.questionType.textImage && (
+                            <MMInput
+                                placeholder="Your answer..."
+                                value={selectedAnswer.length > 0 ? selectedAnswer[0] : ''}
+                                onChangeText={(text) => onAnswerChange(text)}
+                                maxLength={30}
+                            />
+                        )}
+                        {currentQuestionType === MMEnums.questionType.timepicker &&
+                            (
+                                <>
+                                    <MMInput
+                                        name='birthTime'
+                                        placeholder='Enter Birth Time'
+                                        value={selectedAnswer.length > 0 ? moment(selectedAnswer[0]).format(MMConstants.dateTimePickerTime) : ''}
+                                        onPressIn={() => setShowBirthTime(true)}
+                                        onKeyPress={() => setShowBirthTime(true)}
+                                        left={<TextInput.Icon
+                                            icon='clock-time-four-outline'
+                                            forceTextInputFocus={false}
+                                            onPress={() => setShowBirthTime(true)}
+                                        />}
+                                    />
+                                    {
+                                        showBirthTime &&
+                                        <MMDateTimePicker
+                                            name='birthTime'
+                                            mode='time'
+                                            date={_.isNil(selectedAnswer[0]) ? new Date() : new Date(selectedAnswer[0])}
+                                            minimumDate={new Date()}
+                                            maximumDate={null}
+                                            onConfirm={(date) => {
+                                                setSelectedAnswer([new Date(date)]);
+                                                setShowBirthTime(false);
+                                            }}
+                                            onCancel={() => {
+                                                setShowBirthTime(false);
+                                            }}
+                                        />
+                                    }
+                                </>
+                            )
+                        }
+                        {currentQuestionType === MMEnums.questionType.groupedradio ?
+
+                            <FlatList
+                                data={questionList[selectedQuestion].options}
+                                renderItem={({ item, index }) => <RenderRadioGroup key={index}
+                                    option={item}
+                                    selectedAnswer={selectedAnswer}
+                                    handleOptionPress={handleOptionPress} />}
+                            />
+                            : null}
+                    </View>
+                    <MMImagePickerModal
+                        visible={isModalVisible}
+                        toggleModal={toggleModal}
+                        onImageChange={(imageUri) => setImageUri(imageUri)} />
                 </View>
-                <MMImagePickerModal
-                    visible={isModalVisible}
-                    toggleModal={toggleModal}
-                    onImageChange={(imageUri) => setImageUri(imageUri)} />
             </>
         );
     };
@@ -467,19 +455,14 @@ export default function ChapterQuiz({ navigation, route }) {
                     pictureUri={chapterImage}
                     style={styles(theme).image}
                 />
-                <Text style={[theme.fonts.labelLarge, { paddingLeft: MMConstants.paddingLarge }]}> {chapterTitle}</Text>
-
+                <Text style={[theme.fonts.headlineLarge, { paddingLeft: MMConstants.paddingLarge }]}> {chapterTitle}</Text>
             </View>
         );
     };
 
-
-
     return (
-
         <>
-
-            <MMSurface margin={[24, 0, 0, 0]} padding={[18, 0, 18, 0]} style={styles(theme).surface}>
+            <MMSurface elevation={0} margin={[24, 0, 0, 0]} padding={[0, 0, 0, 0]} style={styles(theme).surface}>
                 {renderScreenHeader()}
                 <Divider />
                 {isLoading ? <MMSpinner /> :
@@ -488,15 +471,13 @@ export default function ChapterQuiz({ navigation, route }) {
                         onSwipeLeft={() => { console.log("swipe left calld"), onNextClick() }}
                         onSwipeRight={() => { console.log("swipe right called"), onPreviousClick() }}
                         config={config}
-                        style={{ flex: 1 }}
-                    >
-                        {renderView()}
+                    >{renderView()}
                     </GestureRecognizer>
                 }
-                <View style={[{ paddingVertical: MMConstants.paddingLarge }]}>
-                    {renderActionButtons()}
-                </View>
             </MMSurface>
+            <View style={[{ padding: MMConstants.paddingLarge }]}>
+                {renderActionButtons()}
+            </View>
         </>
     );
 }
@@ -528,6 +509,9 @@ const styles = (theme) => StyleSheet.create({
         borderTopRightRadius: 40,
         bottom: 0,
         flex: 1,
-        backgroundColor: theme.colors.background
+        backgroundColor: theme.colors.background,
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        shadowOffset: { width: 0, height: -5 }
     }
 });
