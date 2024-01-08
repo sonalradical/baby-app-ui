@@ -125,6 +125,7 @@ export default function SignUp({ navigation, route }) {
                 if (state.terms) {
                     onSignUp();
                 }
+                setOverlayLoading(false);
             })
             .catch((errors) => {
                 setState({
