@@ -56,11 +56,11 @@ export default function AddEditBaby({ route }) {
         setOverlayLoading(true);
         if (babyId) {
             const { data } = await MMApiService.getBabyById(babyId);
+            console.log(data, 'data')
             if (data) {
                 setState({
                     ...state,
-                    ...data,
-                    name: data.name === '--' ? '' : name
+                    ...data
                 });
                 if (data.picture) {
                     imageSourceUri = MMUtils.getImagePath(data.picture);
@@ -231,7 +231,7 @@ export default function AddEditBaby({ route }) {
                     label='Name *'
                     name='name'
                     placeholder='Enter Name'
-                    value={state.name}
+                    value={state.name === '--' ? '' : state.name}
                     errorText={state.errors.name}
                     onChangeText={(value) => onInputChange('name', value)}
                     maxLength={50}
@@ -300,11 +300,15 @@ export default function AddEditBaby({ route }) {
                                     label="Delete"
                                     onPress={() => onConfirm()}
                                     width='45%'
-                                /> : null}
+                                /> : <MMOutlineButton
+                                    label="Cancel"
+                                    onPress={() => navigation.goBack()}
+                                    width='45%'
+                                />}
                             <MMButton
                                 label="Save"
                                 onPress={() => onSave()}
-                                width={babyListSize > 1 ? '45%' : '100%'}
+                                width={'45%'}
                             />
                         </MMFlexView> :
                         <MMFlexView>
