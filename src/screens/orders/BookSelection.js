@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import { Card, RadioButton, Text, useTheme } from 'react-native-paper';
+import { Card, Divider, RadioButton, Text, useTheme } from 'react-native-paper';
 
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -19,6 +19,7 @@ import MMInput from '../../components/common/Input';
 import MMTextInputNumeric from '../../components/common/TextInputNumeric';
 import MMFormErrorText from '../../components/common/FormErrorText';
 import MMPicture from '../../components/common/Picture';
+import MMSurface from '../../components/common/Surface';
 
 const BookSelection = ({ validStep, clickStep }) => {
     const theme = useTheme();
@@ -77,22 +78,22 @@ const BookSelection = ({ validStep, clickStep }) => {
 
     const renderView = () => {
         return (
-            <View>
+            <View style={{ paddingBottom: MMConstants.paddingLarge }}>
                 <RadioButton.Group onValueChange={(value) => onCoverChange(value)} value={bookDetail.productId}>
-                    <Text style={theme.fonts.titleMedium}>Book Cover</Text>
+                    <Text style={theme.fonts.titleMedium}>Cover</Text>
                     {productList.map((product, index) => (
                         <MMListView alignItems="center" key={index}>
                             <View style={{ flexDirection: 'row' }}>
                                 <RadioButton.Android value={product._id} />
                                 <Text style={[theme.fonts.default, { paddingTop: 8 }]}>{product.productName} </Text>
                             </View>
-                            <Text style={theme.fonts.default}>{MMUtils.formatCurrency(product.productPrice)}</Text>
+                            <Text style={theme.fonts.titleSmall}>{MMUtils.formatCurrency(product.productPrice)}</Text>
                         </MMListView>
                     ))}
                 </RadioButton.Group>
                 <View style={{ paddingTop: MMConstants.paddingMedium }}>
                     <MMInput
-                        label='Book Title *'
+                        label='Title *'
                         maxLength={50}
                         value={bookDetail.bookTitle}
                         onChangeText={(value) => onInputChange('bookTitle', value)}
@@ -102,14 +103,13 @@ const BookSelection = ({ validStep, clickStep }) => {
                 </View>
                 <View style={{ paddingTop: MMConstants.paddingMedium }}>
                     <MMInput
-                        label='Book Sub Title '
                         maxLength={50}
                         value={bookDetail.bookSubTitle}
                         onChangeText={(value) => onInputChange('bookSubTitle', value)}
                         placeholder="Enter Book Sub Title"
                     />
                 </View>
-                <View style={{ paddingTop: MMConstants.paddingMedium }}>
+                <View style={{ paddingVertical: MMConstants.paddingMedium }}>
                     <View style={{ width: '48%' }}>
                         <MMTextInputNumeric
                             label={'Quantity'}
@@ -133,7 +133,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
         return (
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
-                <Card style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge, marginTop: MMConstants.marginLarge }}>
+                <View style={{ backgroundColor: theme.colors.secondaryContainer, marginTop: MMConstants.marginLarge }}>
                     <View style={{ flexDirection: 'row' }}>
                         <MMPicture
                             textAlign="center"
@@ -141,32 +141,31 @@ const BookSelection = ({ validStep, clickStep }) => {
                             pictureUri={productImage}
                             style={styles(theme).image}
                         />
-                        <View style={{ padding: MMConstants.paddingLarge }}>
+                        <View style={{ alignItems: 'flex-start', paddingLeft: MMConstants.paddingLarge }}>
                             <Text style={[theme.fonts.titleMedium]}>
                                 {bookDetail.productName}</Text>
                             <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
                                 Title: {bookDetail.bookTitle}</Text>
                             {bookDetail.bookSubTitle ? <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
                                 Sub title: {bookDetail.bookSubTitle}</Text> : null}
-                            <View style={{ paddingTop: MMConstants.paddingMedium, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Text>Qty: {bookDetail.quantity} </Text>
-                                <Text>{MMUtils.formatCurrency(bookDetail.totalPrice)}</Text>
-                            </View>
+                            <Text style={theme.fonts.titleSmall}>Quantity: {bookDetail.quantity} </Text>
+                            <Text style={theme.fonts.titleSmall}>Price: {MMUtils.formatCurrency(bookDetail.totalPrice)}</Text>
                         </View>
                     </View>
-                </Card> : null
+                </View> : null
         );
     };
 
 
     return (
-        <View>
+        <MMSurface>
             <MMScrollView>
                 {renderView()}
+                <Divider />
                 {renderBookPreview()}
             </MMScrollView>
             <MMOverlaySpinner visible={isOverlayLoading} />
-        </View>
+        </MMSurface>
     );
 }
 
@@ -179,7 +178,6 @@ const styles = (theme) => StyleSheet.create({
     image: {
         width: Dimensions.get('window').width / 5,
         height: Dimensions.get('window').height / 8,
-        padding: 10
     },
 });
 export default BookSelection;
