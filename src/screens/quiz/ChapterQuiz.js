@@ -462,7 +462,7 @@ export default function ChapterQuiz({ navigation, route }) {
 
     return (
         <>
-            <MMSurface elevation={0} margin={[24, 0, 0, 0]} padding={[0, 0, 0, 0]} style={styles(theme).surface}>
+            <MMSurface elevation={MMUtils.isPlatformIos() ? 0 : 1} margin={[24, 0, 0, 0]} padding={[0, 0, 0, 0]} style={styles(theme).surface}>
                 {renderScreenHeader()}
                 <Divider />
                 {isLoading ? <MMSpinner /> :
