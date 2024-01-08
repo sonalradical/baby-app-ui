@@ -59,7 +59,8 @@ export default function AddEditBaby({ route }) {
             if (data) {
                 setState({
                     ...state,
-                    ...data
+                    ...data,
+                    name: data.name === '--' ? '' : name
                 });
                 if (data.picture) {
                     imageSourceUri = MMUtils.getImagePath(data.picture);
@@ -306,11 +307,18 @@ export default function AddEditBaby({ route }) {
                                 width={babyListSize > 1 ? '45%' : '100%'}
                             />
                         </MMFlexView> :
-                        <MMButton
-                            label="Save"
-                            onPress={() => onSave()}
-                        />
-
+                        <MMFlexView>
+                            <MMOutlineButton
+                                label="Cancel"
+                                onPress={() => navigation.goBack()}
+                                width='45%'
+                            />
+                            <MMButton
+                                label="Save"
+                                onPress={() => onSave()}
+                                width='45%'
+                            />
+                        </MMFlexView>
                 }
             </View>
         );

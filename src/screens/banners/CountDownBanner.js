@@ -32,7 +32,7 @@ const CountDownBanner = ({ }) => {
     }, [userDetail.dueDate]);
 
     return (
-        <Card style={{ marginVertical: MMConstants.marginLarge, backgroundColor: theme.colors.primary }}>
+        <Card style={{ marginVertical: MMConstants.marginMedium, backgroundColor: theme.colors.primary }}>
 
             <ImageBackground
                 resizeMode="contain"

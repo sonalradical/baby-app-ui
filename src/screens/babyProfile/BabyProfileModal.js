@@ -87,10 +87,10 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 			<>
 				< >
 					<Text style={[theme.fonts.headlineMedium, { paddingBottom: MMConstants.paddingLarge, textAlign: 'center' }]}>
-						{selectedBabyDetail.isBorn === 'Yes' ? selectedBabyDetail.name : 'Mini Baby'}</Text>
+						{selectedBabyDetail.isBorn === 'Yes' ? selectedBabyDetail.name : 'Awaiting Little One'}</Text>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<View style={{ flex: 1, height: 1, backgroundColor: theme.colors.surfaceDisabled, marginTop: MMConstants.marginMedium }} />
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<View>
 							<Avatar.Image size={75}
 								source={selectedBabyDetail.isBorn === 'Yes' ? { uri: MMUtils.getImagePath(selectedBabyDetail.picture) } :
 									require('../../assets/images/parenthood.jpg')} />

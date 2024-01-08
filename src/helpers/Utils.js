@@ -218,6 +218,8 @@ const convertBelow100 = (n) => {
 
 const numberToWords = (num) => {
     const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+    const teens = ["", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    const tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
 
     if (num === 0) {
         return "zero";
@@ -238,10 +240,18 @@ const numberToWords = (num) => {
         }
     }
 
-    if (num > 0) {
-        result += convertBelow100(num);
+    if (num >= 11 && num <= 19) {
+        result += teens[num - 10] + " ";
+    } else if (num >= 20) {
+        result += tens[Math.floor(num / 10)];
+        if (num % 10 > 0) {
+            result += "-" + ones[num % 10] + " ";
+        } else {
+            result += " ";
+        }
+    } else if (num > 0) {
+        result += ones[num] + " ";
     }
-
     return result.trim();
 };
 
