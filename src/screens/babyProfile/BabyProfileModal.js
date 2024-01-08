@@ -93,7 +93,7 @@ const MMBabyProfileModal = ({ isModalOpen, setIsModalOpen, selectedBaby }) => {
 				<Avatar.Image size={40} source={require('../../assets/images/pregnant-lady.jpg')} />
 			)}
 			<View style={{ flexDirection: 'column', paddingLeft: 20, width: '78%' }}>
-				<Text style={[theme.fonts.titleMedium]}>{item.isBorn === 'Yes' ? item.name : 'Mini Baby'}</Text>
+				<Text style={[theme.fonts.titleMedium]}>{item.isBorn === 'Yes' ? item.name : 'Little One'}</Text>
 				<Text style={[theme.fonts.labelMedium]}>Created By {MMConstants.unicode.bull} {userDetail.name}</Text>
 			</View>
 			<View style={{ alignSelf: 'flex-end' }}>
