@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Checkbox, useTheme } from 'react-native-paper';
-
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import { validateAll } from 'indicative/validator';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { setLogin } from '../../redux/Slice/AuthSlice';
-
 import MMUtils from '../../helpers/Utils';
 import MMEnums from '../../helpers/Enums';
 import MMConstants from '../../helpers/Constants';
@@ -29,7 +26,6 @@ export default function SignUp({ navigation, route }) {
     const dispatch = useDispatch();
     const { deviceId, mobileNumber } = route.params || '';
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
-    console.log(JSON.stringify(lookupData), 'lookupData')
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
 
@@ -243,97 +239,111 @@ export default function SignUp({ navigation, route }) {
 
     const renderView = () => {
         return (
-            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
-                <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
-                <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium }]} >To start things off, kindly share some
-                    details about yourself. You can add more
-                    information later.</Text>
-                <MMInput
-                    label='Name *'
-                    maxLength={50}
-                    value={state.name}
-                    onChangeText={(value) => onInputChange('name', value)}
-                    placeholder="Enter Your Name"
-                    errorText={state.errors.name}
-                />
-                <MMInput
-                    label='Phone Number *'
-                    maxLength={10}
-                    value={state.mobileNumber}
-                    onChangeText={(value) => { onInputChange('mobileNumber', value); }}
-                    placeholder="Enter Phone Number"
-                    name="mobileNumber"
-                    errorText={state.errors.mobileNumber}
-                    editable={!mobileNumber}
-                    keyboardType="phone-pad"
-                />
-                <MMInput
-                    label='Email Address *'
-                    value={state.email}
-                    onChangeText={(value) => onInputChange('email', value)}
-                    placeholder="Enter Email Address"
-                    keyboardType="email-address"
-                    autoCorrect={false}
-                    editable={!mobileNumber}
-                    maxLength={150}
-                    errorText={state.errors.email}
-                />{mobileNumber ? null :
-                    <MMInput
-                        label='Password *'
-                        value={state.password}
-                        onChangeText={(value) => onInputChange('password', value)}
-                        placeholder="Enter Password"
-                        maxLength={50}
-                        errorText={state.errors.password}
-                        secureTextEntry={passwordHide}
-                        name="password"
-                        rightIcon={passwordHide ? 'eye-off' : 'eye'}
-                        onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
-                    />}
-                <MMRadioButton
-                    label='Gender *'
-                    options={lookupData.genders}
-                    selectedValue={state.gender}
-                    onValueChange={onGenderChange}
-                    disabled={mobileNumber}
-                    errorText={state.errors.gender}
-                />
-                {mobileNumber ? null :
-                    <View style={{ paddingTop: 30, paddingBottom: MMConstants.paddingMedium, flexDirection: 'row', alignItems: 'center' }}>
-                        <Checkbox.Android
-                            color={theme.colors.primary}
-                            size="sm"
-                            status={state.terms ? 'checked' : 'unchecked'}
-                            onPress={onTermsCheck}
-                            value={state.terms}
-                            style={{ borderColor: theme.colors.primary }} />
-                        <Text style={theme.fonts.default}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
-                            <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
-                    </View>}
-                <MMFormErrorText errorText={state.errors.terms} />
-                {mobileNumber ? <MMButton
-                    label="Save"
-                    onPress={() => onUpdateProfile()}
-                /> :
-                    <MMButton
-                        label="Sign Up"
-                        onPress={() => onSubmit()}
-                    />}
-                {mobileNumber ? null :
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <Text style={[theme.fonts.default]}>Already have an account? </Text>
-                        <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
-                    </View>}
-            </MMSurface>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+            >
+                <>
+                    <MMAuthHeader title='Your profile' alignItems='center' paddingBottom={0} />
+                    <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium, textAlign: 'center' }]} >To start things off, kindly share some
+                        details about yourself. You can add more
+                        information later.</Text>
+                    <ScrollView style={{ paddingHorizontal: MMConstants.paddingMedium }}>
+                        <MMInput
+                            label='Name *'
+                            maxLength={50}
+                            value={state.name}
+                            onChangeText={(value) => onInputChange('name', value)}
+                            placeholder="Enter Your Name"
+                            errorText={state.errors.name}
+                        />
+                        <MMInput
+                            label='Phone Number *'
+                            maxLength={10}
+                            value={state.mobileNumber}
+                            onChangeText={(value) => { onInputChange('mobileNumber', value); }}
+                            placeholder="Enter Phone Number"
+                            name="mobileNumber"
+                            errorText={state.errors.mobileNumber}
+                            editable={!mobileNumber}
+                            keyboardType="phone-pad"
+                        />
+                        <MMInput
+                            label='Email Address *'
+                            value={state.email}
+                            onChangeText={(value) => onInputChange('email', value)}
+                            placeholder="Enter Email Address"
+                            keyboardType="email-address"
+                            autoCorrect={false}
+                            editable={!mobileNumber}
+                            maxLength={150}
+                            errorText={state.errors.email}
+                        />{mobileNumber ? null :
+                            <MMInput
+                                label='Password *'
+                                value={state.password}
+                                onChangeText={(value) => onInputChange('password', value)}
+                                placeholder="Enter Password"
+                                maxLength={50}
+                                errorText={state.errors.password}
+                                secureTextEntry={passwordHide}
+                                name="password"
+                                rightIcon={passwordHide ? 'eye-off' : 'eye'}
+                                onPress={passwordHide ? () => setPasswordHide(false) : () => setPasswordHide(true)}
+                            />}
+                        <MMRadioButton
+                            label='Gender *'
+                            options={lookupData.genders}
+                            selectedValue={state.gender}
+                            onValueChange={onGenderChange}
+                            disabled={mobileNumber}
+                            errorText={state.errors.gender}
+                        />
+                        {mobileNumber ? null :
+                            <View style={{ paddingTop: 30, paddingBottom: MMConstants.paddingMedium, flexDirection: 'row', alignItems: 'center' }}>
+                                <Checkbox.Android
+                                    color={theme.colors.primary}
+                                    size="sm"
+                                    status={state.terms ? 'checked' : 'unchecked'}
+                                    onPress={onTermsCheck}
+                                    value={state.terms}
+                                    style={{ borderColor: theme.colors.primary }} />
+                                <Text style={theme.fonts.default}>I accept <Text style={{ color: theme.colors.primary }}>Terms of Use </Text> and
+                                    <Text style={{ color: theme.colors.primary }}>  Privacy Policy</Text>.</Text>
+                            </View>}
+                        <MMFormErrorText errorText={state.errors.terms} />
+                    </ScrollView>
+                    {mobileNumber ? <MMButton
+                        label="Save"
+                        onPress={() => onUpdateProfile()}
+                    /> :
+                        <MMButton
+                            label="Sign Up"
+                            onPress={() => onSubmit()}
+                        />}
+                    {mobileNumber ? null :
+                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                            <Text style={[theme.fonts.default]}>Already have an account? </Text>
+                            <MMTransparentButton label='SIGN IN' onPress={() => navigation.navigate('Login')} />
+                        </View>}
+                </>
+            </KeyboardAvoidingView>
         );
     };
 
     return (
         <MMImageBackground>
-
-            <MMScrollView>
+            <Image
+                textAlign="center"
+                source={require('../../assets/images/minimemoirs.png')}
+                style={{
+                    height: Dimensions.get('window').height / 8, width: Dimensions.get('window').width / 4,
+                    alignSelf: 'center', position: 'absolute', top: 10
+                }}
+            />
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
                 {renderView()}
-            </MMScrollView>
+            </MMSurface>
             <MMOverlaySpinner visible={isOverlayLoading} />
         </MMImageBackground>
     );
@@ -343,7 +353,6 @@ SignUp.propTypes = {
     navigation: PropTypes.object,
     route: PropTypes.object,
 };
-
 
 const styles = (theme) => StyleSheet.create({
     surface: {
