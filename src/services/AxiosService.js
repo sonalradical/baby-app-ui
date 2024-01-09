@@ -33,10 +33,9 @@ axios.interceptors.response.use(
         return response?.data;
     },
     async error => {
-        console.log('call', error)
         const originalRequest = error.config;
         if (error?.response) {
-            const defaultErrorMessage = 'The server was not reachable or an internal server error occurred. Please close and re-open the app again.';
+            const defaultErrorMessage = 'Oops, something went wrong. Please try again.';
             const { status, data } = error.response;
 
             if (status === axios.HttpStatusCode.BadRequest) {
@@ -44,9 +43,10 @@ axios.interceptors.response.use(
                 if (_.isArray(error.message)) {
                     return { data: null, error: formatValidationError(error.message) }
                 } else {
-                    MMUtils.showToastMessage(error.message || defaultErrorMessage);
+                    const formattedError = {};
+                    formattedError[error.param] = error.message;
+                    return { data: null, error: formattedError }
                 }
-
             } else if (status === axios.HttpStatusCode.Unauthorized && !originalRequest._retry) {
                 originalRequest._retry = true;
 

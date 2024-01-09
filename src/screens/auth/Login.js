@@ -30,8 +30,8 @@ export default function Login({ navigation }) {
     const dispatch = useDispatch();
 
     const initState = {
-        mobileNumber: '',
-        password: '',
+        mobileNumber: '8160421801',
+        password: 'Rack@123',
         errors: {},
     };
     const [state, setState] = useState(initState);
@@ -114,7 +114,7 @@ export default function Login({ navigation }) {
             .then(async () => {
                 setOverlayLoading(true);
                 const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
-                const { data } = await MMApiService.userLoginWithPassword(authTokan, deviceId);
+                const { data, error } = await MMApiService.userLoginWithPassword(authTokan, deviceId);
                 if (data) {
                     const { accessToken, refreshToken, userDetail } = data;
                     const userDetails = {
@@ -135,6 +135,13 @@ export default function Login({ navigation }) {
                         accessToken: userDetails.accessToken,
                         refreshToken: userDetails.refreshToken
                     }));
+                }
+                if (error) {
+                    console.log('error', error);
+                    setState({
+                        ...state,
+                        errors: error
+                    });
                 }
                 setOverlayLoading(false);
             })
