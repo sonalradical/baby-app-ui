@@ -29,6 +29,7 @@ export default function SignUp({ navigation, route }) {
     const dispatch = useDispatch();
     const { deviceId, mobileNumber } = route.params || '';
     const lookupData = useSelector((state) => state.AuthReducer.lookupData);
+    console.log(JSON.stringify(lookupData), 'lookupData')
     const [isOverlayLoading, setOverlayLoading] = useState(false);
     const [passwordHide, setPasswordHide] = useState(true);
 
@@ -243,14 +244,6 @@ export default function SignUp({ navigation, route }) {
     const renderView = () => {
         return (
             <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
-                <Image
-                    textAlign="center"
-                    source={require('../../assets/images/minimemoirs.png')}
-                    style={{
-                        height: Dimensions.get('window').height / 8, width: Dimensions.get('window').width / 4,
-                        alignSelf: 'center'
-                    }}
-                />
                 <MMAuthHeader title='Your profile' alignItems='flex-start' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: MMConstants.paddingLarge, marginBottom: MMConstants.marginMedium }]} >To start things off, kindly share some
                     details about yourself. You can add more
@@ -299,7 +292,7 @@ export default function SignUp({ navigation, route }) {
                     />}
                 <MMRadioButton
                     label='Gender *'
-                    options={lookupData.gender}
+                    options={lookupData.genders}
                     selectedValue={state.gender}
                     onValueChange={onGenderChange}
                     disabled={mobileNumber}
