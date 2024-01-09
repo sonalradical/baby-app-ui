@@ -249,8 +249,8 @@ const styles = (theme) => StyleSheet.create({
     },
     stepper: {
         flexDirection: 'row',
-        marginTop: MMConstants.marginSmall,
-        padding: MMConstants.paddingMedium
+        marginVertical: 16,
+        paddingHorizontal: MMConstants.paddingMedium
     },
     stepItem: {
         alignItems: 'center',

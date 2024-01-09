@@ -16,7 +16,6 @@ import MMFormErrorText from '../../components/common/FormErrorText';
 import MMSpinner from '../../components/common/Spinner';
 import MMSurface from '../../components/common/Surface';
 import AddressView from './AddressView';
-import MMIcon from '../../components/common/Icon';
 import { MMButton } from '../../components/common/Button';
 
 const Address = ({ validStep, clickStep, isDisable = false }) => {
@@ -55,14 +54,14 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
     };
 
     const renderAddressDetail = (item) => {
-        const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2},` : ''}${item.suburb}, \n${item.state}, ${item.postcode}, ${item.country}`;
+        const address = `${item.addressLine1}, ${item.addressLine2 ? `${item.addressLine2}, ` : ''}${item.suburb}, ${item.state}, ${item.postcode}, ${item.country}`;
         return (
             <TouchableOpacity onPress={isDisable ? () => navigation.navigate('AddAddress', { addressId: item._id, isDisable: isDisable }) :
                 () => onSelectAddress(item)}>
                 <MMSurface style={{
                     borderWidth: !isDisable && item._id === addressDetail._id ? 2 : 0,
                     borderColor: !isDisable && item._id === addressDetail._id ? theme.colors.primary : theme.colors.secondaryContainer
-                }}>
+                }} padding={[10, 12, 10, 12]}>
                     {isLoading ? <MMSpinner /> :
                         <AddressView
                             item={item}

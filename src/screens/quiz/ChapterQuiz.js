@@ -296,7 +296,7 @@ export default function ChapterQuiz({ navigation, route }) {
                         )}
 
                         {currentQuestionType === MMEnums.questionType.checkbox && (
-                            <MMScrollView style={{ height: '90%' }}>
+                            <MMScrollView style={{ height: '80%' }}>
                                 <View style={{ paddingTop: MMConstants.paddingLarge }}>
 
                                     {questionList[selectedQuestion].options.map((option, index) => (

@@ -38,7 +38,7 @@ function MMPlacesAutocomplete(props) {
         _.map(details.address_components, (item) => {
 
             if (item.types.includes('administrative_area_level_2') || item.types.includes('locality')) {
-                location.suburb = item.long_name;
+                location.suburb = item.long_name.replace(/^City of /, '');
             } else if (item.types.includes('administrative_area_level_1')) {
                 location.state = item.long_name;
             } else if (item.types.includes('country')) {

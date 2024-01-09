@@ -182,7 +182,7 @@ export default function AddAddress({ navigation, route }) {
     };
 
     const renderView = () => {
-        const address = `${state.addressLine1 ? `${state.addressLine1}, ` : ''} ${state.addressLine2 ? `${state.addressLine2}, ` : ''}${state.suburb}, \n${state.state}, ${state.postcode}, ${state.country}`;
+        const address = `${state.addressLine1 ? `${state.addressLine1}, ` : ''} ${state.addressLine2 ? `${state.addressLine2}, ` : ''}${state.suburb}, ${state.state}, ${state.postcode}, ${state.country}`;
         return (
             <View style={{ paddingTop: MMConstants.paddingMedium, zIndex: 1 }}>
 
