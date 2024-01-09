@@ -81,8 +81,8 @@ const styles = (theme) => StyleSheet.create({
     },
     error: {
         fontSize: 13,
-        paddingTop: 4,
-        paddingLeft: 4,
+        paddingTop: MMConstants.paddingLarge,
+        paddingLeft: MMConstants.paddingLarge,
         color: theme.colors.error,
     },
     fieldRow: {

@@ -155,12 +155,11 @@ export default function OTPView({ navigation, route }) {
                     refreshToken: userDetails.refreshToken
                 }));
             }
-            else {
-                // setState({
-                //     ...state,
-                //     errors: error
-                // });
-                /// TODO
+            if (error) {
+                setState({
+                    ...state,
+                    errors: error
+                });
             }
             setOverlayLoading(false);
         } catch (err) {
