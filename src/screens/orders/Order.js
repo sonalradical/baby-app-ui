@@ -248,6 +248,7 @@ const styles = (theme) => StyleSheet.create({
     },
     stepper: {
         flexDirection: 'row',
+        marginTop: MMConstants.marginSmall,
         padding: MMConstants.paddingMedium
     },
     stepItem: {

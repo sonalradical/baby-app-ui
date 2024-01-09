@@ -78,7 +78,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
     const renderView = () => {
         return (
-            <View style={{ paddingBottom: MMConstants.paddingLarge }}>
+            <View style={{ padding: MMConstants.paddingLarge }}>
                 <RadioButton.Group onValueChange={(value) => onCoverChange(value)} value={bookDetail.productId}>
                     <Text style={theme.fonts.titleMedium}>Cover</Text>
                     {productList.map((product, index) => (
@@ -133,7 +133,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
         return (
             bookDetail.productId && bookDetail.bookTitle && bookDetail.quantity ?
-                <View style={{ backgroundColor: theme.colors.secondaryContainer, marginTop: MMConstants.marginLarge }}>
+                <View style={{ backgroundColor: theme.colors.secondaryContainer, padding: MMConstants.paddingLarge }}>
                     <View style={{ flexDirection: 'row' }}>
                         <MMPicture
                             textAlign="center"
@@ -142,14 +142,14 @@ const BookSelection = ({ validStep, clickStep }) => {
                             style={styles(theme).image}
                         />
                         <View style={{ alignItems: 'flex-start', paddingLeft: MMConstants.paddingLarge }}>
-                            <Text style={[theme.fonts.titleMedium]}>
+                            <Text style={[theme.fonts.titleSmall]}>
                                 {bookDetail.productName}</Text>
-                            <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
+                            <Text style={{ width: '70%' }} numberOfLines={2}>
                                 Title: {bookDetail.bookTitle}</Text>
                             {bookDetail.bookSubTitle ? <Text style={[theme.fonts.titleSmall, { width: '70%' }]} numberOfLines={2}>
                                 Sub title: {bookDetail.bookSubTitle}</Text> : null}
-                            <Text style={theme.fonts.titleSmall}>Quantity: {bookDetail.quantity} </Text>
-                            <Text style={theme.fonts.titleSmall}>Price: {MMUtils.formatCurrency(bookDetail.totalPrice)}</Text>
+                            <Text>Quantity: {bookDetail.quantity} </Text>
+                            <Text style={{ color: theme.colors.secondary }}>Price: {MMUtils.formatCurrency(bookDetail.totalPrice)}</Text>
                         </View>
                     </View>
                 </View> : null
@@ -158,7 +158,7 @@ const BookSelection = ({ validStep, clickStep }) => {
 
 
     return (
-        <MMSurface>
+        <MMSurface padding={[0, 0, 0, 0]}>
             <MMScrollView>
                 {renderView()}
                 <Divider />
