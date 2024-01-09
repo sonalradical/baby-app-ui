@@ -154,7 +154,7 @@ export default function AddEditBaby({ route }) {
                         gender: state.gender,
                         picture: state.picture,
                     };
-                    const { data, error } = await MMApiService.saveBaby(apiData);
+                    const { data } = await MMApiService.saveBaby(apiData);
                     if (data) {
                         dispatch(setBaby(data));
                         if (babyId) {
@@ -162,12 +162,6 @@ export default function AddEditBaby({ route }) {
                         }
                         MMUtils.setItemToStorage(MMEnums.storage.selectedBaby, JSON.stringify(data));
                         navigation.navigate('Footer');
-                    }
-                    else {
-                        setState({
-                            ...state,
-                            errors: error
-                        });
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);
