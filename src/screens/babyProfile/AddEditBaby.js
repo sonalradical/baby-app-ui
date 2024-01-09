@@ -26,6 +26,7 @@ import MMConfirmDialog from '../../components/common/ConfirmDialog';
 import MMPageTitle from '../../components/common/PageTitle';
 import MMRadioButton from '../../components/common/RadioButton';
 import MMIcon from '../../components/common/Icon';
+import MMSurface from '../../components/common/Surface';
 
 export default function AddEditBaby({ route }) {
     const { babyId, babyListSize } = route.params || '';
@@ -215,7 +216,7 @@ export default function AddEditBaby({ route }) {
 
     const renderView = () => {
         return (
-            <View style={{ padding: MMConstants.paddingLarge, marginTop: MMConstants.marginMedium }}>
+            <View>
                 <MMPageTitle title='Baby profile' textAlign='left' paddingBottom={0} />
                 <Text style={[theme.fonts.labelMedium, { paddingBottom: 20 }]} >To begin, please share some basic
                     information about your little one.
@@ -342,13 +343,13 @@ export default function AddEditBaby({ route }) {
 
     return (
         <>
-            <MMContentContainer paddingStyle='none'>
-                {renderScreenHeader()}
+            {renderScreenHeader()}
+            <MMSurface margin={[0, 0, 0, 0]} style={styles(theme).surface}>
                 <MMScrollView>
                     {renderView()}
                 </MMScrollView>
                 <MMOverlaySpinner visible={isOverlayLoading} />
-            </MMContentContainer>
+            </MMSurface>
         </>
     );
 }
@@ -368,5 +369,13 @@ const styles = (theme) => StyleSheet.create({
         shadowRadius: 4,
         shadowOffset: { width: -2, height: 4 },
         justifyContent: 'space-between'
+    },
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        position: 'absolute',
+        backgroundColor: theme.colors.background
     }
+
 });

@@ -177,7 +177,7 @@ BookSelection.propTypes = {
 const styles = (theme) => StyleSheet.create({
     image: {
         width: Dimensions.get('window').width / 5,
-        height: Dimensions.get('window').height / 8,
+        height: Dimensions.get('window').height / 10,
     },
 });
 export default BookSelection;

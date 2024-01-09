@@ -98,7 +98,7 @@ const Address = ({ validStep, clickStep, isDisable = false }) => {
         return (
             <View>
                 {(validStep === 1 && clickStep >= 2) && <MMFormErrorText errorText={'Please select an address'} />}
-                <MMButton label={'Add Address'} onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })} />
+                <MMButton label={'Add Address'} icon={'plus'} onPress={() => navigation.navigate('AddAddress', { isDisable: isDisable })} />
             </View>
         );
     };

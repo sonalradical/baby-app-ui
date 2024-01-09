@@ -188,8 +188,8 @@ export default function Order({ navigation }) {
                             alignSelf: 'center',
                             padding: MMConstants.paddingMedium
                         }}>
-                            <View style={{ flexDirection: 'column', alignSelf: 'center', padding: MMConstants.paddingMedium }}>
-                                <Text style={[theme.fonts.titleSmall, { color: 'white' }]}>
+                            <View style={{ flexDirection: 'column', alignSelf: 'center', padding: MMConstants.paddingMedium, paddingHorizontal: 20 }}>
+                                <Text style={[theme.fonts.bodyMedium, { color: 'white' }]}>
                                     {bookDetail.quantity === 1 ? `${bookDetail.quantity} Item` : `${bookDetail.quantity} Items`} </Text>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>Place Order</Text>
                             </View>
@@ -199,7 +199,7 @@ export default function Order({ navigation }) {
                                 backgroundColor: 'white',
                                 marginHorizontal: MMConstants.paddingMedium
                             }} />
-                            <Text style={[theme.fonts.titleMedium, { color: 'white', padding: MMConstants.paddingMedium }]}>
+                            <Text style={[theme.fonts.titleMedium, { color: 'white', padding: MMConstants.paddingMedium, paddingHorizontal: MMConstants.paddingLarge }]}>
                                 {bookDetail.totalPrice ? MMUtils.formatCurrency(bookDetail.totalPrice) : null}</Text>
                         </View>
                     </Card>
