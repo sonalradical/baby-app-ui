@@ -16,7 +16,7 @@ async function userSignup(data) {
 
 async function verifyOTP(data) {
     const config = {
-        url: `auth/verifyOTP`,
+        url: `auth/verify-otp`,
         method: 'post',
         data: data
     };
@@ -45,7 +45,7 @@ async function userLoginWithPassword(authTokan, deviceId) {
 
 async function userLoginWithOTP(data) {
     const config = {
-        url: `auth/generateOTP`,
+        url: `auth/generate-otp`,
         method: 'post',
         data: data
     };
@@ -59,7 +59,9 @@ async function getToken(data) {
         method: 'post',
         data: data
     };
+    console.log(config.data, '...')
     const result = await axios(config);
+    console.log(result, 'result...')
     return result;
 }
 
