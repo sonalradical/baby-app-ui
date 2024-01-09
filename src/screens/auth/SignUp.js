@@ -199,7 +199,7 @@ export default function SignUp({ navigation, route }) {
                         email: state.email,
                         gender: state.gender,
                     };
-                    const { data, error } = await MMApiService.updateProfile(apiData)
+                    const { data } = await MMApiService.updateProfile(apiData)
                     if (data) {
                         const { accessToken, updatedUser } = data;
                         const userDetails = {
@@ -221,12 +221,6 @@ export default function SignUp({ navigation, route }) {
                             accessToken: userDetails.accessToken,
                         }));
                         navigation.navigate('Home');
-                    }
-                    else {
-                        setState({
-                            ...state,
-                            errors: error
-                        });
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);
