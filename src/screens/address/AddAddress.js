@@ -142,16 +142,10 @@ export default function AddAddress({ navigation, route }) {
                         suburb: state.suburb,
                         isDeleted: false
                     };
-                    const { data, error } = await MMApiService.saveAddress(apiData);
+                    const { data } = await MMApiService.saveAddress(apiData);
                     if (data) {
                         dispatch(reloadAddressPage({ reloadAddressPage: true }));
                         navigation.navigate(isDisable ? 'AddressBook' : 'Order');
-                    }
-                    else {
-                        setState({
-                            ...state,
-                            errors: error
-                        });
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);
