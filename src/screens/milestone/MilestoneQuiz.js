@@ -19,6 +19,7 @@ import MMConstants from '../../helpers/Constants';
 import MMUtils from '../../helpers/Utils';
 import MMApiService from '../../services/ApiService';
 import MMActionButtons from '../../components/common/ActionButtons';
+import MMSurface from '../../components/common/Surface';
 
 export default function MilestoneQuiz({ navigation, route }) {
     const { babyId, milestoneId } = route.params;
@@ -149,15 +150,18 @@ export default function MilestoneQuiz({ navigation, route }) {
         if (!questions || questions.length === 0) return null;
         return (
             <>
-                <View style={{ padding: MMConstants.paddingLarge }}>
-                    <View style={{ paddingTop: MMConstants.paddingLarge }}>
+                <View style={{ paddingHorizontal: MMConstants.paddingLarge }}>
+                    <View style={{ paddingTop: MMConstants.paddingMedium }}>
                         <MMInputMultiline
                             value={state.description}
                             onChangeText={onTextChange}
                             placeholder="Enter Description"
                             maxLength={2000}
                         />
-                        <Text style={{ textAlign: 'right' }}>
+                        <Text style={[theme.fonts.titleSmall, {
+                            textAlign: 'right',
+                            color: theme.colors.secondary, paddingLeft: MMConstants.paddingLarge
+                        }]}>
                             {state.description.length > 0 ? `${state.description.length} / 2000` : '0 / 2000'}</Text>
                     </View>
                     <View style={{ paddingTop: MMConstants.paddingLarge }}>
@@ -226,10 +230,9 @@ export default function MilestoneQuiz({ navigation, route }) {
         if (!questions || questions.length === 0) return null;
         return (
             <View style={{
-                padding: MMConstants.paddingMedium,
-                backgroundColor: theme.colors.primary
+                padding: MMConstants.paddingLarge
             }}>
-                <Text style={[theme.fonts.titleLarge, { textAlign: 'center' }]}>{questions[0].question}</Text>
+                <Text style={[theme.fonts.headlineLarge, { textAlign: 'center' }]}>{questions[0].question}</Text>
             </View>
         );
     };
@@ -237,14 +240,14 @@ export default function MilestoneQuiz({ navigation, route }) {
 
     return (
         <>
-            {renderScreenHeader()}
-            <MMContentContainer>
+            <MMSurface elevation={MMUtils.isPlatformIos() ? 0 : 1} margin={[24, 0, 0, 0]} padding={[0, 0, 0, 0]} style={styles(theme).surface}>
+                {renderScreenHeader()}
                 <MMScrollView>
                     {isLoading ? <MMSpinner /> : renderView()}
                 </MMScrollView>
                 {renderActionButtons()}
                 <MMOverlaySpinner visible={isOverlayLoading} />
-            </MMContentContainer>
+            </MMSurface>
         </>
     );
 }
@@ -267,4 +270,14 @@ const styles = (theme) => StyleSheet.create({
         borderColor: theme.colors.outline,
         borderStyle: 'dashed'
     },
+    surface: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        bottom: 0,
+        flex: 1,
+        backgroundColor: theme.colors.background,
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        shadowOffset: { width: 0, height: -5 }
+    }
 });
