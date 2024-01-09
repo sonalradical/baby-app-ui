@@ -181,13 +181,14 @@ export default function Order({ navigation }) {
                         <Text style={theme.fonts.labelLarge}>My Order</Text>
                         <Text style={[theme.fonts.default]} numberOfLines={2}>{bookDetail.bookTitle ? bookDetail.bookTitle : null}</Text>
                     </View>
-                    <Card style={{ backgroundColor: theme.colors.primary, width: '60%', padding: 8, borderRadius: 10 }}>
+                    <Card style={{ backgroundColor: theme.colors.primary, borderRadius: 10 }}>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            alignSelf: 'center'
+                            alignSelf: 'center',
+                            padding: MMConstants.paddingMedium
                         }}>
-                            <View style={{ flexDirection: 'column' }}>
+                            <View style={{ flexDirection: 'column', alignSelf: 'center', padding: MMConstants.paddingMedium }}>
                                 <Text style={[theme.fonts.titleSmall, { color: 'white' }]}>
                                     {bookDetail.quantity === 1 ? `${bookDetail.quantity} Item` : `${bookDetail.quantity} Items`} </Text>
                                 <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>Place Order</Text>
@@ -196,9 +197,9 @@ export default function Order({ navigation }) {
                                 height: '100%',
                                 width: 1,
                                 backgroundColor: 'white',
-                                marginHorizontal: 10,
+                                marginHorizontal: MMConstants.paddingMedium
                             }} />
-                            <Text style={[theme.fonts.titleMedium, { color: 'white' }]}>
+                            <Text style={[theme.fonts.titleMedium, { color: 'white', padding: MMConstants.paddingMedium }]}>
                                 {bookDetail.totalPrice ? MMUtils.formatCurrency(bookDetail.totalPrice) : null}</Text>
                         </View>
                     </Card>
