@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Checkbox, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
@@ -199,7 +199,7 @@ export default function SignUp({ navigation, route }) {
                         email: state.email,
                         gender: state.gender,
                     };
-                    const { data } = await MMApiService.updateProfile(apiData)
+                    const { data, error } = await MMApiService.updateProfile(apiData)
                     if (data) {
                         const { accessToken, updatedUser } = data;
                         const userDetails = {
@@ -222,6 +222,12 @@ export default function SignUp({ navigation, route }) {
                         }));
                         navigation.navigate('Home');
                     }
+                    else {
+                        setState({
+                            ...state,
+                            errors: error
+                        });
+                    }
                 } catch (err) {
                     MMUtils.consoleError(err);
                 }
@@ -240,7 +246,7 @@ export default function SignUp({ navigation, route }) {
     const renderView = () => {
         return (
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={MMUtils.isPlatformIos() ? 'padding' : 'height'}
                 style={{ flex: 1 }}
             >
                 <>

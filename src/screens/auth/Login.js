@@ -114,7 +114,7 @@ export default function Login({ navigation }) {
             .then(async () => {
                 setOverlayLoading(true);
                 const authTokan = MMUtils.encode(`${state.mobileNumber}:${state.password}`);
-                const { data } = await MMApiService.userLoginWithPassword(authTokan, deviceId);
+                const { data, error } = await MMApiService.userLoginWithPassword(authTokan, deviceId);
                 if (data) {
                     const { accessToken, refreshToken, userDetail } = data;
                     const userDetails = {
@@ -135,6 +135,12 @@ export default function Login({ navigation }) {
                         accessToken: userDetails.accessToken,
                         refreshToken: userDetails.refreshToken
                     }));
+                }
+                else {
+                    setState({
+                        ...state,
+                        errors: error
+                    });
                 }
                 setOverlayLoading(false);
             })
@@ -157,9 +163,15 @@ export default function Login({ navigation }) {
                 const apiData = {
                     mobileNumber: state.mobileNumber
                 };
-                const { data } = await MMApiService.userLoginWithOTP(apiData);
+                const { data, error } = await MMApiService.userLoginWithOTP(apiData);
                 if (data) {
                     navigation.navigate('Otp', { mobileNumber: state.mobileNumber, deviceId: deviceId });
+                }
+                else {
+                    setState({
+                        ...state,
+                        errors: error
+                    });
                 }
                 setOverlayLoading(false);
             })

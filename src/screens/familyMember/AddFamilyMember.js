@@ -73,9 +73,15 @@ export default function AddFamilyMember({ navigation, route }) {
                         connectionEmail: state.email,
                         relationShipType: state.relationShipType
                     };
-                    const { data } = await MMApiService.linkFamilyMember(apiData);
+                    const { data, error } = await MMApiService.linkFamilyMember(apiData);
                     if (data) {
                         navigation.navigate(MMConstants.screens.home);
+                    }
+                    else {
+                        setState({
+                            ...state,
+                            errors: error
+                        });
                     }
                 } catch (err) {
                     MMUtils.consoleError(err);

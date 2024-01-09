@@ -135,7 +135,7 @@ export default function InitialSetup({ route, navigation }) {
                     dueDate: state.dueDate,
                     childCount: state.numberOfBaby ? _.parseInt(state.numberOfBaby) : 1,
                 };
-                const { data } = await MMApiService.updateInItProfile(apiData)
+                const { data, error } = await MMApiService.updateInItProfile(apiData)
                 if (data) {
                     MMUtils.setItemToStorage(MMEnums.storage.userDetail, JSON.stringify(data.userDetail));
                     dispatch(setLogin({ userDetail: data.userDetail, accessToken: accessToken }));
@@ -146,6 +146,12 @@ export default function InitialSetup({ route, navigation }) {
                     } else {
                         navigation.navigate('AddEditBaby');
                     }
+                }
+                else {
+                    setState({
+                        ...state,
+                        errors: error
+                    });
                 }
                 setOverlayLoading(false);
             })
